@@ -303,6 +303,8 @@ def build_healthcare_access_state(pop_lookup):
     national = []
     beds_nat_by_year = defaultdict(dict)
     for r in beds_national:
+        if canonical_state(r["state"]) != "Malaysia":
+            continue
         beds_nat_by_year[year_of(r["date"])][r["type"]] = num(r["beds"])
     staff_nat_by_year = {yr: types for (st, yr), types in staff_by_key.items() if st == "Malaysia"}
     years = sorted(set(beds_nat_by_year) | set(staff_nat_by_year))
