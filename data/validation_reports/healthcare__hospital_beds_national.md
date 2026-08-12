@@ -1,17 +1,17 @@
 # Validation report: `data/raw/healthcare/hospital_beds_national.csv`
 
-- Rows: **32**
+- Rows: **5468**
 - Columns: `date, state, district, type, beds`
 
 ## Missingness
 
 | column | non-missing | missing (blank) | % missing |
 |---|---|---|---|
-| date | 32 | 0 | 0.0% |
-| state | 32 | 0 | 0.0% |
-| district | 32 | 0 | 0.0% |
-| type | 32 | 0 | 0.0% |
-| beds | 32 | 0 | 0.0% |
+| date | 5468 | 0 | 0.0% |
+| state | 5468 | 0 | 0.0% |
+| district | 5468 | 0 | 0.0% |
+| type | 5468 | 0 | 0.0% |
+| beds | 5468 | 0 | 0.0% |
 
 ## Duplicates
 
@@ -22,16 +22,16 @@
 
 | column | min | max | non-numeric values (excl. blank) |
 |---|---|---|---|
-| beds | 3683.0 | 49985.0 | 0 |
+| beds | 0.0 | 49985.0 | 0 |
 
 ## State-name standardisation
 
-- Distinct state values: 1
+- Distinct state values: 17
 - All state names map cleanly to the 16 canonical DOSM states (or the `Malaysia` national sentinel).
 
 ## District-name standardisation
 
-- Distinct (state, district) pairs: 1
+- Distinct (state, district) pairs: 171
 
 ## Temporal coverage
 
