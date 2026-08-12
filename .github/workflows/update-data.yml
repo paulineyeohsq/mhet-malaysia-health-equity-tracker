@@ -1,0 +1,82 @@
+name: Update data
+
+# Scheduled automated refresh for the Malaysia Health Equity Tracker.
+#
+# Runs the full pipeline (ingest -> validate -> transform -> sync into
+# frontend/public/data) via scripts/update_database.py, then opens a pull
+# request with the resulting changes rather than pushing straight to main —
+# so a human reviews any material shift in the published data before it goes
+# live. If any pipeline stage fails, update_database.py exits non-zero and
+# leaves frontend/public/data untouched (it restores its own pre-run
+# backup), so this workflow deliberately does NOT attempt to catch/ignore
+# that failure — a red run here means the previous published data is still
+# safe.
+#
+# Trigger:
+#   - Scheduled monthly (data.gov.my's underlying sources — HIES, DOSM vital
+#     statistics, MOH facility/workforce counts — are not updated more
+#     frequently than that; see docs/DATA_SOURCES.md for each dataset's
+#     real update cadence).
+#   - Manually via workflow_dispatch for an on-demand refresh.
+
+on:
+  schedule:
+    - cron: "0 3 1 * *" # 03:00 UTC on the 1st of each month
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python dependencies
+        run: pip install shapely
+
+      - name: Run full data pipeline (ingest -> validate -> transform -> sync)
+        run: python3 scripts/update_database.py
+
+      - name: Rebuild geographic lookup table
+        run: python3 scripts/build_geo_lookup.py
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend (sanity check that new data doesn't break the build)
+        working-directory: frontend
+        run: npm run build
+
+      - name: Open pull request with any data changes
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "chore(data): automated monthly data refresh"
+          title: "Automated data refresh — ${{ github.run_id }}"
+          body: |
+            Automated run of `scripts/update_database.py` (ingest -> validate -> transform -> sync).
+
+            Review `data/processed/update_log.txt` and `data/validation_reports/` for
+            details of what changed before merging. The frontend build was verified
+            to succeed against the refreshed data as part of this workflow.
+          branch: automated/data-refresh
+          delete-branch: true
+          labels: |
+            automated
+            data-refresh

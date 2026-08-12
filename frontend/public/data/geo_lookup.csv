@@ -1,0 +1,177 @@
+state_code,state_name,district_code,district_name,latitude,longitude
+1,Johor,,,2.03997,103.38775
+2,Kedah,,,5.94458,100.61549
+3,Kelantan,,,5.27997,102.02764
+4,Melaka,,,2.32299,102.30274
+5,Negeri Sembilan,,,2.77499,102.20521
+6,Pahang,,,3.72973,102.54811
+7,Pulau Pinang,,,5.36616,100.40133
+8,Perak,,,4.76886,101.10402
+9,Perlis,,,6.50446,100.2409
+10,Selangor,,,3.27407,101.49815
+11,Terengganu,,,4.92956,102.9502
+12,Sabah,,,5.34813,117.1205
+13,Sarawak,,,2.58438,113.28788
+14,W.P. Kuala Lumpur,,,3.14718,101.68942
+15,W.P. Labuan,,,5.30795,115.2206
+16,W.P. Putrajaya,,,2.93172,101.69
+1,Johor,1,Batu Pahat,1.93137,103.03217
+1,Johor,2,Johor Bahru,1.51121,103.78007
+1,Johor,3,Kluang,2.06593,103.38845
+1,Johor,4,Kota Tinggi,1.76228,103.94974
+1,Johor,5,Mersing,2.32439,103.719
+1,Johor,6,Muar,2.12532,102.78465
+1,Johor,7,Pontian,1.545,103.40027
+1,Johor,8,Segamat,2.48489,102.96327
+1,Johor,9,Kulai,1.68266,103.55476
+1,Johor,10,Tangkak,2.27531,102.63942
+2,Kedah,1,Baling,5.70894,100.8663
+2,Kedah,2,Bandar Baharu,5.20289,100.61407
+2,Kedah,3,Kota Setar,6.12009,100.36882
+2,Kedah,4,Kuala Muda,5.69434,100.51198
+2,Kedah,5,Kubang Pasu,6.35598,100.40108
+2,Kedah,6,Kulim,5.39924,100.64652
+2,Kedah,7,Langkawi,6.3459,99.79122
+2,Kedah,8,Padang Terap,6.26465,100.69423
+2,Kedah,9,Sik,5.98876,100.85269
+2,Kedah,10,Yan,5.86225,100.39975
+2,Kedah,11,Pendang,5.98432,100.54874
+2,Kedah,12,Pokok Sena,6.15619,100.52707
+3,Kelantan,1,Bachok,6.00344,102.37619
+3,Kelantan,2,Kota Bharu,6.04884,102.26228
+3,Kelantan,3,Machang,5.75019,102.24569
+3,Kelantan,4,Pasir Mas,6.00112,102.08751
+3,Kelantan,5,Pasir Puteh,5.84106,102.387
+3,Kelantan,6,Tanah Merah,5.75482,102.03278
+3,Kelantan,7,Tumpat,6.16841,102.16466
+3,Kelantan,8,Gua Musang,5.00118,102.05993
+3,Kelantan,9,Kuala Krai,5.41886,102.16613
+3,Kelantan,10,Jeli,5.58449,101.82708
+3,Kelantan,11,Kecil Lojing,4.77051,101.59969
+4,Melaka,1,Alor Gajah,2.38443,102.19239
+4,Melaka,2,Jasin,2.29845,102.43253
+4,Melaka,3,Melaka Tengah,2.24134,102.25363
+5,Negeri Sembilan,1,Jelebu,3.04203,102.11406
+5,Negeri Sembilan,2,Kuala Pilah,2.72805,102.21927
+5,Negeri Sembilan,3,Port Dickson,2.5413,101.88575
+5,Negeri Sembilan,4,Rembau,2.55989,102.09838
+5,Negeri Sembilan,5,Seremban,2.75544,101.91761
+5,Negeri Sembilan,6,Tampin,2.55054,102.45792
+5,Negeri Sembilan,7,Jempol,2.85612,102.47119
+6,Pahang,1,Bentong,3.38414,102.01371
+6,Pahang,2,Cameron Highlands,4.47306,101.47656
+6,Pahang,3,Jerantut,4.25663,102.55096
+6,Pahang,4,Kuantan,3.85929,103.09164
+6,Pahang,5,Lipis,4.34999,101.91362
+6,Pahang,6,Pekan,3.33944,103.1857
+6,Pahang,7,Raub,3.86474,101.83221
+6,Pahang,8,Temerloh,3.59312,102.26521
+6,Pahang,9,Rompin,2.87233,103.13987
+6,Pahang,10,Maran,3.61554,102.66817
+6,Pahang,11,Bera,3.16879,102.5576
+7,Pulau Pinang,1,Seberang Perai Tengah,5.36392,100.45953
+7,Pulau Pinang,2,Seberang Perai Utara,5.49943,100.44364
+7,Pulau Pinang,3,Seberang Perai Selatan,5.20885,100.47897
+7,Pulau Pinang,4,Timur Laut,5.40676,100.28322
+7,Pulau Pinang,5,Barat Daya,5.35722,100.23087
+8,Perak,1,Batang Padang,4.13391,101.32103
+8,Perak,2,Manjung,4.32647,100.70769
+8,Perak,3,Kinta,4.57111,101.13383
+8,Perak,4,Kerian,5.00666,100.56254
+8,Perak,5,Kuala Kangsar,4.83304,101.09424
+8,Perak,6,Larut Dan Matang,4.79945,100.72401
+8,Perak,7,Hilir Perak,4.003,101.08992
+8,Perak,8,Hulu Perak,5.4334,101.29486
+8,Perak,9,Perak Tengah,4.2611,100.91255
+8,Perak,10,Kampar,4.41049,101.2028
+8,Perak,11,Muallim,3.85482,101.46301
+8,Perak,12,Bagan Datuk,3.87547,100.95895
+8,Perak,13,Selama,5.21801,100.81495
+9,Perlis,1,Perlis,6.50444,100.2409
+10,Selangor,1,Gombak,3.28392,101.64885
+10,Selangor,2,Klang,3.03473,101.38593
+10,Selangor,3,Kuala Langat,2.83136,101.5014
+10,Selangor,4,Kuala Selangor,3.395,101.32418
+10,Selangor,5,Petaling,3.09683,101.57389
+10,Selangor,6,Sabak Bernam,3.68009,101.09007
+10,Selangor,7,Sepang,2.79476,101.68471
+10,Selangor,8,Ulu Langat,3.06672,101.84979
+10,Selangor,9,Ulu Selangor,3.56015,101.58013
+11,Terengganu,1,Besut,5.596,102.52156
+11,Terengganu,2,Dungun,4.67618,103.13779
+11,Terengganu,3,Kemaman,4.28016,103.22451
+11,Terengganu,4,Kuala Terengganu,5.28183,103.08028
+11,Terengganu,5,Marang,5.07211,103.20859
+11,Terengganu,6,Hulu Terengganu,5.05012,102.77404
+11,Terengganu,7,Setiu,5.44839,102.78998
+11,Terengganu,8,Kuala Nerus,5.40497,103.00194
+12,Sabah,1,Tawau,4.4314,118.00959
+12,Sabah,2,Lahad Datu,5.10035,118.39463
+12,Sabah,3,Semporna,4.48748,118.44056
+12,Sabah,4,Sandakan,5.76668,117.98152
+12,Sabah,5,Kinabatangan,5.41499,118.04611
+12,Sabah,6,Beluran,6.19844,117.38255
+12,Sabah,7,Kota Kinabalu,6.00734,116.156
+12,Sabah,8,Ranau,5.9178,116.77277
+12,Sabah,9,Kota Belud,6.31468,116.5033
+12,Sabah,10,Tuaran,6.07211,116.32016
+12,Sabah,11,Penampang,5.84537,116.19664
+12,Sabah,12,Papar,5.62582,116.01231
+12,Sabah,13,Kudat,7.01792,116.96086
+12,Sabah,14,Kota Marudu,6.43586,116.79468
+12,Sabah,15,Pitas,6.7208,117.10306
+12,Sabah,16,Beaufort,5.31717,115.69389
+12,Sabah,17,Kuala Penyu,5.44336,115.50257
+12,Sabah,18,Sipitang,4.6508,115.6966
+12,Sabah,19,Tenom,4.89487,115.93525
+12,Sabah,20,Nabawan,4.60866,116.4444
+12,Sabah,21,Keningau,5.26601,116.26023
+12,Sabah,22,Tambunan,5.67541,116.40047
+12,Sabah,23,Kunak,4.70357,118.05633
+12,Sabah,24,Tongod,5.11152,117.02054
+12,Sabah,25,Putatan,5.87696,116.05882
+12,Sabah,26,Telupid,5.76317,117.14123
+12,Sabah,27,Kalabakan,4.49606,117.44028
+13,Sarawak,1,Kuching,1.45093,110.32088
+13,Sarawak,2,Bau,1.38336,110.11046
+13,Sarawak,3,Lundu,1.66164,109.85015
+13,Sarawak,4,Samarahan,1.44961,110.48811
+13,Sarawak,5,Serian,1.10919,110.62665
+13,Sarawak,6,Simunjan,1.31604,110.85138
+13,Sarawak,7,Sri Aman,1.19988,111.29984
+13,Sarawak,8,Lubok Antu,1.29134,111.86589
+13,Sarawak,9,Betong,1.50901,111.51268
+13,Sarawak,10,Saratok,1.75341,111.41351
+13,Sarawak,11,Sarikei,2.06338,111.44992
+13,Sarawak,12,Maradong,2.16549,111.64114
+13,Sarawak,13,Daro,2.53418,111.41841
+13,Sarawak,14,Julau,1.80389,111.9375
+13,Sarawak,15,Sibu,2.30018,111.87941
+13,Sarawak,16,Dalat,2.69143,111.98949
+13,Sarawak,17,Mukah,2.82407,112.35419
+13,Sarawak,18,Kanowit,1.95118,112.21901
+13,Sarawak,19,Bintulu,3.30512,113.22998
+13,Sarawak,20,Tatau,2.64369,113.01777
+13,Sarawak,21,Kapit,2.18001,113.11403
+13,Sarawak,22,Song,1.76261,112.53343
+13,Sarawak,23,Belaga,2.55906,114.26897
+13,Sarawak,24,Miri,3.66248,115.12242
+13,Sarawak,25,Marudi,4.0805,114.55541
+13,Sarawak,26,Limbang,4.29329,115.11259
+13,Sarawak,27,Lawas,4.52268,115.45322
+13,Sarawak,28,Matu,2.64709,111.69536
+13,Sarawak,29,Asajaya,1.53929,110.61846
+13,Sarawak,30,Pakan,1.78999,111.6921
+13,Sarawak,31,Selangau,2.45148,112.44319
+13,Sarawak,32,Tebedu,1.01717,110.43582
+13,Sarawak,33,Pusa,1.56417,111.14881
+13,Sarawak,34,Kabong,1.88352,111.24003
+13,Sarawak,35,Tanjung Manis,2.27677,111.30612
+13,Sarawak,36,Sebauh,3.09917,113.55856
+13,Sarawak,37,Bukit Mabong,1.75857,113.80759
+13,Sarawak,38,Subis,3.73501,113.76667
+13,Sarawak,39,Beluru,3.57734,114.25301
+13,Sarawak,40,Telang Usan,3.35462,114.8302
+14,W.P. Kuala Lumpur,1,W.P. Kuala Lumpur,3.14717,101.68942
+15,W.P. Labuan,1,W.P. Labuan,5.30798,115.22059
+16,W.P. Putrajaya,1,W.P. Putrajaya,2.93172,101.69

@@ -1,0 +1,27 @@
+# Data validation report index
+
+23 raw CSV files validated.
+
+- [demography/census_district.csv](demography__census_district.md)
+- [geo/state_district.csv](geo__state_district.md)
+- [health_outcomes/birth_state.csv](health_outcomes__birth_state.md)
+- [health_outcomes/death_maternal_state.csv](health_outcomes__death_maternal_state.md)
+- [health_outcomes/death_state.csv](health_outcomes__death_state.md)
+- [health_outcomes/deaths_early_childhood_state.csv](health_outcomes__deaths_early_childhood_state.md)
+- [health_outcomes/infant_immunisation.csv](health_outcomes__infant_immunisation.md)
+- [health_outcomes/nutrition_status_u5_sex.csv](health_outcomes__nutrition_status_u5_sex.md)
+- [health_outcomes/std_state.csv](health_outcomes__std_state.md)
+- [healthcare/healthcare_staff.csv](healthcare__healthcare_staff.md)
+- [healthcare/hospital_beds_2022.csv](healthcare__hospital_beds_2022.md)
+- [healthcare/hospital_beds_national.csv](healthcare__hospital_beds_national.md)
+- [socioeconomic/hh_access_amenities_2022.csv](socioeconomic__hh_access_amenities_2022.md)
+- [socioeconomic/hh_income.csv](socioeconomic__hh_income.md)
+- [socioeconomic/hh_income_district.csv](socioeconomic__hh_income_district.md)
+- [socioeconomic/hh_income_state.csv](socioeconomic__hh_income_state.md)
+- [socioeconomic/hh_inequality.csv](socioeconomic__hh_inequality.md)
+- [socioeconomic/hh_inequality_district.csv](socioeconomic__hh_inequality_district.md)
+- [socioeconomic/hh_inequality_state.csv](socioeconomic__hh_inequality_state.md)
+- [socioeconomic/hh_poverty.csv](socioeconomic__hh_poverty.md)
+- [socioeconomic/hh_poverty_district.csv](socioeconomic__hh_poverty_district.md)
+- [socioeconomic/hh_poverty_state.csv](socioeconomic__hh_poverty_state.md)
+- [socioeconomic/hies_2019_snapshot.csv](socioeconomic__hies_2019_snapshot.md)

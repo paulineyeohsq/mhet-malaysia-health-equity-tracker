@@ -1,0 +1,173 @@
+date,state,district,sanitation,electricity,piped_water
+2022-01-01,Johor,All Districts,100.0,100.0,99.6
+2022-01-01,Johor,Batu Pahat,100.0,100.0,100.0
+2022-01-01,Johor,Johor Bahru,100.0,100.0,100.0
+2022-01-01,Johor,Kluang,100.0,100.0,99.7
+2022-01-01,Johor,Kota Tinggi,99.85,100.0,100.0
+2022-01-01,Johor,Kulai,100.0,100.0,100.0
+2022-01-01,Johor,Mersing,100.0,100.0,83.5
+2022-01-01,Johor,Muar,100.0,100.0,100.0
+2022-01-01,Johor,Pontian,100.0,100.0,100.0
+2022-01-01,Johor,Segamat,100.0,100.0,98.7
+2022-01-01,Johor,Tangkak,100.0,100.0,100.0
+2022-01-01,Kedah,All Districts,100.0,100.0,99.6
+2022-01-01,Kedah,Baling,100.0,100.0,95.1
+2022-01-01,Kedah,Bandar Baharu,100.0,100.0,100.0
+2022-01-01,Kedah,Kota Setar,100.0,100.0,100.0
+2022-01-01,Kedah,Kuala Muda,99.9,100.0,99.9
+2022-01-01,Kedah,Kubang Pasu,100.0,100.0,99.9
+2022-01-01,Kedah,Kulim,100.0,100.0,100.0
+2022-01-01,Kedah,Langkawi,100.0,100.0,99.8
+2022-01-01,Kedah,Padang Terap,100.0,100.0,100.0
+2022-01-01,Kedah,Pendang,100.0,100.0,100.0
+2022-01-01,Kedah,Pokok Sena,100.0,100.0,100.0
+2022-01-01,Kedah,Sik,100.0,100.0,100.0
+2022-01-01,Kedah,Yan,100.0,100.0,100.0
+2022-01-01,Kelantan,All Districts,99.8,100.0,70.2
+2022-01-01,Kelantan,Bachok,99.5,100.0,47.4
+2022-01-01,Kelantan,Gua Musang,100.0,100.0,89.5
+2022-01-01,Kelantan,Jeli,100.0,100.0,80.8
+2022-01-01,Kelantan,Kecil Lojing,100.0,100.0,87.5
+2022-01-01,Kelantan,Kota Bharu,99.6,100.0,68.4
+2022-01-01,Kelantan,Kuala Krai,100.0,100.0,70.0
+2022-01-01,Kelantan,Machang,100.0,100.0,68.0
+2022-01-01,Kelantan,Pasir Mas,100.0,100.0,80.3
+2022-01-01,Kelantan,Pasir Puteh,99.8,100.0,68.5
+2022-01-01,Kelantan,Tanah Merah,99.8,100.0,70.7
+2022-01-01,Kelantan,Tumpat,100.0,100.0,70.8
+2022-01-01,Melaka,All Districts,100.0,100.0,100.0
+2022-01-01,Melaka,Alor Gajah,100.0,100.0,100.0
+2022-01-01,Melaka,Jasin,100.0,100.0,100.0
+2022-01-01,Melaka,Melaka Tengah,100.0,100.0,100.0
+2022-01-01,Negeri Sembilan,All Districts,100.0,100.0,99.8
+2022-01-01,Negeri Sembilan,Jelebu,100.0,100.0,95.1
+2022-01-01,Negeri Sembilan,Jempol,100.0,100.0,100.0
+2022-01-01,Negeri Sembilan,Kuala Pilah,100.0,100.0,100.0
+2022-01-01,Negeri Sembilan,Port Dickson,100.0,100.0,100.0
+2022-01-01,Negeri Sembilan,Rembau,100.0,100.0,100.0
+2022-01-01,Negeri Sembilan,Seremban,100.0,100.0,100.0
+2022-01-01,Negeri Sembilan,Tampin,100.0,100.0,100.0
+2022-01-01,Pahang,All Districts,99.4,99.51,98.3
+2022-01-01,Pahang,Bentong,100.0,100.0,98.9
+2022-01-01,Pahang,Bera,100.0,100.0,98.7
+2022-01-01,Pahang,Cameron Highlands,100.0,100.0,94.5
+2022-01-01,Pahang,Jerantut,100.0,100.0,97.4
+2022-01-01,Pahang,Kuantan,100.0,100.0,99.9
+2022-01-01,Pahang,Lipis,91.1,93.5,84.3
+2022-01-01,Pahang,Maran,100.0,100.0,100.0
+2022-01-01,Pahang,Pekan,100.0,100.0,96.7
+2022-01-01,Pahang,Raub,100.0,100.0,100.0
+2022-01-01,Pahang,Rompin,98.3,97.8,97.0
+2022-01-01,Pahang,Temerloh,100.0,100.0,100.0
+2022-01-01,Perak,All Districts,100.0,100.0,99.2
+2022-01-01,Perak,Bagan Datuk,100.0,100.0,100.0
+2022-01-01,Perak,Batang Padang,100.0,100.0,94.9
+2022-01-01,Perak,Hilir Perak,100.0,100.0,100.0
+2022-01-01,Perak,Hulu Perak,100.0,100.0,95.4
+2022-01-01,Perak,Kampar,100.0,100.0,98.7
+2022-01-01,Perak,Kerian,100.0,100.0,100.0
+2022-01-01,Perak,Kinta,100.0,100.0,100.0
+2022-01-01,Perak,Kuala Kangsar,100.0,100.0,99.6
+2022-01-01,Perak,Larut dan Matang,100.0,100.0,97.6
+2022-01-01,Perak,Manjung,100.0,100.0,100.0
+2022-01-01,Perak,Muallim,100.0,100.0,100.0
+2022-01-01,Perak,Perak Tengah,100.0,100.0,100.0
+2022-01-01,Perak,Selama,100.0,100.0,96.8
+2022-01-01,Perlis,Perlis,100.0,100.0,100.0
+2022-01-01,Pulau Pinang,All Districts,100.0,100.0,100.0
+2022-01-01,Pulau Pinang,Barat Daya,100.0,100.0,100.0
+2022-01-01,Pulau Pinang,Seberang Perai Selatan,100.0,100.0,100.0
+2022-01-01,Pulau Pinang,Seberang Perai Tengah,100.0,99.9,99.9
+2022-01-01,Pulau Pinang,Seberang Perai Utara,100.0,100.0,100.0
+2022-01-01,Pulau Pinang,Timur Laut,100.0,100.0,100.0
+2022-01-01,Sabah,All Districts,98.8,99.03,87.6
+2022-01-01,Sabah,Beaufort,100.0,99.7,89.8
+2022-01-01,Sabah,Beluran,95.7,83.4,63.6
+2022-01-01,Sabah,Kalabakan,100.0,,
+2022-01-01,Sabah,Keningau,99.78,99.8,84.8
+2022-01-01,Sabah,Kinabatangan,100.0,91.1,78.7
+2022-01-01,Sabah,Kota Belud,100.0,100.0,72.7
+2022-01-01,Sabah,Kota Kinabalu,99.62,99.8,93.9
+2022-01-01,Sabah,Kota Marudu,99.14,99.6,81.6
+2022-01-01,Sabah,Kuala Penyu,100.0,100.0,97.1
+2022-01-01,Sabah,Kudat,100.0,96.4,91.0
+2022-01-01,Sabah,Kunak,95.9,97.0,95.5
+2022-01-01,Sabah,Lahad Datu,93.78,99.5,90.5
+2022-01-01,Sabah,Nabawan,100.0,95.8,68.8
+2022-01-01,Sabah,Papar,100.0,99.8,95.6
+2022-01-01,Sabah,Penampang,100.0,99.3,97.0
+2022-01-01,Sabah,Pitas,100.0,98.2,76.6
+2022-01-01,Sabah,Putatan,100.0,100.0,96.8
+2022-01-01,Sabah,Ranau,99.04,94.7,47.4
+2022-01-01,Sabah,Sandakan,99.93,99.5,97.0
+2022-01-01,Sabah,Semporna,84.15,100.0,71.8
+2022-01-01,Sabah,Sipitang,99.37,100.0,93.7
+2022-01-01,Sabah,Tambunan,99.25,100.0,74.4
+2022-01-01,Sabah,Tawau,99.07,99.9,98.4
+2022-01-01,Sabah,Telupid,100.0,100.0,80.0
+2022-01-01,Sabah,Tenom,100.0,100.0,50.9
+2022-01-01,Sabah,Tongod,99.15,95.8,53.4
+2022-01-01,Sabah,Tuaran,100.0,100.0,76.5
+2022-01-01,Sarawak,All Districts,100.0,97.8,90.0
+2022-01-01,Sarawak,Asajaya,100.0,100.0,100.0
+2022-01-01,Sarawak,Bau,100.0,100.0,92.1
+2022-01-01,Sarawak,Belaga,100.0,91.8,48.5
+2022-01-01,Sarawak,Beluru,100.0,100.0,90.5
+2022-01-01,Sarawak,Betong,100.0,100.0,95.8
+2022-01-01,Sarawak,Bintulu,100.0,98.1,96.8
+2022-01-01,Sarawak,Bukit Mabong,100.0,40.2,21.6
+2022-01-01,Sarawak,Dalat,100.0,97.2,89.7
+2022-01-01,Sarawak,Daro,100.0,97.5,83.0
+2022-01-01,Sarawak,Julau,100.0,93.6,46.8
+2022-01-01,Sarawak,Kabong,100.0,100.0,82.8
+2022-01-01,Sarawak,Kanowit,100.0,93.7,77.8
+2022-01-01,Sarawak,Kapit,100.0,88.8,57.3
+2022-01-01,Sarawak,Kuching,100.0,100.0,99.5
+2022-01-01,Sarawak,Lawas,100.0,100.0,65.0
+2022-01-01,Sarawak,Limbang,100.0,98.4,87.6
+2022-01-01,Sarawak,Lubok Antu,100.0,95.1,90.1
+2022-01-01,Sarawak,Lundu,100.0,100.0,63.6
+2022-01-01,Sarawak,Maradong,100.0,99.5,96.7
+2022-01-01,Sarawak,Marudi,99.52,95.7,47.4
+2022-01-01,Sarawak,Matu,100.0,93.8,87.7
+2022-01-01,Sarawak,Miri,99.91,96.3,98.5
+2022-01-01,Sarawak,Mukah,99.54,100.0,88.5
+2022-01-01,Sarawak,Pakan,100.0,96.1,87.3
+2022-01-01,Sarawak,Pusa,100.0,95.7,74.2
+2022-01-01,Sarawak,Samarahan,100.0,100.0,100.0
+2022-01-01,Sarawak,Saratok,100.0,100.0,98.3
+2022-01-01,Sarawak,Sarikei,100.0,100.0,96.7
+2022-01-01,Sarawak,Sebauh,100.0,100.0,68.7
+2022-01-01,Sarawak,Selangau,100.0,93.3,38.5
+2022-01-01,Sarawak,Serian,100.0,99.0,86.2
+2022-01-01,Sarawak,Sibu,99.92,93.7,98.1
+2022-01-01,Sarawak,Simunjan,100.0,100.0,70.5
+2022-01-01,Sarawak,Song,100.0,78.1,29.8
+2022-01-01,Sarawak,Sri Aman,100.0,97.9,84.7
+2022-01-01,Sarawak,Subis,100.0,100.0,67.4
+2022-01-01,Sarawak,Tanjung Manis,100.0,100.0,92.4
+2022-01-01,Sarawak,Tatau,100.0,77.8,63.7
+2022-01-01,Sarawak,Tebedu,100.0,91.4,44.1
+2022-01-01,Sarawak,Telang Usan,100.0,92.8,57.8
+2022-01-01,Selangor,All Districts,100.0,100.0,100.0
+2022-01-01,Selangor,Gombak,100.0,100.0,100.0
+2022-01-01,Selangor,Hulu Langat,100.0,100.0,100.0
+2022-01-01,Selangor,Hulu Selangor,100.0,100.0,100.0
+2022-01-01,Selangor,Klang,99.9,100.0,100.0
+2022-01-01,Selangor,Kuala Langat,100.0,100.0,100.0
+2022-01-01,Selangor,Kuala Selangor,100.0,100.0,100.0
+2022-01-01,Selangor,Petaling,100.0,100.0,100.0
+2022-01-01,Selangor,Sabak Bernam,100.0,100.0,100.0
+2022-01-01,Selangor,Sepang,100.0,100.0,100.0
+2022-01-01,Terengganu,All Districts,100.0,100.0,98.5
+2022-01-01,Terengganu,Besut,100.0,100.0,93.8
+2022-01-01,Terengganu,Dungun,100.0,100.0,99.4
+2022-01-01,Terengganu,Hulu Terengganu,100.0,100.0,99.4
+2022-01-01,Terengganu,Kemaman,100.0,100.0,100.0
+2022-01-01,Terengganu,Kuala Nerus,100.0,100.0,99.4
+2022-01-01,Terengganu,Kuala Terengganu,100.0,100.0,98.6
+2022-01-01,Terengganu,Marang,100.0,100.0,99.4
+2022-01-01,Terengganu,Setiu,100.0,100.0,97.2
+2022-01-01,W.P. Kuala Lumpur,W.P. Kuala Lumpur,100.0,100.0,100.0
+2022-01-01,W.P. Labuan,W.P. Labuan,100.0,100.0,100.0
+2022-01-01,W.P. Putrajaya,W.P. Putrajaya,100.0,100.0,100.0
