@@ -1,10 +1,13 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
-import ChoroplethMap, { type ChoroplethDatum } from "../components/ChoroplethMap";
+import ChoroplethMap, { type ChoroplethDatum, type TierConfig } from "../components/ChoroplethMap";
 import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
+import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
 import { useData } from "../lib/useData";
 import type { SOURCES } from "../lib/sources";
+import { computeTerciles } from "../lib/equity";
 
 type Geography = "state" | "district";
 
@@ -37,6 +40,16 @@ export default function HealthEquityMap() {
   const [geography, setGeography] = useState<Geography>("state");
   const [indicatorId, setIndicatorId] = useState("poverty");
   const [selectedName, setSelectedName] = useState<string | null>(null);
+  const [showTiers, setShowTiers] = useState(false);
+
+  // Ask MHET: pre-apply a filter passed via router location state, once on mount.
+  const location = useLocation();
+  useEffect(() => {
+    const s = location.state as { indicatorId?: string; geography?: Geography } | null;
+    if (s?.indicatorId) setIndicatorId(s.indicatorId);
+    if (s?.geography) setGeography(s.geography);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state]);
 
   const indicator = INDICATORS.find((i) => i.id === indicatorId)!;
   const usesDistrictFile = geography === "district" && indicator.file === "socioeconomic_state.json";
@@ -65,6 +78,18 @@ export default function HealthEquityMap() {
         value: typeof r[valueField] === "number" ? (r[valueField] as number) : null,
       }));
   }, [rows, effectiveYear, nameField, valueField]);
+
+  const povertyTierConfig: TierConfig | undefined = useMemo(() => {
+    if (indicatorId !== "poverty" || !showTiers) return undefined;
+    const values = choroplethData.map((d) => d.value).filter((v): v is number => v !== null);
+    const breaks = computeTerciles(values);
+    if (!breaks) return undefined;
+    return {
+      breaks,
+      labels: ["Low poverty tier", "Medium poverty tier", "High poverty tier"],
+      colors: ["#cde2fb", "#2a78d6", "#0d366b"],
+    };
+  }, [indicatorId, showTiers, choroplethData]);
 
   const selectedRow = useMemo(() => {
     if (!rows || !selectedName || effectiveYear === null) return null;
@@ -143,11 +168,46 @@ export default function HealthEquityMap() {
               </select>
             </div>
           )}
+          {indicatorId === "poverty" && (
+            <div>
+              <label className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-ink-muted">
+                <input
+                  type="checkbox"
+                  checked={showTiers}
+                  onChange={(e) => setShowTiers(e.target.checked)}
+                  className="h-3.5 w-3.5"
+                />
+                Poverty tier overlay
+              </label>
+              {showTiers && (
+                <p className="mt-1 max-w-xs text-xs text-ink-muted">
+                  Tiers are terciles of the current {geography}s' poverty rates, defined by this dashboard — not an
+                  official DOSM classification.
+                </p>
+              )}
+            </div>
+          )}
           <p className="ml-auto max-w-xs text-xs text-ink-muted">
             Population subgroup filters (sex / ethnicity / age) are shown only where the underlying dataset supports
             them — see the Population Equity and Health Outcomes pages for subgroup breakdowns.
           </p>
         </div>
+
+        {indicatorSupportsGeography && (
+          <EquityInsightCard
+            insight={buildEquityInsight({
+              rows,
+              year: effectiveYear,
+              valueField,
+              metricLabel: indicator.label,
+              unit: indicator.unit,
+              higherIsWorse: indicator.higherIsWorse,
+              groupField: nameField,
+              groupNoun: geography,
+            })}
+            reason={`Fewer than two ${geography}s report ${indicator.label.toLowerCase()} for ${effectiveYear ?? "the selected year"}.`}
+          />
+        )}
 
         {!indicatorSupportsGeography ? (
           <InsufficientData reason={`${indicator.label} is not published at ${geography} resolution by the source agency.`} />
@@ -162,6 +222,7 @@ export default function HealthEquityMap() {
                   onSelect={setSelectedName}
                   selectedName={selectedName}
                   unitLabel={indicator.unit}
+                  tiers={povertyTierConfig}
                 />
               ) : (
                 <div className="flex h-[480px] items-center justify-center rounded-lg border border-line-grid text-sm text-ink-muted">
@@ -170,9 +231,11 @@ export default function HealthEquityMap() {
               )}
               <SourceNote sourceKey={indicator.sourceKey} year={effectiveYear ?? undefined} />
               <p className="mt-2 text-xs text-ink-muted">
-                Colour scale: light → dark blue, low → high value. Grey areas indicate no data for this
-                indicator/year/geography — this is shown explicitly rather than left blank, per this dashboard's data
-                integrity policy.
+                {povertyTierConfig
+                  ? "Colour scale: 3-tier poverty overlay (see legend above)."
+                  : "Colour scale: light → dark blue, low → high value."}{" "}
+                Grey areas indicate no data for this indicator/year/geography — this is shown explicitly rather than
+                left blank, per this dashboard's data integrity policy.
               </p>
             </div>
 

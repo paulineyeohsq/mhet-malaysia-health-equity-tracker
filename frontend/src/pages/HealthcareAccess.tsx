@@ -6,7 +6,9 @@ import LineChartCard from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
 import DataTable, { type Column } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
+import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
 import { useData } from "../lib/useData";
+import type { Row } from "../lib/equity";
 
 interface NationalRow {
   year: number;
@@ -288,6 +290,18 @@ export default function HealthcareAccess() {
               </div>
             )}
           </div>
+
+          <EquityInsightCard
+            insight={buildEquityInsight({
+              rows: stateData as unknown as Row[] | null,
+              year: effectiveStateYear,
+              valueField: "staff_per_100k",
+              metricLabel: "healthcare staff per 100,000 population",
+              unit: "per 100k",
+              higherIsWorse: false,
+            })}
+            reason={`Fewer than two states report a staff-per-100,000 rate for ${effectiveStateYear ?? "the selected year"}.`}
+          />
 
           <div className="grid gap-4 lg:grid-cols-2">
             {staffRateAvailable ? (

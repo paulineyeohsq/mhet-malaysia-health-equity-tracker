@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -18,8 +19,10 @@ import BarRankingCard from "../components/BarRankingCard";
 import DataTable, { type Column } from "../components/DataTable";
 import ChoroplethMap, { type ChoroplethDatum } from "../components/ChoroplethMap";
 import InsufficientData from "../components/InsufficientData";
+import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
 import { useData } from "../lib/useData";
 import type { SOURCES } from "../lib/sources";
+import type { Row } from "../lib/equity";
 
 interface NationalRow {
   year: number;
@@ -181,6 +184,14 @@ export default function SocioeconomicInequality() {
 
   const [rankIndicatorId, setRankIndicatorId] = useState<SocioIndicatorId>("poverty_absolute");
   const rankIndicator = SOCIO_INDICATORS.find((i) => i.id === rankIndicatorId)!;
+
+  // Ask MHET: pre-apply a filter passed via router location state, once on mount.
+  const location = useLocation();
+  useEffect(() => {
+    const s = location.state as { rankIndicatorId?: SocioIndicatorId } | null;
+    if (s?.rankIndicatorId) setRankIndicatorId(s.rankIndicatorId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state]);
 
   const [selectedState, setSelectedState] = useState<string | null>(null);
 
@@ -397,6 +408,18 @@ export default function SocioeconomicInequality() {
               </div>
             )}
           </div>
+
+          <EquityInsightCard
+            insight={buildEquityInsight({
+              rows: stateData as unknown as Row[] | null,
+              year: effectiveRankYear,
+              valueField: rankIndicatorId,
+              metricLabel: rankIndicator.label,
+              unit: rankIndicator.unit,
+              higherIsWorse: rankIndicatorId !== "income_median",
+            })}
+            reason={`Fewer than two states report ${rankIndicator.label.toLowerCase()} for ${effectiveRankYear ?? "the selected year"}.`}
+          />
 
           <div className="grid gap-4 lg:grid-cols-2">
             <BarRankingCard

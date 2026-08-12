@@ -4,6 +4,7 @@ import StatTile from "../components/StatTile";
 import SourceNote from "../components/SourceNote";
 import LineChartCard from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
+import EquityGapBanner from "../components/EquityGapBanner";
 import { useData } from "../lib/useData";
 
 interface NationalRow {
@@ -82,6 +83,9 @@ export default function Overview() {
       />
 
       <div className="space-y-8 p-6 lg:p-10">
+        {/* Equity gap snapshot */}
+        <EquityGapBanner />
+
         {/* Key indicators */}
         <section aria-labelledby="key-indicators">
           <h2 id="key-indicators" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">

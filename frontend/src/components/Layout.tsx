@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
+import AskMhet from "./AskMhet";
 
 const NAV = [
   { to: "/", label: "Overview", end: true },
@@ -64,6 +65,7 @@ export default function Layout() {
 
       {/* Main content */}
       <main id="main-content" className="flex-1 min-w-0">
+        <AskMhet />
         <Outlet />
       </main>
     </div>

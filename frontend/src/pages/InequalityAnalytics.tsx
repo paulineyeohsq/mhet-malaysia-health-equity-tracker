@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import * as ss from "simple-statistics";
 import {
   ResponsiveContainer,
@@ -18,8 +19,7 @@ import DataTable, { type Column } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
 import { useData } from "../lib/useData";
 import type { SOURCES } from "../lib/sources";
-
-type Row = Record<string, unknown>;
+import { computeGapStats, yearsWithCoverage, fmt, type Row } from "../lib/equity";
 
 interface SocioeconomicRow {
   state: string;
@@ -119,65 +119,6 @@ const SES_INDICATORS = OUTCOME_INDICATORS.filter((i) => i.countField);
 
 /** Two more outcomes shown alongside the user-selected headline outcome in the "rate ratio" section. */
 const GAP_SECONDARY_IDS = ["mmr", "cdr", "hiv"];
-
-function fmt(v: number | null | undefined, decimals = 1): string {
-  if (v === null || v === undefined || Number.isNaN(v)) return "—";
-  return v.toLocaleString(undefined, { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-}
-
-/** Years where at least `minStates` of the 16 states report a non-null value for this field. */
-function yearsWithCoverage(rows: Row[] | null, valueField: string, minStates = 12): number[] {
-  if (!rows) return [];
-  const counts = new Map<number, number>();
-  for (const r of rows) {
-    const y = r.year as number;
-    const v = r[valueField];
-    if (typeof v === "number") counts.set(y, (counts.get(y) ?? 0) + 1);
-  }
-  return Array.from(counts.entries())
-    .filter(([, c]) => c >= minStates)
-    .map(([y]) => y)
-    .sort((a, b) => b - a);
-}
-
-interface GapStats {
-  snapshot: { state: string; value: number }[];
-  bestState: string;
-  bestValue: number;
-  worstState: string;
-  worstValue: number;
-  absDiff: number;
-  /** highest value / lowest value; null if the lowest value is 0 (undefined ratio). */
-  ratio: number | null;
-  statesCount: number;
-}
-
-/** Measures 1-3 from the spec: absolute difference and relative ratio between the best and worst state. */
-function computeGapStats(rows: Row[] | null, year: number | null, valueField: string, higherIsWorse: boolean): GapStats | null {
-  if (!rows || year === null) return null;
-  const snapshot = rows
-    .filter((r) => r.year === year)
-    .map((r) => ({ state: r.state as string, value: r[valueField] }))
-    .filter((r): r is { state: string; value: number } => typeof r.value === "number")
-    .sort((a, b) => a.value - b.value);
-  if (snapshot.length < 2) return null;
-  const lowest = snapshot[0];
-  const highest = snapshot[snapshot.length - 1];
-  const bestState = higherIsWorse ? lowest.state : highest.state;
-  const bestValue = higherIsWorse ? lowest.value : highest.value;
-  const worstState = higherIsWorse ? highest.state : lowest.state;
-  const worstValue = higherIsWorse ? highest.value : lowest.value;
-  return {
-    snapshot,
-    bestState,
-    bestValue,
-    worstState,
-    worstValue,
-    absDiff: highest.value - lowest.value,
-    ratio: lowest.value !== 0 ? highest.value / lowest.value : null,
-    statesCount: snapshot.length,
-  };
-}
 
 interface MergedRow {
   state: string;
@@ -326,6 +267,14 @@ export default function InequalityAnalytics() {
   // Section: absolute & relative gap
   const [primaryId, setPrimaryId] = useState("mmr");
   const [primaryYear, setPrimaryYear] = useState<number | null>(null);
+
+  // Ask MHET: pre-apply a filter passed via router location state, once on mount.
+  const location = useLocation();
+  useEffect(() => {
+    const s = location.state as { primaryId?: string } | null;
+    if (s?.primaryId) setPrimaryId(s.primaryId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state]);
   const primary = OUTCOME_INDICATORS.find((i) => i.id === primaryId) ?? OUTCOME_INDICATORS[0];
   const primaryRows = (primary.file === "health_outcomes_state.json" ? healthOutcomes : healthcareAccess) ?? null;
   const primaryYears = useMemo(() => yearsWithCoverage(primaryRows, primary.valueField), [primaryRows, primary]);

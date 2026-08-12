@@ -10,6 +10,19 @@ export interface ChoroplethDatum {
 }
 
 /**
+ * Optional 3-bucket overlay config (e.g. the poverty-tier overlay). Buckets
+ * a value against `breaks` instead of the default continuous min/max ramp.
+ * This is always a dashboard-defined bucketing of a real field, never a
+ * separate/invented data source — the caller is responsible for disclosing
+ * that in the surrounding UI.
+ */
+export interface TierConfig {
+  breaks: [number, number];
+  labels: [string, string, string];
+  colors: [string, string, string];
+}
+
+/**
  * Generic Malaysia choropleth (state or district resolution) driven by the
  * official DOSM boundary GeoJSON files in /data/geo/. Colour is a single-hue
  * sequential ramp (per dataviz skill: sequential = one hue, light->dark);
@@ -25,6 +38,13 @@ function colorFor(value: number | null, min: number, max: number) {
   const t = (value - min) / (max - min);
   const idx = Math.min(SEQ_RAMP.length - 1, Math.max(0, Math.round(t * (SEQ_RAMP.length - 1))));
   return SEQ_RAMP[idx];
+}
+
+function tierIndexFor(value: number | null, breaks: [number, number]): number | null {
+  if (value === null || Number.isNaN(value)) return null;
+  if (value <= breaks[0]) return 0;
+  if (value <= breaks[1]) return 1;
+  return 2;
 }
 
 function FitBounds({ geojson }: { geojson: GeoJSON.FeatureCollection }) {
@@ -48,6 +68,7 @@ export default function ChoroplethMap({
   onSelect,
   selectedName,
   unitLabel,
+  tiers,
 }: {
   geojson: GeoJSON.FeatureCollection;
   data: ChoroplethDatum[];
@@ -55,6 +76,7 @@ export default function ChoroplethMap({
   onSelect?: (name: string) => void;
   selectedName?: string | null;
   unitLabel?: string;
+  tiers?: TierConfig;
 }) {
   const byName = useMemo(() => {
     const m = new Map<string, number | null>();
@@ -72,8 +94,9 @@ export default function ChoroplethMap({
     const name = (feature?.properties as Record<string, string> | undefined)?.[nameProperty] ?? "";
     const value = byName.has(name) ? byName.get(name)! : null;
     const isSelected = selectedName && name === selectedName;
+    const tierIdx = tiers ? tierIndexFor(value, tiers.breaks) : null;
     return {
-      fillColor: colorFor(value, min, max),
+      fillColor: tiers ? (tierIdx !== null ? tiers.colors[tierIdx] : NO_DATA) : colorFor(value, min, max),
       fillOpacity: value === null ? 0.35 : 0.85,
       color: isSelected ? "#0b0b0b" : "#ffffff",
       weight: isSelected ? 2 : 0.8,
@@ -84,7 +107,9 @@ export default function ChoroplethMap({
     const name = (feature.properties as Record<string, string> | undefined)?.[nameProperty] ?? "Unknown";
     const value = byName.has(name) ? byName.get(name) : null;
     const displayVal = value === null || value === undefined ? "No data" : `${value}${unitLabel ? " " + unitLabel : ""}`;
-    layer.bindTooltip(`<strong>${name}</strong><br/>${displayVal}`, { sticky: true });
+    const tierIdx = tiers && typeof value === "number" ? tierIndexFor(value, tiers.breaks) : null;
+    const tierSuffix = tierIdx !== null && tiers ? ` (${tiers.labels[tierIdx]})` : "";
+    layer.bindTooltip(`<strong>${name}</strong><br/>${displayVal}${tierSuffix}`, { sticky: true });
     layer.on({
       click: () => onSelect?.(name),
       mouseover: (e: LeafletMouseEvent) => (e.target as Path).setStyle({ weight: 2, color: "#0b0b0b" }),
@@ -98,21 +123,49 @@ export default function ChoroplethMap({
   keyRef.current += 1;
 
   return (
-    <div className="h-[480px] w-full overflow-hidden rounded-lg border border-line-grid">
-      <MapContainer
-        center={[4.2, 108.5]}
-        zoom={5.5}
-        scrollWheelZoom={false}
-        style={{ background: "#fcfcfb" }}
-        attributionControl={false}
-      >
-        <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
-          attribution="&copy; OpenStreetMap contributors &copy; CARTO"
-        />
-        <GeoJSON key={`geo-${data.length}-${min}-${max}`} data={geojson} style={style} onEachFeature={onEachFeature} />
-        <FitBounds geojson={geojson} />
-      </MapContainer>
+    <div>
+      <div className="h-[480px] w-full overflow-hidden rounded-lg border border-line-grid">
+        <MapContainer
+          center={[4.2, 108.5]}
+          zoom={5.5}
+          scrollWheelZoom={false}
+          style={{ background: "#fcfcfb" }}
+          attributionControl={false}
+        >
+          <TileLayer
+            url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
+            attribution="&copy; OpenStreetMap contributors &copy; CARTO"
+          />
+          <GeoJSON
+            key={`geo-${data.length}-${min}-${max}-${tiers ? tiers.breaks.join(",") : "ramp"}`}
+            data={geojson}
+            style={style}
+            onEachFeature={onEachFeature}
+          />
+          <FitBounds geojson={geojson} />
+        </MapContainer>
+      </div>
+      {tiers && (
+        <div className="mt-2 flex flex-wrap items-center gap-4 text-xs text-ink-secondary">
+          {tiers.labels.map((label, i) => (
+            <span key={label} className="flex items-center gap-1.5">
+              <span
+                className="inline-block h-3 w-3 rounded-sm"
+                style={{ backgroundColor: tiers.colors[i] }}
+                aria-hidden="true"
+              />
+              {label}
+              {i === 0 && ` (≤ ${fmtBreak(tiers.breaks[0])})`}
+              {i === 1 && ` (${fmtBreak(tiers.breaks[0])}–${fmtBreak(tiers.breaks[1])})`}
+              {i === 2 && ` (> ${fmtBreak(tiers.breaks[1])})`}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
+}
+
+function fmtBreak(v: number): string {
+  return v.toLocaleString(undefined, { maximumFractionDigits: 1 });
 }

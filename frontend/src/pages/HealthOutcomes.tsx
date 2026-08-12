@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
 import StatTile from "../components/StatTile";
 import SourceNote from "../components/SourceNote";
@@ -6,7 +7,9 @@ import LineChartCard, { type Series } from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
 import DataTable, { type Column } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
+import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
 import { useData } from "../lib/useData";
+import type { Row } from "../lib/equity";
 
 interface StateOutcomeRow {
   state: string;
@@ -109,6 +112,15 @@ export default function HealthOutcomes() {
   const [year, setYear] = useState<number | null>(null);
   const [mortalityMetricId, setMortalityMetricId] = useState(MORTALITY_METRICS[0].id);
   const [sex, setSex] = useState<string>("both");
+
+  // Ask MHET: pre-apply a filter passed via router location state, once on mount.
+  const location = useLocation();
+  useEffect(() => {
+    const s = location.state as { category?: Category; mortalityMetricId?: string } | null;
+    if (s?.category) setCategory(s.category);
+    if (s?.mortalityMetricId) setMortalityMetricId(s.mortalityMetricId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.state]);
 
   const states = useMemo(() => {
     if (!stateOutcomes) return [];
@@ -442,6 +454,18 @@ export default function HealthOutcomes() {
               )}
               <SourceNote sourceKey="early_childhood_deaths" year={effectiveYear ?? undefined} />
             </section>
+
+            <EquityInsightCard
+              insight={buildEquityInsight({
+                rows: stateOutcomes as unknown as Row[] | null,
+                year: effectiveYear,
+                valueField: mortalityMetric.field,
+                metricLabel: mortalityMetric.label,
+                unit: mortalityMetric.unit,
+                higherIsWorse: mortalityMetric.higherIsWorse,
+              })}
+              reason={`Fewer than two states report ${mortalityMetric.label.toLowerCase()} for ${effectiveYear ?? "the selected year"}.`}
+            />
 
             <section aria-labelledby="mortality-ranking">
               <h2 id="mortality-ranking" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
