@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import PageHeader from "../components/PageHeader";
-import StatTile from "../components/StatTile";
+import KPISummarySection from "../components/KPISummarySection";
 import SourceNote from "../components/SourceNote";
 import LineChartCard from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
@@ -105,39 +105,42 @@ export default function Overview() {
         <EquityGapBanner />
 
         {/* Key indicators */}
-        <section aria-labelledby="key-indicators">
-          <h2 id="key-indicators" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-            Malaysia at a Glance
-          </h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-            <StatTile
-              label="Population"
-              value={totalPopulation ? (totalPopulation.thousands / 1000).toFixed(1) : "—"}
-              unit="million"
-              sublabel={totalPopulation ? `${totalPopulation.year}, sum of state estimates` : undefined}
-            />
-            <StatTile
-              label="Median household income"
-              value={latestNational?.income_median ? `RM ${latestNational.income_median.toLocaleString()}` : "—"}
-              sublabel={latestNational ? `${latestNational.year}` : undefined}
-            />
-            <StatTile
-              label="Absolute poverty rate"
-              value={latestNational?.poverty_absolute !== null && latestNational?.poverty_absolute !== undefined ? `${latestNational.poverty_absolute}%` : "—"}
-              sublabel={latestNational ? `${latestNational.year}` : undefined}
-            />
-            <StatTile
-              label="Gini coefficient"
-              value={latestNational?.gini?.toFixed(3) ?? "—"}
-              sublabel={latestNational ? `${latestNational.year}, income basis` : undefined}
-            />
-            <StatTile
-              label="Public hospital beds"
-              value={latestHc?.beds_total ? latestHc.beds_total.toLocaleString() : "—"}
-              sublabel={latestHc ? `${latestHc.year}, MOH + non-MOH` : undefined}
-            />
-          </div>
-        </section>
+        <KPISummarySection
+          title="Malaysia at a Glance"
+          headingId="key-indicators"
+          columns={5}
+          items={[
+            {
+              label: "Population",
+              value: totalPopulation ? (totalPopulation.thousands / 1000).toFixed(1) : "—",
+              unit: "million",
+              sublabel: totalPopulation ? `${totalPopulation.year}, sum of state estimates` : undefined,
+            },
+            {
+              label: "Median household income",
+              value: latestNational?.income_median ? `RM ${latestNational.income_median.toLocaleString()}` : "—",
+              sublabel: latestNational ? `${latestNational.year}` : undefined,
+            },
+            {
+              label: "Absolute poverty rate",
+              value:
+                latestNational?.poverty_absolute !== null && latestNational?.poverty_absolute !== undefined
+                  ? `${latestNational.poverty_absolute}%`
+                  : "—",
+              sublabel: latestNational ? `${latestNational.year}` : undefined,
+            },
+            {
+              label: "Gini coefficient",
+              value: latestNational?.gini?.toFixed(3) ?? "—",
+              sublabel: latestNational ? `${latestNational.year}, income basis` : undefined,
+            },
+            {
+              label: "Public hospital beds",
+              value: latestHc?.beds_total ? latestHc.beds_total.toLocaleString() : "—",
+              sublabel: latestHc ? `${latestHc.year}, MOH + non-MOH` : undefined,
+            },
+          ]}
+        />
 
         {/* National trend */}
         <section aria-labelledby="national-trend">

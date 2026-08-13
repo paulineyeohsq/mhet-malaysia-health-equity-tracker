@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
 import L from "leaflet";
 import type { Layer, StyleFunction, LeafletMouseEvent, Path } from "leaflet";
 import type { Feature, Geometry } from "geojson";
+import ChartToolbar from "./ChartToolbar";
+import DataTable, { toCSV, downloadCSV, type Column } from "./DataTable";
 
 export interface ChoroplethDatum {
   name: string; // state or district name, must match geojson `state`/`district` property
@@ -122,30 +124,52 @@ export default function ChoroplethMap({
   const keyRef = useRef(0);
   keyRef.current += 1;
 
+  // Table toggle + CSV export. PNG export is deliberately not offered here
+  // (unlike BarRankingCard/LineChartCard): the map mixes in cross-origin
+  // raster tiles from an external CDN, which taints a <canvas> on export
+  // without a dedicated screenshot library — rather than ship a button that
+  // silently fails, this component sticks to what a zero-dependency
+  // approach can actually deliver (table + CSV).
+  const [showTable, setShowTable] = useState(false);
+  const tableColumns: Column[] = [
+    { key: "name", label: nameProperty === "district" ? "District" : "State" },
+    { key: "value", label: unitLabel ? `Value (${unitLabel})` : "Value", numeric: true },
+  ];
+
+  function handleExportCSV() {
+    const csv = toCSV(tableColumns, data as unknown as Record<string, unknown>[]);
+    downloadCSV(`${nameProperty}_map.csv`, csv);
+  }
+
   return (
     <div>
-      <div className="h-[480px] w-full overflow-hidden rounded-lg border border-line-grid">
-        <MapContainer
-          center={[4.2, 108.5]}
-          zoom={5.5}
-          scrollWheelZoom={false}
-          style={{ background: "#fcfcfb" }}
-          attributionControl={false}
-        >
-          <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
-            attribution="&copy; OpenStreetMap contributors &copy; CARTO"
-          />
-          <GeoJSON
-            key={`geo-${data.length}-${min}-${max}-${tiers ? tiers.breaks.join(",") : "ramp"}`}
-            data={geojson}
-            style={style}
-            onEachFeature={onEachFeature}
-          />
-          <FitBounds geojson={geojson} />
-        </MapContainer>
-      </div>
-      {tiers && (
+      <ChartToolbar showingTable={showTable} onToggleTable={() => setShowTable((v) => !v)} onExportCSV={handleExportCSV} />
+      {showTable ? (
+        <DataTable columns={tableColumns} rows={data as unknown as Record<string, unknown>[]} searchable pageSize={20} />
+      ) : (
+        <div className="h-[480px] w-full overflow-hidden rounded-lg border border-line-grid">
+          <MapContainer
+            center={[4.2, 108.5]}
+            zoom={5.5}
+            scrollWheelZoom={false}
+            style={{ background: "#fcfcfb" }}
+            attributionControl={false}
+          >
+            <TileLayer
+              url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
+              attribution="&copy; OpenStreetMap contributors &copy; CARTO"
+            />
+            <GeoJSON
+              key={`geo-${data.length}-${min}-${max}-${tiers ? tiers.breaks.join(",") : "ramp"}`}
+              data={geojson}
+              style={style}
+              onEachFeature={onEachFeature}
+            />
+            <FitBounds geojson={geojson} />
+          </MapContainer>
+        </div>
+      )}
+      {!showTable && tiers && (
         <div className="mt-2 flex flex-wrap items-center gap-4 text-xs text-ink-secondary">
           {tiers.labels.map((label, i) => (
             <span key={label} className="flex items-center gap-1.5">

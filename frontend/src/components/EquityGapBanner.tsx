@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import StatTile from "./StatTile";
+import KPISummarySection from "./KPISummarySection";
 import SourceNote from "./SourceNote";
 import { useData } from "../lib/useData";
 import { EAST_MALAYSIA_STATES, PENINSULAR_STATES } from "../lib/geoConstants";
@@ -67,52 +67,46 @@ export default function EquityGapBanner() {
   );
 
   return (
-    <section aria-labelledby="equity-gap-banner">
-      <h2 id="equity-gap-banner" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-        Equity gap snapshot
-      </h2>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatTile
-          label="Regional poverty gap"
-          value={regionalPovertyGap ? `${fmt(regionalPovertyGap.diff, 1)} pp` : "—"}
-          sublabel={
-            regionalPovertyGap
+    <div>
+      <KPISummarySection
+        title="Equity gap snapshot"
+        headingId="equity-gap-banner"
+        columns={4}
+        items={[
+          {
+            label: "Regional poverty gap",
+            value: regionalPovertyGap ? `${fmt(regionalPovertyGap.diff, 1)} pp` : "—",
+            sublabel: regionalPovertyGap
               ? `East Malaysia ${fmt(regionalPovertyGap.meanA, 1)}% vs Peninsular ${fmt(regionalPovertyGap.meanB, 1)}%, ${povertyYear}`
-              : "Not enough state data for the latest year"
-          }
-        />
-        <StatTile
-          label="Regional healthcare-staff gap"
-          value={regionalStaffGap ? `${fmt(regionalStaffGap.diff, 0)} per 100k` : "—"}
-          sublabel={
-            regionalStaffGap
+              : "Not enough state data for the latest year",
+          },
+          {
+            label: "Regional healthcare-staff gap",
+            value: regionalStaffGap ? `${fmt(regionalStaffGap.diff, 0)} per 100k` : "—",
+            sublabel: regionalStaffGap
               ? `East Malaysia ${fmt(regionalStaffGap.meanA, 0)} vs Peninsular ${fmt(regionalStaffGap.meanB, 0)}, ${staffYear}`
-              : "Not enough state data for the latest year"
-          }
-        />
-        <StatTile
-          label="Highest poverty-rate state"
-          value={highestPovertyState ? highestPovertyState.worst.name : "—"}
-          sublabel={
-            highestPovertyState
+              : "Not enough state data for the latest year",
+          },
+          {
+            label: "Highest poverty-rate state",
+            value: highestPovertyState ? highestPovertyState.worst.name : "—",
+            sublabel: highestPovertyState
               ? `${fmt(highestPovertyState.worst.value, 1)}%, ${povertyYear}`
-              : "Not enough state data for the latest year"
-          }
-        />
-        <StatTile
-          label="Widest healthcare-staff ratio"
-          value={widestStaffRatio?.ratio !== null && widestStaffRatio !== null ? `${fmt(widestStaffRatio.ratio, 1)}×` : "—"}
-          sublabel={
-            widestStaffRatio
+              : "Not enough state data for the latest year",
+          },
+          {
+            label: "Widest healthcare-staff ratio",
+            value: widestStaffRatio?.ratio !== null && widestStaffRatio !== null ? `${fmt(widestStaffRatio.ratio, 1)}×` : "—",
+            sublabel: widestStaffRatio
               ? `${widestStaffRatio.best.name} vs ${widestStaffRatio.worst.name}, ${staffYear}`
-              : "Not enough state data for the latest year"
-          }
-        />
-      </div>
+              : "Not enough state data for the latest year",
+          },
+        ]}
+      />
       <SourceNote
         sourceKey="poverty"
         extra="Regional grouping (East Malaysia vs Peninsular) is a dashboard-defined grouping of DOSM states, not an official statistical category"
       />
-    </section>
+    </div>
   );
 }

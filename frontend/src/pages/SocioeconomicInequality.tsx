@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import PageHeader from "../components/PageHeader";
 import StatTile from "../components/StatTile";
+import KPISummarySection from "../components/KPISummarySection";
 import SourceNote from "../components/SourceNote";
 import LineChartCard from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
@@ -190,33 +191,39 @@ export default function SocioeconomicInequality() {
 
       <div className="space-y-8 p-6 lg:p-10">
         {/* National snapshot */}
-        <section aria-labelledby="se-snapshot">
-          <h2 id="se-snapshot" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-            National snapshot
-          </h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            <StatTile
-              label="Median household income"
-              value={latestNational?.income_median ? `RM ${latestNational.income_median.toLocaleString()}` : "—"}
-              sublabel={latestNational ? `${latestNational.year}` : undefined}
-            />
-            <StatTile
-              label="Absolute poverty rate"
-              value={latestNational?.poverty_absolute !== null && latestNational?.poverty_absolute !== undefined ? `${latestNational.poverty_absolute}%` : "—"}
-              sublabel={latestNational ? `${latestNational.year}` : undefined}
-            />
-            <StatTile
-              label="Hardcore poverty rate"
-              value={latestNational?.poverty_hardcore !== null && latestNational?.poverty_hardcore !== undefined ? `${latestNational.poverty_hardcore}%` : "—"}
-              sublabel={latestNational ? `${latestNational.year}` : undefined}
-            />
-            <StatTile
-              label="Gini coefficient"
-              value={latestNational?.gini?.toFixed(3) ?? "—"}
-              sublabel={latestNational ? `${latestNational.year}, income basis` : undefined}
-            />
-          </div>
-        </section>
+        <KPISummarySection
+          title="National snapshot"
+          headingId="se-snapshot"
+          columns={4}
+          items={[
+            {
+              label: "Median household income",
+              value: latestNational?.income_median ? `RM ${latestNational.income_median.toLocaleString()}` : "—",
+              sublabel: latestNational ? `${latestNational.year}` : undefined,
+            },
+            {
+              label: "Absolute poverty rate",
+              value:
+                latestNational?.poverty_absolute !== null && latestNational?.poverty_absolute !== undefined
+                  ? `${latestNational.poverty_absolute}%`
+                  : "—",
+              sublabel: latestNational ? `${latestNational.year}` : undefined,
+            },
+            {
+              label: "Hardcore poverty rate",
+              value:
+                latestNational?.poverty_hardcore !== null && latestNational?.poverty_hardcore !== undefined
+                  ? `${latestNational.poverty_hardcore}%`
+                  : "—",
+              sublabel: latestNational ? `${latestNational.year}` : undefined,
+            },
+            {
+              label: "Gini coefficient",
+              value: latestNational?.gini?.toFixed(3) ?? "—",
+              sublabel: latestNational ? `${latestNational.year}, income basis` : undefined,
+            },
+          ]}
+        />
 
         {/* National time series */}
         <section aria-labelledby="se-trends">

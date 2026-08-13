@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import PageHeader from "../components/PageHeader";
 import StatTile from "../components/StatTile";
+import KPISummarySection from "../components/KPISummarySection";
 import SourceNote from "../components/SourceNote";
 import LineChartCard from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
@@ -160,37 +161,39 @@ export default function HealthcareAccess() {
 
       <div className="space-y-8 p-6 lg:p-10">
         {/* National KPI tiles */}
-        <section aria-labelledby="national-snapshot">
-          <h2 id="national-snapshot" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-            National snapshot {latestNational ? `— ${latestNational.year}` : ""}
-          </h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-            <StatTile
-              label="Total hospital beds"
-              value={fmtInt(latestNational?.beds_total)}
-              sublabel={latestNational ? `${latestNational.year}, MOH + non-MOH + special institution` : undefined}
-            />
-            <StatTile
-              label="Total healthcare staff"
-              value={fmtInt(latestNational?.staff_all)}
-              sublabel={latestNational ? `${latestNational.year}` : undefined}
-            />
-            <StatTile
-              label="Doctors"
-              value={fmtInt(latestNational?.staff_doctor)}
-              sublabel={latestNational ? `${latestNational.year}` : undefined}
-            />
-            <StatTile
-              label="Dentists"
-              value={fmtInt(latestNational?.staff_dentist)}
-              sublabel={latestNational ? `${latestNational.year}` : undefined}
-            />
-            <StatTile
-              label="Nurses"
-              value={fmtInt(latestNational?.staff_nurse)}
-              sublabel={latestNational ? `${latestNational.year}` : undefined}
-            />
-          </div>
+        <section>
+          <KPISummarySection
+            title={`National snapshot${latestNational ? ` — ${latestNational.year}` : ""}`}
+            headingId="national-snapshot"
+            columns={5}
+            items={[
+              {
+                label: "Total hospital beds",
+                value: fmtInt(latestNational?.beds_total),
+                sublabel: latestNational ? `${latestNational.year}, MOH + non-MOH + special institution` : undefined,
+              },
+              {
+                label: "Total healthcare staff",
+                value: fmtInt(latestNational?.staff_all),
+                sublabel: latestNational ? `${latestNational.year}` : undefined,
+              },
+              {
+                label: "Doctors",
+                value: fmtInt(latestNational?.staff_doctor),
+                sublabel: latestNational ? `${latestNational.year}` : undefined,
+              },
+              {
+                label: "Dentists",
+                value: fmtInt(latestNational?.staff_dentist),
+                sublabel: latestNational ? `${latestNational.year}` : undefined,
+              },
+              {
+                label: "Nurses",
+                value: fmtInt(latestNational?.staff_nurse),
+                sublabel: latestNational ? `${latestNational.year}` : undefined,
+              },
+            ]}
+          />
           <SourceNote sourceKey="hospital_beds" year={latestNational?.year} />
 
           {/* National per-100k rate, with numerator/denominator shown explicitly */}

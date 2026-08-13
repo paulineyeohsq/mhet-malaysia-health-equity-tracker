@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import PageHeader from "../components/PageHeader";
 import StatTile from "../components/StatTile";
+import KPISummarySection from "../components/KPISummarySection";
 import SourceNote from "../components/SourceNote";
 import LineChartCard, { type Series } from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
@@ -423,42 +424,44 @@ export default function PopulationEquity() {
         </section>
 
         {/* KPI tiles */}
-        <section aria-labelledby="pop-kpis">
-          <h2 id="pop-kpis" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-            National snapshot
-          </h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            <StatTile
-              label="Total population"
-              value={nationalSnapshot ? (nationalSnapshot.overallThousands / 1000).toFixed(2) : "—"}
-              unit="million"
-              sublabel={nationalSnapshot ? `${nationalSnapshot.year}, sum of state estimates` : undefined}
-            />
-            <StatTile
-              label="Male population"
-              value={nationalSnapshot ? (nationalSnapshot.male / 1000).toFixed(2) : "—"}
-              unit="million"
-              sublabel={nationalSnapshot ? `${nationalSnapshot.year}` : undefined}
-            />
-            <StatTile
-              label="Female population"
-              value={nationalSnapshot ? (nationalSnapshot.female / 1000).toFixed(2) : "—"}
-              unit="million"
-              sublabel={nationalSnapshot ? `${nationalSnapshot.year}` : undefined}
-            />
-            <StatTile
-              label="Sex ratio"
-              value={nationalSnapshot?.sexRatio ? nationalSnapshot.sexRatio.toFixed(1) : "—"}
-              unit="males per 100 females"
-              sublabel={nationalSnapshot ? `${nationalSnapshot.year}, all states` : undefined}
-            />
-          </div>
+        <div>
+          <KPISummarySection
+            title="National snapshot"
+            headingId="pop-kpis"
+            columns={4}
+            items={[
+              {
+                label: "Total population",
+                value: nationalSnapshot ? (nationalSnapshot.overallThousands / 1000).toFixed(2) : "—",
+                unit: "million",
+                sublabel: nationalSnapshot ? `${nationalSnapshot.year}, sum of state estimates` : undefined,
+              },
+              {
+                label: "Male population",
+                value: nationalSnapshot ? (nationalSnapshot.male / 1000).toFixed(2) : "—",
+                unit: "million",
+                sublabel: nationalSnapshot ? `${nationalSnapshot.year}` : undefined,
+              },
+              {
+                label: "Female population",
+                value: nationalSnapshot ? (nationalSnapshot.female / 1000).toFixed(2) : "—",
+                unit: "million",
+                sublabel: nationalSnapshot ? `${nationalSnapshot.year}` : undefined,
+              },
+              {
+                label: "Sex ratio",
+                value: nationalSnapshot?.sexRatio ? nationalSnapshot.sexRatio.toFixed(1) : "—",
+                unit: "males per 100 females",
+                sublabel: nationalSnapshot ? `${nationalSnapshot.year}, all states` : undefined,
+              },
+            ]}
+          />
           <SourceNote sourceKey="population" year={latestStateYear ?? undefined} />
           <p className="mt-2 max-w-3xl text-xs text-ink-muted">
             State-level population estimates are DOSM intercensal projections, available for {stateYears.join(", ") || "—"}
             {" "}— these are yearly estimates, not a full census.
           </p>
-        </section>
+        </div>
 
         {/* Population trend + sex composition */}
         <section aria-labelledby="pop-trend">

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
 import PageHeader from "../components/PageHeader";
-import StatTile from "../components/StatTile";
+import KPISummarySection from "../components/KPISummarySection";
 import SourceNote from "../components/SourceNote";
 import LineChartCard, { type Series } from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
@@ -467,20 +467,22 @@ export default function HealthOutcomes() {
         {/* ---------------- Mortality & Births ---------------- */}
         {category === "mortality" && (
           <>
-            <section aria-labelledby="mortality-kpis">
-              <h2 id="mortality-kpis" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-                {state} — {effectiveYear ?? "…"}
-              </h2>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                <StatTile label="Crude death rate" value={fmt(selectedStateRow?.crude_death_rate_per_1000)} unit="per 1,000" />
-                <StatTile label="Crude birth rate" value={fmt(selectedStateRow?.crude_birth_rate_per_1000)} unit="per 1,000" />
-                <StatTile label="Maternal mortality" value={fmt(selectedStateRow?.maternal_mortality_rate_per_100k_births)} unit="per 100k births" />
-                <StatTile label="Infant mortality" value={fmt(selectedStateRow?.infant_mortality_rate)} unit="per 1,000 births" />
-                <StatTile label="Neonatal mortality" value={fmt(selectedStateRow?.neonatal_mortality_rate)} unit="per 1,000 births" />
-                <StatTile label="Perinatal mortality" value={fmt(selectedStateRow?.perinatal_mortality_rate)} unit="per 1,000 births" />
-                <StatTile label="Toddler mortality" value={fmt(selectedStateRow?.toddler_mortality_rate)} unit="per 1,000" />
-                <StatTile label="Under-5 mortality" value={fmt(selectedStateRow?.under5_mortality_rate)} unit="per 1,000 births" />
-              </div>
+            <section>
+              <KPISummarySection
+                title={`${state} — ${effectiveYear ?? "…"}`}
+                headingId="mortality-kpis"
+                columns={4}
+                items={[
+                  { label: "Crude death rate", value: fmt(selectedStateRow?.crude_death_rate_per_1000), unit: "per 1,000" },
+                  { label: "Crude birth rate", value: fmt(selectedStateRow?.crude_birth_rate_per_1000), unit: "per 1,000" },
+                  { label: "Maternal mortality", value: fmt(selectedStateRow?.maternal_mortality_rate_per_100k_births), unit: "per 100k births" },
+                  { label: "Infant mortality", value: fmt(selectedStateRow?.infant_mortality_rate), unit: "per 1,000 births" },
+                  { label: "Neonatal mortality", value: fmt(selectedStateRow?.neonatal_mortality_rate), unit: "per 1,000 births" },
+                  { label: "Perinatal mortality", value: fmt(selectedStateRow?.perinatal_mortality_rate), unit: "per 1,000 births" },
+                  { label: "Toddler mortality", value: fmt(selectedStateRow?.toddler_mortality_rate), unit: "per 1,000" },
+                  { label: "Under-5 mortality", value: fmt(selectedStateRow?.under5_mortality_rate), unit: "per 1,000 births" },
+                ]}
+              />
               <SourceNote sourceKey="deaths" year={effectiveYear ?? undefined} />
             </section>
 
@@ -528,16 +530,18 @@ export default function HealthOutcomes() {
         {/* ---------------- STD Incidence ---------------- */}
         {category === "std" && (
           <>
-            <section aria-labelledby="std-kpis">
-              <h2 id="std-kpis" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-                {state} — {effectiveYear ?? "…"}
-              </h2>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <StatTile label="HIV" value={fmt(selectedStateRow?.std_hiv_incidence_per_100k, 2)} unit="per 100k" />
-                <StatTile label="AIDS" value={fmt(selectedStateRow?.std_aids_incidence_per_100k, 2)} unit="per 100k" />
-                <StatTile label="Syphilis" value={fmt(selectedStateRow?.std_syphilis_incidence_per_100k, 2)} unit="per 100k" />
-                <StatTile label="Gonorrhea" value={fmt(selectedStateRow?.std_gonorrhea_incidence_per_100k, 2)} unit="per 100k" />
-              </div>
+            <section>
+              <KPISummarySection
+                title={`${state} — ${effectiveYear ?? "…"}`}
+                headingId="std-kpis"
+                columns={4}
+                items={[
+                  { label: "HIV", value: fmt(selectedStateRow?.std_hiv_incidence_per_100k, 2), unit: "per 100k" },
+                  { label: "AIDS", value: fmt(selectedStateRow?.std_aids_incidence_per_100k, 2), unit: "per 100k" },
+                  { label: "Syphilis", value: fmt(selectedStateRow?.std_syphilis_incidence_per_100k, 2), unit: "per 100k" },
+                  { label: "Gonorrhea", value: fmt(selectedStateRow?.std_gonorrhea_incidence_per_100k, 2), unit: "per 100k" },
+                ]}
+              />
               <p className="mt-2 text-xs text-ink-muted">
                 STD incidence is only available from {STD_FIRST_YEAR} onward in this dataset — earlier years are not
                 shown rather than being estimated.
@@ -588,23 +592,16 @@ export default function HealthOutcomes() {
         {/* ---------------- Immunisation ---------------- */}
         {category === "immunisation" && (
           <>
-            <section aria-labelledby="imm-kpis">
-              <h2 id="imm-kpis" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-                National immunisation coverage — {effectiveYear ?? "…"}
-              </h2>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-                {immunisationDiseases.map((d) => {
+            <section>
+              <KPISummarySection
+                title={`National immunisation coverage — ${effectiveYear ?? "…"}`}
+                headingId="imm-kpis"
+                columns={5}
+                items={immunisationDiseases.map((d) => {
                   const row = immunisation?.find((r) => r.year === effectiveYear && r.disease === d);
-                  return (
-                    <StatTile
-                      key={d}
-                      label={d.replace(/_/g, " ").toUpperCase()}
-                      value={fmt(row?.coverage_pct)}
-                      unit="%"
-                    />
-                  );
+                  return { label: d.replace(/_/g, " ").toUpperCase(), value: fmt(row?.coverage_pct), unit: "%" };
                 })}
-              </div>
+              />
               <SourceNote sourceKey="immunisation" year={effectiveYear ?? undefined} />
             </section>
 
@@ -654,21 +651,18 @@ export default function HealthOutcomes() {
         {/* ---------------- Nutrition ---------------- */}
         {category === "nutrition" && (
           <>
-            <section aria-labelledby="nut-kpis">
-              <h2 id="nut-kpis" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-                Child nutritional status ({nutritionYear ?? "2019"}) — sex: {sex}
-              </h2>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {nutritionForSex.map((r) => (
-                  <StatTile
-                    key={`${r.indicator}-${r.range}`}
-                    label={`${r.description} (${r.indicator})`}
-                    value={fmt(r.prevalence_pct)}
-                    unit="%"
-                    sublabel={r.range}
-                  />
-                ))}
-              </div>
+            <section>
+              <KPISummarySection
+                title={`Child nutritional status (${nutritionYear ?? "2019"}) — sex: ${sex}`}
+                headingId="nut-kpis"
+                columns={3}
+                items={nutritionForSex.map((r) => ({
+                  label: `${r.description} (${r.indicator})`,
+                  value: fmt(r.prevalence_pct),
+                  unit: "%",
+                  sublabel: r.range,
+                }))}
+              />
               <SourceNote sourceKey="nutrition" year={nutritionYear ?? undefined} />
             </section>
 
