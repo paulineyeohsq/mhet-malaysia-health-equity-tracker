@@ -188,6 +188,34 @@ export default function HealthOutcomes() {
     return stateOutcomes.find((r) => r.state === state && r.year === effectiveYear) ?? null;
   }, [stateOutcomes, state, effectiveYear]);
 
+  // Insight card content follows whichever category is currently selected —
+  // Immunisation/Nutrition are genuinely national-only in this dataset (no
+  // state breakdown exists), so those show an honest InsufficientData
+  // reason rather than a stale mortality-category sentence or nothing at all.
+  const insightSource = useMemo(() => {
+    if (category === "mortality") {
+      return {
+        rows: stateOutcomes as unknown as Row[] | null,
+        valueField: mortalityMetric.field as string,
+        metricLabel: mortalityMetric.label,
+        unit: mortalityMetric.unit,
+        higherIsWorse: mortalityMetric.higherIsWorse,
+        reason: `Fewer than two states report ${mortalityMetric.label.toLowerCase()} for ${effectiveYear ?? "the selected year"}.`,
+      };
+    }
+    if (category === "std") {
+      return {
+        rows: stateOutcomes as unknown as Row[] | null,
+        valueField: "std_hiv_incidence_per_100k",
+        metricLabel: "HIV incidence",
+        unit: "per 100k",
+        higherIsWorse: true,
+        reason: `Fewer than two states report HIV incidence for ${effectiveYear ?? "the selected year"}.`,
+      };
+    }
+    return null;
+  }, [category, stateOutcomes, mortalityMetric, effectiveYear]);
+
   // ---- STD ----
   const stdTrendData = useMemo(
     () =>
@@ -416,6 +444,26 @@ export default function HealthOutcomes() {
           </p>
         </div>
 
+        <EquityInsightCard
+          insight={
+            insightSource
+              ? buildEquityInsight({
+                  rows: insightSource.rows,
+                  year: effectiveYear,
+                  valueField: insightSource.valueField,
+                  metricLabel: insightSource.metricLabel,
+                  unit: insightSource.unit,
+                  higherIsWorse: insightSource.higherIsWorse,
+                })
+              : null
+          }
+          reason={
+            insightSource
+              ? insightSource.reason
+              : `${CATEGORY_LABELS[category]} is reported at national level only in this dataset — no state-level comparison is possible.`
+          }
+        />
+
         {/* ---------------- Mortality & Births ---------------- */}
         {category === "mortality" && (
           <>
@@ -454,18 +502,6 @@ export default function HealthOutcomes() {
               )}
               <SourceNote sourceKey="early_childhood_deaths" year={effectiveYear ?? undefined} />
             </section>
-
-            <EquityInsightCard
-              insight={buildEquityInsight({
-                rows: stateOutcomes as unknown as Row[] | null,
-                year: effectiveYear,
-                valueField: mortalityMetric.field,
-                metricLabel: mortalityMetric.label,
-                unit: mortalityMetric.unit,
-                higherIsWorse: mortalityMetric.higherIsWorse,
-              })}
-              reason={`Fewer than two states report ${mortalityMetric.label.toLowerCase()} for ${effectiveYear ?? "the selected year"}.`}
-            />
 
             <section aria-labelledby="mortality-ranking">
               <h2 id="mortality-ranking" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">

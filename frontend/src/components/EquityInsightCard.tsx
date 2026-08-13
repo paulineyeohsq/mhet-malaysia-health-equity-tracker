@@ -6,6 +6,15 @@ export interface EquityInsight {
   detail?: string;
 }
 
+/** Lowercases a label for mid-sentence use, but preserves acronym words
+ * (e.g. "HIV incidence" -> "HIV incidence", not "hiv incidence"). */
+function midSentence(label: string): string {
+  return label
+    .split(" ")
+    .map((w) => (w.length > 1 && w === w.toUpperCase() ? w : w.toLowerCase()))
+    .join(" ");
+}
+
 /**
  * Wraps computeGroupGapStats and formats a plain-language disparity sentence
  * from the already-loaded rows for the page's current filter selection.
@@ -44,8 +53,8 @@ export function buildEquityInsight(opts: {
 
   const headline =
     stats.ratio !== null
-      ? `${stats.worst.name} has a ${fmt(stats.ratio, 1)}× ${direction} ${metricLabel.toLowerCase()} than ${stats.best.name} (${worstVal}${unitSuffix} vs ${bestVal}${unitSuffix}).`
-      : `${stats.worst.name} has a ${metricLabel.toLowerCase()} of ${worstVal}${unitSuffix}, compared with ${bestVal}${unitSuffix} in ${stats.best.name} — the ratio is undefined because the lowest value is 0.`;
+      ? `${stats.worst.name} has a ${fmt(stats.ratio, 1)}× ${direction} ${midSentence(metricLabel)} than ${stats.best.name} (${worstVal}${unitSuffix} vs ${bestVal}${unitSuffix}).`
+      : `${stats.worst.name} has a ${midSentence(metricLabel)} of ${worstVal}${unitSuffix}, compared with ${bestVal}${unitSuffix} in ${stats.best.name} — the ratio is undefined because the lowest value is 0.`;
 
   const detail = `${year ?? ""}, ${stats.n} ${groupNoun}s compared.`;
   return { headline, detail };
