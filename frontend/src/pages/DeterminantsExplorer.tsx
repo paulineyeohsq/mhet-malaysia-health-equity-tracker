@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -20,7 +20,7 @@ import ChartToolbar from "../components/ChartToolbar";
 import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
-import { findBestYear, buildPairs, computeCorrelationStats, interpretCorrelation } from "../lib/correlation";
+import { findBestYear, buildPairs, computeCorrelationStats, interpretCorrelation, CORRELATION_MIN_PAIRS } from "../lib/correlation";
 import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, type FieldDef } from "../lib/determinantFields";
 import { INVENTORY_MAP } from "../lib/inventoryMap";
@@ -32,13 +32,16 @@ export default function DeterminantsExplorer() {
   const { data: nhmsNcd } = useData<Row[]>("nhms_ncd_state.json");
   const { data: nhmsAdolescentMentalHealth } = useData<Row[]>("nhms_adolescent_mental_health_state.json");
 
-  const rowsByFile: Record<FieldDef["file"], Row[] | null> = {
-    "health_outcomes_state.json": healthOutcomes,
-    "healthcare_access_state.json": healthcareAccess,
-    "socioeconomic_state.json": socioeconomic,
-    "nhms_ncd_state.json": nhmsNcd,
-    "nhms_adolescent_mental_health_state.json": nhmsAdolescentMentalHealth,
-  };
+  const rowsByFile: Record<FieldDef["file"], Row[] | null> = useMemo(
+    () => ({
+      "health_outcomes_state.json": healthOutcomes,
+      "healthcare_access_state.json": healthcareAccess,
+      "socioeconomic_state.json": socioeconomic,
+      "nhms_ncd_state.json": nhmsNcd,
+      "nhms_adolescent_mental_health_state.json": nhmsAdolescentMentalHealth,
+    }),
+    [healthOutcomes, healthcareAccess, socioeconomic, nhmsNcd, nhmsAdolescentMentalHealth]
+  );
 
   const [outcomeId, setOutcomeId] = useState(OUTCOME_FIELDS[0].id);
   const [determinantId, setDeterminantId] = useState(DETERMINANT_FIELDS[1].id);
@@ -57,6 +60,40 @@ export default function DeterminantsExplorer() {
   }, [outcomeRows, determinantRows, outcome.field, determinant.field]);
 
   const stats = useMemo(() => computeCorrelationStats(correlationInput?.pairs ?? []), [correlationInput]);
+
+  // Whether each determinant option could ever produce a chart against the
+  // currently selected outcome — some pairs are structurally impossible
+  // (e.g. healthcare_access_state.json only covers 2020-2022, while every
+  // NHMS-sourced outcome only covers 2015/2017/2019/2023; those year
+  // ranges never overlap, no matter which state). Disabling those options
+  // up front, instead of letting a click land on "Insufficient data" with
+  // no warning, is cheaper than computing the full correlation — just the
+  // best-year/pair-count check reused from the render path below.
+  const determinantViability = useMemo(() => {
+    const result: Record<string, boolean> = {};
+    const outRows = rowsByFile[outcome.file];
+    for (const det of DETERMINANT_FIELDS) {
+      const detRows = rowsByFile[det.file];
+      if (!detRows || !outRows) {
+        result[det.id] = true; // still loading — don't disable based on incomplete data
+        continue;
+      }
+      const { n } = findBestYear(detRows, outRows, det.field, outcome.field);
+      result[det.id] = n >= CORRELATION_MIN_PAIRS;
+    }
+    return result;
+  }, [outcome, rowsByFile]);
+
+  // If switching the outcome leaves the currently selected determinant
+  // stranded (disabled, no possible overlapping year), move to the first
+  // determinant that still works rather than leaving the user stuck on a
+  // pair that can never render.
+  useEffect(() => {
+    if (determinantViability[determinantId] === false) {
+      const firstViable = DETERMINANT_FIELDS.find((f) => determinantViability[f.id] !== false);
+      if (firstViable) setDeterminantId(firstViable.id);
+    }
+  }, [determinantViability, determinantId]);
 
   const rankedPairs = useMemo(() => {
     const pairs = correlationInput?.pairs ?? [];
@@ -136,16 +173,26 @@ export default function DeterminantsExplorer() {
               onChange={(e) => setDeterminantId(e.target.value)}
               className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
             >
-              {DETERMINANT_FIELDS.map((f) => (
-                <option key={f.id} value={f.id}>
-                  {f.label}
-                </option>
-              ))}
+              {DETERMINANT_FIELDS.map((f) => {
+                const viable = determinantViability[f.id] ?? true;
+                return (
+                  <option
+                    key={f.id}
+                    value={f.id}
+                    disabled={!viable}
+                    title={viable ? undefined : `${f.label} and ${outcome.label} never share a reported year in this dataset — no correlation is possible for this pair.`}
+                  >
+                    {f.label}
+                    {!viable ? " (no overlapping year with this outcome)" : ""}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <p className="ml-auto max-w-md text-xs text-ink-muted">
             State-level only (16 states) — health outcomes are not published at district resolution in this
-            dataset, so a district-level version of this explorer is not offered.
+            dataset, so a district-level version of this explorer is not offered. Determinants greyed out above
+            can never produce a result for the currently selected outcome — their data years don&apos;t overlap.
           </p>
         </div>
 
