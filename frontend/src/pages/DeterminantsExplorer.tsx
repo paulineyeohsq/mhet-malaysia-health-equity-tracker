@@ -13,7 +13,8 @@ import PageHeader from "../components/PageHeader";
 import StatTile from "../components/StatTile";
 import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
-import CorrelationCaveat from "../components/CorrelationCaveat";
+import CorrelationCaveat, { CORRELATION_CAVEAT_TEXT } from "../components/CorrelationCaveat";
+import EvidenceSnapshotButton from "../components/EvidenceSnapshotButton";
 import MetadataPanel from "../components/MetadataPanel";
 import ChartToolbar from "../components/ChartToolbar";
 import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
@@ -206,6 +207,29 @@ export default function DeterminantsExplorer() {
                   onExportPNG={handleExportPNG}
                   pngPending={pngPending}
                 />
+                {!showTable && (
+                  <div className="mb-2 flex justify-end">
+                    <EvidenceSnapshotButton
+                      chartRef={chartRef}
+                      title={`${determinant.label} vs. ${outcome.label} — ${correlationInput.year}`}
+                      subtitle="Malaysia Health Equity Observatory (MY-HEO) — Determinants Explorer"
+                      stats={[
+                        { label: "Strength & direction", value: interpretation!.label },
+                        { label: "Pearson r", value: stats.pearson.toFixed(3) },
+                        { label: "Spearman ρ", value: stats.spearman.toFixed(3) },
+                        { label: "r²", value: stats.r2.toFixed(3) },
+                        { label: "n (states)", value: String(stats.n) },
+                        { label: "Year", value: String(correlationInput.year) },
+                      ]}
+                      sourceKeys={[determinant.sourceKey, outcome.sourceKey]}
+                      caveat={
+                        outcome.sourceKey === "nhms_ncd" || outcome.sourceKey === "nhms_adolescent_mental_health"
+                          ? `${CORRELATION_CAVEAT_TEXT} This outcome is a weighted survey estimate (NHMS), not an administrative registry count — see the in-app data source panel for exact survey-year and confidence-interval detail.`
+                          : CORRELATION_CAVEAT_TEXT
+                      }
+                    />
+                  </div>
+                )}
                 {showTable ? (
                   <DataTable
                     columns={tableColumns}

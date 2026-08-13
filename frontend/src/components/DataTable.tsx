@@ -1,9 +1,13 @@
 import { useMemo, useState } from "react";
+import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
 
 export interface Column {
   key: string;
   label: string;
   numeric?: boolean;
+  /** Row key holding the underlying event count for this column's rate —
+   * when set and small, a ⚠ is shown next to the cell value (see lib/reliability.ts). */
+  cautionField?: string;
 }
 
 /**
@@ -107,16 +111,24 @@ export default function DataTable({
           <tbody>
             {paged.map((r, i) => (
               <tr key={i} className="border-t border-line-grid odd:bg-surface even:bg-plane/40">
-                {columns.map((c) => (
-                  <td
-                    key={c.key}
-                    className={`px-3 py-1.5 tabular-nums ${c.numeric ? "text-right" : "text-left"} ${
-                      r[c.key] === null || r[c.key] === undefined ? "text-ink-muted" : "text-ink-primary"
-                    }`}
-                  >
-                    {r[c.key] === null || r[c.key] === undefined ? "—" : String(r[c.key])}
-                  </td>
-                ))}
+                {columns.map((c) => {
+                  const caution = c.cautionField && isSmallCount(r[c.cautionField] as number | null | undefined);
+                  return (
+                    <td
+                      key={c.key}
+                      className={`px-3 py-1.5 tabular-nums ${c.numeric ? "text-right" : "text-left"} ${
+                        r[c.key] === null || r[c.key] === undefined ? "text-ink-muted" : "text-ink-primary"
+                      }`}
+                    >
+                      {r[c.key] === null || r[c.key] === undefined ? "—" : String(r[c.key])}
+                      {caution && (
+                        <span title={SMALL_COUNT_CAUTION_TEXT} aria-label={SMALL_COUNT_CAUTION_TEXT} className="ml-1 cursor-help text-amber-600">
+                          ⚠
+                        </span>
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>

@@ -5,6 +5,8 @@ export interface KPIItem {
   value: string;
   unit?: string;
   sublabel?: string;
+  /** Small-underlying-count caution text (see lib/reliability.ts) — passed through to StatTile. */
+  caution?: string;
 }
 
 const GRID_COLS: Record<2 | 3 | 4 | 5, string> = {
@@ -38,7 +40,7 @@ export default function KPISummarySection({
       )}
       <div className={`grid grid-cols-2 gap-3 ${GRID_COLS[columns]}`}>
         {items.map((item, i) => (
-          <StatTile key={i} label={item.label} value={item.value} unit={item.unit} sublabel={item.sublabel} />
+          <StatTile key={i} label={item.label} value={item.value} unit={item.unit} sublabel={item.sublabel} caution={item.caution} />
         ))}
       </div>
     </section>

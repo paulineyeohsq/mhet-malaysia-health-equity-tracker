@@ -10,6 +10,7 @@ import InsufficientData from "../components/InsufficientData";
 import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
+import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
 
 interface StateOutcomeRow {
   state: string;
@@ -279,12 +280,12 @@ export default function HealthOutcomes() {
       return [
         { key: "state", label: "State" },
         { key: "year", label: "Year", numeric: true },
-        { key: "crude_death_rate_per_1000", label: "Crude death rate", numeric: true },
-        { key: "crude_birth_rate_per_1000", label: "Crude birth rate", numeric: true },
-        { key: "maternal_mortality_rate_per_100k_births", label: "Maternal mortality", numeric: true },
-        { key: "infant_mortality_rate", label: "Infant mortality", numeric: true },
-        { key: "neonatal_mortality_rate", label: "Neonatal mortality", numeric: true },
-        { key: "under5_mortality_rate", label: "Under-5 mortality", numeric: true },
+        { key: "crude_death_rate_per_1000", label: "Crude death rate", numeric: true, cautionField: "deaths_abs" },
+        { key: "crude_birth_rate_per_1000", label: "Crude birth rate", numeric: true, cautionField: "births_abs" },
+        { key: "maternal_mortality_rate_per_100k_births", label: "Maternal mortality", numeric: true, cautionField: "maternal_deaths_abs" },
+        { key: "infant_mortality_rate", label: "Infant mortality", numeric: true, cautionField: "infant_deaths_abs" },
+        { key: "neonatal_mortality_rate", label: "Neonatal mortality", numeric: true, cautionField: "neonatal_deaths_abs" },
+        { key: "under5_mortality_rate", label: "Under-5 mortality", numeric: true, cautionField: "under5_deaths_abs" },
       ];
     }
     if (category === "std") {
@@ -473,14 +474,14 @@ export default function HealthOutcomes() {
                 headingId="mortality-kpis"
                 columns={4}
                 items={[
-                  { label: "Crude death rate", value: fmt(selectedStateRow?.crude_death_rate_per_1000), unit: "per 1,000" },
-                  { label: "Crude birth rate", value: fmt(selectedStateRow?.crude_birth_rate_per_1000), unit: "per 1,000" },
-                  { label: "Maternal mortality", value: fmt(selectedStateRow?.maternal_mortality_rate_per_100k_births), unit: "per 100k births" },
-                  { label: "Infant mortality", value: fmt(selectedStateRow?.infant_mortality_rate), unit: "per 1,000 births" },
-                  { label: "Neonatal mortality", value: fmt(selectedStateRow?.neonatal_mortality_rate), unit: "per 1,000 births" },
-                  { label: "Perinatal mortality", value: fmt(selectedStateRow?.perinatal_mortality_rate), unit: "per 1,000 births" },
-                  { label: "Toddler mortality", value: fmt(selectedStateRow?.toddler_mortality_rate), unit: "per 1,000" },
-                  { label: "Under-5 mortality", value: fmt(selectedStateRow?.under5_mortality_rate), unit: "per 1,000 births" },
+                  { label: "Crude death rate", value: fmt(selectedStateRow?.crude_death_rate_per_1000), unit: "per 1,000", caution: isSmallCount(selectedStateRow?.deaths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
+                  { label: "Crude birth rate", value: fmt(selectedStateRow?.crude_birth_rate_per_1000), unit: "per 1,000", caution: isSmallCount(selectedStateRow?.births_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
+                  { label: "Maternal mortality", value: fmt(selectedStateRow?.maternal_mortality_rate_per_100k_births), unit: "per 100k births", caution: isSmallCount(selectedStateRow?.maternal_deaths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
+                  { label: "Infant mortality", value: fmt(selectedStateRow?.infant_mortality_rate), unit: "per 1,000 births", caution: isSmallCount(selectedStateRow?.infant_deaths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
+                  { label: "Neonatal mortality", value: fmt(selectedStateRow?.neonatal_mortality_rate), unit: "per 1,000 births", caution: isSmallCount(selectedStateRow?.neonatal_deaths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
+                  { label: "Perinatal mortality", value: fmt(selectedStateRow?.perinatal_mortality_rate), unit: "per 1,000 births", caution: isSmallCount(selectedStateRow?.perinatal_deaths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
+                  { label: "Toddler mortality", value: fmt(selectedStateRow?.toddler_mortality_rate), unit: "per 1,000", caution: isSmallCount(selectedStateRow?.toddler_deaths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
+                  { label: "Under-5 mortality", value: fmt(selectedStateRow?.under5_mortality_rate), unit: "per 1,000 births", caution: isSmallCount(selectedStateRow?.under5_deaths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
                 ]}
               />
               <SourceNote sourceKey="deaths" year={effectiveYear ?? undefined} />

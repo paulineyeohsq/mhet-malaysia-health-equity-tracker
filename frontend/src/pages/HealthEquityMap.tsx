@@ -8,6 +8,7 @@ import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsig
 import { useData } from "../lib/useData";
 import type { SOURCES } from "../lib/sources";
 import { computeTerciles, computeAverage, fmt } from "../lib/equity";
+import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
 
 type Geography = "state" | "district";
 
@@ -20,6 +21,8 @@ interface IndicatorDef {
   valueField: string;
   geographies: Geography[];
   higherIsWorse: boolean;
+  /** Row key holding the underlying event count, if this rate is built on one — used for the small-count caution flag. */
+  absField?: string;
 }
 
 const INDICATORS: IndicatorDef[] = [
@@ -29,9 +32,9 @@ const INDICATORS: IndicatorDef[] = [
   { id: "hospital_beds", label: "Hospital beds (absolute)", sourceKey: "hospital_beds", unit: "beds", file: "healthcare_access_state.json", valueField: "hospital_beds", geographies: ["state", "district"], higherIsWorse: false },
   { id: "beds_per_100k", label: "Hospital beds per 100,000", sourceKey: "hospital_beds", unit: "per 100k", file: "healthcare_access_state.json", valueField: "beds_per_100k", geographies: ["state"], higherIsWorse: false },
   { id: "staff_per_100k", label: "Healthcare staff per 100,000", sourceKey: "healthcare_staff", unit: "per 100k", file: "healthcare_access_state.json", valueField: "staff_per_100k", geographies: ["state"], higherIsWorse: false },
-  { id: "crude_death_rate", label: "Crude death rate", sourceKey: "deaths", unit: "per 1,000", file: "health_outcomes_state.json", valueField: "crude_death_rate_per_1000", geographies: ["state"], higherIsWorse: true },
-  { id: "maternal_mortality", label: "Maternal mortality rate", sourceKey: "maternal_deaths", unit: "per 100k births", file: "health_outcomes_state.json", valueField: "maternal_mortality_rate_per_100k_births", geographies: ["state"], higherIsWorse: true },
-  { id: "infant_mortality", label: "Infant mortality rate", sourceKey: "early_childhood_deaths", unit: "per 1,000 births", file: "health_outcomes_state.json", valueField: "infant_mortality_rate", geographies: ["state"], higherIsWorse: true },
+  { id: "crude_death_rate", label: "Crude death rate", sourceKey: "deaths", unit: "per 1,000", file: "health_outcomes_state.json", valueField: "crude_death_rate_per_1000", geographies: ["state"], higherIsWorse: true, absField: "deaths_abs" },
+  { id: "maternal_mortality", label: "Maternal mortality rate", sourceKey: "maternal_deaths", unit: "per 100k births", file: "health_outcomes_state.json", valueField: "maternal_mortality_rate_per_100k_births", geographies: ["state"], higherIsWorse: true, absField: "maternal_deaths_abs" },
+  { id: "infant_mortality", label: "Infant mortality rate", sourceKey: "early_childhood_deaths", unit: "per 1,000 births", file: "health_outcomes_state.json", valueField: "infant_mortality_rate", geographies: ["state"], higherIsWorse: true, absField: "infant_deaths_abs" },
   { id: "sanitation", label: "Sanitation access", sourceKey: "amenities", unit: "%", file: "socioeconomic_district.json", valueField: "sanitation_pct", geographies: ["district"], higherIsWorse: false },
   { id: "piped_water", label: "Piped water access", sourceKey: "amenities", unit: "%", file: "socioeconomic_district.json", valueField: "piped_water_pct", geographies: ["district"], higherIsWorse: false },
 ];
@@ -268,6 +271,11 @@ export default function HealthEquityMap() {
                       {selectedRow[valueField] !== null && selectedRow[valueField] !== undefined
                         ? `${selectedRow[valueField]} ${indicator.unit}`
                         : "No data"}
+                      {indicator.absField && isSmallCount(selectedRow[indicator.absField] as number | null | undefined) && (
+                        <span title={SMALL_COUNT_CAUTION_TEXT} aria-label={SMALL_COUNT_CAUTION_TEXT} className="ml-1 cursor-help text-amber-600">
+                          ⚠
+                        </span>
+                      )}
                     </dd>
                   </div>
                   <div className="flex justify-between border-b border-line-grid pb-1">
