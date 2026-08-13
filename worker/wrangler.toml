@@ -1,0 +1,12 @@
+name = "mhet-chat-worker"
+main = "src/index.ts"
+compatibility_date = "2026-08-13"
+
+# Created via `npx wrangler kv namespace create RATE_LIMIT_KV` — replace the
+# placeholder id below with the one that command prints.
+[[kv_namespaces]]
+binding = "RATE_LIMIT_KV"
+id = "REPLACE_AFTER_wrangler_kv_namespace_create"
+
+# GEMINI_API_KEY is set via `npx wrangler secret put GEMINI_API_KEY` —
+# never written here and never committed.
