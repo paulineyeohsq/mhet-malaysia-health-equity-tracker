@@ -177,6 +177,25 @@ export function computeAverage(rows: Row[] | null, year: number | null, valueFie
   return { mean: values.reduce((s, v) => s + v, 0) / values.length, n: values.length };
 }
 
+export interface TrendPoint {
+  year: number;
+  value: number;
+}
+
+/**
+ * One state's real reported values for `valueField` across every year it
+ * has one, sorted ascending — used for the Trends page's per-state line
+ * chart. Years with no reported value are simply absent from the result,
+ * never interpolated or filled.
+ */
+export function buildStateTrend(rows: Row[] | null, state: string, valueField: string): TrendPoint[] {
+  if (!rows) return [];
+  return rows
+    .filter((r) => r.state === state && typeof r[valueField] === "number")
+    .map((r) => ({ year: r.year as number, value: r[valueField] as number }))
+    .sort((a, b) => a.year - b.year);
+}
+
 /**
  * Tercile breakpoints of a numeric array: returns [p33, p67] such that values
  * <= p33 fall in the bottom third, <= p67 in the middle third, else the top

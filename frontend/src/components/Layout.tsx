@@ -20,6 +20,8 @@ const NAV_SECTIONS: NavSection[] = [
     heading: "WHY",
     items: [
       { to: "/determinants", label: "Determinants Explorer" },
+      { to: "/matrix", label: "Indicator Matrix" },
+      { to: "/trends", label: "Trends" },
       { to: "/socioeconomic", label: "Socioeconomic Inequality" },
       { to: "/health-outcomes", label: "Health Outcomes" },
       { to: "/healthcare-access", label: "Healthcare Access" },
@@ -33,7 +35,13 @@ const NAV_SECTIONS: NavSection[] = [
       { to: "/research-opportunities", label: "Research Opportunities" },
     ],
   },
-  { heading: "Researcher Tools", items: [{ to: "/explorer", label: "Data Explorer" }] },
+  {
+    heading: "Researcher Tools",
+    items: [
+      { to: "/explorer", label: "Data Explorer" },
+      { to: "/data-gaps", label: "Data Gaps" },
+    ],
+  },
   { heading: "About", items: [{ to: "/methodology", label: "Methodology" }] },
 ];
 

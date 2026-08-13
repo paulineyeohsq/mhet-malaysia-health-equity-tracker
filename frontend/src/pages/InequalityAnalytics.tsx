@@ -23,6 +23,7 @@ import type { SOURCES } from "../lib/sources";
 import { computeGapStats, computeAverage, yearsWithCoverage, fmt, type Row } from "../lib/equity";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
 import { INVENTORY_MAP } from "../lib/inventoryMap";
+import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
 
 interface SocioeconomicRow {
   state: string;
@@ -560,11 +561,33 @@ export default function InequalityAnalytics() {
                   label="Best-performing state"
                   value={gapStats.bestState}
                   sublabel={`${fmt(gapStats.bestValue, primary.decimals)} ${primary.unit}`}
+                  caution={
+                    primary.countField &&
+                    isSmallCount(
+                      primaryRows?.find((r) => r.state === gapStats.bestState && r.year === effectivePrimaryYear)?.[primary.countField] as
+                        | number
+                        | null
+                        | undefined
+                    )
+                      ? SMALL_COUNT_CAUTION_TEXT
+                      : undefined
+                  }
                 />
                 <StatTile
                   label="Worst-performing state"
                   value={gapStats.worstState}
                   sublabel={`${fmt(gapStats.worstValue, primary.decimals)} ${primary.unit}`}
+                  caution={
+                    primary.countField &&
+                    isSmallCount(
+                      primaryRows?.find((r) => r.state === gapStats.worstState && r.year === effectivePrimaryYear)?.[primary.countField] as
+                        | number
+                        | null
+                        | undefined
+                    )
+                      ? SMALL_COUNT_CAUTION_TEXT
+                      : undefined
+                  }
                 />
                 <StatTile
                   label="Absolute difference"

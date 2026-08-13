@@ -8,8 +8,11 @@ import HealthcareAccess from "./pages/HealthcareAccess";
 import PopulationEquity from "./pages/PopulationEquity";
 import InequalityAnalytics from "./pages/InequalityAnalytics";
 import DataExplorer from "./pages/DataExplorer";
+import DataGaps from "./pages/DataGaps";
 import Methodology from "./pages/Methodology";
 import DeterminantsExplorer from "./pages/DeterminantsExplorer";
+import IndicatorMatrix from "./pages/IndicatorMatrix";
+import Trends from "./pages/Trends";
 import PriorityAreas from "./pages/PriorityAreas";
 import ResearchOpportunities from "./pages/ResearchOpportunities";
 
@@ -25,10 +28,13 @@ export default function App() {
           <Route path="healthcare-access" element={<HealthcareAccess />} />
           <Route path="population" element={<PopulationEquity />} />
           <Route path="determinants" element={<DeterminantsExplorer />} />
+          <Route path="matrix" element={<IndicatorMatrix />} />
+          <Route path="trends" element={<Trends />} />
           <Route path="analytics" element={<InequalityAnalytics />} />
           <Route path="priority-areas" element={<PriorityAreas />} />
           <Route path="research-opportunities" element={<ResearchOpportunities />} />
           <Route path="explorer" element={<DataExplorer />} />
+          <Route path="data-gaps" element={<DataGaps />} />
           <Route path="methodology" element={<Methodology />} />
         </Route>
       </Routes>

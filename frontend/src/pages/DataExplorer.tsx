@@ -3,6 +3,7 @@ import PageHeader from "../components/PageHeader";
 import DataTable, { type Column, toCSV, downloadCSV } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
 import { ProvenanceCard } from "../components/MetadataPanel";
+import DataGapsList from "../components/DataGapsList";
 import { useData } from "../lib/useData";
 import { INVENTORY_MAP, type InventoryDataset, type InventoryFile } from "../lib/inventoryMap";
 
@@ -305,24 +306,14 @@ export default function DataExplorer() {
           <h2 id="not-ingested-heading" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
             Additional datasets identified but not yet included
           </h2>
-          {inventory && inventory.identified_but_not_yet_ingested.length > 0 ? (
-            <div className="rounded-lg border border-dashed border-line-axis bg-plane p-4">
-              <p className="mb-3 text-xs text-ink-secondary">
-                These datasets were confirmed to exist in the data.gov.my catalogue (URL and schema verified) but are
-                not yet available in this dashboard build.
-              </p>
-              <ul className="space-y-2">
-                {inventory.identified_but_not_yet_ingested.map((d) => (
-                  <li key={d.id} className="text-sm">
-                    <span className="font-medium text-ink-primary">{d.name}</span>
-                    <span className="text-ink-muted"> — {d.reason}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : (
-            <p className="text-sm text-ink-secondary">Loading…</p>
-          )}
+          <DataGapsList />
+          <p className="mt-3 text-xs text-ink-secondary">
+            For a complete, dedicated view of every dataset's limitations (not just what's missing), see{" "}
+            <a href="#/data-gaps" className="text-series-1 underline underline-offset-2">
+              Data Gaps
+            </a>
+            .
+          </p>
         </section>
       </div>
     </div>
