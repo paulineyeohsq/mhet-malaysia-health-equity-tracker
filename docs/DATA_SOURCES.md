@@ -226,6 +226,44 @@ access.
 | **National Health Accounts / health expenditure** (`mnha` / `mnha_moh`) | Valuable for a future "healthcare financing equity" domain; deferred. |
 | **Standalone amenities time series** (state-level long series: `sanitation_access` / `electricity_access` / `water_access`) | The district-level 2022 `hh_access_amenities` snapshot was prioritised instead since it matches the geographic resolution of the income/poverty/gini district series; these longer state-level series remain available for a future time-series amenities view. |
 | **Full district population by sex/age/ethnicity, 2020–2024** (`population_district`, live series) | Raw file exceeded the sandbox's single-request fetch-size limit during this build; the historical `census_district` series (1970–2020) was used instead. Re-running `scripts/ingest_data.py` from an unrestricted network environment will pull this in full. |
+| **Nutritional Status of Children Under 5 by Strata** (`nutrition_children_strata`) — confirmed to exist at `https://data.gov.my/data-catalogue/nutrition_children_strata` (MOH, urban/rural breakdown, 2019, national level) | The real urban/rural counterpart to the already-ingested `nutrition_children_sex`. Not yet ingested — would follow the exact same `transform_data.py` pattern already used for the sex-disaggregated version. This is the **only** genuine urban/rural-stratified dataset found anywhere in DOSM's or MOH's open catalogues as of 2026-08-13 (OpenDOSM's population tables are sex/age/ethnicity only, with no strata dimension; MOH's catalogue was checked category-by-category and this is the sole urban/rural entry). |
 
 See [`docs/METHODOLOGY.md`](METHODOLOGY.md) for more on the sandbox
 network/data-volume constraints referenced above.
+
+---
+
+## Confirmed unavailable as open data (as of 2026-08-13)
+
+Unlike the datasets above — which exist and are simply not yet ingested —
+these were searched for specifically and **could not be found** in either
+[OpenDOSM's catalogue](https://open.dosm.gov.my/data-catalogue) or
+[data.gov.my's MOH catalogue](https://data.gov.my/data-catalogue?source=MOH).
+Closing these gaps isn't an ingestion task; it needs either a new open
+dataset to be published, or a formal data-sharing request to the source
+agency.
+
+- **NCD/diabetes prevalence, by state or district.** MOH's open catalogue
+  was checked category-by-category (General Health, Healthcare
+  Infrastructure, Healthcare Programs, Infectious Diseases, Regulation,
+  Healthcare Accounts) — no diabetes, NCD, or chronic-disease-prevalence
+  dataset exists there. NHMS (National Health and Morbidity Survey), the
+  usual source for this figure, is not published as open microdata or an
+  open aggregate table. **Path forward:** a formal data request to MOH's
+  NHMS unit, or watch data.gov.my for a future release.
+- **District-level health outcomes** (mortality, morbidity beyond the
+  2022-only hospital-beds/amenities snapshots already ingested). Not
+  published at district resolution anywhere in MOH's or DOSM's open
+  catalogues — almost certainly suppressed for small-area privacy/
+  disclosure-risk reasons. **Path forward:** a formal MOH data-sharing
+  request, likely requiring an ethics/IRB approval given small-cell risk.
+- **Ethnicity-linked health outcomes.** No dataset in either catalogue
+  ever cross-tabulates ethnicity with a health/mortality/morbidity figure
+  — population_district's ethnicity fields are population counts only.
+  **Path forward:** same as above — a formal request, not an open-data gap
+  that can be closed by searching harder.
+- **Confidence intervals / margins of error** on any published aggregate
+  figure. DOSM/MOH publish point estimates only in their open tables; survey
+  design-effect/variance data isn't part of the open release. **Path
+  forward:** would require access to HIES/NHMS microdata directly from
+  DOSM/MOH (a data-access agreement, not an open download).
