@@ -289,6 +289,29 @@ export default function InequalityAnalytics() {
   );
   const secondaryIndicators = OUTCOME_INDICATORS.filter((i) => GAP_SECONDARY_IDS.includes(i.id) && i.id !== primaryId);
 
+  // "Auto" mode shows the best/worst state for this indicator (gapStats above);
+  // "states" mode lets the researcher pick exactly the two states they want to
+  // compare, rather than always seeing the two extremes.
+  const [compareMode, setCompareMode] = useState<"auto" | "states">("auto");
+  const [compareStateA, setCompareStateA] = useState("Kelantan");
+  const [compareStateB, setCompareStateB] = useState("Selangor");
+
+  const twoStateComparison = useMemo(() => {
+    if (!primaryRows || effectivePrimaryYear === null) return null;
+    const rowA = primaryRows.find((r) => r.state === compareStateA && r.year === effectivePrimaryYear);
+    const rowB = primaryRows.find((r) => r.state === compareStateB && r.year === effectivePrimaryYear);
+    const valueA = rowA?.[primary.valueField];
+    const valueB = rowB?.[primary.valueField];
+    if (typeof valueA !== "number" || typeof valueB !== "number") return null;
+    const [lower, higher] = valueA <= valueB ? [valueA, valueB] : [valueB, valueA];
+    return {
+      valueA,
+      valueB,
+      absDiff: Math.abs(valueA - valueB),
+      ratio: lower !== 0 ? higher / lower : null,
+    };
+  }, [primaryRows, effectivePrimaryYear, compareStateA, compareStateB, primary]);
+
   // Equity gap summary table: every OUTCOME_INDICATORS field at once, each
   // computed against a user-chosen reference (national average / best state /
   // a specific named state) rather than always "highest vs lowest."
@@ -535,6 +558,58 @@ export default function InequalityAnalytics() {
                 </select>
               </div>
             )}
+            <div>
+              <label htmlFor="gap-compare-mode" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Compare
+              </label>
+              <select
+                id="gap-compare-mode"
+                value={compareMode}
+                onChange={(e) => setCompareMode(e.target.value as "auto" | "states")}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                <option value="auto">Best vs. worst state (auto)</option>
+                <option value="states">Two states I choose</option>
+              </select>
+            </div>
+            {compareMode === "states" && (
+              <>
+                <div>
+                  <label htmlFor="gap-state-a" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                    State A
+                  </label>
+                  <select
+                    id="gap-state-a"
+                    value={compareStateA}
+                    onChange={(e) => setCompareStateA(e.target.value)}
+                    className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+                  >
+                    {MALAYSIA_STATES.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="gap-state-b" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                    State B
+                  </label>
+                  <select
+                    id="gap-state-b"
+                    value={compareStateB}
+                    onChange={(e) => setCompareStateB(e.target.value)}
+                    className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+                  >
+                    {MALAYSIA_STATES.map((s) => (
+                      <option key={s} value={s}>
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </>
+            )}
             <p className="ml-auto max-w-md text-xs text-ink-muted">
               Only years where at least 12 of 16 states report this indicator are offered, so the comparison is not
               distorted by states silently missing from the source data. Indicators published for only a handful of
@@ -550,61 +625,124 @@ export default function InequalityAnalytics() {
           ) : (
             <>
               <div className="mb-3 rounded-md border border-line-axis bg-plane p-3 text-xs leading-relaxed text-ink-secondary">
-                <strong className="text-ink-primary">Methodology — absolute & relative difference.</strong> Absolute
-                difference = highest state value − lowest state value. Relative ratio = highest state value ÷ lowest
-                state value. Both are always computable once at least two states report a value for the chosen year.
-                For this indicator, {primary.higherIsWorse ? "a higher value reflects a worse outcome" : "a higher value reflects a better outcome"}, so
-                the "best"/"worst" labels below are assigned accordingly rather than by raw magnitude alone.
+                <strong className="text-ink-primary">Methodology — absolute & relative difference.</strong>{" "}
+                {compareMode === "auto" ? (
+                  <>
+                    Absolute difference = highest state value − lowest state value. Relative ratio = highest state
+                    value ÷ lowest state value. Both are always computable once at least two states report a value
+                    for the chosen year. For this indicator,{" "}
+                    {primary.higherIsWorse ? "a higher value reflects a worse outcome" : "a higher value reflects a better outcome"}, so
+                    the "best"/"worst" labels below are assigned accordingly rather than by raw magnitude alone.
+                  </>
+                ) : (
+                  <>
+                    Absolute difference = |State A value − State B value|. Relative ratio = higher of the two ÷
+                    lower of the two (always ≥ 1×). This compares exactly the two states you picked, not necessarily
+                    the highest/lowest in the country.
+                  </>
+                )}
               </div>
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                <StatTile
-                  label="Best-performing state"
-                  value={gapStats.bestState}
-                  sublabel={`${fmt(gapStats.bestValue, primary.decimals)} ${primary.unit}`}
-                  caution={
-                    primary.countField &&
-                    isSmallCount(
-                      primaryRows?.find((r) => r.state === gapStats.bestState && r.year === effectivePrimaryYear)?.[primary.countField] as
-                        | number
-                        | null
-                        | undefined
-                    )
-                      ? SMALL_COUNT_CAUTION_TEXT
-                      : undefined
-                  }
+              {compareMode === "auto" ? (
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  <StatTile
+                    label="Best-performing state"
+                    value={gapStats.bestState}
+                    sublabel={`${fmt(gapStats.bestValue, primary.decimals)} ${primary.unit}`}
+                    caution={
+                      primary.countField &&
+                      isSmallCount(
+                        primaryRows?.find((r) => r.state === gapStats.bestState && r.year === effectivePrimaryYear)?.[primary.countField] as
+                          | number
+                          | null
+                          | undefined
+                      )
+                        ? SMALL_COUNT_CAUTION_TEXT
+                        : undefined
+                    }
+                  />
+                  <StatTile
+                    label="Worst-performing state"
+                    value={gapStats.worstState}
+                    sublabel={`${fmt(gapStats.worstValue, primary.decimals)} ${primary.unit}`}
+                    caution={
+                      primary.countField &&
+                      isSmallCount(
+                        primaryRows?.find((r) => r.state === gapStats.worstState && r.year === effectivePrimaryYear)?.[primary.countField] as
+                          | number
+                          | null
+                          | undefined
+                      )
+                        ? SMALL_COUNT_CAUTION_TEXT
+                        : undefined
+                    }
+                  />
+                  <StatTile
+                    label="Absolute difference"
+                    value={fmt(gapStats.absDiff, primary.decimals)}
+                    unit={primary.unit}
+                    sublabel="Highest − lowest state value"
+                  />
+                  <StatTile
+                    label="Relative ratio"
+                    value={gapStats.ratio !== null ? `${fmt(gapStats.ratio, 2)}×` : "—"}
+                    sublabel={
+                      gapStats.ratio !== null
+                        ? `Highest ÷ lowest, ${gapStats.statesCount} states compared`
+                        : "Undefined — the lowest state value is 0"
+                    }
+                  />
+                </div>
+              ) : !twoStateComparison ? (
+                <InsufficientData
+                  reason={`${compareStateA} and/or ${compareStateB} do not report ${primary.label.toLowerCase()} for ${effectivePrimaryYear}.`}
                 />
-                <StatTile
-                  label="Worst-performing state"
-                  value={gapStats.worstState}
-                  sublabel={`${fmt(gapStats.worstValue, primary.decimals)} ${primary.unit}`}
-                  caution={
-                    primary.countField &&
-                    isSmallCount(
-                      primaryRows?.find((r) => r.state === gapStats.worstState && r.year === effectivePrimaryYear)?.[primary.countField] as
-                        | number
-                        | null
-                        | undefined
-                    )
-                      ? SMALL_COUNT_CAUTION_TEXT
-                      : undefined
-                  }
-                />
-                <StatTile
-                  label="Absolute difference"
-                  value={fmt(gapStats.absDiff, primary.decimals)}
-                  unit={primary.unit}
-                  sublabel="Highest − lowest state value"
-                />
-                <StatTile
-                  label="Relative ratio"
-                  value={gapStats.ratio !== null ? `${fmt(gapStats.ratio, 2)}×` : "—"}
-                  sublabel={
-                    gapStats.ratio !== null
-                      ? `Highest ÷ lowest, ${gapStats.statesCount} states compared`
-                      : "Undefined — the lowest state value is 0"
-                  }
-                />
-              </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  <StatTile
+                    label={compareStateA}
+                    value={fmt(twoStateComparison.valueA, primary.decimals)}
+                    unit={primary.unit}
+                    caution={
+                      primary.countField &&
+                      isSmallCount(
+                        primaryRows?.find((r) => r.state === compareStateA && r.year === effectivePrimaryYear)?.[primary.countField] as
+                          | number
+                          | null
+                          | undefined
+                      )
+                        ? SMALL_COUNT_CAUTION_TEXT
+                        : undefined
+                    }
+                  />
+                  <StatTile
+                    label={compareStateB}
+                    value={fmt(twoStateComparison.valueB, primary.decimals)}
+                    unit={primary.unit}
+                    caution={
+                      primary.countField &&
+                      isSmallCount(
+                        primaryRows?.find((r) => r.state === compareStateB && r.year === effectivePrimaryYear)?.[primary.countField] as
+                          | number
+                          | null
+                          | undefined
+                      )
+                        ? SMALL_COUNT_CAUTION_TEXT
+                        : undefined
+                    }
+                  />
+                  <StatTile
+                    label="Absolute difference"
+                    value={fmt(twoStateComparison.absDiff, primary.decimals)}
+                    unit={primary.unit}
+                    sublabel={`${compareStateA} vs. ${compareStateB}`}
+                  />
+                  <StatTile
+                    label="Relative ratio"
+                    value={twoStateComparison.ratio !== null ? `${fmt(twoStateComparison.ratio, 2)}×` : "—"}
+                    sublabel={twoStateComparison.ratio !== null ? "Higher ÷ lower of the two" : "Undefined — one value is 0"}
+                  />
+                </div>
+              )}
               <div className="mt-4">
                 <BarRankingCard
                   title={`${primary.label} by state, ${effectivePrimaryYear}`}
@@ -613,13 +751,15 @@ export default function InequalityAnalytics() {
                   valueKey="value"
                   unit={primary.unit}
                   color="#2a78d6"
-                  highlightWorst={primary.higherIsWorse}
+                  highlightWorst={compareMode === "auto" && primary.higherIsWorse}
                 />
               </div>
               <p className="mt-2 max-w-3xl text-xs text-ink-muted">
-                {primary.higherIsWorse
-                  ? "The bar highlighted in red is the state with the highest value — the most disadvantaged state for this indicator."
-                  : `A higher value is better for this indicator, so the ranking is not colour-flagged; the most disadvantaged state is the one with the lowest value (${gapStats.worstState}).`}
+                {compareMode === "states"
+                  ? `Full 16-state ranking shown for context — ${compareStateA} and ${compareStateB} are not specially highlighted in this bar chart, only in the stat tiles above.`
+                  : primary.higherIsWorse
+                    ? "The bar highlighted in red is the state with the highest value — the most disadvantaged state for this indicator."
+                    : `A higher value is better for this indicator, so the ranking is not colour-flagged; the most disadvantaged state is the one with the lowest value (${gapStats.worstState}).`}
               </p>
               <SourceNote sourceKey={primary.sourceKey} year={effectivePrimaryYear ?? undefined} />
             </>

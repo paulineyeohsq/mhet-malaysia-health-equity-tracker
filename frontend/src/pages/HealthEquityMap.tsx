@@ -37,6 +37,11 @@ const INDICATORS: IndicatorDef[] = [
   { id: "infant_mortality", label: "Infant mortality rate", sourceKey: "early_childhood_deaths", unit: "per 1,000 births", file: "health_outcomes_state.json", valueField: "infant_mortality_rate", geographies: ["state"], higherIsWorse: true, absField: "infant_deaths_abs" },
   { id: "sanitation", label: "Sanitation access", sourceKey: "amenities", unit: "%", file: "socioeconomic_district.json", valueField: "sanitation_pct", geographies: ["district"], higherIsWorse: false },
   { id: "piped_water", label: "Piped water access", sourceKey: "amenities", unit: "%", file: "socioeconomic_district.json", valueField: "piped_water_pct", geographies: ["district"], higherIsWorse: false },
+  { id: "diabetes", label: "Known diabetes prevalence (NHMS)", sourceKey: "nhms_ncd", unit: "%", file: "nhms_ncd_state.json", valueField: "known_diabetes_prevalence_pct", geographies: ["state"], higherIsWorse: true, absField: "known_diabetes_n" },
+  { id: "hypertension", label: "Known hypertension prevalence (NHMS)", sourceKey: "nhms_ncd", unit: "%", file: "nhms_ncd_state.json", valueField: "known_hypertension_prevalence_pct", geographies: ["state"], higherIsWorse: true, absField: "known_hypertension_n" },
+  { id: "under5_mortality", label: "Under-5 mortality rate", sourceKey: "early_childhood_deaths", unit: "per 1,000 live births", file: "health_outcomes_state.json", valueField: "under5_mortality_rate", geographies: ["state"], higherIsWorse: true, absField: "under5_deaths_abs" },
+  { id: "covid_cases", label: "COVID-19 cases (annual)", sourceKey: "covid", unit: "cases", file: "covid_state.json", valueField: "covid_cases_abs", geographies: ["state"], higherIsWorse: true },
+  { id: "financing_programmes", label: "PeKa B40 screenings (annual)", sourceKey: "health_programmes", unit: "screenings", file: "health_programmes_state.json", valueField: "pekab40_screenings_abs", geographies: ["state"], higherIsWorse: false },
 ];
 
 export default function HealthEquityMap() {
