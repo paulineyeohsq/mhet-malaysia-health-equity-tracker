@@ -65,4 +65,6 @@ export const INVENTORY_MAP: Record<string, string[]> = {
   ],
   "immunisation_national.json": ["infant_immunisation"],
   "nutrition_national.json": ["nutrition_status_u5_sex"],
+  "nhms_ncd_state.json": ["nhms_ncd_2019"],
+  "nhms_ncd_national.json": ["nhms_ncd_2019"],
 };

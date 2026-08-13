@@ -344,6 +344,25 @@
       "limitations": "Single year, state-level only.", "status": "ingested_reference_only"
     },
     {
+      "id": "nhms_ncd_2019",
+      "name": "NCD Risk Factor Prevalence by State (NHMS 2019)",
+      "url": "https://iku.nih.gov.my/nhms",
+      "endpoint_csv": "https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2019/Report_NHMS2019-NCD.pdf",
+      "description": "Prevalence of 13 non-communicable-disease risk factors among adults (raised blood glucose, known diabetes, raised blood pressure, known hypertension, raised cholesterol, known hypercholesterolaemia, physical inactivity, current smoking, current drinking, underweight, overweight, obesity, abdominal obesity), national and by state, from the National Health and Morbidity Survey 2019.",
+      "source_org": "Institute for Public Health (IPH), National Institutes of Health, Ministry of Health Malaysia",
+      "update_frequency": "Per NHMS NCD cycle (4-yearly)",
+      "date_range": "2019 only",
+      "geographic_resolution": "national, state",
+      "dimensions": ["state", "year"],
+      "variables": ["<indicator>_prevalence_pct", "<indicator>_ci_lower/upper", "<indicator>_n", "<indicator>_unreliable (bool, for indicators the source report itself flags as small-sample/high-RSE)", "for indicator in: known_diabetes, known_hypertension, raised_blood_glucose, raised_blood_pressure, raised_cholesterol, known_hypercholesterolaemia, physical_inactivity, current_smoker, current_drinker, underweight, overweight, obesity, abdominal_obesity"],
+      "unit": "% (weighted survey estimate, 95% CI)",
+      "missingness": "none for the 16 states/FTs + national in the ingested slice",
+      "joinable_with": ["socioeconomic_state.json, healthcare_access_state.json via state (for Determinants Explorer)"],
+      "recommended_use": "State-level NCD risk-factor outcomes for the Determinants Explorer (WHY) — the only survey-based (as opposed to administrative-registry) indicators in this dataset",
+      "limitations": "UNLIKE every other file in this pipeline, this dataset was not fetched from a data.gov.my/DOSM open-data endpoint — NHMS results are not published there. All 13 indicators were manually transcribed from the \"overall\" (both-sex) column of their respective Table X.Y in the NHMS 2019 Technical Report Volume I PDF (ISBN e978-967-18159-2-2) — see scripts/transform_data.py::build_nhms_ncd() for the exact table/page citation per indicator — each cross-checked against the report's own Malaysia-level subtotal row. The report's male/female-split columns were NEVER transcribed for any indicator because the source PDF's two-column table layout could not be extracted reliably enough to trust those numbers. Overweight/obesity use the WHO Asian (Malaysian CPG) BMI cutoffs, not the WHO international cutoffs also published alongside them in the source. These are weighted survey estimates from a complex sample design (not administrative counts) — treat the 95% CI as integral to the figure, not a footnote. current_drinker in particular has several states flagged `_unreliable: true` (small sample / high relative standard error, as flagged with \"*\" in the source) reflecting how rare self-reported alcohol consumption is in the sampled population in some states — treat those state figures as indicative only, not precise ranking. Single cross-sectional year (2019) in this build. The NHMS 2023 technical report (published 2024) has since been confirmed to contain an equivalent, age-standardised state-level breakdown for diabetes/hypertension (Table 4.1.4/4.2.4) — not yet extracted/ingested; other 2019 indicators not yet checked against a 2023 equivalent.",
+      "status": "ingested"
+    },
+    {
       "id": "administrative_boundaries", "name": "DOSM Administrative Boundaries (state & district GeoJSON)",
       "url": "https://github.com/dosm-malaysia/data-open/tree/main/datasets/geodata",
       "endpoint": "https://raw.githubusercontent.com/dosm-malaysia/data-open/main/datasets/geodata/administrative_1_state.geojson (and administrative_2_district.geojson)",
@@ -367,6 +386,7 @@
     {"id": "mnha / mnha_moh", "name": "National Health Accounts (health expenditure)", "reason": "Valuable for a future 'healthcare financing equity' domain; deferred."},
     {"id": "sanitation_access / electricity_access / water_access (state-level long series)", "name": "Standalone amenities time series", "reason": "hh_access_amenities (district-level, 2022) was prioritised instead since it matches the geographic resolution of the income/poverty/gini district series; these longer state-level series remain available for a future time-series amenities view."},
     {"id": "population_district (live 2020-2024 full disaggregation)", "name": "Full district population by sex/age/ethnicity", "reason": "Raw file exceeded the sandbox's single-request fetch-size limit during this build; the historical census_district series was used instead. Re-running scripts/ingest_data.py from an unrestricted network environment will pull this in full."},
-    {"id": "nutrition_children_strata", "name": "Nutritional Status of Children Under 5 by Strata", "reason": "Confirmed to exist at data.gov.my/data-catalogue/nutrition_children_strata (MOH, urban/rural, 2019, national level) during a 2026-08-13 audit for the MY-HEO urban/rural gap — the real counterpart to the already-ingested nutrition_children_sex. Not yet ingested; would follow the identical transform_data.py pattern already used for the sex-disaggregated version. Confirmed to be the ONLY urban/rural-stratified dataset in DOSM's or MOH's open catalogues as of this audit."}
+    {"id": "nutrition_children_strata", "name": "Nutritional Status of Children Under 5 by Strata", "reason": "Confirmed to exist at data.gov.my/data-catalogue/nutrition_children_strata (MOH, urban/rural, 2019, national level) during a 2026-08-13 audit for the MY-HEO urban/rural gap — the real counterpart to the already-ingested nutrition_children_sex. Not yet ingested; would follow the identical transform_data.py pattern already used for the sex-disaggregated version. Confirmed to be the ONLY urban/rural-stratified dataset in DOSM's or MOH's open catalogues as of this audit."},
+    {"id": "nhms_ncd_2023", "name": "Known Diabetes & Hypertension Prevalence by State (NHMS 2023, age-standardised)", "reason": "Confirmed during the 2026-08-13 NHMS audit: NHMS 2023 Technical Report (iku.nih.gov.my/images/nhms2023/report-nhms-2023.pdf) contains Table 4.1.4 (age-standardised diabetes prevalence by state, p.42) and Table 4.2.4 (age-standardised hypertension prevalence by state, p.49) — a second time point for nhms_ncd_2019. Not yet transcribed/ingested; would require the same manual PDF-table-extraction process used for nhms_ncd_2019, verified table-by-table before use."}
   ]
 }

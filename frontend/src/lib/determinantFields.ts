@@ -3,7 +3,7 @@ import type { SOURCES } from "./sources";
 export interface FieldDef {
   id: string;
   label: string;
-  file: "health_outcomes_state.json" | "healthcare_access_state.json" | "socioeconomic_state.json";
+  file: "health_outcomes_state.json" | "healthcare_access_state.json" | "socioeconomic_state.json" | "nhms_ncd_state.json";
   field: string;
   unit: string;
   sourceKey: keyof typeof SOURCES;
@@ -25,6 +25,19 @@ export const OUTCOME_FIELDS: FieldDef[] = [
   { id: "hiv", label: "HIV incidence", file: "health_outcomes_state.json", field: "std_hiv_incidence_per_100k", unit: "per 100,000 population", sourceKey: "std", higherIsWorse: true },
   { id: "staff_out", label: "Healthcare staff availability", file: "healthcare_access_state.json", field: "staff_per_100k", unit: "per 100,000 population", sourceKey: "healthcare_staff", higherIsWorse: false },
   { id: "beds_out", label: "Hospital bed availability", file: "healthcare_access_state.json", field: "beds_per_100k", unit: "per 100,000 population", sourceKey: "hospital_beds", higherIsWorse: false },
+  { id: "diabetes", label: "Known diabetes prevalence (NHMS 2019)", file: "nhms_ncd_state.json", field: "known_diabetes_prevalence_pct", unit: "% (survey estimate, adults 18+)", sourceKey: "nhms_ncd", higherIsWorse: true },
+  { id: "hypertension", label: "Known hypertension prevalence (NHMS 2019)", file: "nhms_ncd_state.json", field: "known_hypertension_prevalence_pct", unit: "% (survey estimate, adults 18+)", sourceKey: "nhms_ncd", higherIsWorse: true },
+  { id: "raised_glucose", label: "Raised blood glucose (undiagnosed + known, NHMS 2019)", file: "nhms_ncd_state.json", field: "raised_blood_glucose_prevalence_pct", unit: "% (survey estimate, adults 18+)", sourceKey: "nhms_ncd", higherIsWorse: true },
+  { id: "raised_bp", label: "Raised blood pressure (undiagnosed + known, NHMS 2019)", file: "nhms_ncd_state.json", field: "raised_blood_pressure_prevalence_pct", unit: "% (survey estimate, adults 18+)", sourceKey: "nhms_ncd", higherIsWorse: true },
+  { id: "raised_cholesterol", label: "Raised blood cholesterol (undiagnosed + known, NHMS 2019)", file: "nhms_ncd_state.json", field: "raised_cholesterol_prevalence_pct", unit: "% (survey estimate, adults 18+)", sourceKey: "nhms_ncd", higherIsWorse: true },
+  { id: "hypercholesterolaemia", label: "Known hypercholesterolaemia prevalence (NHMS 2019)", file: "nhms_ncd_state.json", field: "known_hypercholesterolaemia_prevalence_pct", unit: "% (survey estimate, adults 18+)", sourceKey: "nhms_ncd", higherIsWorse: true },
+  { id: "physical_inactivity", label: "Physical inactivity prevalence (NHMS 2019)", file: "nhms_ncd_state.json", field: "physical_inactivity_prevalence_pct", unit: "% (survey estimate, age 16+)", sourceKey: "nhms_ncd", higherIsWorse: true },
+  { id: "current_smoker", label: "Current smoking prevalence (NHMS 2019)", file: "nhms_ncd_state.json", field: "current_smoker_prevalence_pct", unit: "% (survey estimate, age 15+)", sourceKey: "nhms_ncd", higherIsWorse: true },
+  { id: "current_drinker", label: "Current alcohol drinking prevalence (NHMS 2019)", file: "nhms_ncd_state.json", field: "current_drinker_prevalence_pct", unit: "% (survey estimate, adults 18+ — several states flagged small-sample)", sourceKey: "nhms_ncd", higherIsWorse: true },
+  { id: "underweight", label: "Underweight prevalence (NHMS 2019)", file: "nhms_ncd_state.json", field: "underweight_prevalence_pct", unit: "% (survey estimate, adults 18+)", sourceKey: "nhms_ncd", higherIsWorse: true },
+  { id: "overweight", label: "Overweight prevalence, Asian BMI cutoff (NHMS 2019)", file: "nhms_ncd_state.json", field: "overweight_prevalence_pct", unit: "% (survey estimate, adults 18+)", sourceKey: "nhms_ncd", higherIsWorse: true },
+  { id: "obesity", label: "Obesity prevalence, Asian BMI cutoff (NHMS 2019)", file: "nhms_ncd_state.json", field: "obesity_prevalence_pct", unit: "% (survey estimate, adults 18+)", sourceKey: "nhms_ncd", higherIsWorse: true },
+  { id: "abdominal_obesity", label: "Abdominal obesity prevalence (NHMS 2019)", file: "nhms_ncd_state.json", field: "abdominal_obesity_prevalence_pct", unit: "% (survey estimate, adults 18+)", sourceKey: "nhms_ncd", higherIsWorse: true },
 ];
 
 /**

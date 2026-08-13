@@ -1,0 +1,69 @@
+state,date,indicator,n,estimated_population,prevalence_pct,ci_lower,ci_upper,unreliable_estimate
+Malaysia,2019-01-01,underweight,536,1301375,6.5,5.71,7.45,0
+Johor,2019-01-01,underweight,41,130367,6.0,4.28,8.30,0
+Kedah,2019-01-01,underweight,20,48952,4.0,2.56,6.24,0
+Kelantan,2019-01-01,underweight,35,79721,7.5,5.34,10.53,0
+Melaka,2019-01-01,underweight,40,53014,9.3,5.58,15.18,0
+Negeri Sembilan,2019-01-01,underweight,22,41154,6.3,3.81,10.35,0
+Pahang,2019-01-01,underweight,32,56479,5.7,3.48,9.20,0
+Pulau Pinang,2019-01-01,underweight,55,118970,9.8,6.50,14.56,0
+Perak,2019-01-01,underweight,22,76543,5.1,1.96,12.76,1
+Perlis,2019-01-01,underweight,19,6756,4.5,2.74,7.22,0
+Selangor,2019-01-01,underweight,50,209569,5.0,3.49,7.15,0
+Terengganu,2019-01-01,underweight,39,53128,7.5,5.23,10.51,0
+Sabah,2019-01-01,underweight,51,208391,8.6,5.67,12.75,0
+Sarawak,2019-01-01,underweight,49,145768,8.3,5.97,11.39,0
+WP Kuala Lumpur,2019-01-01,underweight,19,67913,5.6,3.56,8.72,0
+WP Labuan,2019-01-01,underweight,32,3386,5.6,3.55,8.76,0
+WP Putrajaya,2019-01-01,underweight,10,1263,2.3,1.28,4.09,0
+Malaysia,2019-01-01,overweight,3310,6448586,32.3,30.95,33.78,0
+Johor,2019-01-01,overweight,254,639974,29.4,25.92,33.10,0
+Kedah,2019-01-01,overweight,188,420669,34.5,29.32,40.11,0
+Kelantan,2019-01-01,overweight,172,305970,28.9,25.01,33.18,0
+Melaka,2019-01-01,overweight,187,180475,31.7,25.36,38.90,0
+Negeri Sembilan,2019-01-01,overweight,172,235969,36.3,31.59,41.28,0
+Pahang,2019-01-01,overweight,228,345109,34.8,27.57,42.90,0
+Pulau Pinang,2019-01-01,overweight,186,374335,30.9,25.98,36.25,0
+Perak,2019-01-01,overweight,188,487974,32.7,28.50,37.14,0
+Perlis,2019-01-01,overweight,172,44786,29.6,25.58,34.07,0
+Selangor,2019-01-01,overweight,350,1355700,32.4,28.53,36.55,0
+Terengganu,2019-01-01,overweight,208,241678,33.9,31.66,36.24,0
+Sabah,2019-01-01,overweight,272,787926,32.4,27.87,37.27,0
+Sarawak,2019-01-01,overweight,243,566269,32.2,28.93,35.65,0
+WP Kuala Lumpur,2019-01-01,overweight,167,423374,34.9,29.23,41.10,0
+WP Labuan,2019-01-01,overweight,165,20574,34.1,30.14,38.33,0
+WP Putrajaya,2019-01-01,overweight,158,17806,32.3,26.95,38.21,0
+Malaysia,2019-01-01,obesity,3636,6711363,33.7,31.95,35.43,0
+Johor,2019-01-01,obesity,288,775610,35.6,31.81,39.59,0
+Kedah,2019-01-01,obesity,192,439902,36.1,30.56,42.02,0
+Kelantan,2019-01-01,obesity,197,384695,36.4,30.86,42.26,0
+Melaka,2019-01-01,obesity,256,213908,37.6,30.98,44.78,0
+Negeri Sembilan,2019-01-01,obesity,208,243797,37.5,31.15,44.31,0
+Pahang,2019-01-01,obesity,201,308228,31.1,25.44,37.43,0
+Pulau Pinang,2019-01-01,obesity,216,389428,32.1,25.01,40.17,0
+Perak,2019-01-01,obesity,203,506109,33.9,26.12,42.63,0
+Perlis,2019-01-01,obesity,206,62484,41.4,37.76,45.06,0
+Selangor,2019-01-01,obesity,389,1367580,32.7,27.77,38.03,0
+Terengganu,2019-01-01,obesity,216,229054,32.1,29.52,34.88,0
+Sabah,2019-01-01,obesity,277,755159,31.0,26.39,36.12,0
+Sarawak,2019-01-01,obesity,244,611121,34.7,30.97,38.73,0
+WP Kuala Lumpur,2019-01-01,obesity,150,379025,31.3,25.01,38.30,0
+WP Labuan,2019-01-01,obesity,169,20053,33.3,27.73,39.28,0
+WP Putrajaya,2019-01-01,obesity,224,25210,45.8,39.08,52.60,0
+Malaysia,2019-01-01,abdominal_obesity,5756,10387112,52.6,50.54,54.58,0
+Johor,2019-01-01,abdominal_obesity,465,1124490,53.4,47.23,59.40,0
+Kedah,2019-01-01,abdominal_obesity,307,671363,54.5,48.03,60.78,0
+Kelantan,2019-01-01,abdominal_obesity,326,583392,54.9,50.11,59.56,0
+Melaka,2019-01-01,abdominal_obesity,339,284418,50.7,43.33,58.13,0
+Negeri Sembilan,2019-01-01,abdominal_obesity,345,402882,61.5,51.58,70.55,0
+Pahang,2019-01-01,abdominal_obesity,341,507764,51.0,44.46,57.49,0
+Pulau Pinang,2019-01-01,abdominal_obesity,390,663586,55.0,46.21,63.43,0
+Perak,2019-01-01,abdominal_obesity,330,792001,53.4,44.61,61.99,0
+Perlis,2019-01-01,abdominal_obesity,308,86629,57.4,52.38,62.30,0
+Selangor,2019-01-01,abdominal_obesity,596,2045049,48.7,43.14,54.34,0
+Terengganu,2019-01-01,abdominal_obesity,310,320342,45.1,41.55,48.64,0
+Sabah,2019-01-01,abdominal_obesity,425,1159499,47.9,41.71,54.07,0
+Sarawak,2019-01-01,abdominal_obesity,443,1047039,59.7,55.58,63.70,0
+WP Kuala Lumpur,2019-01-01,abdominal_obesity,270,634794,57.4,49.98,64.46,0
+WP Labuan,2019-01-01,abdominal_obesity,266,31637,52.6,47.41,57.83,0
+WP Putrajaya,2019-01-01,abdominal_obesity,295,32226,58.9,51.53,65.82,0

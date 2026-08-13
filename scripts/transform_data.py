@@ -460,6 +460,127 @@ def build_health_outcomes_national():
     return immun_out, nutrition_out
 
 
+# ---------------------------------------------------------------------------
+# 10. NHMS 2019 NCD prevalence — state level (diabetes, hypertension)
+#
+# Unlike every other raw file in this pipeline, these two CSVs were NOT
+# fetched from a data.gov.my/DOSM endpoint — data.gov.my does not publish
+# NHMS survey results as open/structured data. They were manually
+# transcribed from the "overall" (both-sex) columns of Table 4.3 (diabetes,
+# p.36) and Table 4.6 (hypertension, p.48) of the official NHMS 2019
+# technical report:
+#   Institute for Public Health (IPH), National Institutes of Health,
+#   Ministry of Health Malaysia. 2020. National Health and Morbidity Survey
+#   (NHMS) 2019: Vol. I: NCDs - Non-Communicable Diseases: Risk Factors and
+#   other Health Problems. ISBN e978-967-18159-2-2.
+#   https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2019/Report_NHMS2019-NCD.pdf
+# The male/female-split columns in the source PDF were NOT transcribed —
+# the report's two-column table layout could not be extracted reliably
+# enough to trust those figures, so only the "overall" column (which
+# extracted cleanly and was cross-checked against the report's own
+# MALAYSIA-level subtotal) is used here. These are weighted survey
+# estimates with 95% confidence intervals (complex sampling design), not
+# administrative registry counts like the rest of this file's inputs —
+# ci_lower/ci_upper are carried through for exactly that reason.
+# ---------------------------------------------------------------------------
+#
+# Extended (second pass, same session): 11 more indicators manually
+# transcribed from the same report's "overall"-column tables, following the
+# identical verification method (cross-checked against the report's own
+# MALAYSIA subtotal row; male/female-split columns never transcribed):
+#   Table 4.2  raised_blood_glucose        p.32   Table 9.2   current_drinker         p.149
+#   Table 4.5  raised_blood_pressure       p.44   Table 14.2  underweight             p.187
+#   Table 4.8  raised_cholesterol          p.56   Table 14.4  overweight              p.189
+#   Table 4.9  known_hypercholesterolaemia p.60   Table 14.5  obesity                 p.192
+#   Table 5.2  physical_inactivity         p.72   Table 14.8  abdominal_obesity       p.201
+#   Table 6.2  current_smoker              p.88
+# Where the source report itself flags a state estimate with "*" (small
+# sample size / high relative standard error), that is carried through as
+# unreliable_estimate=1 in the raw CSV and as an "_unreliable" boolean here
+# — never silently dropped or presented with the same confidence as the
+# rest. "Overweight"/"obesity" use the WHO Asian (Malaysian CPG) BMI cutoffs
+# published as the source table's first pair of columns, not the WHO
+# international cutoffs also published alongside them.
+# ---------------------------------------------------------------------------
+def build_nhms_ncd():
+    def idx_simple(rows):
+        d = {}
+        for r in rows:
+            st = canonical_state(r["state"])
+            d[st] = {
+                "n": num(r.get("n")),
+                "estimated_population": num(r.get("estimated_population")),
+                "prevalence_pct": num(r.get("prevalence_pct")),
+                "ci_lower": num(r.get("ci_lower")),
+                "ci_upper": num(r.get("ci_upper")),
+            }
+        return d
+
+    def idx_by_indicator(rows):
+        d = defaultdict(dict)  # indicator -> state -> {...}
+        for r in rows:
+            st = canonical_state(r["state"])
+            d[r["indicator"]][st] = {
+                "n": num(r.get("n")),
+                "estimated_population": num(r.get("estimated_population")),
+                "prevalence_pct": num(r.get("prevalence_pct")),
+                "ci_lower": num(r.get("ci_lower")),
+                "ci_upper": num(r.get("ci_upper")),
+                "unreliable": num(r.get("unreliable_estimate")) == 1,
+            }
+        return d
+
+    dia_idx = idx_simple(read_csv(RAW / "health_outcomes" / "nhms_diabetes_state_2019.csv"))
+    hyp_idx = idx_simple(read_csv(RAW / "health_outcomes" / "nhms_hypertension_state_2019.csv"))
+    metabolic = idx_by_indicator(read_csv(RAW / "health_outcomes" / "nhms_metabolic_state_2019.csv"))
+    lifestyle = idx_by_indicator(read_csv(RAW / "health_outcomes" / "nhms_lifestyle_state_2019.csv"))
+    nutrition_bmi = idx_by_indicator(read_csv(RAW / "health_outcomes" / "nhms_nutrition_bmi_state_2019.csv"))
+    year = 2019
+
+    # (field prefix, source index, indicator key or None for the simple two)
+    FIELDS = [
+        ("known_diabetes", dia_idx, None),
+        ("known_hypertension", hyp_idx, None),
+        ("raised_blood_glucose", metabolic, "raised_blood_glucose"),
+        ("raised_blood_pressure", metabolic, "raised_blood_pressure"),
+        ("raised_cholesterol", metabolic, "raised_cholesterol"),
+        ("known_hypercholesterolaemia", metabolic, "known_hypercholesterolaemia"),
+        ("physical_inactivity", lifestyle, "physical_inactivity"),
+        ("current_smoker", lifestyle, "current_smoker"),
+        ("current_drinker", lifestyle, "current_drinker"),
+        ("underweight", nutrition_bmi, "underweight"),
+        ("overweight", nutrition_bmi, "overweight"),
+        ("obesity", nutrition_bmi, "obesity"),
+        ("abdominal_obesity", nutrition_bmi, "abdominal_obesity"),
+    ]
+
+    def row_for(st):
+        row = {"state": st, "year": year}
+        for prefix, source, key in FIELDS:
+            bucket = source if key is None else source.get(key, {})
+            v = bucket.get(st, {})
+            row[f"{prefix}_prevalence_pct"] = v.get("prevalence_pct")
+            row[f"{prefix}_ci_lower"] = v.get("ci_lower")
+            row[f"{prefix}_ci_upper"] = v.get("ci_upper")
+            row[f"{prefix}_n"] = v.get("n")
+            if "unreliable" in v:
+                row[f"{prefix}_unreliable"] = v.get("unreliable")
+        return row
+
+    all_states = set(dia_idx) | set(hyp_idx)
+    for source in (metabolic, lifestyle, nutrition_bmi):
+        for by_state in source.values():
+            all_states |= set(by_state)
+
+    states = sorted(all_states - {"Malaysia"})
+    state_out = [row_for(st) for st in states]
+    write_json("nhms_ncd_state.json", state_out)
+
+    national_out = [row_for("Malaysia")]
+    write_json("nhms_ncd_national.json", national_out)
+    return state_out, national_out
+
+
 def main():
     build_socioeconomic_national()
     build_socioeconomic_state()
@@ -470,6 +591,7 @@ def main():
     build_healthcare_access_district_2022()
     build_health_outcomes_state(pop_lookup)
     build_health_outcomes_national()
+    build_nhms_ncd()
 
     log_path = OUT / "transform_log.txt"
     log_path.write_text("\n".join(LOG))

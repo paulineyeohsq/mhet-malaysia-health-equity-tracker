@@ -119,6 +119,14 @@ export const SOURCES: Record<string, SourceInfo> = {
     unit: "cases, per 100,000 population",
     lastUpdated: "2024-09-01",
   },
+  nhms_ncd: {
+    label: "NCD Risk Factor Prevalence (NHMS 2019)",
+    org: "Institute for Public Health (IPH), National Institutes of Health, Ministry of Health Malaysia",
+    url: "https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2019/Report_NHMS2019-NCD.pdf",
+    geography: "National / State",
+    unit: "% (weighted survey estimate, with 95% CI)",
+    lastUpdated: "2020 (survey year 2019)",
+  },
   population: {
     label: "Population",
     org: "Department of Statistics Malaysia (DOSM)",
