@@ -1,0 +1,61 @@
+state,date,indicator,n,estimated_population,prevalence_pct,ci_lower,ci_upper,unreliable_estimate
+Johor,2015-01-01,underweight,88,131205,6.0,4.7,7.7,0
+Kedah,2015-01-01,underweight,78,101024,8.2,5.9,11.4,0
+Kelantan,2015-01-01,underweight,81,80629,8.4,6.5,10.8,0
+Melaka,2015-01-01,underweight,52,20566,4.3,2.7,6.8,0
+Negeri Sembilan,2015-01-01,underweight,63,48414,8.1,4.8,13.2,0
+Pahang,2015-01-01,underweight,68,67195,7.1,5.5,9.2,0
+Pulau Pinang,2015-01-01,underweight,78,79623,7.0,4.8,10.2,0
+Perak,2015-01-01,underweight,75,98475,6.3,4.6,8.7,0
+Perlis,2015-01-01,underweight,76,11289,7.5,5.3,10.4,0
+Selangor,2015-01-01,underweight,149,248160,6.6,5.3,8.2,0
+Terengganu,2015-01-01,underweight,91,53938,8.3,6.7,10.2,0
+Sarawak,2015-01-01,underweight,82,121450,7.2,5.8,8.9,0
+WP Kuala Lumpur,2015-01-01,underweight,36,66070,5.7,4.0,8.0,0
+WP Putrajaya,2015-01-01,underweight,13,1382,3.0,1.6,5.6,0
+Malaysia,2015-01-01,underweight,1107,1259017,6.7,6.2,7.3,0
+Johor,2015-01-01,abdominal_obesity,957,1145259,52.8,48.6,57.0,0
+Kedah,2015-01-01,abdominal_obesity,611,583813,47.4,42.4,52.4,0
+Kelantan,2015-01-01,abdominal_obesity,486,373974,39.0,35.2,43.0,0
+Melaka,2015-01-01,abdominal_obesity,574,256710,54.2,49.1,59.2,0
+Negeri Sembilan,2015-01-01,abdominal_obesity,621,270998,45.7,41.3,50.2,0
+Pahang,2015-01-01,abdominal_obesity,621,459739,48.8,44.6,53.1,0
+Pulau Pinang,2015-01-01,abdominal_obesity,763,642243,56.8,51.1,62.3,0
+Perak,2015-01-01,abdominal_obesity,709,754682,48.6,44.7,52.5,0
+Perlis,2015-01-01,abdominal_obesity,677,78105,51.6,47.9,55.4,0
+Selangor,2015-01-01,abdominal_obesity,1272,1746818,47.2,43.9,50.5,0
+Terengganu,2015-01-01,abdominal_obesity,575,304112,46.5,42.9,50.1,0
+Sarawak,2015-01-01,abdominal_obesity,631,811382,48.0,43.3,52.6,0
+WP Kuala Lumpur,2015-01-01,abdominal_obesity,362,602705,51.8,46.3,57.2,0
+WP Putrajaya,2015-01-01,abdominal_obesity,280,27962,61.3,57.2,65.3,0
+Malaysia,2015-01-01,abdominal_obesity,9930,9077326,48.6,47.4,49.9,0
+Johor,2015-01-01,current_smoker,398,568564,22.2,19.7,24.9,0
+Kedah,2015-01-01,current_smoker,372,387009,26.5,23.1,30.2,0
+Kelantan,2015-01-01,current_smoker,300,277239,24.6,21.5,28.0,0
+Melaka,2015-01-01,current_smoker,219,105392,16.9,13.4,20.9,0
+Negeri Sembilan,2015-01-01,current_smoker,276,154271,20.9,17.9,24.3,0
+Pahang,2015-01-01,current_smoker,309,280754,25.5,21.8,29.6,0
+Pulau Pinang,2015-01-01,current_smoker,263,247268,19.2,14.7,24.6,0
+Perak,2015-01-01,current_smoker,285,377070,21.0,17.8,24.5,0
+Perlis,2015-01-01,current_smoker,291,38869,22.2,19.1,25.7,0
+Selangor,2015-01-01,current_smoker,593,928163,20.9,18.7,23.3,0
+Terengganu,2015-01-01,current_smoker,281,170088,22.2,19.4,25.3,0
+Sarawak,2015-01-01,current_smoker,283,476672,25.4,21.9,29.2,0
+WP Kuala Lumpur,2015-01-01,current_smoker,128,252646,19.1,15.6,23.2,0
+WP Putrajaya,2015-01-01,current_smoker,67,6520,12.4,9.8,15.7,0
+Malaysia,2015-01-01,current_smoker,4477,4991458,22.8,21.9,23.8,0
+Johor,2015-01-01,physically_active,1222,1638675,67.1,64.3,69.8,0
+Kedah,2015-01-01,physically_active,869,934896,66.4,62.4,70.2,0
+Kelantan,2015-01-01,physically_active,918,788083,74.2,70.6,77.6,0
+Melaka,2015-01-01,physically_active,754,369265,62.2,56.0,68.0,0
+Negeri Sembilan,2015-01-01,physically_active,858,473601,66.3,62.8,69.7,0
+Pahang,2015-01-01,physically_active,960,792966,74.0,70.6,77.1,0
+Pulau Pinang,2015-01-01,physically_active,1013,911657,74.5,70.3,78.3,0
+Perak,2015-01-01,physically_active,1035,1244131,71.9,66.9,76.4,0
+Perlis,2015-01-01,physically_active,923,120465,72.2,67.7,76.4,0
+Selangor,2015-01-01,physically_active,1722,2607624,60.1,57.6,62.5,0
+Terengganu,2015-01-01,physically_active,878,509922,69.3,63.7,74.4,0
+Sarawak,2015-01-01,physically_active,750,1056728,59.2,54.7,63.6,0
+WP Kuala Lumpur,2015-01-01,physically_active,446,821029,63.6,58.3,68.5,0
+WP Putrajaya,2015-01-01,physically_active,343,35036,67.5,59.8,74.4,0
+Malaysia,2015-01-01,physically_active,13872,13992650,66.5,65.5,67.6,0

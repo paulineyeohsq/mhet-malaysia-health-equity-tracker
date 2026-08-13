@@ -29,12 +29,14 @@ export default function DeterminantsExplorer() {
   const { data: healthcareAccess } = useData<Row[]>("healthcare_access_state.json");
   const { data: socioeconomic } = useData<Row[]>("socioeconomic_state.json");
   const { data: nhmsNcd } = useData<Row[]>("nhms_ncd_state.json");
+  const { data: nhmsAdolescentMentalHealth } = useData<Row[]>("nhms_adolescent_mental_health_state.json");
 
   const rowsByFile: Record<FieldDef["file"], Row[] | null> = {
     "health_outcomes_state.json": healthOutcomes,
     "healthcare_access_state.json": healthcareAccess,
     "socioeconomic_state.json": socioeconomic,
     "nhms_ncd_state.json": nhmsNcd,
+    "nhms_adolescent_mental_health_state.json": nhmsAdolescentMentalHealth,
   };
 
   const [outcomeId, setOutcomeId] = useState(OUTCOME_FIELDS[0].id);
@@ -150,10 +152,23 @@ export default function DeterminantsExplorer() {
           <div className="rounded-lg border border-line-axis bg-plane p-3 text-xs text-ink-secondary">
             <strong className="text-ink-primary">Survey estimate, not a registry count.</strong> Unlike this
             explorer&apos;s other outcomes (which are administrative counts from birth/death registries),
-            diabetes and hypertension prevalence come from the NHMS 2019 household survey — a weighted
-            estimate from a sample of respondents in each state, each with its own 95% confidence interval.
-            States with fewer survey respondents have wider, less certain estimates; treat close rankings
-            between states with caution. See the data source panel below for exact table/page citations.
+            this outcome comes from an NHMS household survey (2015, 2019 and/or 2023, depending on the
+            indicator) — a weighted estimate from a sample of respondents in each state. 2015/2019 figures
+            carry their own 95% confidence interval; 2023&apos;s dedicated by-state tables only publish a
+            point estimate. States with fewer survey respondents have wider, less certain estimates, and a
+            2023 figure is age-standardised while 2015/2019 are not — treat cross-year comparisons and close
+            state rankings with caution. See the data source panel below for exact table/page citations.
+          </div>
+        )}
+
+        {outcome.sourceKey === "nhms_adolescent_mental_health" && (
+          <div className="rounded-lg border border-series-1 bg-plane p-3 text-xs text-ink-secondary">
+            <strong className="text-ink-primary">Adolescents only, not the general population.</strong> This
+            outcome is from a 2017 school-based survey of secondary-school students aged 13–17 — it does not
+            represent adults or the state&apos;s population as a whole, and cannot be meaningfully compared to
+            any adult health outcome elsewhere in this explorer. Students who had already dropped out of
+            school are not represented. This is a single cross-sectional year (2017); no repeat cycle of this
+            specific survey has been identified, so no trend over time is available.
           </div>
         )}
 

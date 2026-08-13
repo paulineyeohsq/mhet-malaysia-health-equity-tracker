@@ -501,83 +501,184 @@ def build_health_outcomes_national():
 # rest. "Overweight"/"obesity" use the WHO Asian (Malaysian CPG) BMI cutoffs
 # published as the source table's first pair of columns, not the WHO
 # international cutoffs also published alongside them.
+#
+# Third pass (same session): NHMS 2023 Technical Report ("Non-Communicable
+# Diseases and Healthcare Demand") adds a second time point for 6 of the
+# above indicators plus 3 new "undiagnosed_*" indicators, from its own
+# dedicated "age-standardised prevalence by states" tables:
+#   Table 4.1.4 diabetes (p.42), Table 4.2.4 hypertension (p.49),
+#   Table 4.3.6 hypercholesterolaemia (p.59)
+#   https://iku.nih.gov.my/images/nhms2023/report-nhms-2023.pdf
+# Extracted with `pdftotext -raw` (NOT -layout, which garbles these specific
+# tables) and cross-checked line-by-line against every highest/lowest
+# figure the report states in its own prose — all matched exactly.
+# IMPORTANT METHODOLOGICAL CAVEAT: these 2023 figures are AGE-STANDARDISED
+# state estimates, not directly comparable to the 2019 figures above (which
+# are crude/unstandardised, matching the table style used in that year's
+# report). Treat a 2019-vs-2023 trend on the same field as suggestive, not
+# a precise comparison. These particular 2023 tables also do not publish
+# sample size, population estimate, or 95% CI columns (point estimates
+# only) or a Malaysia-level row — hence the blank n/estimated_population/
+# ci_lower/ci_upper cells in the raw CSV, carried through as null here
+# rather than fabricated. Overweight/obesity, physical inactivity, smoking,
+# drinking, and BMI/nutrition indicators were NOT found with an equivalent
+# clean by-state table in the 2023 report and are not included for 2023.
+#
+# Fourth pass (same session): NHMS 2015 (Vol. II: Non-Communicable Disease,
+# Risk Factors & Other Health Problems, NMRR-14-1064-21877) adds a THIRD
+# time point for diabetes/hypertension/hypercholesterolaemia (crude
+# prevalence this time, same basis as 2019 — comparable to 2019, NOT
+# directly comparable to 2023's age-standardised figures), plus
+# underweight, abdominal obesity (WHO 2000), current smoking, and a new
+# "physically_active" indicator (this survey measured active, not
+# inactive — the inverse framing was NOT algebraically inverted into
+# physical_inactivity, since that would be a derived rather than a
+# transcribed figure; it is its own field).
+#   https://iku.nih.gov.my/images/IKU/Document/REPORT/nhmsreport2015vol2.pdf
+# Extracted with `pdftotext -raw`, cross-checked against the report's own
+# MALAYSIA subtotal for every table, and (for physically_active) against
+# its own narrative "highest was Kelantan/Pahang" sentence — matched.
+# THREE things NOT included from 2015, on purpose:
+#   1. Overweight and obesity (Tables 2.1.2–2.1.4): those pages did not
+#      extract as text in EITHER pdftotext mode (all other pages of the
+#      same chapter did) — almost certainly image-rendered in this PDF.
+#      Not guessed at.
+#   2. Current drinker (Table 4.1.2, 18+): this table has no "State"
+#      breakdown in the 2015 report at all (goes straight from the
+#      Malaysia row to Urban/Rural) — the indicator was simply not
+#      disaggregated by state that survey cycle.
+#   3. Sabah and W.P. Labuan: the 2015 survey design reports these two as
+#      ONE combined "Sabah & WP Labuan" figure for every indicator, not
+#      two separate ones. Splitting that combined estimate across two
+#      states would be fabrication, so both are left null for 2015 rather
+#      than assigning the combined number to either (or both).
+# NHMS 2011 (Vol. II) was also attempted but abandoned: table titles were
+# frequently detached from their data by page-break artifacts in this
+# particular PDF, and the one table checked against the report's own
+# stated confidence interval showed a small but real mismatch (12.1–13.6
+# extracted vs. 12.2–13.5 stated) — a level of extraction risk this
+# pipeline is not willing to accept without a more reliable source. 2011
+# is not included; NHMS 1996/2006 were not part of the same "diabetes:
+# 11.2% (2011) -> 13.4% (2015) -> 18.3% (2019)" comparable NCD survey
+# series per the 2019 report's own trend framing and were not attempted.
 # ---------------------------------------------------------------------------
+def load_indicator_rows(path, indicator_col=None, fixed_indicator=None):
+    """Shared by build_nhms_ncd() and build_nhms_adolescent_mental_health():
+    yields (indicator, state, year, value_dict) from a long-format NHMS raw
+    CSV (state,date,indicator,n,estimated_population,prevalence_pct,
+    ci_lower,ci_upper[,unreliable_estimate])."""
+    for r in read_csv(path):
+        st = canonical_state(r["state"])
+        yr = year_of(r["date"])
+        ind = r[indicator_col] if indicator_col else fixed_indicator
+        yield ind, st, yr, {
+            "n": num(r.get("n")),
+            "estimated_population": num(r.get("estimated_population")),
+            "prevalence_pct": num(r.get("prevalence_pct")),
+            "ci_lower": num(r.get("ci_lower")),
+            "ci_upper": num(r.get("ci_upper")),
+            "unreliable": (num(r.get("unreliable_estimate")) == 1) if "unreliable_estimate" in r else None,
+        }
+
+
 def build_nhms_ncd():
-    def idx_simple(rows):
-        d = {}
-        for r in rows:
-            st = canonical_state(r["state"])
-            d[st] = {
-                "n": num(r.get("n")),
-                "estimated_population": num(r.get("estimated_population")),
-                "prevalence_pct": num(r.get("prevalence_pct")),
-                "ci_lower": num(r.get("ci_lower")),
-                "ci_upper": num(r.get("ci_upper")),
-            }
-        return d
-
-    def idx_by_indicator(rows):
-        d = defaultdict(dict)  # indicator -> state -> {...}
-        for r in rows:
-            st = canonical_state(r["state"])
-            d[r["indicator"]][st] = {
-                "n": num(r.get("n")),
-                "estimated_population": num(r.get("estimated_population")),
-                "prevalence_pct": num(r.get("prevalence_pct")),
-                "ci_lower": num(r.get("ci_lower")),
-                "ci_upper": num(r.get("ci_upper")),
-                "unreliable": num(r.get("unreliable_estimate")) == 1,
-            }
-        return d
-
-    dia_idx = idx_simple(read_csv(RAW / "health_outcomes" / "nhms_diabetes_state_2019.csv"))
-    hyp_idx = idx_simple(read_csv(RAW / "health_outcomes" / "nhms_hypertension_state_2019.csv"))
-    metabolic = idx_by_indicator(read_csv(RAW / "health_outcomes" / "nhms_metabolic_state_2019.csv"))
-    lifestyle = idx_by_indicator(read_csv(RAW / "health_outcomes" / "nhms_lifestyle_state_2019.csv"))
-    nutrition_bmi = idx_by_indicator(read_csv(RAW / "health_outcomes" / "nhms_nutrition_bmi_state_2019.csv"))
-    year = 2019
-
-    # (field prefix, source index, indicator key or None for the simple two)
-    FIELDS = [
-        ("known_diabetes", dia_idx, None),
-        ("known_hypertension", hyp_idx, None),
-        ("raised_blood_glucose", metabolic, "raised_blood_glucose"),
-        ("raised_blood_pressure", metabolic, "raised_blood_pressure"),
-        ("raised_cholesterol", metabolic, "raised_cholesterol"),
-        ("known_hypercholesterolaemia", metabolic, "known_hypercholesterolaemia"),
-        ("physical_inactivity", lifestyle, "physical_inactivity"),
-        ("current_smoker", lifestyle, "current_smoker"),
-        ("current_drinker", lifestyle, "current_drinker"),
-        ("underweight", nutrition_bmi, "underweight"),
-        ("overweight", nutrition_bmi, "overweight"),
-        ("obesity", nutrition_bmi, "obesity"),
-        ("abdominal_obesity", nutrition_bmi, "abdominal_obesity"),
+    SOURCES = [
+        (RAW / "health_outcomes" / "nhms_diabetes_state_2019.csv", None, "known_diabetes"),
+        (RAW / "health_outcomes" / "nhms_hypertension_state_2019.csv", None, "known_hypertension"),
+        (RAW / "health_outcomes" / "nhms_metabolic_state_2019.csv", "indicator", None),
+        (RAW / "health_outcomes" / "nhms_lifestyle_state_2019.csv", "indicator", None),
+        (RAW / "health_outcomes" / "nhms_nutrition_bmi_state_2019.csv", "indicator", None),
+        (RAW / "health_outcomes" / "nhms_metabolic_state_2023.csv", "indicator", None),
+        (RAW / "health_outcomes" / "nhms_metabolic_state_2015.csv", "indicator", None),
+        (RAW / "health_outcomes" / "nhms_nutrition_lifestyle_state_2015.csv", "indicator", None),
     ]
 
-    def row_for(st):
-        row = {"state": st, "year": year}
-        for prefix, source, key in FIELDS:
-            bucket = source if key is None else source.get(key, {})
-            v = bucket.get(st, {})
+    combined = defaultdict(dict)  # indicator -> (state, year) -> {...}
+    for path, indicator_col, fixed_indicator in SOURCES:
+        for ind, st, yr, v in load_indicator_rows(path, indicator_col, fixed_indicator):
+            combined[ind][(st, yr)] = v
+
+    all_state_years = set()
+    for by_key in combined.values():
+        all_state_years |= set(by_key.keys())
+
+    def row_for(st, yr):
+        row = {"state": st, "year": yr}
+        for prefix, by_key in combined.items():
+            v = by_key.get((st, yr), {})
             row[f"{prefix}_prevalence_pct"] = v.get("prevalence_pct")
             row[f"{prefix}_ci_lower"] = v.get("ci_lower")
             row[f"{prefix}_ci_upper"] = v.get("ci_upper")
             row[f"{prefix}_n"] = v.get("n")
-            if "unreliable" in v:
+            if v.get("unreliable") is not None:
                 row[f"{prefix}_unreliable"] = v.get("unreliable")
         return row
 
-    all_states = set(dia_idx) | set(hyp_idx)
-    for source in (metabolic, lifestyle, nutrition_bmi):
-        for by_state in source.values():
-            all_states |= set(by_state)
-
-    states = sorted(all_states - {"Malaysia"})
-    state_out = [row_for(st) for st in states]
+    state_years = sorted(sy for sy in all_state_years if sy[0] != "Malaysia")
+    state_out = [row_for(st, yr) for st, yr in state_years]
     write_json("nhms_ncd_state.json", state_out)
 
-    national_out = [row_for("Malaysia")]
+    national_years = sorted(yr for (st, yr) in all_state_years if st == "Malaysia")
+    national_out = [row_for("Malaysia", yr) for yr in national_years]
     write_json("nhms_ncd_national.json", national_out)
+    return state_out, national_out
+
+
+# ---------------------------------------------------------------------------
+# 11. NHMS 2017 Adolescent Mental Health (DASS-21) — state level
+#
+# Fifth pass (same session), fixing a gap flagged from the very first
+# ask in this thread: mental health data was requested but never located
+# in DOSM's open catalogue (confirmed absent there). It DOES exist as a
+# manually-transcribed NHMS PDF table, same as the NCD risk factors above
+# — but from a DIFFERENT report and a DIFFERENT population, kept in its
+# own file rather than merged into nhms_ncd_state.json for exactly that
+# reason:
+#   Institute for Public Health (IPH) 2017. National Health and Morbidity
+#   Survey 2017 (NHMS 2017): Adolescent Mental Health (DASS-21).
+#   ISBN: 978-983-2387-38-1.
+#   https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2017/MHSReportNHMS2017.pdf
+# CRITICAL POPULATION CAVEAT: this survey covers SECONDARY-SCHOOL-GOING
+# ADOLESCENTS AGED 13-17 — not adults, and not the general population.
+# It is not comparable to, and must never be presented alongside, the
+# adult NCD indicators in nhms_ncd_state.json without that distinction
+# being explicit. depression/anxiety/stress prevalence come from
+# Tables 3.3.1/3.4.1/3.5.1 ("Prevalence of X by socio-demography"),
+# extracted with `pdftotext -raw` and cross-checked against the report's
+# own narrative ("highest in Selangor at 22.6%" for depression, "highest
+# in Sabah at 46.8%" for anxiety, "highest in Selangor at 12.5%" for
+# stress) — all three matched exactly. Full 16 states + national, with
+# 95% CI and unweighted sample count, no missing states this survey.
+# ---------------------------------------------------------------------------
+def build_nhms_adolescent_mental_health():
+    rows = list(load_indicator_rows(
+        RAW / "health_outcomes" / "nhms_adolescent_mental_health_state_2017.csv", "indicator", None
+    ))
+    combined = defaultdict(dict)
+    for ind, st, yr, v in rows:
+        combined[ind][(st, yr)] = v
+
+    all_state_years = set()
+    for by_key in combined.values():
+        all_state_years |= set(by_key.keys())
+
+    def row_for(st, yr):
+        row = {"state": st, "year": yr}
+        for prefix, by_key in combined.items():
+            v = by_key.get((st, yr), {})
+            row[f"{prefix}_prevalence_pct"] = v.get("prevalence_pct")
+            row[f"{prefix}_ci_lower"] = v.get("ci_lower")
+            row[f"{prefix}_ci_upper"] = v.get("ci_upper")
+            row[f"{prefix}_n"] = v.get("n")
+        return row
+
+    state_years = sorted(sy for sy in all_state_years if sy[0] != "Malaysia")
+    state_out = [row_for(st, yr) for st, yr in state_years]
+    write_json("nhms_adolescent_mental_health_state.json", state_out)
+
+    national_years = sorted(yr for (st, yr) in all_state_years if st == "Malaysia")
+    national_out = [row_for("Malaysia", yr) for yr in national_years]
+    write_json("nhms_adolescent_mental_health_national.json", national_out)
     return state_out, national_out
 
 
@@ -592,6 +693,7 @@ def main():
     build_health_outcomes_state(pop_lookup)
     build_health_outcomes_national()
     build_nhms_ncd()
+    build_nhms_adolescent_mental_health()
 
     log_path = OUT / "transform_log.txt"
     log_path.write_text("\n".join(LOG))
