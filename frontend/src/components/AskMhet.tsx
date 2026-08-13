@@ -11,7 +11,7 @@ export default function AskMhet() {
   return (
     <div className="flex items-center gap-2 border-b border-line-grid bg-surface px-4 py-2 lg:px-6">
       <label htmlFor="ask-mhet" className="text-xs font-medium uppercase tracking-wide text-ink-muted">
-        Ask MHET
+        Ask MY-HEO
       </label>
       <select
         id="ask-mhet"

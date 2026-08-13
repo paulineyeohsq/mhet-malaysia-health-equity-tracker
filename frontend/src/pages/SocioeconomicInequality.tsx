@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -10,7 +10,6 @@ import {
   CartesianGrid,
   Tooltip,
 } from "recharts";
-import * as ss from "simple-statistics";
 import PageHeader from "../components/PageHeader";
 import StatTile from "../components/StatTile";
 import SourceNote from "../components/SourceNote";
@@ -23,6 +22,8 @@ import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsig
 import { useData } from "../lib/useData";
 import type { SOURCES } from "../lib/sources";
 import type { Row } from "../lib/equity";
+import { findBestYear, buildPairs, computeCorrelationStats, CORRELATION_MIN_PAIRS } from "../lib/correlation";
+import CorrelationCaveat from "../components/CorrelationCaveat";
 
 interface NationalRow {
   year: number;
@@ -88,79 +89,6 @@ const HEALTH_INDICATORS: { id: HealthIndicatorId; label: string; unit: string; s
   { id: "maternal_mortality_rate_per_100k_births", label: "Maternal mortality rate", unit: "per 100,000 births", sourceKey: "maternal_deaths" },
   { id: "under5_mortality_rate", label: "Under-5 mortality rate", unit: "per 1,000 births", sourceKey: "early_childhood_deaths" },
 ];
-
-const MIN_PAIRS = 8;
-
-/** Rank-transform an array with average ranks for ties (required for Spearman). */
-function rankTransform(values: number[]): number[] {
-  const idx = values.map((v, i) => ({ v, i })).sort((a, b) => a.v - b.v);
-  const ranks = new Array<number>(values.length);
-  let i = 0;
-  while (i < idx.length) {
-    let j = i;
-    while (j + 1 < idx.length && idx[j + 1].v === idx[i].v) j++;
-    const avgRank = (i + j) / 2 + 1; // 1-based average rank across the tie block
-    for (let k = i; k <= j; k++) ranks[idx[k].i] = avgRank;
-    i = j + 1;
-  }
-  return ranks;
-}
-
-function spearmanCorrelation(xs: number[], ys: number[]): number {
-  const rx = rankTransform(xs);
-  const ry = rankTransform(ys);
-  return ss.sampleCorrelation(rx, ry);
-}
-
-/**
- * Find the best year for a (socioeconomic field, health outcome field) pair:
- * the year present in BOTH datasets with the most complete non-null,
- * same-year, same-state pairs. Ties broken by most recent year. Never mixes
- * rows from two different years.
- */
-function findBestYear(
-  socio: StateRow[],
-  health: HealthOutcomeRow[],
-  socioField: SocioIndicatorId,
-  healthField: HealthIndicatorId
-): { year: number | null; n: number } {
-  const socioYears = new Set(socio.map((r) => r.year));
-  const healthYears = new Set(health.map((r) => r.year));
-  const commonYears = [...socioYears].filter((y) => healthYears.has(y)).sort((a, b) => b - a);
-
-  let best: { year: number | null; n: number } = { year: null, n: 0 };
-  for (const y of commonYears) {
-    const socioByState = new Map(socio.filter((r) => r.year === y).map((r) => [r.state, r[socioField]]));
-    const healthByState = new Map(health.filter((r) => r.year === y).map((r) => [r.state, r[healthField]]));
-    let n = 0;
-    for (const [state, sv] of socioByState) {
-      const hv = healthByState.get(state);
-      if (typeof sv === "number" && typeof hv === "number") n++;
-    }
-    if (n > best.n) best = { year: y, n };
-  }
-  return best;
-}
-
-function buildPairs(
-  socio: StateRow[],
-  health: HealthOutcomeRow[],
-  year: number,
-  socioField: SocioIndicatorId,
-  healthField: HealthIndicatorId
-): { state: string; x: number; y: number }[] {
-  const healthByState = new Map(health.filter((r) => r.year === year).map((r) => [r.state, r[healthField]]));
-  const pairs: { state: string; x: number; y: number }[] = [];
-  for (const row of socio) {
-    if (row.year !== year) continue;
-    const x = row[socioField];
-    const y = healthByState.get(row.state);
-    if (typeof x === "number" && typeof y === "number") {
-      pairs.push({ state: row.state, x, y });
-    }
-  }
-  return pairs;
-}
 
 export default function SocioeconomicInequality() {
   const { data: national } = useData<NationalRow[]>("socioeconomic_national.json");
@@ -240,39 +168,18 @@ export default function SocioeconomicInequality() {
 
   const correlationInput = useMemo(() => {
     if (!stateData || !healthState) return null;
-    const { year, n } = findBestYear(stateData, healthState, socioIndicatorId, healthIndicatorId);
-    if (year === null || n < MIN_PAIRS) return { year, n, pairs: [] as { state: string; x: number; y: number }[] };
-    const pairs = buildPairs(stateData, healthState, year, socioIndicatorId, healthIndicatorId);
+    const { year, n } = findBestYear(
+      stateData as unknown as Row[],
+      healthState as unknown as Row[],
+      socioIndicatorId,
+      healthIndicatorId
+    );
+    if (year === null || n < CORRELATION_MIN_PAIRS) return { year, n, pairs: [] as { state: string; x: number; y: number }[] };
+    const pairs = buildPairs(stateData as unknown as Row[], healthState as unknown as Row[], year, socioIndicatorId, healthIndicatorId);
     return { year, n, pairs };
   }, [stateData, healthState, socioIndicatorId, healthIndicatorId]);
 
-  const correlationStats = useMemo(() => {
-    if (!correlationInput || correlationInput.pairs.length < MIN_PAIRS) return null;
-    const { pairs } = correlationInput;
-    const xs = pairs.map((p) => p.x);
-    const ys = pairs.map((p) => p.y);
-    // Guard against zero-variance inputs (correlation undefined).
-    if (new Set(xs).size < 2 || new Set(ys).size < 2) return null;
-    const pearson = ss.sampleCorrelation(xs, ys);
-    const spearman = spearmanCorrelation(xs, ys);
-    const regression = ss.linearRegression(pairs.map((p) => [p.x, p.y] as [number, number]));
-    const line = ss.linearRegressionLine(regression);
-    const minX = Math.min(...xs);
-    const maxX = Math.max(...xs);
-    const regressionLine = [
-      { x: minX, y: line(minX) },
-      { x: maxX, y: line(maxX) },
-    ];
-    return {
-      pearson,
-      spearman,
-      r2: pearson * pearson,
-      n: pairs.length,
-      regressionLine,
-      slope: regression.m,
-      intercept: regression.b,
-    };
-  }, [correlationInput]);
+  const correlationStats = useMemo(() => computeCorrelationStats(correlationInput?.pairs ?? []), [correlationInput]);
 
   return (
     <div>
@@ -470,7 +377,7 @@ export default function SocioeconomicInequality() {
             Access to sanitation, electricity and piped water is only published at district resolution for 2022 in the
             source survey — other years are not shown here rather than left implicitly zero or interpolated.
           </p>
-          {districtAmenities2022.length >= MIN_PAIRS ? (
+          {districtAmenities2022.length >= CORRELATION_MIN_PAIRS ? (
             <>
               <div className="grid gap-4 lg:grid-cols-2">
                 <BarRankingCard
@@ -500,12 +407,17 @@ export default function SocioeconomicInequality() {
             Correlation with health outcomes
           </h2>
 
-          <div className="mb-3 rounded-md border border-status-warning bg-status-warning/10 p-3 text-sm text-ink-primary">
-            <span className="font-medium">Correlation, not causation.</span> The statistics below describe a
-            statistical association across Malaysian states in a single year. They do not establish that one variable
-            causes the other. Confounding factors — such as urbanization, age structure, healthcare capacity and
-            reporting practices — are not controlled for here.
+          <div className="mb-3 rounded-lg border border-line-axis bg-plane p-3 text-sm text-ink-secondary">
+            Looking to explore <strong className="text-ink-primary">any</strong> determinant against{" "}
+            <strong className="text-ink-primary">any</strong> health or healthcare-access outcome, not just poverty/
+            income/Gini vs. mortality? The{" "}
+            <Link to="/determinants" className="text-series-1 underline underline-offset-2">
+              Determinants Explorer
+            </Link>{" "}
+            generalizes this section to the full set of socioeconomic and healthcare-access fields in this dataset.
           </div>
+
+          <CorrelationCaveat />
 
           <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
             <div>
@@ -544,11 +456,11 @@ export default function SocioeconomicInequality() {
             </div>
           </div>
 
-          {!correlationInput || correlationInput.year === null || correlationInput.n < MIN_PAIRS || !correlationStats ? (
+          {!correlationInput || correlationInput.year === null || correlationInput.n < CORRELATION_MIN_PAIRS || !correlationStats ? (
             <InsufficientData
               reason={
                 correlationInput && correlationInput.year !== null
-                  ? `Only ${correlationInput.n} state(s) have non-null values for both "${socioIndicator.label}" and "${healthIndicator.label}" in ${correlationInput.year} (need at least ${MIN_PAIRS}). This health indicator is not reported for all states.`
+                  ? `Only ${correlationInput.n} state(s) have non-null values for both "${socioIndicator.label}" and "${healthIndicator.label}" in ${correlationInput.year} (need at least ${CORRELATION_MIN_PAIRS}). This health indicator is not reported for all states.`
                   : `"${socioIndicator.label}" and "${healthIndicator.label}" share no common survey year with paired state-level data.`
               }
             />

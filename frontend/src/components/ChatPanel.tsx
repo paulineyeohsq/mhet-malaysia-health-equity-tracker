@@ -50,7 +50,7 @@ export default function ChatPanel() {
     <>
       <button
         type="button"
-        aria-label={open ? "Close MHET Assistant" : "Open MHET Assistant"}
+        aria-label={open ? "Close MY-HEO Assistant" : "Open MY-HEO Assistant"}
         onClick={() => setOpen((v) => !v)}
         className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-series-1 text-white shadow-lg transition-transform hover:scale-105"
       >
@@ -77,7 +77,7 @@ export default function ChatPanel() {
       >
         <div className="border-b border-line-grid p-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-ink-primary">MHET Assistant</h2>
+            <h2 className="text-sm font-semibold text-ink-primary">MY-HEO Assistant</h2>
             <button
               type="button"
               aria-label="Close"

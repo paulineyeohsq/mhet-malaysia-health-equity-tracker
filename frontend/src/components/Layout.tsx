@@ -2,16 +2,39 @@ import { NavLink, Outlet } from "react-router-dom";
 import AskMhet from "./AskMhet";
 import ChatPanel from "./ChatPanel";
 
-const NAV = [
-  { to: "/", label: "Overview", end: true },
-  { to: "/map", label: "Health Equity Map" },
-  { to: "/socioeconomic", label: "Socioeconomic Inequality" },
-  { to: "/health-outcomes", label: "Health Outcomes" },
-  { to: "/healthcare-access", label: "Healthcare Access" },
-  { to: "/population", label: "Population Equity" },
-  { to: "/analytics", label: "Inequality Analytics" },
-  { to: "/explorer", label: "Data Explorer" },
-  { to: "/methodology", label: "Methodology" },
+interface NavItem {
+  to: string;
+  label: string;
+  end?: boolean;
+}
+interface NavSection {
+  heading: string | null;
+  items: NavItem[];
+}
+
+const NAV_SECTIONS: NavSection[] = [
+  { heading: null, items: [{ to: "/", label: "Home", end: true }] },
+  { heading: "WHO", items: [{ to: "/population", label: "Population Explorer" }] },
+  { heading: "WHERE", items: [{ to: "/map", label: "Geographic Explorer" }] },
+  {
+    heading: "WHY",
+    items: [
+      { to: "/determinants", label: "Determinants Explorer" },
+      { to: "/socioeconomic", label: "Socioeconomic Inequality" },
+      { to: "/health-outcomes", label: "Health Outcomes" },
+      { to: "/healthcare-access", label: "Healthcare Access" },
+    ],
+  },
+  { heading: "Equity Gap", items: [{ to: "/analytics", label: "Equity Gap Analysis" }] },
+  {
+    heading: "Priority & Opportunity",
+    items: [
+      { to: "/priority-areas", label: "Priority Areas" },
+      { to: "/research-opportunities", label: "Research Opportunities" },
+    ],
+  },
+  { heading: "Researcher Tools", items: [{ to: "/explorer", label: "Data Explorer" }] },
+  { heading: "About", items: [{ to: "/methodology", label: "Methodology" }] },
 ];
 
 export default function Layout() {
@@ -32,30 +55,40 @@ export default function Layout() {
               Malaysia
             </div>
             <div className="text-lg font-semibold text-ink-primary leading-tight">
-              Health Equity Tracker
+              Health Equity Observatory
             </div>
+            <div className="text-[11px] font-medium tracking-wide text-ink-muted">MY-HEO</div>
           </NavLink>
         </div>
         <nav aria-label="Primary" className="px-2 py-3">
-          <ul className="flex lg:flex-col flex-wrap gap-1">
-            {NAV.map((item) => (
-              <li key={item.to}>
-                <NavLink
-                  to={item.to}
-                  end={item.end}
-                  className={({ isActive }) =>
-                    `block rounded-md px-3 py-2 text-sm transition-colors ${
-                      isActive
-                        ? "bg-seq-100 text-series-1 font-medium"
-                        : "text-ink-secondary hover:bg-plane hover:text-ink-primary"
-                    }`
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+          {NAV_SECTIONS.map((section, i) => (
+            <div key={section.heading ?? `section-${i}`} className={i > 0 ? "mt-3" : undefined}>
+              {section.heading && (
+                <div className="px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-ink-muted">
+                  {section.heading}
+                </div>
+              )}
+              <ul className="flex lg:flex-col flex-wrap gap-1">
+                {section.items.map((item) => (
+                  <li key={item.to}>
+                    <NavLink
+                      to={item.to}
+                      end={item.end}
+                      className={({ isActive }) =>
+                        `block rounded-md px-3 py-2 text-sm transition-colors ${
+                          isActive
+                            ? "bg-seq-100 text-series-1 font-medium"
+                            : "text-ink-secondary hover:bg-plane hover:text-ink-primary"
+                        }`
+                      }
+                    >
+                      {item.label}
+                    </NavLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </nav>
         <div className="hidden lg:block px-5 py-4 mt-auto text-xs text-ink-muted border-t border-line-grid">
           Data: data.gov.my / DOSM / MOH

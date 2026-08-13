@@ -9,6 +9,9 @@ import PopulationEquity from "./pages/PopulationEquity";
 import InequalityAnalytics from "./pages/InequalityAnalytics";
 import DataExplorer from "./pages/DataExplorer";
 import Methodology from "./pages/Methodology";
+import DeterminantsExplorer from "./pages/DeterminantsExplorer";
+import PriorityAreas from "./pages/PriorityAreas";
+import ResearchOpportunities from "./pages/ResearchOpportunities";
 
 export default function App() {
   return (
@@ -21,7 +24,10 @@ export default function App() {
           <Route path="health-outcomes" element={<HealthOutcomes />} />
           <Route path="healthcare-access" element={<HealthcareAccess />} />
           <Route path="population" element={<PopulationEquity />} />
+          <Route path="determinants" element={<DeterminantsExplorer />} />
           <Route path="analytics" element={<InequalityAnalytics />} />
+          <Route path="priority-areas" element={<PriorityAreas />} />
+          <Route path="research-opportunities" element={<ResearchOpportunities />} />
           <Route path="explorer" element={<DataExplorer />} />
           <Route path="methodology" element={<Methodology />} />
         </Route>

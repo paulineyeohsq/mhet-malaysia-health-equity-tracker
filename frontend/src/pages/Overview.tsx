@@ -5,6 +5,7 @@ import SourceNote from "../components/SourceNote";
 import LineChartCard from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
 import EquityGapBanner from "../components/EquityGapBanner";
+import EntryPointCards from "../components/EntryPointCards";
 import { useData } from "../lib/useData";
 
 interface NationalRow {
@@ -78,18 +79,35 @@ export default function Overview() {
   return (
     <div>
       <PageHeader
-        title="Malaysia Health Equity Tracker"
-        subtitle="Exploring health inequalities, socioeconomic vulnerability and healthcare access across Malaysia"
+        title="Malaysia Health Equity Observatory"
+        subtitle="Making health inequities visible. Enabling needs-driven healthcare innovation."
       />
 
       <div className="space-y-8 p-6 lg:p-10">
+        {/* Purpose */}
+        <section aria-labelledby="ov-intro">
+          <h2 id="ov-intro" className="sr-only">
+            Purpose
+          </h2>
+          <p className="max-w-3xl text-sm leading-relaxed text-ink-secondary">
+            Malaysia has diverse populations and substantial geographic and socioeconomic variation — health
+            disparities can be hidden when data are presented only as national averages. This platform integrates
+            publicly available Malaysian health, socioeconomic, demographic and healthcare-system data to support
+            health-equity exploration, research-question discovery, and evidence-informed healthcare technology
+            development.
+          </p>
+          <div className="mt-4">
+            <EntryPointCards />
+          </div>
+        </section>
+
         {/* Equity gap snapshot */}
         <EquityGapBanner />
 
         {/* Key indicators */}
         <section aria-labelledby="key-indicators">
           <h2 id="key-indicators" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-            National snapshot
+            Malaysia at a Glance
           </h2>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
             <StatTile
@@ -204,11 +222,44 @@ export default function Overview() {
             <li>
               This overview intentionally does not present a single composite "equity score" — see{" "}
               <a href="#/analytics" className="text-series-1 underline underline-offset-2">
-                Inequality Analytics
+                Equity Gap Analysis
               </a>{" "}
               for why, and what is measured instead.
             </li>
           </ul>
+        </section>
+
+        {/* Choose your path */}
+        <section aria-labelledby="ov-paths">
+          <h2 id="ov-paths" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            Choose your path
+          </h2>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <div className="rounded-lg border border-line-grid bg-surface p-4">
+              <h3 className="text-sm font-semibold text-ink-primary">Public health / medical researchers</h3>
+              <p className="mt-1 text-xs text-ink-secondary">Who is underserved? Where are disparities? What determinants are associated?</p>
+              <div className="mt-2 flex flex-col gap-1">
+                <a href="#/determinants" className="text-xs text-series-1 underline underline-offset-2">Determinants Explorer</a>
+                <a href="#/explorer" className="text-xs text-series-1 underline underline-offset-2">Data Explorer</a>
+              </div>
+            </div>
+            <div className="rounded-lg border border-line-grid bg-surface p-4">
+              <h3 className="text-sm font-semibold text-ink-primary">Engineers / data scientists</h3>
+              <p className="mt-1 text-xs text-ink-secondary">What measurable problem exists? What populations should technology target?</p>
+              <div className="mt-2 flex flex-col gap-1">
+                <a href="#/research-opportunities" className="text-xs text-series-1 underline underline-offset-2">Research Opportunities</a>
+                <a href="#/priority-areas" className="text-xs text-series-1 underline underline-offset-2">Priority Areas</a>
+              </div>
+            </div>
+            <div className="rounded-lg border border-line-grid bg-surface p-4">
+              <h3 className="text-sm font-semibold text-ink-primary">Policy / healthcare stakeholders</h3>
+              <p className="mt-1 text-xs text-ink-secondary">Where are the priority areas? What evidence gaps remain?</p>
+              <div className="mt-2 flex flex-col gap-1">
+                <a href="#/priority-areas" className="text-xs text-series-1 underline underline-offset-2">Priority Areas</a>
+                <a href="#/analytics" className="text-xs text-series-1 underline underline-offset-2">Equity Gap Analysis</a>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* Data coverage */}

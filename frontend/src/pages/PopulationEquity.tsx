@@ -17,6 +17,8 @@ import BarRankingCard from "../components/BarRankingCard";
 import DataTable, { type Column } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
 import { useData } from "../lib/useData";
+import { computeGroupMeanGap, fmt, type Row } from "../lib/equity";
+import { MALAYSIA_STATES, EAST_MALAYSIA_STATES, PENINSULAR_STATES } from "../lib/geoConstants";
 
 interface PopStateRow {
   state: string;
@@ -41,6 +43,15 @@ interface PopDistrictRow {
   age_65_above: number | null;
 }
 
+interface NutritionRow {
+  year: number;
+  sex: string;
+  indicator: string;
+  range: string;
+  description: string;
+  prevalence_pct: number | null;
+}
+
 const SERIES_COLORS = [
   "#2a78d6", // series-1
   "#eb6834", // series-2
@@ -51,9 +62,16 @@ const SERIES_COLORS = [
   "#4a3aa7", // series-7
 ];
 
+const GROUP_FIELDS = [
+  { id: "total", label: "Total population", sex: "overall" as const },
+  { id: "male", label: "Male population", sex: "male" as const },
+  { id: "female", label: "Female population", sex: "female" as const },
+];
+
 export default function PopulationEquity() {
   const { data: popState } = useData<PopStateRow[]>("population_state.json");
   const { data: popDistrict } = useData<PopDistrictRow[]>("population_district.json");
+  const { data: nutrition } = useData<NutritionRow[]>("nutrition_national.json");
 
   // ---- Derived year lists ----
   const stateYears = useMemo(
@@ -67,6 +85,42 @@ export default function PopulationEquity() {
     [popDistrict]
   );
   const latestCensusYear = censusYears.length ? censusYears[censusYears.length - 1] : null;
+
+  // ---- WHO: Compare Group A vs Group B (population STRUCTURE by geography —
+  // this dataset has no demographic-subgroup health rates, so this compares
+  // real population counts across two user-chosen sets of states, not
+  // health outcomes by population group). ----
+  const [groupFieldId, setGroupFieldId] = useState<(typeof GROUP_FIELDS)[number]["id"]>("total");
+  const [groupA, setGroupA] = useState<string[]>(EAST_MALAYSIA_STATES);
+  const [groupB, setGroupB] = useState<string[]>(PENINSULAR_STATES);
+  const groupField = GROUP_FIELDS.find((f) => f.id === groupFieldId)!;
+
+  const groupFieldRows: Row[] | null = useMemo(() => {
+    if (!popState) return null;
+    return popState.filter((r) => r.sex === groupField.sex) as unknown as Row[];
+  }, [popState, groupField]);
+
+  const groupComparison = useMemo(
+    () => computeGroupMeanGap(groupFieldRows, latestStateYear, "population_thousands", groupA, "Group A", groupB, "Group B"),
+    [groupFieldRows, latestStateYear, groupA, groupB]
+  );
+
+  // ---- Sex-disaggregated health indicator: the ONLY real sex-stratified
+  // health field in this dataset (nutrition_national.json), national-level,
+  // single 2019 survey — never confused with the all-population state-level
+  // indicators used everywhere else on this dashboard. ----
+  const nutritionBySex = useMemo(() => {
+    if (!nutrition) return [];
+    return nutrition.filter((r) => r.sex === "male" || r.sex === "female");
+  }, [nutrition]);
+  const nutritionYear = nutrition && nutrition.length > 0 ? nutrition[0].year : null;
+  const nutritionTableColumns: Column[] = [
+    { key: "indicator", label: "Indicator" },
+    { key: "range", label: "Range" },
+    { key: "description", label: "Status" },
+    { key: "sex", label: "Sex" },
+    { key: "prevalence_pct", label: "Prevalence (%)", numeric: true },
+  ];
 
   // ---- National KPI tiles (from state file, latest year) ----
   const nationalSnapshot = useMemo(() => {
@@ -265,6 +319,109 @@ export default function PopulationEquity() {
       />
 
       <div className="space-y-8 p-6 lg:p-10">
+        {/* Data availability note */}
+        <div className="rounded-lg border border-line-axis bg-plane p-3 text-xs leading-relaxed text-ink-secondary">
+          <strong className="text-ink-primary">Not available on this page:</strong> urban/rural comparisons (no such
+          field exists in any source dataset used here) and confidence intervals/margins of error (every figure
+          below is a single published point estimate, not a survey estimate with reported uncertainty).
+        </div>
+
+        {/* WHO: Compare Group A vs Group B */}
+        <section aria-labelledby="pop-group-compare">
+          <h2 id="pop-group-compare" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            Compare Group A vs Group B
+          </h2>
+          <p className="mb-3 max-w-3xl text-sm text-ink-secondary">
+            This compares real <strong>population structure by geography</strong> — this dataset has no health or
+            socioeconomic outcome broken down by demographic subgroup, so "Group A vs Group B" here means two
+            user-chosen sets of states, not two demographic groups within a state.
+          </p>
+          <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
+            <div>
+              <label htmlFor="group-field" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Field
+              </label>
+              <select
+                id="group-field"
+                value={groupFieldId}
+                onChange={(e) => setGroupFieldId(e.target.value as (typeof GROUP_FIELDS)[number]["id"])}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                {GROUP_FIELDS.map((f) => (
+                  <option key={f.id} value={f.id}>
+                    {f.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="group-a" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Group A ({groupA.length} states)
+              </label>
+              <select
+                id="group-a"
+                multiple
+                value={groupA}
+                onChange={(e) => setGroupA(Array.from(e.target.selectedOptions, (o) => o.value))}
+                className="mt-1 h-32 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                {MALAYSIA_STATES.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="group-b" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Group B ({groupB.length} states)
+              </label>
+              <select
+                id="group-b"
+                multiple
+                value={groupB}
+                onChange={(e) => setGroupB(Array.from(e.target.selectedOptions, (o) => o.value))}
+                className="mt-1 h-32 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                {MALAYSIA_STATES.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <p className="max-w-xs text-xs text-ink-muted">
+              Defaults to East Malaysia vs Peninsular — a dashboard-defined grouping, not an official statistical
+              category. Ctrl/Cmd-click to change selection.
+            </p>
+          </div>
+          {groupComparison ? (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <StatTile
+                label="Group A mean"
+                value={fmt(groupComparison.meanA, 1)}
+                unit="thousand"
+                sublabel={`n=${groupComparison.nA} states — no CI available`}
+              />
+              <StatTile
+                label="Group B mean"
+                value={fmt(groupComparison.meanB, 1)}
+                unit="thousand"
+                sublabel={`n=${groupComparison.nB} states — no CI available`}
+              />
+              <StatTile label="Absolute difference" value={fmt(groupComparison.diff, 1)} unit="thousand" />
+              <StatTile
+                label="Relative ratio"
+                value={groupComparison.ratio !== null ? `${fmt(groupComparison.ratio, 2)}×` : "—"}
+                sublabel={groupComparison.ratio !== null ? "Higher mean ÷ lower mean" : "Undefined — a group mean is 0"}
+              />
+            </div>
+          ) : (
+            <InsufficientData reason="Not enough states with data in both groups for the selected field/year." />
+          )}
+          <SourceNote sourceKey="population" year={latestStateYear ?? undefined} />
+        </section>
+
         {/* KPI tiles */}
         <section aria-labelledby="pop-kpis">
           <h2 id="pop-kpis" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
@@ -432,6 +589,25 @@ export default function PopulationEquity() {
             <InsufficientData reason="No age data available for this selection." />
           )}
           <SourceNote sourceKey="census" year={effectiveAgeYear ?? undefined} extra="Aggregated from district-level census rows" />
+        </section>
+
+        {/* Sex-disaggregated health indicator — the one real exception in this dataset */}
+        <section aria-labelledby="pop-sex-health">
+          <h2 id="pop-sex-health" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            Sex-disaggregated health indicator
+          </h2>
+          <p className="mb-3 max-w-3xl text-xs text-ink-muted">
+            Nutritional status of children under 5 is the <strong>only</strong> health indicator in this dataset
+            broken down by sex — national level only, a single NHMS {nutritionYear ?? "2019"} survey. Every other
+            health/healthcare indicator on this dashboard is all-population and state-level; it is never
+            sex-disaggregated. Do not read this table as representative of any other indicator.
+          </p>
+          {nutritionBySex.length > 0 ? (
+            <DataTable columns={nutritionTableColumns} rows={nutritionBySex as unknown as Record<string, unknown>[]} pageSize={12} />
+          ) : (
+            <InsufficientData reason="No sex-disaggregated health data available." />
+          )}
+          <SourceNote sourceKey="nutrition" year={nutritionYear ?? undefined} />
         </section>
 
         {/* Ethnicity composition — strictly standalone */}

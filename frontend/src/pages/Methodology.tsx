@@ -45,7 +45,7 @@ export default function Methodology() {
         <section aria-labelledby="m-purpose">
           <H2 id="m-purpose">1. Purpose and research question</H2>
           <P>
-            The Malaysia Health Equity Tracker was built to answer one guiding question:{" "}
+            The Malaysia Health Equity Observatory (MY-HEO) was built to answer one guiding question:{" "}
             <span className="font-medium text-ink-primary">
               where are health inequalities greatest in Malaysia, who is affected, and how do socioeconomic
               conditions relate to health outcomes?

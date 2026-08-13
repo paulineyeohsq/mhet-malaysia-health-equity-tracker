@@ -155,6 +155,28 @@ export function computeGroupMeanGap(
   };
 }
 
+export interface AverageResult {
+  mean: number;
+  n: number;
+}
+
+/**
+ * Mean of `valueField` across the given rows for one year — used for "vs.
+ * Malaysia average" (pass all rows) / "vs. state average" (pass rows
+ * pre-filtered to one state's districts) comparisons. Only real reported
+ * values are averaged; missing rows are excluded from both the mean and the
+ * count, never treated as 0.
+ */
+export function computeAverage(rows: Row[] | null, year: number | null, valueField: string): AverageResult | null {
+  if (!rows || year === null) return null;
+  const values = rows
+    .filter((r) => r.year === year)
+    .map((r) => r[valueField])
+    .filter((v): v is number => typeof v === "number");
+  if (values.length === 0) return null;
+  return { mean: values.reduce((s, v) => s + v, 0) / values.length, n: values.length };
+}
+
 /**
  * Tercile breakpoints of a numeric array: returns [p33, p67] such that values
  * <= p33 fall in the bottom third, <= p67 in the middle third, else the top

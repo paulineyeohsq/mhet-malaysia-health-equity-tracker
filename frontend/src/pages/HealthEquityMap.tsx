@@ -7,7 +7,7 @@ import InsufficientData from "../components/InsufficientData";
 import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
 import { useData } from "../lib/useData";
 import type { SOURCES } from "../lib/sources";
-import { computeTerciles } from "../lib/equity";
+import { computeTerciles, computeAverage, fmt } from "../lib/equity";
 
 type Geography = "state" | "district";
 
@@ -95,6 +95,18 @@ export default function HealthEquityMap() {
     if (!rows || !selectedName || effectiveYear === null) return null;
     return rows.find((r) => r[nameField] === selectedName && r.year === effectiveYear) ?? null;
   }, [rows, selectedName, effectiveYear, nameField]);
+
+  // WHERE: "vs. Malaysia average" / "vs. state average" comparisons for the detail panel.
+  const nationalAverage = useMemo(() => computeAverage(rows, effectiveYear, valueField), [rows, effectiveYear, valueField]);
+  const parentState = geography === "district" && selectedRow ? (selectedRow.state as string | undefined) : undefined;
+  const parentStateAverage = useMemo(() => {
+    if (!parentState || !rows) return null;
+    return computeAverage(
+      rows.filter((r) => r.state === parentState),
+      effectiveYear,
+      valueField
+    );
+  }, [parentState, rows, effectiveYear, valueField]);
 
   const geo = geography === "district" ? districtGeo : stateGeo;
   const indicatorSupportsGeography = indicator.geographies.includes(geography);
@@ -237,6 +249,10 @@ export default function HealthEquityMap() {
                 Grey areas indicate no data for this indicator/year/geography — this is shown explicitly rather than
                 left blank, per this dashboard's data integrity policy.
               </p>
+              <p className="mt-1 text-xs text-ink-muted">
+                Rank order reflects magnitude of this one indicator only — it is not a statement of which area is
+                doing better or worse overall.
+              </p>
             </div>
 
             {/* Detail panel */}
@@ -262,6 +278,30 @@ export default function HealthEquityMap() {
                     <dt className="text-ink-secondary">Geography</dt>
                     <dd className="capitalize">{geography}</dd>
                   </div>
+                  {typeof selectedRow[valueField] === "number" && nationalAverage && (
+                    <div className="flex justify-between border-t border-line-grid pt-2">
+                      <dt className="text-ink-secondary">vs. Malaysia average</dt>
+                      <dd className="tabular-nums text-ink-primary">
+                        {(selectedRow[valueField] as number) - nationalAverage.mean >= 0 ? "+" : ""}
+                        {fmt((selectedRow[valueField] as number) - nationalAverage.mean, 1)} {indicator.unit}
+                        <span className="ml-1 text-xs text-ink-muted">
+                          (avg {fmt(nationalAverage.mean, 1)}, n={nationalAverage.n})
+                        </span>
+                      </dd>
+                    </div>
+                  )}
+                  {parentState && typeof selectedRow[valueField] === "number" && parentStateAverage && (
+                    <div className="flex justify-between">
+                      <dt className="text-ink-secondary">vs. {parentState} average</dt>
+                      <dd className="tabular-nums text-ink-primary">
+                        {(selectedRow[valueField] as number) - parentStateAverage.mean >= 0 ? "+" : ""}
+                        {fmt((selectedRow[valueField] as number) - parentStateAverage.mean, 1)} {indicator.unit}
+                        <span className="ml-1 text-xs text-ink-muted">
+                          (avg {fmt(parentStateAverage.mean, 1)}, n={parentStateAverage.n})
+                        </span>
+                      </dd>
+                    </div>
+                  )}
                 </dl>
               ) : selectedName ? (
                 <InsufficientData reason="No record for this region/year combination." />

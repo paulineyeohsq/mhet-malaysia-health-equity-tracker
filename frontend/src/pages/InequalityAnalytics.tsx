@@ -17,9 +17,12 @@ import SourceNote from "../components/SourceNote";
 import BarRankingCard from "../components/BarRankingCard";
 import DataTable, { type Column } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
+import MetadataPanel from "../components/MetadataPanel";
 import { useData } from "../lib/useData";
 import type { SOURCES } from "../lib/sources";
-import { computeGapStats, yearsWithCoverage, fmt, type Row } from "../lib/equity";
+import { computeGapStats, computeAverage, yearsWithCoverage, fmt, type Row } from "../lib/equity";
+import { MALAYSIA_STATES } from "../lib/geoConstants";
+import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 interface SocioeconomicRow {
   state: string;
@@ -285,6 +288,88 @@ export default function InequalityAnalytics() {
   );
   const secondaryIndicators = OUTCOME_INDICATORS.filter((i) => GAP_SECONDARY_IDS.includes(i.id) && i.id !== primaryId);
 
+  // Equity gap summary table: every OUTCOME_INDICATORS field at once, each
+  // computed against a user-chosen reference (national average / best state /
+  // a specific named state) rather than always "highest vs lowest."
+  type ReferenceMode = "average" | "best" | "specific";
+  const [referenceMode, setReferenceMode] = useState<ReferenceMode>("average");
+  const [referenceState, setReferenceState] = useState<string>(MALAYSIA_STATES[0]);
+
+  const gapSummaryRows = useMemo(() => {
+    return OUTCOME_INDICATORS.map((ind) => {
+      const rows = (ind.file === "health_outcomes_state.json" ? healthOutcomes : healthcareAccess) ?? null;
+      const years = yearsWithCoverage(rows, ind.valueField);
+      const year = years[0] ?? null;
+      const stats = computeGapStats(rows, year, ind.valueField, ind.higherIsWorse);
+      if (!stats || year === null) {
+        return { indicator: ind, year, available: false as const };
+      }
+
+      let referenceValue: number | null = null;
+      let referenceLabel = "";
+      if (referenceMode === "average") {
+        const avg = computeAverage(rows, year, ind.valueField);
+        referenceValue = avg?.mean ?? null;
+        referenceLabel = avg ? `Malaysia average (n=${avg.n})` : "Malaysia average";
+      } else if (referenceMode === "best") {
+        referenceValue = stats.bestValue;
+        referenceLabel = `${stats.bestState} (best)`;
+      } else {
+        const row = rows?.find((r) => r.state === referenceState && r.year === year);
+        const v = row ? row[ind.valueField] : undefined;
+        referenceValue = typeof v === "number" ? v : null;
+        referenceLabel = referenceState;
+      }
+      if (referenceValue === null) {
+        return { indicator: ind, year, available: false as const };
+      }
+
+      const groupValue = stats.worstValue;
+      const absDiff = Math.abs(groupValue - referenceValue);
+      const ratio =
+        referenceValue !== 0 && groupValue !== 0
+          ? Math.max(groupValue, referenceValue) / Math.min(groupValue, referenceValue)
+          : null;
+      return {
+        indicator: ind,
+        year,
+        available: true as const,
+        groupLabel: stats.worstState,
+        groupValue,
+        referenceLabel,
+        referenceValue,
+        absDiff,
+        ratio,
+      };
+    });
+  }, [healthOutcomes, healthcareAccess, referenceMode, referenceState]);
+
+  const gapSummaryColumns: Column[] = [
+    { key: "outcome", label: "Health outcome" },
+    { key: "group_area", label: "Group/area" },
+    { key: "reference_area", label: "Reference group/area" },
+    { key: "absolute_gap", label: "Absolute gap" },
+    { key: "relative_gap", label: "Relative gap" },
+  ];
+
+  const gapSummaryTableRows = gapSummaryRows.map((r) =>
+    r.available
+      ? {
+          outcome: `${r.indicator.label} (${r.year})`,
+          group_area: r.groupLabel,
+          reference_area: r.referenceLabel,
+          absolute_gap: `${fmt(r.absDiff, r.indicator.decimals)} ${r.indicator.unit}`,
+          relative_gap: r.ratio !== null ? `${fmt(r.ratio, 2)}×` : "Undefined (0 value)",
+        }
+      : {
+          outcome: r.indicator.label,
+          group_area: null,
+          reference_area: null,
+          absolute_gap: "Insufficient data",
+          relative_gap: "Insufficient data",
+        }
+  );
+
   // Sections: socioeconomic gradient (SII/RII) and concentration index share the same selection
   const [sesId, setSesId] = useState("mmr");
   const [sesYear, setSesYear] = useState(2022);
@@ -320,7 +405,7 @@ export default function InequalityAnalytics() {
   return (
     <div>
       <PageHeader
-        title="Inequality Analytics"
+        title="Equity Gap Analysis"
         subtitle="Recognized health-inequality measures, applied only where this dashboard's real state-level data meets each measure's statistical assumptions."
       />
 
@@ -342,6 +427,66 @@ export default function InequalityAnalytics() {
             page for full data provenance and limitations.
           </p>
         </div>
+
+        {/* Equity gap summary — all outcomes at once, against a chosen reference */}
+        <section aria-labelledby="gap-summary-section">
+          <h2 id="gap-summary-section" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            Equity gap summary
+          </h2>
+          <div className="mb-3 rounded-md border border-line-axis bg-plane p-3 text-xs leading-relaxed text-ink-secondary">
+            <strong className="text-ink-primary">Methodology.</strong> For each outcome below, "Group/area" is the
+            most disadvantaged state for that outcome in its own most recent year with full state coverage.
+            "Absolute gap" = |group value − reference value|. "Relative gap" = higher value ÷ lower value between
+            the group and the reference (always ≥ 1×), undefined when either value is 0.
+          </div>
+          <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
+            <div>
+              <label htmlFor="ref-mode" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Reference
+              </label>
+              <select
+                id="ref-mode"
+                value={referenceMode}
+                onChange={(e) => setReferenceMode(e.target.value as ReferenceMode)}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                <option value="average">Malaysia average</option>
+                <option value="best">Best-performing state (per outcome)</option>
+                <option value="specific">A specific state</option>
+              </select>
+            </div>
+            {referenceMode === "specific" && (
+              <div>
+                <label htmlFor="ref-state" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                  State
+                </label>
+                <select
+                  id="ref-state"
+                  value={referenceState}
+                  onChange={(e) => setReferenceState(e.target.value)}
+                  className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+                >
+                  {MALAYSIA_STATES.map((s) => (
+                    <option key={s} value={s}>
+                      {s}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+          <DataTable columns={gapSummaryColumns} rows={gapSummaryTableRows} searchable={false} pageSize={10} />
+          <div className="mt-4">
+            <MetadataPanel
+              datasetIds={Array.from(
+                new Set([
+                  ...(INVENTORY_MAP["health_outcomes_state.json"] ?? []),
+                  ...(INVENTORY_MAP["healthcare_access_state.json"] ?? []),
+                ])
+              )}
+            />
+          </div>
+        </section>
 
         {/* Absolute & relative gap */}
         <section aria-labelledby="gap-section">
