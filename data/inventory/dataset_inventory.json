@@ -396,6 +396,7 @@
     }
   ],
   "identified_but_not_yet_ingested": [
+    {"id": "nhms_older_persons_2025", "name": "Older Persons Health — Diabetes, Hypertension, Hypercholesterolaemia, Dementia, Frailty (NHMS 2025)", "reason": "Confirmed during a 2026-08-13 check of iku.nih.gov.my/nhms2025: a new NHMS 2025 survey of adults aged 60+ exists, covering diabetes/hypertension/hypercholesterolaemia specifically in that age group plus dementia, cognitive impairment, depression, falls, frailty and caregiver burden — a genuinely new population subgroup (older persons) not otherwise represented in this dataset. Only a national-level fact sheet and key-findings infographic are published so far (iku.nih.gov.my/images/nhms-2025/factsheet_eng.pdf, checked directly — 0 state-name mentions across the whole document); no state-disaggregated technical report exists yet. Re-check this source when a full technical report is published — historically (NHMS 2019/2023) that has lagged the fact sheet by roughly a year."},
     {"id": "population_parlimen", "name": "Population by Parliamentary Constituency", "reason": "Different geography (electoral, not administrative) — out of scope for this state/district-focused build."},
     {"id": "population_dun", "name": "Population by State Legislative Assembly", "reason": "Same as above."},
     {"id": "hies_malaysia_percentile", "name": "Household Income by Percentile", "reason": "Would enable a concentration-index calculation for Page 7 but requires percentile-level micro-aggregates not yet pulled."},
