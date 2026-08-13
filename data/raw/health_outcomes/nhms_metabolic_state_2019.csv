@@ -1,0 +1,69 @@
+state,date,indicator,n,estimated_population,prevalence_pct,ci_lower,ci_upper,unreliable_estimate
+Malaysia,2019-01-01,raised_blood_glucose,2629,3891965,18.3,17.08,19.58,0
+Johor,2019-01-01,raised_blood_glucose,217,477575,19.7,15.92,24.16,0
+Kedah,2019-01-01,raised_blood_glucose,159,319229,24.9,20.71,29.58,0
+Kelantan,2019-01-01,raised_blood_glucose,147,219012,19.5,15.37,24.54,0
+Melaka,2019-01-01,raised_blood_glucose,151,101214,17.0,12.48,22.64,0
+Negeri Sembilan,2019-01-01,raised_blood_glucose,235,234203,33.2,25.06,42.54,0
+Pahang,2019-01-01,raised_blood_glucose,196,262249,25.7,21.11,30.99,0
+Pulau Pinang,2019-01-01,raised_blood_glucose,178,228349,18.2,12.48,25.76,0
+Perak,2019-01-01,raised_blood_glucose,128,272611,17.6,14.14,21.77,0
+Perlis,2019-01-01,raised_blood_glucose,221,52184,32.6,25.97,40.09,0
+Selangor,2019-01-01,raised_blood_glucose,264,824168,18.0,14.81,21.67,0
+Terengganu,2019-01-01,raised_blood_glucose,178,152036,20.5,16.99,24.60,0
+Sabah,2019-01-01,raised_blood_glucose,121,252422,9.8,7.40,12.91,0
+Sarawak,2019-01-01,raised_blood_glucose,124,242395,13.1,10.58,16.13,0
+WP Kuala Lumpur,2019-01-01,raised_blood_glucose,120,233230,18.0,13.88,22.91,0
+WP Labuan,2019-01-01,raised_blood_glucose,69,7992,12.6,8.57,18.19,0
+WP Putrajaya,2019-01-01,raised_blood_glucose,121,13095,22.9,18.80,27.54,0
+Malaysia,2019-01-01,raised_blood_pressure,4056,6382865,30.0,28.57,31.50,0
+Johor,2019-01-01,raised_blood_pressure,327,662983,27.4,23.25,31.92,0
+Kedah,2019-01-01,raised_blood_pressure,196,362563,28.3,23.52,33.53,0
+Kelantan,2019-01-01,raised_blood_pressure,274,415624,37.1,33.26,41.11,0
+Melaka,2019-01-01,raised_blood_pressure,271,191255,32.1,28.27,36.09,0
+Negeri Sembilan,2019-01-01,raised_blood_pressure,229,222546,31.6,26.65,36.95,0
+Pahang,2019-01-01,raised_blood_pressure,229,303347,29.9,25.07,35.13,0
+Pulau Pinang,2019-01-01,raised_blood_pressure,225,314504,25.1,19.04,32.24,0
+Perak,2019-01-01,raised_blood_pressure,276,548853,35.5,30.14,41.23,0
+Perlis,2019-01-01,raised_blood_pressure,226,47794,29.9,25.87,34.26,0
+Selangor,2019-01-01,raised_blood_pressure,417,1269300,27.7,24.11,31.60,0
+Terengganu,2019-01-01,raised_blood_pressure,257,250881,33.9,30.31,37.66,0
+Sabah,2019-01-01,raised_blood_pressure,314,653566,25.4,20.94,30.46,0
+Sarawak,2019-01-01,raised_blood_pressure,340,749251,40.5,35.54,45.72,0
+WP Kuala Lumpur,2019-01-01,raised_blood_pressure,185,358004,27.6,23.10,32.54,0
+WP Labuan,2019-01-01,raised_blood_pressure,170,18239,28.8,24.20,33.85,0
+WP Putrajaya,2019-01-01,raised_blood_pressure,120,14154,24.7,20.61,29.36,0
+Malaysia,2019-01-01,raised_cholesterol,4809,8097170,38.1,36.15,40.00,0
+Johor,2019-01-01,raised_cholesterol,307,701750,28.9,23.40,35.08,0
+Kedah,2019-01-01,raised_cholesterol,306,628508,48.9,40.66,57.22,0
+Kelantan,2019-01-01,raised_cholesterol,326,572470,51.1,44.58,57.58,0
+Melaka,2019-01-01,raised_cholesterol,290,237087,39.7,31.34,48.79,0
+Negeri Sembilan,2019-01-01,raised_cholesterol,288,340342,48.3,41.27,55.37,0
+Pahang,2019-01-01,raised_cholesterol,290,410824,40.3,35.12,45.76,0
+Pulau Pinang,2019-01-01,raised_cholesterol,319,525070,41.8,33.85,50.30,0
+Perak,2019-01-01,raised_cholesterol,313,714671,46.2,39.02,53.58,0
+Perlis,2019-01-01,raised_cholesterol,306,75386,47.2,39.54,54.91,0
+Selangor,2019-01-01,raised_cholesterol,482,1637703,35.7,30.89,40.90,0
+Terengganu,2019-01-01,raised_cholesterol,298,302973,40.9,35.61,46.46,0
+Sabah,2019-01-01,raised_cholesterol,336,768392,29.9,25.48,34.66,0
+Sarawak,2019-01-01,raised_cholesterol,319,664065,35.9,30.22,42.04,0
+WP Kuala Lumpur,2019-01-01,raised_cholesterol,229,473337,36.4,29.19,44.39,0
+WP Labuan,2019-01-01,raised_cholesterol,168,18738,29.6,25.58,33.91,0
+WP Putrajaya,2019-01-01,raised_cholesterol,232,25855,45.3,39.42,51.22,0
+Malaysia,2019-01-01,known_hypercholesterolaemia,2015,2868124,13.5,12.51,14.51,0
+Johor,2019-01-01,known_hypercholesterolaemia,142,258212,10.6,8.62,13.05,0
+Kedah,2019-01-01,known_hypercholesterolaemia,117,216000,16.8,13.02,21.43,0
+Kelantan,2019-01-01,known_hypercholesterolaemia,93,119012,10.6,9.27,12.15,0
+Melaka,2019-01-01,known_hypercholesterolaemia,139,91977,15.4,12.05,19.51,0
+Negeri Sembilan,2019-01-01,known_hypercholesterolaemia,136,132201,18.8,13.66,25.20,0
+Pahang,2019-01-01,known_hypercholesterolaemia,85,114424,11.2,8.79,14.25,0
+Pulau Pinang,2019-01-01,known_hypercholesterolaemia,134,231596,18.5,13.72,24.36,0
+Perak,2019-01-01,known_hypercholesterolaemia,150,312701,20.2,15.79,25.53,0
+Perlis,2019-01-01,known_hypercholesterolaemia,144,28232,17.7,14.22,21.72,0
+Selangor,2019-01-01,known_hypercholesterolaemia,203,549486,12.0,9.54,14.96,0
+Terengganu,2019-01-01,known_hypercholesterolaemia,114,95911,13.0,10.47,15.92,0
+Sabah,2019-01-01,known_hypercholesterolaemia,121,215148,8.4,6.35,10.95,0
+Sarawak,2019-01-01,known_hypercholesterolaemia,155,285551,15.4,12.62,18.77,0
+WP Kuala Lumpur,2019-01-01,known_hypercholesterolaemia,112,199910,15.4,12.23,19.19,0
+WP Labuan,2019-01-01,known_hypercholesterolaemia,93,9417,14.9,12.08,18.16,0
+WP Putrajaya,2019-01-01,known_hypercholesterolaemia,77,8347,14.6,11.29,18.70,0

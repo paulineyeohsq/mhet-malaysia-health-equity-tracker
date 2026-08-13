@@ -1,0 +1,52 @@
+state,date,indicator,n,estimated_population,prevalence_pct,ci_lower,ci_upper,unreliable_estimate
+Malaysia,2019-01-01,physical_inactivity,2820,5574818,25.1,23.77,26.56,0
+Johor,2019-01-01,physical_inactivity,194,509772,20.5,16.21,25.46,0
+Kedah,2019-01-01,physical_inactivity,71,168405,12.5,9.33,16.61,0
+Kelantan,2019-01-01,physical_inactivity,191,340438,28.4,23.57,33.75,0
+Melaka,2019-01-01,physical_inactivity,212,197414,33.2,28.17,38.68,0
+Negeri Sembilan,2019-01-01,physical_inactivity,150,221486,30.5,23.79,38.18,0
+Pahang,2019-01-01,physical_inactivity,168,265754,25.0,20.62,29.87,0
+Pulau Pinang,2019-01-01,physical_inactivity,179,341751,26.7,22.11,31.75,0
+Perak,2019-01-01,physical_inactivity,223,676269,41.6,36.07,47.43,0
+Perlis,2019-01-01,physical_inactivity,141,40253,23.8,18.44,30.22,0
+Selangor,2019-01-01,physical_inactivity,282,1160563,24.2,21.12,27.59,0
+Terengganu,2019-01-01,physical_inactivity,186,231224,29.5,25.84,33.48,0
+Sabah,2019-01-01,physical_inactivity,149,439229,16.0,12.30,20.47,0
+Sarawak,2019-01-01,physical_inactivity,196,517986,27.4,23.32,31.82,0
+WP Kuala Lumpur,2019-01-01,physical_inactivity,180,426899,32.1,26.23,38.60,0
+WP Labuan,2019-01-01,physical_inactivity,111,14847,22.6,17.51,28.58,0
+WP Putrajaya,2019-01-01,physical_inactivity,187,22527,36.8,31.04,42.91,0
+Malaysia,2019-01-01,current_smoker,2064,4877697,21.3,19.86,22.75,0
+Johor,2019-01-01,current_smoker,163,566904,21.9,17.45,27.19,0
+Kedah,2019-01-01,current_smoker,148,391658,27.6,23.44,32.24,0
+Kelantan,2019-01-01,current_smoker,75,185593,15.1,11.75,19.19,0
+Melaka,2019-01-01,current_smoker,99,93976,14.9,10.63,20.49,0
+Negeri Sembilan,2019-01-01,current_smoker,99,150934,20.2,14.83,26.85,0
+Pahang,2019-01-01,current_smoker,152,255537,23.1,18.45,28.40,0
+Pulau Pinang,2019-01-01,current_smoker,127,238811,18.3,13.09,25.07,0
+Perak,2019-01-01,current_smoker,124,398269,23.8,18.64,29.81,0
+Perlis,2019-01-01,current_smoker,109,35398,20.6,16.83,24.89,0
+Selangor,2019-01-01,current_smoker,206,902041,18.5,15.27,22.22,0
+Terengganu,2019-01-01,current_smoker,155,194709,23.9,20.37,27.82,0
+Sabah,2019-01-01,current_smoker,174,729360,25.3,20.02,31.45,0
+Sarawak,2019-01-01,current_smoker,152,444764,22.2,18.62,26.28,0
+WP Kuala Lumpur,2019-01-01,current_smoker,92,268416,19.8,15.44,24.93,0
+WP Labuan,2019-01-01,current_smoker,73,7677,12.2,9.91,14.97,0
+WP Putrajaya,2019-01-01,current_smoker,116,13650,20.3,15.63,26.06,0
+Malaysia,2019-01-01,current_drinker,780,2511485,11.8,10.04,13.81,0
+Johor,2019-01-01,current_drinker,48,207793,8.6,5.78,12.49,0
+Kedah,2019-01-01,current_drinker,23,59611,4.6,2.30,9.15,1
+Kelantan,2019-01-01,current_drinker,6,9248,0.8,0.21,3.19,1
+Melaka,2019-01-01,current_drinker,10,16542,2.8,0.84,8.72,1
+Negeri Sembilan,2019-01-01,current_drinker,24,31516,4.5,2.47,7.97,0
+Pahang,2019-01-01,current_drinker,22,31904,3.1,1.59,6.08,1
+Pulau Pinang,2019-01-01,current_drinker,43,175958,14.0,6.72,26.97,1
+Perak,2019-01-01,current_drinker,37,142501,9.2,5.22,15.76,0
+Perlis,2019-01-01,current_drinker,5,775,0.5,0.14,1.70,1
+Selangor,2019-01-01,current_drinker,72,456211,10.0,6.02,16.02,0
+Terengganu,2019-01-01,current_drinker,3,950,0.1,0.03,0.62,1
+Sabah,2019-01-01,current_drinker,143,517407,20.1,13.35,29.15,0
+Sarawak,2019-01-01,current_drinker,196,601692,32.5,25.81,39.90,0
+WP Kuala Lumpur,2019-01-01,current_drinker,83,251082,19.3,11.65,30.35,0
+WP Labuan,2019-01-01,current_drinker,63,8060,12.7,8.15,19.32,0
+WP Putrajaya,2019-01-01,current_drinker,2,237,0.4,0.07,2.37,1

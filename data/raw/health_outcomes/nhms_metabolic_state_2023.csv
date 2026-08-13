@@ -1,0 +1,145 @@
+state,date,indicator,n,estimated_population,prevalence_pct,ci_lower,ci_upper,unreliable_estimate
+Johor,2023-01-01,raised_blood_glucose,,,18.0,,,0
+Kedah,2023-01-01,raised_blood_glucose,,,17.1,,,0
+Kelantan,2023-01-01,raised_blood_glucose,,,15.6,,,0
+Melaka,2023-01-01,raised_blood_glucose,,,20.5,,,0
+Negeri Sembilan,2023-01-01,raised_blood_glucose,,,14.0,,,0
+Pahang,2023-01-01,raised_blood_glucose,,,24.7,,,0
+Pulau Pinang,2023-01-01,raised_blood_glucose,,,18.4,,,0
+Perak,2023-01-01,raised_blood_glucose,,,16.8,,,0
+Perlis,2023-01-01,raised_blood_glucose,,,19.4,,,0
+Selangor,2023-01-01,raised_blood_glucose,,,11.3,,,0
+Terengganu,2023-01-01,raised_blood_glucose,,,15.9,,,0
+Sabah,2023-01-01,raised_blood_glucose,,,9.5,,,0
+Sarawak,2023-01-01,raised_blood_glucose,,,13.4,,,0
+WP Kuala Lumpur,2023-01-01,raised_blood_glucose,,,10.5,,,0
+WP Labuan,2023-01-01,raised_blood_glucose,,,18.1,,,0
+WP Putrajaya,2023-01-01,raised_blood_glucose,,,12.0,,,0
+Johor,2023-01-01,known_diabetes,,,8.7,,,0
+Kedah,2023-01-01,known_diabetes,,,10.0,,,0
+Kelantan,2023-01-01,known_diabetes,,,9.5,,,0
+Melaka,2023-01-01,known_diabetes,,,13.4,,,0
+Negeri Sembilan,2023-01-01,known_diabetes,,,8.9,,,0
+Pahang,2023-01-01,known_diabetes,,,13.3,,,0
+Pulau Pinang,2023-01-01,known_diabetes,,,11.3,,,0
+Perak,2023-01-01,known_diabetes,,,11.4,,,0
+Perlis,2023-01-01,known_diabetes,,,12.6,,,0
+Selangor,2023-01-01,known_diabetes,,,8.4,,,0
+Terengganu,2023-01-01,known_diabetes,,,10.9,,,0
+Sabah,2023-01-01,known_diabetes,,,4.8,,,0
+Sarawak,2023-01-01,known_diabetes,,,8.6,,,0
+WP Kuala Lumpur,2023-01-01,known_diabetes,,,8.3,,,0
+WP Labuan,2023-01-01,known_diabetes,,,5.6,,,0
+WP Putrajaya,2023-01-01,known_diabetes,,,9.2,,,0
+Johor,2023-01-01,undiagnosed_diabetes,,,9.4,,,0
+Kedah,2023-01-01,undiagnosed_diabetes,,,7.0,,,0
+Kelantan,2023-01-01,undiagnosed_diabetes,,,6.1,,,0
+Melaka,2023-01-01,undiagnosed_diabetes,,,7.1,,,0
+Negeri Sembilan,2023-01-01,undiagnosed_diabetes,,,5.1,,,0
+Pahang,2023-01-01,undiagnosed_diabetes,,,11.4,,,0
+Pulau Pinang,2023-01-01,undiagnosed_diabetes,,,7.1,,,0
+Perak,2023-01-01,undiagnosed_diabetes,,,5.4,,,0
+Perlis,2023-01-01,undiagnosed_diabetes,,,6.8,,,0
+Selangor,2023-01-01,undiagnosed_diabetes,,,2.9,,,0
+Terengganu,2023-01-01,undiagnosed_diabetes,,,5.0,,,0
+Sabah,2023-01-01,undiagnosed_diabetes,,,4.6,,,0
+Sarawak,2023-01-01,undiagnosed_diabetes,,,4.8,,,0
+WP Kuala Lumpur,2023-01-01,undiagnosed_diabetes,,,2.2,,,0
+WP Labuan,2023-01-01,undiagnosed_diabetes,,,12.5,,,0
+WP Putrajaya,2023-01-01,undiagnosed_diabetes,,,2.8,,,0
+Johor,2023-01-01,raised_blood_pressure,,,29.4,,,0
+Kedah,2023-01-01,raised_blood_pressure,,,28.7,,,0
+Kelantan,2023-01-01,raised_blood_pressure,,,26.4,,,0
+Melaka,2023-01-01,raised_blood_pressure,,,30.9,,,0
+Negeri Sembilan,2023-01-01,raised_blood_pressure,,,20.7,,,0
+Pahang,2023-01-01,raised_blood_pressure,,,35.1,,,0
+Pulau Pinang,2023-01-01,raised_blood_pressure,,,31.3,,,0
+Perak,2023-01-01,raised_blood_pressure,,,31.6,,,0
+Perlis,2023-01-01,raised_blood_pressure,,,36.9,,,0
+Selangor,2023-01-01,raised_blood_pressure,,,22.3,,,0
+Terengganu,2023-01-01,raised_blood_pressure,,,24.0,,,0
+Sabah,2023-01-01,raised_blood_pressure,,,27.9,,,0
+Sarawak,2023-01-01,raised_blood_pressure,,,36.8,,,0
+WP Kuala Lumpur,2023-01-01,raised_blood_pressure,,,21.3,,,0
+WP Labuan,2023-01-01,raised_blood_pressure,,,30.0,,,0
+WP Putrajaya,2023-01-01,raised_blood_pressure,,,27.2,,,0
+Johor,2023-01-01,known_hypertension,,,14.7,,,0
+Kedah,2023-01-01,known_hypertension,,,17.4,,,0
+Kelantan,2023-01-01,known_hypertension,,,14.3,,,0
+Melaka,2023-01-01,known_hypertension,,,20.9,,,0
+Negeri Sembilan,2023-01-01,known_hypertension,,,13.9,,,0
+Pahang,2023-01-01,known_hypertension,,,16.2,,,0
+Pulau Pinang,2023-01-01,known_hypertension,,,18.4,,,0
+Perak,2023-01-01,known_hypertension,,,18.3,,,0
+Perlis,2023-01-01,known_hypertension,,,19.0,,,0
+Selangor,2023-01-01,known_hypertension,,,15.0,,,0
+Terengganu,2023-01-01,known_hypertension,,,13.6,,,0
+Sabah,2023-01-01,known_hypertension,,,15.2,,,0
+Sarawak,2023-01-01,known_hypertension,,,21.2,,,0
+WP Kuala Lumpur,2023-01-01,known_hypertension,,,15.1,,,0
+WP Labuan,2023-01-01,known_hypertension,,,15.3,,,0
+WP Putrajaya,2023-01-01,known_hypertension,,,19.5,,,0
+Johor,2023-01-01,undiagnosed_hypertension,,,14.7,,,0
+Kedah,2023-01-01,undiagnosed_hypertension,,,11.3,,,0
+Kelantan,2023-01-01,undiagnosed_hypertension,,,12.1,,,0
+Melaka,2023-01-01,undiagnosed_hypertension,,,10.0,,,0
+Negeri Sembilan,2023-01-01,undiagnosed_hypertension,,,6.7,,,0
+Pahang,2023-01-01,undiagnosed_hypertension,,,18.9,,,0
+Pulau Pinang,2023-01-01,undiagnosed_hypertension,,,13.0,,,0
+Perak,2023-01-01,undiagnosed_hypertension,,,13.4,,,0
+Perlis,2023-01-01,undiagnosed_hypertension,,,17.9,,,0
+Selangor,2023-01-01,undiagnosed_hypertension,,,7.3,,,0
+Terengganu,2023-01-01,undiagnosed_hypertension,,,10.4,,,0
+Sabah,2023-01-01,undiagnosed_hypertension,,,12.7,,,0
+Sarawak,2023-01-01,undiagnosed_hypertension,,,15.7,,,0
+WP Kuala Lumpur,2023-01-01,undiagnosed_hypertension,,,6.2,,,0
+WP Labuan,2023-01-01,undiagnosed_hypertension,,,14.7,,,0
+WP Putrajaya,2023-01-01,undiagnosed_hypertension,,,7.7,,,0
+Johor,2023-01-01,raised_cholesterol,,,31.4,,,0
+Kedah,2023-01-01,raised_cholesterol,,,34.2,,,0
+Kelantan,2023-01-01,raised_cholesterol,,,33.3,,,0
+Melaka,2023-01-01,raised_cholesterol,,,33.5,,,0
+Negeri Sembilan,2023-01-01,raised_cholesterol,,,23.9,,,0
+Pahang,2023-01-01,raised_cholesterol,,,41.8,,,0
+Pulau Pinang,2023-01-01,raised_cholesterol,,,34.0,,,0
+Perak,2023-01-01,raised_cholesterol,,,33.3,,,0
+Perlis,2023-01-01,raised_cholesterol,,,39.0,,,0
+Selangor,2023-01-01,raised_cholesterol,,,27.9,,,0
+Terengganu,2023-01-01,raised_cholesterol,,,34.2,,,0
+Sabah,2023-01-01,raised_cholesterol,,,33.1,,,0
+Sarawak,2023-01-01,raised_cholesterol,,,36.1,,,0
+WP Kuala Lumpur,2023-01-01,raised_cholesterol,,,23.3,,,0
+WP Labuan,2023-01-01,raised_cholesterol,,,28.0,,,0
+WP Putrajaya,2023-01-01,raised_cholesterol,,,34.5,,,0
+Johor,2023-01-01,known_hypercholesterolaemia,,,12.9,,,0
+Kedah,2023-01-01,known_hypercholesterolaemia,,,16.2,,,0
+Kelantan,2023-01-01,known_hypercholesterolaemia,,,12.6,,,0
+Melaka,2023-01-01,known_hypercholesterolaemia,,,21.0,,,0
+Negeri Sembilan,2023-01-01,known_hypercholesterolaemia,,,13.7,,,0
+Pahang,2023-01-01,known_hypercholesterolaemia,,,13.2,,,0
+Pulau Pinang,2023-01-01,known_hypercholesterolaemia,,,18.1,,,0
+Perak,2023-01-01,known_hypercholesterolaemia,,,17.5,,,0
+Perlis,2023-01-01,known_hypercholesterolaemia,,,21.1,,,0
+Selangor,2023-01-01,known_hypercholesterolaemia,,,13.5,,,0
+Terengganu,2023-01-01,known_hypercholesterolaemia,,,13.2,,,0
+Sabah,2023-01-01,known_hypercholesterolaemia,,,10.5,,,0
+Sarawak,2023-01-01,known_hypercholesterolaemia,,,16.2,,,0
+WP Kuala Lumpur,2023-01-01,known_hypercholesterolaemia,,,12.8,,,0
+WP Labuan,2023-01-01,known_hypercholesterolaemia,,,13.0,,,0
+WP Putrajaya,2023-01-01,known_hypercholesterolaemia,,,17.9,,,0
+Johor,2023-01-01,undiagnosed_hypercholesterolaemia,,,18.5,,,0
+Kedah,2023-01-01,undiagnosed_hypercholesterolaemia,,,18.0,,,0
+Kelantan,2023-01-01,undiagnosed_hypercholesterolaemia,,,20.7,,,0
+Melaka,2023-01-01,undiagnosed_hypercholesterolaemia,,,12.5,,,0
+Negeri Sembilan,2023-01-01,undiagnosed_hypercholesterolaemia,,,10.3,,,0
+Pahang,2023-01-01,undiagnosed_hypercholesterolaemia,,,28.5,,,0
+Pulau Pinang,2023-01-01,undiagnosed_hypercholesterolaemia,,,15.9,,,0
+Perak,2023-01-01,undiagnosed_hypercholesterolaemia,,,15.8,,,0
+Perlis,2023-01-01,undiagnosed_hypercholesterolaemia,,,17.8,,,0
+Selangor,2023-01-01,undiagnosed_hypercholesterolaemia,,,14.5,,,0
+Terengganu,2023-01-01,undiagnosed_hypercholesterolaemia,,,21.0,,,0
+Sabah,2023-01-01,undiagnosed_hypercholesterolaemia,,,22.6,,,0
+Sarawak,2023-01-01,undiagnosed_hypercholesterolaemia,,,19.9,,,0
+WP Kuala Lumpur,2023-01-01,undiagnosed_hypercholesterolaemia,,,10.5,,,0
+WP Labuan,2023-01-01,undiagnosed_hypercholesterolaemia,,,15.1,,,0
+WP Putrajaya,2023-01-01,undiagnosed_hypercholesterolaemia,,,16.6,,,0

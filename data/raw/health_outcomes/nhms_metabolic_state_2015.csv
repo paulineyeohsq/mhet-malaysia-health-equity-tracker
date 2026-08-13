@@ -1,0 +1,136 @@
+state,date,indicator,n,estimated_population,prevalence_pct,ci_lower,ci_upper,unreliable_estimate
+Johor,2015-01-01,raised_blood_glucose,421,472454,19.8,16.8,23.3,0
+Kedah,2015-01-01,raised_blood_glucose,336,334370,25.4,21.0,30.3,0
+Kelantan,2015-01-01,raised_blood_glucose,256,185828,18.5,15.9,21.3,0
+Melaka,2015-01-01,raised_blood_glucose,251,95518,16.7,13.5,20.6,0
+Negeri Sembilan,2015-01-01,raised_blood_glucose,306,131288,19.3,16.6,22.4,0
+Pahang,2015-01-01,raised_blood_glucose,219,147676,14.8,12.4,17.6,0
+Pulau Pinang,2015-01-01,raised_blood_glucose,288,218925,18.1,14.0,23.2,0
+Perak,2015-01-01,raised_blood_glucose,323,320042,19.4,17.1,21.9,0
+Perlis,2015-01-01,raised_blood_glucose,370,33090,20.6,18.0,23.5,0
+Selangor,2015-01-01,raised_blood_glucose,483,649586,15.5,13.8,17.4,0
+Terengganu,2015-01-01,raised_blood_glucose,257,127439,18.6,16.1,21.3,0
+Sarawak,2015-01-01,raised_blood_glucose,216,260126,14.8,12.1,18.2,0
+WP Kuala Lumpur,2015-01-01,raised_blood_glucose,136,217512,17.4,14.3,21.1,0
+WP Putrajaya,2015-01-01,raised_blood_glucose,95,9362,19.2,15.8,23.3,0
+Malaysia,2015-01-01,raised_blood_glucose,4229,3529804,17.5,16.6,18.3,0
+Johor,2015-01-01,known_diabetes,198,210510,8.8,7.3,10.7,0
+Kedah,2015-01-01,known_diabetes,142,122462,9.3,7.8,11.1,0
+Kelantan,2015-01-01,known_diabetes,112,71799,7.1,6.1,8.4,0
+Melaka,2015-01-01,known_diabetes,140,47535,8.3,6.7,10.4,0
+Negeri Sembilan,2015-01-01,known_diabetes,174,71451,10.5,8.5,12.9,0
+Pahang,2015-01-01,known_diabetes,98,62338,6.3,4.9,7.9,0
+Pulau Pinang,2015-01-01,known_diabetes,141,109040,9.0,7.3,11.1,0
+Perak,2015-01-01,known_diabetes,192,197158,11.9,9.9,14.3,0
+Perlis,2015-01-01,known_diabetes,206,17555,10.9,9.3,12.7,0
+Selangor,2015-01-01,known_diabetes,266,325876,7.8,6.6,9.1,0
+Terengganu,2015-01-01,known_diabetes,127,59422,8.7,7.0,10.7,0
+Sarawak,2015-01-01,known_diabetes,117,144868,8.3,6.3,10.8,0
+WP Kuala Lumpur,2015-01-01,known_diabetes,67,101090,8.1,6.1,10.7,0
+WP Putrajaya,2015-01-01,known_diabetes,24,2578,5.3,3.3,8.5,0
+Malaysia,2015-01-01,known_diabetes,2126,1678680,8.3,7.8,8.8,0
+Johor,2015-01-01,undiagnosed_diabetes,223,261944,11.0,8.8,13.7,0
+Kedah,2015-01-01,undiagnosed_diabetes,194,211908,16.1,12.3,20.7,0
+Kelantan,2015-01-01,undiagnosed_diabetes,144,114029,11.3,9.2,13.9,0
+Melaka,2015-01-01,undiagnosed_diabetes,111,47982,8.4,6.0,11.7,0
+Negeri Sembilan,2015-01-01,undiagnosed_diabetes,132,59837,8.8,7.2,10.8,0
+Pahang,2015-01-01,undiagnosed_diabetes,121,85338,8.6,6.4,11.3,0
+Pulau Pinang,2015-01-01,undiagnosed_diabetes,147,109885,9.1,5.9,13.9,0
+Perak,2015-01-01,undiagnosed_diabetes,131,122884,7.4,6.2,8.9,0
+Perlis,2015-01-01,undiagnosed_diabetes,164,15535,9.7,7.8,11.9,0
+Selangor,2015-01-01,undiagnosed_diabetes,217,323710,7.7,6.4,9.3,0
+Terengganu,2015-01-01,undiagnosed_diabetes,130,68017,9.9,7.6,12.9,0
+Sarawak,2015-01-01,undiagnosed_diabetes,99,115258,6.6,5.1,8.5,0
+WP Kuala Lumpur,2015-01-01,undiagnosed_diabetes,69,116422,9.3,6.9,12.5,0
+WP Putrajaya,2015-01-01,undiagnosed_diabetes,71,6784,13.9,11.1,17.4,0
+Malaysia,2015-01-01,undiagnosed_diabetes,2103,1851124,9.2,8.5,9.9,0
+Johor,2015-01-01,raised_blood_pressure,592,653917,27.4,24.6,30.4,0
+Kedah,2015-01-01,raised_blood_pressure,547,494177,37.5,33.5,41.6,0
+Kelantan,2015-01-01,raised_blood_pressure,480,340387,33.8,30.1,37.7,0
+Melaka,2015-01-01,raised_blood_pressure,388,147020,25.8,21.8,30.2,0
+Negeri Sembilan,2015-01-01,raised_blood_pressure,493,221205,32.5,28.2,37.2,0
+Pahang,2015-01-01,raised_blood_pressure,426,284288,28.5,25.2,32.1,0
+Pulau Pinang,2015-01-01,raised_blood_pressure,503,360082,29.8,26.0,33.9,0
+Perak,2015-01-01,raised_blood_pressure,610,601255,36.4,33.2,39.8,0
+Perlis,2015-01-01,raised_blood_pressure,591,56859,35.4,31.9,38.9,0
+Selangor,2015-01-01,raised_blood_pressure,789,1065750,25.5,23.4,27.7,0
+Terengganu,2015-01-01,raised_blood_pressure,380,184419,26.9,23.7,30.3,0
+Sarawak,2015-01-01,raised_blood_pressure,502,653885,37.3,33.7,41.1,0
+WP Kuala Lumpur,2015-01-01,raised_blood_pressure,248,421947,33.8,29.7,38.2,0
+WP Putrajaya,2015-01-01,raised_blood_pressure,120,11724,24.1,19.0,30.0,0
+Malaysia,2015-01-01,raised_blood_pressure,7225,6114113,30.3,29.3,31.2,0
+Johor,2015-01-01,known_hypertension,253,268154,11.2,9.6,13.2,0
+Kedah,2015-01-01,known_hypertension,204,188525,14.3,11.7,17.3,0
+Kelantan,2015-01-01,known_hypertension,165,106753,10.6,8.7,12.8,0
+Melaka,2015-01-01,known_hypertension,209,74672,13.1,10.7,15.9,0
+Negeri Sembilan,2015-01-01,known_hypertension,239,109757,16.1,12.8,20.2,0
+Pahang,2015-01-01,known_hypertension,168,106969,10.7,8.5,13.4,0
+Pulau Pinang,2015-01-01,known_hypertension,232,151684,12.6,9.9,15.8,0
+Perak,2015-01-01,known_hypertension,274,285468,17.3,14.8,20.1,0
+Perlis,2015-01-01,known_hypertension,280,22876,14.2,11.9,16.9,0
+Selangor,2015-01-01,known_hypertension,398,517517,12.4,11.1,13.8,0
+Terengganu,2015-01-01,known_hypertension,173,79147,11.5,9.4,14.1,0
+Sarawak,2015-01-01,known_hypertension,237,289551,16.5,14.1,19.3,0
+WP Kuala Lumpur,2015-01-01,known_hypertension,90,140115,11.2,8.8,14.2,0
+WP Putrajaya,2015-01-01,known_hypertension,47,4847,10.0,6.8,14.3,0
+Malaysia,2015-01-01,known_hypertension,3255,2642628,13.1,12.4,13.8,0
+Johor,2015-01-01,undiagnosed_hypertension,339,385762,16.2,14.2,18.3,0
+Kedah,2015-01-01,undiagnosed_hypertension,343,305652,23.2,19.7,27.1,0
+Kelantan,2015-01-01,undiagnosed_hypertension,315,233634,23.2,20.1,26.6,0
+Melaka,2015-01-01,undiagnosed_hypertension,179,72348,12.7,9.6,16.5,0
+Negeri Sembilan,2015-01-01,undiagnosed_hypertension,254,111448,16.4,13.8,19.3,0
+Pahang,2015-01-01,undiagnosed_hypertension,258,177320,17.8,15.4,20.4,0
+Pulau Pinang,2015-01-01,undiagnosed_hypertension,271,208398,17.2,14.0,21.1,0
+Perak,2015-01-01,undiagnosed_hypertension,336,315786,19.1,16.6,22.0,0
+Perlis,2015-01-01,undiagnosed_hypertension,311,33983,21.1,18.6,23.9,0
+Selangor,2015-01-01,undiagnosed_hypertension,391,548233,13.1,11.4,15.0,0
+Terengganu,2015-01-01,undiagnosed_hypertension,207,105273,15.3,13.0,18.1,0
+Sarawak,2015-01-01,undiagnosed_hypertension,265,364334,20.8,17.8,24.2,0
+WP Kuala Lumpur,2015-01-01,undiagnosed_hypertension,158,281832,22.6,19.0,26.7,0
+WP Putrajaya,2015-01-01,undiagnosed_hypertension,73,6878,14.1,10.4,18.9,0
+Malaysia,2015-01-01,undiagnosed_hypertension,3970,3471485,17.2,16.4,18.0,0
+Johor,2015-01-01,raised_cholesterol,910,1091941,45.8,42.1,49.5,0
+Kedah,2015-01-01,raised_cholesterol,717,705235,53.5,48.5,58.4,0
+Kelantan,2015-01-01,raised_cholesterol,676,520761,51.7,47.8,55.7,0
+Melaka,2015-01-01,raised_cholesterol,619,265922,46.6,41.1,52.2,0
+Negeri Sembilan,2015-01-01,raised_cholesterol,716,336687,49.5,45.0,54.1,0
+Pahang,2015-01-01,raised_cholesterol,720,560480,56.2,52.2,60.3,0
+Pulau Pinang,2015-01-01,raised_cholesterol,799,631103,52.2,47.4,57.0,0
+Perak,2015-01-01,raised_cholesterol,758,798247,48.3,44.9,51.7,0
+Perlis,2015-01-01,raised_cholesterol,718,75533,47.0,41.3,52.7,0
+Selangor,2015-01-01,raised_cholesterol,1244,1820676,43.5,40.5,46.6,0
+Terengganu,2015-01-01,raised_cholesterol,655,357821,52.1,47.6,56.6,0
+Sarawak,2015-01-01,raised_cholesterol,657,851642,48.6,44.8,52.4,0
+WP Kuala Lumpur,2015-01-01,raised_cholesterol,378,660428,52.9,47.7,58.1,0
+WP Putrajaya,2015-01-01,raised_cholesterol,224,22590,46.4,40.2,52.7,0
+Malaysia,2015-01-01,raised_cholesterol,10514,9641343,47.7,46.5,48.9,0
+Johor,2015-01-01,known_hypercholesterolaemia,152,167178,7.0,5.7,8.6,0
+Kedah,2015-01-01,known_hypercholesterolaemia,119,97794,7.4,5.7,9.6,0
+Kelantan,2015-01-01,known_hypercholesterolaemia,77,52942,5.3,4.0,6.9,0
+Melaka,2015-01-01,known_hypercholesterolaemia,132,48196,8.4,6.4,11.0,0
+Negeri Sembilan,2015-01-01,known_hypercholesterolaemia,173,75903,11.2,9.0,13.7,0
+Pahang,2015-01-01,known_hypercholesterolaemia,96,60703,6.1,4.4,8.4,0
+Pulau Pinang,2015-01-01,known_hypercholesterolaemia,206,146852,12.2,9.5,15.4,0
+Perak,2015-01-01,known_hypercholesterolaemia,179,195432,11.8,9.7,14.4,0
+Perlis,2015-01-01,known_hypercholesterolaemia,249,22275,13.8,11.7,16.3,0
+Selangor,2015-01-01,known_hypercholesterolaemia,301,398926,9.5,8.3,11.0,0
+Terengganu,2015-01-01,known_hypercholesterolaemia,103,52851,7.7,6.0,9.9,0
+Sarawak,2015-01-01,known_hypercholesterolaemia,161,220108,12.6,10.0,15.6,0
+WP Kuala Lumpur,2015-01-01,known_hypercholesterolaemia,67,106711,8.6,6.7,10.9,0
+WP Putrajaya,2015-01-01,known_hypercholesterolaemia,33,3452,7.1,4.3,11.5,0
+Malaysia,2015-01-01,known_hypercholesterolaemia,2223,1839960,9.1,8.6,9.7,0
+Johor,2015-01-01,undiagnosed_hypercholesterolaemia,758,924763,38.8,35.5,42.2,0
+Kedah,2015-01-01,undiagnosed_hypercholesterolaemia,598,607441,46.1,41.1,51.1,0
+Kelantan,2015-01-01,undiagnosed_hypercholesterolaemia,599,467819,46.5,42.4,50.6,0
+Melaka,2015-01-01,undiagnosed_hypercholesterolaemia,487,217726,38.1,32.6,44.0,0
+Negeri Sembilan,2015-01-01,undiagnosed_hypercholesterolaemia,543,260784,38.4,34.2,42.7,0
+Pahang,2015-01-01,undiagnosed_hypercholesterolaemia,624,499776,50.2,46.5,53.8,0
+Pulau Pinang,2015-01-01,undiagnosed_hypercholesterolaemia,593,484252,40.1,36.0,44.3,0
+Perak,2015-01-01,undiagnosed_hypercholesterolaemia,579,602815,36.5,33.0,40.1,0
+Perlis,2015-01-01,undiagnosed_hypercholesterolaemia,469,53258,33.1,28.5,38.1,0
+Selangor,2015-01-01,undiagnosed_hypercholesterolaemia,943,1421750,34.0,30.9,37.2,0
+Terengganu,2015-01-01,undiagnosed_hypercholesterolaemia,552,304970,44.4,40.0,48.9,0
+Sarawak,2015-01-01,undiagnosed_hypercholesterolaemia,496,631533,36.1,32.5,39.8,0
+WP Kuala Lumpur,2015-01-01,undiagnosed_hypercholesterolaemia,311,553717,44.4,39.7,49.2,0
+WP Putrajaya,2015-01-01,undiagnosed_hypercholesterolaemia,191,19138,39.3,34.0,44.9,0
+Malaysia,2015-01-01,undiagnosed_hypercholesterolaemia,8291,7801383,38.6,37.4,39.8,0

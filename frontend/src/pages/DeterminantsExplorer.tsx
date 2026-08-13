@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -15,9 +15,12 @@ import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
 import CorrelationCaveat from "../components/CorrelationCaveat";
 import MetadataPanel from "../components/MetadataPanel";
+import ChartToolbar from "../components/ChartToolbar";
+import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
-import { findBestYear, buildPairs, computeCorrelationStats } from "../lib/correlation";
+import { findBestYear, buildPairs, computeCorrelationStats, interpretCorrelation } from "../lib/correlation";
+import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, type FieldDef } from "../lib/determinantFields";
 import { INVENTORY_MAP } from "../lib/inventoryMap";
 
@@ -25,11 +28,15 @@ export default function DeterminantsExplorer() {
   const { data: healthOutcomes } = useData<Row[]>("health_outcomes_state.json");
   const { data: healthcareAccess } = useData<Row[]>("healthcare_access_state.json");
   const { data: socioeconomic } = useData<Row[]>("socioeconomic_state.json");
+  const { data: nhmsNcd } = useData<Row[]>("nhms_ncd_state.json");
+  const { data: nhmsAdolescentMentalHealth } = useData<Row[]>("nhms_adolescent_mental_health_state.json");
 
   const rowsByFile: Record<FieldDef["file"], Row[] | null> = {
     "health_outcomes_state.json": healthOutcomes,
     "healthcare_access_state.json": healthcareAccess,
     "socioeconomic_state.json": socioeconomic,
+    "nhms_ncd_state.json": nhmsNcd,
+    "nhms_adolescent_mental_health_state.json": nhmsAdolescentMentalHealth,
   };
 
   const [outcomeId, setOutcomeId] = useState(OUTCOME_FIELDS[0].id);
@@ -49,6 +56,47 @@ export default function DeterminantsExplorer() {
   }, [outcomeRows, determinantRows, outcome.field, determinant.field]);
 
   const stats = useMemo(() => computeCorrelationStats(correlationInput?.pairs ?? []), [correlationInput]);
+
+  const rankedPairs = useMemo(() => {
+    const pairs = correlationInput?.pairs ?? [];
+    // Ranked by the outcome (y) value — 1 = highest — so the tooltip can show
+    // "this state ranks Nth of N states on [outcome]" alongside the raw values.
+    const byOutcomeDesc = [...pairs].sort((a, b) => b.y - a.y);
+    const rankByState = new Map(byOutcomeDesc.map((p, i) => [p.state, i + 1]));
+    return pairs.map((p) => ({ ...p, rank: rankByState.get(p.state)!, n: pairs.length }));
+  }, [correlationInput]);
+
+  const interpretation = useMemo(() => (stats ? interpretCorrelation(stats.pearson) : null), [stats]);
+
+  const [showTable, setShowTable] = useState(false);
+  const [pngPending, setPngPending] = useState(false);
+  const chartRef = useRef<HTMLDivElement>(null);
+
+  const tableColumns: Column[] = [
+    { key: "state", label: "State" },
+    { key: "x", label: `${determinant.label} (${determinant.unit})`, numeric: true },
+    { key: "y", label: `${outcome.label} (${outcome.unit})`, numeric: true },
+    { key: "rank", label: `Rank on ${outcome.label}`, numeric: true },
+  ];
+
+  function handleExportCSV() {
+    const csv = toCSV(tableColumns, rankedPairs as unknown as Record<string, unknown>[]);
+    downloadCSV(`determinants_${determinant.id}_${outcome.id}.csv`, csv);
+  }
+
+  async function handleExportPNG() {
+    const svg = chartRef.current?.querySelector("svg");
+    if (!svg) return;
+    setPngPending(true);
+    try {
+      const dataUrl = await svgToPngDataUrl(svg);
+      downloadDataUrl(dataUrl, `determinants_${determinant.id}_${outcome.id}.png`);
+    } catch {
+      // Rasterization failed (e.g. unsupported browser) — CSV export still works.
+    } finally {
+      setPngPending(false);
+    }
+  }
 
   return (
     <div>
@@ -100,6 +148,30 @@ export default function DeterminantsExplorer() {
           </p>
         </div>
 
+        {outcome.sourceKey === "nhms_ncd" && (
+          <div className="rounded-lg border border-line-axis bg-plane p-3 text-xs text-ink-secondary">
+            <strong className="text-ink-primary">Survey estimate, not a registry count.</strong> Unlike this
+            explorer&apos;s other outcomes (which are administrative counts from birth/death registries),
+            this outcome comes from an NHMS household survey (2015, 2019 and/or 2023, depending on the
+            indicator) — a weighted estimate from a sample of respondents in each state. 2015/2019 figures
+            carry their own 95% confidence interval; 2023&apos;s dedicated by-state tables only publish a
+            point estimate. States with fewer survey respondents have wider, less certain estimates, and a
+            2023 figure is age-standardised while 2015/2019 are not — treat cross-year comparisons and close
+            state rankings with caution. See the data source panel below for exact table/page citations.
+          </div>
+        )}
+
+        {outcome.sourceKey === "nhms_adolescent_mental_health" && (
+          <div className="rounded-lg border border-series-1 bg-plane p-3 text-xs text-ink-secondary">
+            <strong className="text-ink-primary">Adolescents only, not the general population.</strong> This
+            outcome is from a 2017 school-based survey of secondary-school students aged 13–17 — it does not
+            represent adults or the state&apos;s population as a whole, and cannot be meaningfully compared to
+            any adult health outcome elsewhere in this explorer. Students who had already dropped out of
+            school are not represented. This is a single cross-sectional year (2017); no repeat cycle of this
+            specific survey has been identified, so no trend over time is available.
+          </div>
+        )}
+
         {!correlationInput || correlationInput.year === null || !stats ? (
           <InsufficientData
             reason={
@@ -110,59 +182,101 @@ export default function DeterminantsExplorer() {
           />
         ) : (
           <div className="grid gap-4 lg:grid-cols-3">
-            <div className="grid grid-cols-3 gap-3 lg:col-span-1 lg:grid-cols-1">
+            <div className="grid grid-cols-2 gap-3 lg:col-span-1 lg:grid-cols-1">
+              <StatTile
+                label="Strength & direction"
+                value={interpretation!.label}
+                sublabel="Qualitative read of Pearson r below"
+              />
               <StatTile label="Pearson r" value={stats.pearson.toFixed(3)} sublabel="Linear association" />
               <StatTile label="Spearman ρ" value={stats.spearman.toFixed(3)} sublabel="Rank association" />
               <StatTile label="r²" value={stats.r2.toFixed(3)} sublabel={`n = ${stats.n} states, ${correlationInput.year}`} />
             </div>
             <div className="lg:col-span-2">
               <div className="rounded-lg border border-line-grid bg-surface p-4">
-                <h3 className="mb-2 text-sm font-medium text-ink-primary">
-                  {determinant.label} vs. {outcome.label} — {correlationInput.year}
-                </h3>
-                <ResponsiveContainer width="100%" height={320}>
-                  <ComposedChart margin={{ top: 8, right: 20, bottom: 24, left: 8 }}>
-                    <CartesianGrid stroke="#e1e0d9" />
-                    <XAxis
-                      type="number"
-                      dataKey="x"
-                      name={determinant.label}
-                      stroke="#898781"
-                      tick={{ fontSize: 11, fill: "#52514e" }}
-                      tickLine={false}
-                      label={{ value: `${determinant.label} (${determinant.unit})`, position: "insideBottom", offset: -16, fontSize: 12, fill: "#52514e" }}
-                    />
-                    <YAxis
-                      type="number"
-                      dataKey="y"
-                      name={outcome.label}
-                      stroke="#898781"
-                      tick={{ fontSize: 11, fill: "#52514e" }}
-                      tickLine={false}
-                      axisLine={false}
-                      width={56}
-                      label={{ value: outcome.unit, angle: -90, position: "insideLeft", fontSize: 12, fill: "#52514e" }}
-                    />
-                    <Tooltip
-                      cursor={{ strokeDasharray: "3 3" }}
-                      contentStyle={{ fontSize: 12, border: "1px solid #e1e0d9", borderRadius: 6 }}
-                      formatter={(value, name) => [String(value), String(name)]}
-                      labelFormatter={() => ""}
-                    />
-                    <Scatter name="States" data={correlationInput.pairs} fill="#2a78d6" />
-                    <Line
-                      name="Linear fit"
-                      data={stats.regressionLine}
-                      dataKey="y"
-                      stroke="#eb6834"
-                      strokeWidth={2}
-                      dot={false}
-                      activeDot={false}
-                      legendType="none"
-                      isAnimationActive={false}
-                    />
-                  </ComposedChart>
-                </ResponsiveContainer>
+                <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                  <h3 className="text-sm font-medium text-ink-primary">
+                    {determinant.label} vs. {outcome.label} — {correlationInput.year}
+                  </h3>
+                </div>
+                <ChartToolbar
+                  showingTable={showTable}
+                  onToggleTable={() => setShowTable((v) => !v)}
+                  onExportCSV={handleExportCSV}
+                  onExportPNG={handleExportPNG}
+                  pngPending={pngPending}
+                />
+                {showTable ? (
+                  <DataTable
+                    columns={tableColumns}
+                    rows={rankedPairs as unknown as Record<string, unknown>[]}
+                    searchable={false}
+                    pageSize={rankedPairs.length || 1}
+                  />
+                ) : (
+                  <div ref={chartRef}>
+                    <ResponsiveContainer width="100%" height={320}>
+                      <ComposedChart margin={{ top: 8, right: 20, bottom: 24, left: 8 }}>
+                        <CartesianGrid stroke="#e1e0d9" />
+                        <XAxis
+                          type="number"
+                          dataKey="x"
+                          name={determinant.label}
+                          stroke="#898781"
+                          tick={{ fontSize: 11, fill: "#52514e" }}
+                          tickLine={false}
+                          label={{ value: `${determinant.label} (${determinant.unit})`, position: "insideBottom", offset: -16, fontSize: 12, fill: "#52514e" }}
+                        />
+                        <YAxis
+                          type="number"
+                          dataKey="y"
+                          name={outcome.label}
+                          stroke="#898781"
+                          tick={{ fontSize: 11, fill: "#52514e" }}
+                          tickLine={false}
+                          axisLine={false}
+                          width={56}
+                          label={{ value: outcome.unit, angle: -90, position: "insideLeft", fontSize: 12, fill: "#52514e" }}
+                        />
+                        <Tooltip
+                          cursor={{ strokeDasharray: "3 3" }}
+                          contentStyle={{ fontSize: 12, border: "1px solid #e1e0d9", borderRadius: 6 }}
+                          content={({ active, payload }) => {
+                            if (!active || !payload?.length) return null;
+                            const p = payload[0].payload as { state: string; x: number; y: number; rank: number; n: number };
+                            if (typeof p.rank !== "number") return null;
+                            return (
+                              <div className="rounded-md border border-line-grid bg-surface p-2 text-xs shadow-sm">
+                                <p className="font-medium text-ink-primary">{p.state}</p>
+                                <p className="text-ink-secondary">
+                                  {determinant.label}: {p.x}
+                                </p>
+                                <p className="text-ink-secondary">
+                                  {outcome.label}: {p.y}
+                                </p>
+                                <p className="text-ink-muted">
+                                  Rank {p.rank} of {p.n} states on {outcome.label}
+                                </p>
+                              </div>
+                            );
+                          }}
+                        />
+                        <Scatter name="States" data={rankedPairs} fill="#2a78d6" />
+                        <Line
+                          name="Linear fit"
+                          data={stats.regressionLine}
+                          dataKey="y"
+                          stroke="#eb6834"
+                          strokeWidth={2}
+                          dot={false}
+                          activeDot={false}
+                          legendType="none"
+                          isAnimationActive={false}
+                        />
+                      </ComposedChart>
+                    </ResponsiveContainer>
+                  </div>
+                )}
                 <p className="mt-2 text-xs text-ink-muted">
                   Each point is one Malaysian state in {correlationInput.year}. The orange line is a simple linear
                   regression fit, shown to summarise the linear trend only — it is descriptive, not predictive or

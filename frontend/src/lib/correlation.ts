@@ -111,3 +111,22 @@ export function computeCorrelationStats(pairs: CorrelationPair[]): CorrelationSt
 }
 
 export const CORRELATION_MIN_PAIRS = MIN_PAIRS;
+
+/**
+ * Qualitative label for a Pearson r, using the conventional Evans (1996)
+ * thresholds on |r|. Purely descriptive of the computed number — never a
+ * substitute for looking at the scatter plot itself.
+ */
+export function interpretCorrelation(r: number): { strength: string; direction: "positive" | "negative" | "none"; label: string } {
+  const abs = Math.abs(r);
+  let strength: string;
+  if (abs >= 0.8) strength = "Very strong";
+  else if (abs >= 0.6) strength = "Strong";
+  else if (abs >= 0.4) strength = "Moderate";
+  else if (abs >= 0.2) strength = "Weak";
+  else strength = "Negligible";
+
+  const direction: "positive" | "negative" | "none" = abs < 0.2 ? "none" : r > 0 ? "positive" : "negative";
+  const label = direction === "none" ? `${strength} correlation` : `${strength} ${direction}`;
+  return { strength, direction, label };
+}
