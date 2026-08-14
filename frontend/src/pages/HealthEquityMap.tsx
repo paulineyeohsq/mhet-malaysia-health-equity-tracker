@@ -23,6 +23,9 @@ interface IndicatorDef {
   higherIsWorse: boolean;
   /** Row key holding the underlying event count, if this rate is built on one — used for the small-count caution flag. */
   absField?: string;
+  /** For data files with more than one row per state+year (e.g. fertility_state.json's per-age-band rows) — keeps only rows matching this field/value pair before any year filtering. */
+  filterField?: string;
+  filterValue?: string;
 }
 
 const INDICATORS: IndicatorDef[] = [
@@ -42,6 +45,7 @@ const INDICATORS: IndicatorDef[] = [
   { id: "under5_mortality", label: "Under-5 mortality rate", sourceKey: "early_childhood_deaths", unit: "per 1,000 live births", file: "health_outcomes_state.json", valueField: "under5_mortality_rate", geographies: ["state"], higherIsWorse: true, absField: "under5_deaths_abs" },
   { id: "covid_cases", label: "COVID-19 cases (annual)", sourceKey: "covid", unit: "cases", file: "covid_state.json", valueField: "covid_cases_abs", geographies: ["state"], higherIsWorse: true },
   { id: "financing_programmes", label: "PeKa B40 screenings (annual)", sourceKey: "health_programmes", unit: "screenings", file: "health_programmes_state.json", valueField: "pekab40_screenings_abs", geographies: ["state"], higherIsWorse: false },
+  { id: "fertility_tfr", label: "Total fertility rate", sourceKey: "fertility", unit: "births/woman", file: "fertility_state.json", valueField: "fertility_rate", geographies: ["state"], higherIsWorse: false, filterField: "age_group", filterValue: "tfr" },
 ];
 
 export default function HealthEquityMap() {
@@ -63,9 +67,17 @@ export default function HealthEquityMap() {
   const usesDistrictFile = geography === "district" && indicator.file === "socioeconomic_state.json";
   const dataFile = usesDistrictFile ? "socioeconomic_district.json" : geography === "district" && indicator.file.includes("healthcare") ? "healthcare_access_district_2022.json" : indicator.file;
 
-  const { data: rows } = useData<Record<string, unknown>[]>(dataFile);
+  const { data: rawRows } = useData<Record<string, unknown>[]>(dataFile);
   const { data: stateGeo } = useData<GeoJSON.FeatureCollection>("geo/state.geojson");
   const { data: districtGeo } = useData<GeoJSON.FeatureCollection>("geo/district.geojson");
+
+  // Some data files (e.g. fertility_state.json) have more than one row per
+  // state+year — filterField/filterValue narrows to the row this indicator
+  // actually means, before any year filtering downstream.
+  const rows = useMemo(() => {
+    if (!rawRows || !indicator.filterField) return rawRows;
+    return rawRows.filter((r) => r[indicator.filterField!] === indicator.filterValue);
+  }, [rawRows, indicator]);
 
   const availableYears = useMemo(() => {
     if (!rows) return [];
