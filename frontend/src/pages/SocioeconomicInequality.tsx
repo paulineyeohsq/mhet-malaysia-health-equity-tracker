@@ -61,6 +61,45 @@ interface DistrictRow {
   piped_water_pct: number | null;
 }
 
+interface PercentileRow {
+  year: number;
+  percentile: number;
+  variable: "mean" | "median" | "minimum" | "maximum";
+  income_rm: number | null;
+}
+
+interface SanitationStateRow {
+  state: string;
+  year: number;
+  sanitation_access_pct: number | null;
+}
+
+interface WaterStateRow {
+  state: string;
+  year: number;
+  strata: string;
+  water_access_pct: number | null;
+}
+
+interface WaterNationalRow {
+  year: number;
+  strata: string;
+  water_access_pct: number | null;
+}
+
+interface ElectricityRegionRow {
+  region: string;
+  year: number;
+  households_with_electricity: number | null;
+}
+
+type AmenityIndicatorId = "sanitation" | "water";
+
+const AMENITY_INDICATORS: { id: AmenityIndicatorId; label: string; unit: string; sourceKey: keyof typeof SOURCES; color: string }[] = [
+  { id: "sanitation", label: "Basic sanitation access", unit: "%", sourceKey: "sanitation", color: "#1baf7a" },
+  { id: "water", label: "Basic water access (overall)", unit: "%", sourceKey: "water", color: "#2a78d6" },
+];
+
 interface HealthOutcomeRow {
   state: string;
   year: number;
@@ -97,6 +136,11 @@ export default function SocioeconomicInequality() {
   const { data: districtData } = useData<DistrictRow[]>("socioeconomic_district.json");
   const { data: healthState } = useData<HealthOutcomeRow[]>("health_outcomes_state.json");
   const { data: stateGeo } = useData<GeoJSON.FeatureCollection>("geo/state.geojson");
+  const { data: percentileData } = useData<PercentileRow[]>("hies_percentile_national.json");
+  const { data: sanitationState } = useData<SanitationStateRow[]>("sanitation_access_state.json");
+  const { data: waterState } = useData<WaterStateRow[]>("water_access_state.json");
+  const { data: waterNational } = useData<WaterNationalRow[]>("water_access_national.json");
+  const { data: electricityRegion } = useData<ElectricityRegionRow[]>("electricity_access_region.json");
 
   const latestNational = useMemo(() => {
     if (!national) return null;
@@ -181,6 +225,91 @@ export default function SocioeconomicInequality() {
   }, [stateData, healthState, socioIndicatorId, healthIndicatorId]);
 
   const correlationStats = useMemo(() => computeCorrelationStats(correlationInput?.pairs ?? []), [correlationInput]);
+
+  // --- Income distribution by percentile ---
+  const percentileYears = useMemo(() => {
+    if (!percentileData) return [];
+    return Array.from(new Set(percentileData.map((r) => r.year))).sort((a, b) => b - a);
+  }, [percentileData]);
+
+  const [percentileYear, setPercentileYear] = useState<number | null>(null);
+  const effectivePercentileYear = percentileYear ?? percentileYears[0] ?? null;
+
+  const percentileMeanRows = useMemo(() => {
+    if (!percentileData || effectivePercentileYear === null) return [];
+    return percentileData
+      .filter((r) => r.year === effectivePercentileYear && r.variable === "mean" && r.income_rm !== null)
+      .sort((a, b) => a.percentile - b.percentile);
+  }, [percentileData, effectivePercentileYear]);
+
+  const percentileChartData = useMemo(
+    () => percentileMeanRows.map((r) => ({ percentile: r.percentile, "Mean income": r.income_rm })),
+    [percentileMeanRows]
+  );
+
+  function avgIncomeForRange(lo: number, hi: number): number | null {
+    const inRange = percentileMeanRows.filter((r) => r.percentile >= lo && r.percentile <= hi);
+    if (inRange.length === 0) return null;
+    return inRange.reduce((sum, r) => sum + (r.income_rm ?? 0), 0) / inRange.length;
+  }
+
+  const b40Mean = avgIncomeForRange(1, 40);
+  const m40Mean = avgIncomeForRange(41, 80);
+  const t20Mean = avgIncomeForRange(81, 100);
+
+  // --- Basic amenities trend (state ranking + national urban/rural water) ---
+  const [amenityIndicatorId, setAmenityIndicatorId] = useState<AmenityIndicatorId>("sanitation");
+  const amenityIndicator = AMENITY_INDICATORS.find((i) => i.id === amenityIndicatorId)!;
+
+  const sanitationYears = useMemo(() => {
+    if (!sanitationState) return [];
+    return Array.from(new Set(sanitationState.map((r) => r.year))).sort((a, b) => b - a);
+  }, [sanitationState]);
+
+  const waterYears = useMemo(() => {
+    if (!waterState) return [];
+    return Array.from(new Set(waterState.filter((r) => r.strata === "overall").map((r) => r.year))).sort((a, b) => b - a);
+  }, [waterState]);
+
+  const amenityYears = amenityIndicatorId === "sanitation" ? sanitationYears : waterYears;
+  const [amenityYear, setAmenityYear] = useState<number | null>(null);
+  const effectiveAmenityYear = amenityYear ?? amenityYears[0] ?? null;
+
+  const amenitySnapshot = useMemo(() => {
+    if (effectiveAmenityYear === null) return [];
+    if (amenityIndicatorId === "sanitation") {
+      if (!sanitationState) return [];
+      return sanitationState
+        .filter((r) => r.year === effectiveAmenityYear && r.sanitation_access_pct !== null)
+        .map((r) => ({ state: r.state, value: r.sanitation_access_pct as number }));
+    }
+    if (!waterState) return [];
+    return waterState
+      .filter((r) => r.year === effectiveAmenityYear && r.strata === "overall" && r.water_access_pct !== null)
+      .map((r) => ({ state: r.state, value: r.water_access_pct as number }));
+  }, [amenityIndicatorId, effectiveAmenityYear, sanitationState, waterState]);
+
+  const waterStrataTrendData = useMemo(() => {
+    if (!waterNational) return [];
+    const byYear = new Map<number, Record<string, number | null>>();
+    waterNational.forEach((r) => {
+      if (!byYear.has(r.year)) byYear.set(r.year, {});
+      byYear.get(r.year)![r.strata] = r.water_access_pct;
+    });
+    return Array.from(byYear.entries())
+      .sort((a, b) => a[0] - b[0])
+      .map(([yr, vals]) => ({ year: yr, ...vals }));
+  }, [waterNational]);
+
+  const electricityLatestYear = useMemo(() => {
+    if (!electricityRegion) return null;
+    return Math.max(...electricityRegion.map((r) => r.year));
+  }, [electricityRegion]);
+
+  const electricityTableColumns: Column[] = [
+    { key: "region", label: "Region" },
+    { key: "households_with_electricity", label: "Households with electricity", numeric: true },
+  ];
 
   return (
     <div>
@@ -406,6 +535,172 @@ export default function SocioeconomicInequality() {
           ) : (
             <InsufficientData reason="Fewer than 8 districts have non-null amenity figures for 2022 in the current data." />
           )}
+        </section>
+
+        {/* Income distribution by percentile */}
+        <section aria-labelledby="se-percentile">
+          <h2 id="se-percentile" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            Income distribution by percentile
+          </h2>
+          <p className="mb-3 max-w-3xl text-sm text-ink-secondary">
+            National mean household income within each of the 100 income percentiles — a finer-grained view of
+            inequality than the mean/median/Gini summary above, from the same HIES survey.
+          </p>
+          {percentileYears.length > 0 && (
+            <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
+              <div>
+                <label htmlFor="percentile-year" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                  Year
+                </label>
+                <select
+                  id="percentile-year"
+                  value={effectivePercentileYear ?? ""}
+                  onChange={(e) => setPercentileYear(Number(e.target.value))}
+                  className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+                >
+                  {percentileYears.map((y) => (
+                    <option key={y} value={y}>
+                      {y}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          )}
+
+          <KPISummarySection
+            title={`Group average income — ${effectivePercentileYear ?? "…"}`}
+            headingId="se-percentile-kpis"
+            columns={4}
+            items={[
+              { label: "B40 (percentile 1–40)", value: b40Mean !== null ? `RM ${Math.round(b40Mean).toLocaleString()}` : "—", unit: "mean, per percentile" },
+              { label: "M40 (percentile 41–80)", value: m40Mean !== null ? `RM ${Math.round(m40Mean).toLocaleString()}` : "—", unit: "mean, per percentile" },
+              { label: "T20 (percentile 81–100)", value: t20Mean !== null ? `RM ${Math.round(t20Mean).toLocaleString()}` : "—", unit: "mean, per percentile" },
+              { label: "T20 / B40 ratio", value: b40Mean && t20Mean ? (t20Mean / b40Mean).toFixed(1) + "×" : "—", unit: "concentration" },
+            ]}
+          />
+
+          {percentileChartData.length > 0 ? (
+            <LineChartCard
+              title={`Mean income by percentile (RM/month) — ${effectivePercentileYear ?? "…"}`}
+              data={percentileChartData}
+              xKey="percentile"
+              series={[{ key: "Mean income", label: "Mean income (RM)", color: "#2a78d6" }]}
+              unit="RM"
+            />
+          ) : (
+            <InsufficientData reason={`No percentile income data for ${effectivePercentileYear ?? "the selected year"}.`} />
+          )}
+          <SourceNote sourceKey="hies_percentile" year={effectivePercentileYear ?? undefined} extra="National only — no state or district percentile breakdown exists" />
+        </section>
+
+        {/* Basic amenities trend (longer state series + urban/rural water) */}
+        <section aria-labelledby="se-amenities-trend">
+          <h2 id="se-amenities-trend" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            Basic amenities — longer annual trend
+          </h2>
+          <p className="mb-3 max-w-3xl text-sm text-ink-secondary">
+            A longer annual state-level series than the single-year (2022) district snapshot above, plus a national
+            urban/rural breakdown for water access. Electricity access is shown separately below, since its source
+            only reports 4 utility-operator regions rather than the 16-state schema used everywhere else.
+          </p>
+
+          <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
+            <div>
+              <label htmlFor="amenity-indicator" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Indicator
+              </label>
+              <select
+                id="amenity-indicator"
+                value={amenityIndicatorId}
+                onChange={(e) => {
+                  setAmenityIndicatorId(e.target.value as AmenityIndicatorId);
+                  setAmenityYear(null);
+                }}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                {AMENITY_INDICATORS.map((i) => (
+                  <option key={i.id} value={i.id}>
+                    {i.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {amenityYears.length > 0 && (
+              <div>
+                <label htmlFor="amenity-year" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                  Year
+                </label>
+                <select
+                  id="amenity-year"
+                  value={effectiveAmenityYear ?? ""}
+                  onChange={(e) => setAmenityYear(Number(e.target.value))}
+                  className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+                >
+                  {amenityYears.map((y) => (
+                    <option key={y} value={y}>
+                      {y}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+
+          <div className="grid gap-4 lg:grid-cols-2">
+            {amenitySnapshot.length > 0 ? (
+              <BarRankingCard
+                title={`${amenityIndicator.label} by state — ${effectiveAmenityYear ?? "…"}`}
+                data={amenitySnapshot}
+                nameKey="state"
+                valueKey="value"
+                unit={amenityIndicator.unit}
+                color={amenityIndicator.color}
+                highlightWorst
+              />
+            ) : (
+              <InsufficientData reason={`No states report ${amenityIndicator.label.toLowerCase()} for ${effectiveAmenityYear ?? "the selected year"}.`} />
+            )}
+
+            {waterStrataTrendData.length > 0 ? (
+              <LineChartCard
+                title="Water access, national — urban vs. rural (%)"
+                data={waterStrataTrendData}
+                xKey="year"
+                series={[
+                  { key: "overall", label: "Overall", color: "#2a78d6" },
+                  { key: "urban", label: "Urban", color: "#1baf7a" },
+                  { key: "rural", label: "Rural", color: "#eb6834" },
+                ]}
+                unit="%"
+              />
+            ) : (
+              <InsufficientData reason="No national urban/rural water access records available." />
+            )}
+          </div>
+          <SourceNote sourceKey={amenityIndicator.sourceKey} year={effectiveAmenityYear ?? undefined} />
+
+          <div className="mt-4 rounded-lg border border-line-grid bg-surface p-4">
+            <h3 className="mb-1 text-sm font-medium text-ink-primary">
+              Household electricity access — {electricityLatestYear ?? "…"} (by region, not comparable to the 16-state figures above)
+            </h3>
+            <p className="mb-2 text-xs text-ink-muted">
+              This source reports raw household counts for 4 utility-operator regions (Malaysia, Semenanjung
+              Malaysia, Sabah, Sarawak) rather than a percentage across the 16 states — shown here as its own table
+              rather than force-joined onto the state schema used elsewhere on this page.
+            </p>
+            {electricityRegion && electricityLatestYear !== null ? (
+              <DataTable
+                columns={electricityTableColumns}
+                rows={electricityRegion.filter((r) => r.year === electricityLatestYear) as unknown as Record<string, unknown>[]}
+                searchable={false}
+                pageSize={4}
+              />
+            ) : (
+              <InsufficientData reason="No electricity access records available." />
+            )}
+            <SourceNote sourceKey="electricity" year={electricityLatestYear ?? undefined} />
+          </div>
         </section>
 
         {/* Correlation & regression */}

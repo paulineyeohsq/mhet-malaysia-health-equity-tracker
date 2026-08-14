@@ -25,9 +25,16 @@ const NAV_SECTIONS: NavSection[] = [
       { to: "/socioeconomic", label: "Socioeconomic Inequality" },
       { to: "/health-outcomes", label: "Health Outcomes" },
       { to: "/healthcare-access", label: "Healthcare Access" },
+      { to: "/financing", label: "Healthcare Financing" },
     ],
   },
-  { heading: "Equity Gap", items: [{ to: "/analytics", label: "Equity Gap Analysis" }] },
+  {
+    heading: "Equity Gap",
+    items: [
+      { to: "/analytics", label: "Equity Gap Analysis" },
+      { to: "/state-matrix", label: "State Equity Gap Matrix" },
+    ],
+  },
   {
     heading: "Priority & Opportunity",
     items: [

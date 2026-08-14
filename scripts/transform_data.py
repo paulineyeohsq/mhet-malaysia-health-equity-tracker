@@ -682,6 +682,309 @@ def build_nhms_adolescent_mental_health():
     return state_out, national_out
 
 
+# ---------------------------------------------------------------------------
+# 12. Electoral-geography population (parliamentary constituency / DUN)
+#
+# No boundary GeoJSON exists for these geographies anywhere in DOSM's open
+# mirror (confirmed during this session's planning pass) — these are
+# table-only outputs, never fed into ChoroplethMap. Kept to the "overall
+# citizenship, overall ethnicity" slice — despite its header name, the raw
+# "age" column is actually citizenship status (citizen/noncitizen/overall);
+# there is no real age or ethnicity breakdown in this source.
+# ---------------------------------------------------------------------------
+def build_population_electoral():
+    parlimen = read_csv(RAW / "demography" / "population_parlimen.csv")
+    dun = read_csv(RAW / "demography" / "population_dun.csv")
+
+    # Despite its header name, the raw "age" column holds citizenship status
+    # (citizen/noncitizen/overall) — there is no real age breakdown in this
+    # source. Both it and "ethnicity" (always "overall" here) must be
+    # filtered to "overall", or citizen/noncitizen rows get summed on top of
+    # the overall total and triple-count every constituency's population.
+    parlimen_out = [
+        {
+            "parlimen": r["parlimen"], "state": canonical_state(r["state"]), "year": year_of(r["date"]),
+            "sex": r["sex"], "population_thousands": num(r.get("population")),
+        }
+        for r in parlimen if r.get("age") == "overall" and r.get("ethnicity") == "overall"
+    ]
+    write_json("population_parlimen.json", parlimen_out)
+
+    dun_out = [
+        {
+            "dun": r["dun"], "parlimen": r["parlimen"], "state": canonical_state(r["state"]), "year": year_of(r["date"]),
+            "sex": r["sex"], "population_thousands": num(r.get("population")),
+        }
+        for r in dun if r.get("age") == "overall" and r.get("ethnicity") == "overall"
+    ]
+    write_json("population_dun.json", dun_out)
+    return parlimen_out, dun_out
+
+
+# ---------------------------------------------------------------------------
+# 13. Full district population (2020-2024) — a second, more current district
+# population series alongside the existing census_district-derived
+# population_district.json (left completely unchanged, zero regression
+# risk to its existing consumers). Kept to the "both/male/female sexes,
+# overall age, overall ethnicity" slice — the source also has 5-year age
+# bands and 7 ethnicity categories, not carried through here to keep this
+# addition scoped; the raw file (data/raw/demography/population_district_full.csv)
+# has the full disaggregation if a future pass wants it.
+# ---------------------------------------------------------------------------
+def build_population_district_full():
+    rows = read_csv(RAW / "demography" / "population_district_full.csv")
+    out = [
+        {
+            "state": canonical_state(r["state"]), "district": canonical_district(r["state"], r["district"]),
+            "year": year_of(r["date"]), "sex": r["sex"], "population_thousands": num(r.get("population")),
+        }
+        for r in rows if r.get("age") == "overall" and r.get("ethnicity") == "overall"
+    ]
+    write_json("population_district_full.json", out)
+    return out
+
+
+# ---------------------------------------------------------------------------
+# 14. Household income by percentile (national only)
+# ---------------------------------------------------------------------------
+def build_hies_percentile():
+    rows = read_csv(RAW / "socioeconomic" / "hies_malaysia_percentile.csv")
+    out = [
+        {"year": year_of(r["date"]), "percentile": num(r["percentile"]), "variable": r["variable"], "income_rm": num(r.get("income"))}
+        for r in rows
+    ]
+    write_json("hies_percentile_national.json", out)
+    return out
+
+
+# ---------------------------------------------------------------------------
+# 15. Marriages (national + state) and fertility (state, TFR + ASFR)
+# ---------------------------------------------------------------------------
+def build_marriages_fertility():
+    marriages_nat = read_csv(RAW / "demography" / "marriages.csv")
+    write_json("marriages_national.json", [
+        {"year": year_of(r["date"]), "sex": r["sex"], "marriages_abs": num(r.get("abs")), "marriage_rate_per_1000": num(r.get("rate"))}
+        for r in marriages_nat
+    ])
+
+    marriages_st = read_csv(RAW / "demography" / "marriages_state.csv")
+    write_json("marriages_state.json", [
+        {
+            "state": canonical_state(r["state"]), "year": year_of(r["date"]), "sex": r["sex"],
+            "marriages_abs": num(r.get("abs")), "marriage_rate_per_1000": num(r.get("rate")),
+        }
+        for r in marriages_st
+    ])
+
+    fertility_st = read_csv(RAW / "demography" / "fertility_state.csv")
+    write_json("fertility_state.json", [
+        {
+            "state": canonical_state(r["state"]), "year": year_of(r["date"]),
+            "age_group": r["age_group"], "fertility_rate": num(r.get("fertility_rate")),
+        }
+        for r in fertility_st
+    ])
+
+
+# ---------------------------------------------------------------------------
+# 16. Daily-grain state datasets aggregated to annual sums.
+#
+# Shared helper — sums a daily count field per (state, year). Used for
+# health-programme participation (blood donations, organ pledges, PeKa
+# B40 screenings — all confirmed to be per-day NEW counts, not running
+# cumulative totals, by inspecting a sample state's values for
+# non-monotonic fluctuation before writing this) and for COVID-19 case
+# counts (cases_new is explicitly a daily delta per the source's own
+# field description). "Malaysia"-labelled rows are aggregated
+# separately into the national output, never mixed into the 16-state one.
+# ---------------------------------------------------------------------------
+def _sum_daily_to_annual(rows, value_field, extra_key_fields=()):
+    """Returns {(state, year, *extra_keys): summed_value}."""
+    totals = defaultdict(float)
+    counts = defaultdict(int)
+    for r in rows:
+        st = canonical_state(r["state"])
+        yr = year_of(r["date"])
+        v = num(r.get(value_field))
+        if v is None:
+            continue
+        key = (st, yr) + tuple(r.get(k) for k in extra_key_fields)
+        totals[key] += v
+        counts[key] += 1
+    # Keep as int where the source is a count (no fractional donations/pledges/screenings/cases).
+    return {k: (int(v) if float(v).is_integer() else v) for k, v in totals.items()}
+
+
+def build_health_programmes_state():
+    blood = read_csv(RAW / "health_outcomes" / "blood_donations_state.csv")
+    blood_all = [r for r in blood if r.get("blood_type") == "all"]
+    blood_totals = _sum_daily_to_annual(blood_all, "donations")
+
+    organ = read_csv(RAW / "health_outcomes" / "organ_pledges_state.csv")
+    organ_totals = _sum_daily_to_annual(organ, "pledges")
+
+    pekab40 = read_csv(RAW / "health_outcomes" / "pekab40_screenings_state.csv")
+    pekab40_totals = _sum_daily_to_annual(pekab40, "screenings")
+
+    all_keys = set(blood_totals) | set(organ_totals) | set(pekab40_totals)
+    out = []
+    for (st, yr) in sorted(k for k in all_keys if k[0] != "Malaysia"):
+        out.append({
+            "state": st, "year": yr,
+            "blood_donations_abs": blood_totals.get((st, yr)),
+            "organ_pledges_abs": organ_totals.get((st, yr)),
+            "pekab40_screenings_abs": pekab40_totals.get((st, yr)),
+        })
+    write_json("health_programmes_state.json", out)
+    return out
+
+
+# ---------------------------------------------------------------------------
+# 16b. PeKa B40 screenings by state, DAILY grain (source: MOH via
+# data.gov.my/data.moh.gov.my). health_programmes_state.json above already
+# sums this to annual totals for cross-programme comparison; this output
+# keeps the original per-day counts, since day-level participation trend is
+# a genuinely different use case (recent uptake / campaign response) from
+# a year-over-year comparison.
+# ---------------------------------------------------------------------------
+def build_pekab40_daily_state():
+    rows = read_csv(RAW / "health_outcomes" / "pekab40_screenings_state.csv")
+    out = [
+        {"state": canonical_state(r["state"]), "date": r["date"], "screenings": num(r.get("screenings"))}
+        for r in rows
+    ]
+    out.sort(key=lambda r: (r["state"], r["date"]))
+    write_json("pekab40_screenings_daily_state.json", out)
+    return out
+
+
+# ---------------------------------------------------------------------------
+# 17. COVID-19 — cases (+ age breakdown) and deaths, daily grain aggregated
+# to annual state sums. Deliberately its own domain (outbreak analytics),
+# not merged into health_outcomes_state.json's chronic-disease indicators.
+# covid_deaths_linelist is individual-level (one row per death) — counted
+# by state+year of the `date` (date of death) field, not summed like the
+# other three (there is no count field to sum, each row IS one death).
+# ---------------------------------------------------------------------------
+def build_covid_state():
+    cases = read_csv(RAW / "health_outcomes" / "covid_cases.csv")
+    case_totals = _sum_daily_to_annual(cases, "cases_new")
+
+    cases_age = read_csv(RAW / "health_outcomes" / "covid_cases_age.csv")
+    age_fields = ["cases_child", "cases_adolescent", "cases_adult", "cases_elderly"]
+    age_totals = {f: _sum_daily_to_annual(cases_age, f) for f in age_fields}
+
+    # The line list has real state names, not a "Malaysia" aggregate row —
+    # the national death total is derived by summing across states rather
+    # than looked up directly.
+    deaths = read_csv(RAW / "health_outcomes" / "covid_deaths_linelist.csv")
+    death_counts = defaultdict(int)
+    death_counts_national = defaultdict(int)
+    for r in deaths:
+        st = canonical_state(r["state"])
+        yr = year_of(r["date"])
+        death_counts[(st, yr)] += 1
+        death_counts_national[yr] += 1
+
+    all_keys = set(case_totals) | set(death_counts)
+    for f in age_fields:
+        all_keys |= set(age_totals[f])
+
+    def row_for(st, yr):
+        deaths_abs = death_counts_national.get(yr) if st == "Malaysia" else death_counts.get((st, yr))
+        row = {
+            "state": st, "year": yr,
+            "covid_cases_abs": case_totals.get((st, yr)),
+            "covid_deaths_abs": deaths_abs or None,
+        }
+        for f in age_fields:
+            row[f"covid_{f}_abs"] = age_totals[f].get((st, yr))
+        return row
+
+    state_out = [row_for(st, yr) for (st, yr) in sorted(k for k in all_keys if k[0] != "Malaysia")]
+    write_json("covid_state.json", state_out)
+
+    national_out = [row_for(st, yr) for (st, yr) in sorted(k for k in all_keys if k[0] == "Malaysia")]
+    write_json("covid_national.json", national_out)
+    return state_out, national_out
+
+
+# ---------------------------------------------------------------------------
+# 18. National Health Accounts (health expenditure) — national level only.
+# mnha.csv's "moh"-labelled rows here are the MOH-specific subset of
+# public expenditure — kept as a separate variable value ("moh"), NEVER
+# summed together with teh/ceh totals (that would double-count).
+# ---------------------------------------------------------------------------
+def build_mnha_national():
+    mnha = read_csv(RAW / "healthcare" / "mnha.csv")
+    out = [
+        {"year": year_of(r["date"]), "variable": r["variable"], "sector": r["sector"], "expenditure_myr": num(r.get("expenditure"))}
+        for r in mnha
+    ]
+    mnha_moh = read_csv(RAW / "healthcare" / "mnha_moh.csv")
+    out += [
+        {"year": year_of(r["date"]), "variable": "moh", "sector": "public", "expenditure_myr": num(r.get("expenditure"))}
+        for r in mnha_moh
+    ]
+    write_json("mnha_national.json", sorted(out, key=lambda r: (r["year"], r["variable"], r["sector"])))
+    return out
+
+
+# ---------------------------------------------------------------------------
+# 19. Basic amenities — a longer state-level annual series, distinct from
+# hh_access_amenities' single-year (2022) district snapshot already in the
+# pipeline. electricity_access is kept in its OWN separate file: its
+# "state" values are 4 utility-operator regions (Malaysia, Semenanjung
+# Malaysia, Sabah, Sarawak), not the usual 16 states, and it reports raw
+# household counts rather than a percentage — force-joining it onto the
+# 16-state schema would silently misrepresent it.
+# ---------------------------------------------------------------------------
+def build_amenities_state():
+    sanitation = read_csv(RAW / "healthcare" / "sanitation_access.csv")
+    write_json("sanitation_access_state.json", [
+        {"state": canonical_state(r["state"]), "year": year_of(r["date"]), "sanitation_access_pct": num(r.get("proportion"))}
+        for r in sanitation if canonical_state(r["state"]) != "Malaysia"
+    ])
+    write_json("sanitation_access_national.json", [
+        {"year": year_of(r["date"]), "sanitation_access_pct": num(r.get("proportion"))}
+        for r in sanitation if canonical_state(r["state"]) == "Malaysia"
+    ])
+
+    water = read_csv(RAW / "healthcare" / "water_access.csv")
+    write_json("water_access_state.json", [
+        {"state": canonical_state(r["state"]), "year": year_of(r["date"]), "strata": r["strata"], "water_access_pct": num(r.get("proportion"))}
+        for r in water if canonical_state(r["state"]) != "Malaysia"
+    ])
+    write_json("water_access_national.json", [
+        {"year": year_of(r["date"]), "strata": r["strata"], "water_access_pct": num(r.get("proportion"))}
+        for r in water if canonical_state(r["state"]) == "Malaysia"
+    ])
+
+    electricity = read_csv(RAW / "healthcare" / "electricity_access.csv")
+    write_json("electricity_access_region.json", [
+        {"region": r["state"], "year": year_of(r["date"]), "households_with_electricity": num(r.get("households"))}
+        for r in electricity
+    ])
+
+
+# ---------------------------------------------------------------------------
+# 20. Nutrition status of children under 5, by urban/rural strata —
+# national, 2019 only. Direct counterpart to the already-ingested
+# nutrition_status_u5_sex (same shape, "sex" swapped for "strata").
+# ---------------------------------------------------------------------------
+def build_nutrition_strata_national():
+    rows = read_csv(RAW / "health_outcomes" / "nutrition_status_u5_strata.csv")
+    out = [
+        {
+            "year": year_of(r.get("date")), "strata": r.get("strata"), "indicator": r.get("indicator"),
+            "range": r.get("range"), "description": r.get("description"), "prevalence_pct": num(r.get("prevalence")),
+        }
+        for r in rows
+    ]
+    write_json("nutrition_strata_national.json", out)
+    return out
+
+
 def main():
     build_socioeconomic_national()
     build_socioeconomic_state()
@@ -694,6 +997,16 @@ def main():
     build_health_outcomes_national()
     build_nhms_ncd()
     build_nhms_adolescent_mental_health()
+    build_population_electoral()
+    build_population_district_full()
+    build_hies_percentile()
+    build_marriages_fertility()
+    build_health_programmes_state()
+    build_pekab40_daily_state()
+    build_covid_state()
+    build_mnha_national()
+    build_amenities_state()
+    build_nutrition_strata_national()
 
     log_path = OUT / "transform_log.txt"
     log_path.write_text("\n".join(LOG))

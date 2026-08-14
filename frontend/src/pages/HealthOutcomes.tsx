@@ -52,13 +52,47 @@ interface NutritionRow {
   prevalence_pct: number | null;
 }
 
-type Category = "mortality" | "std" | "immunisation" | "nutrition";
+interface CovidRow {
+  state: string;
+  year: number;
+  covid_cases_abs: number | null;
+  covid_deaths_abs: number | null;
+  covid_cases_child_abs: number | null;
+  covid_cases_adolescent_abs: number | null;
+  covid_cases_adult_abs: number | null;
+  covid_cases_elderly_abs: number | null;
+}
+
+interface ProgrammeRow {
+  state: string;
+  year: number;
+  blood_donations_abs: number | null;
+  organ_pledges_abs: number | null;
+  pekab40_screenings_abs: number | null;
+}
+
+interface PekaDailyRow {
+  state: string;
+  date: string;
+  screenings: number | null;
+}
+
+const PEKA_RANGE_OPTIONS = [
+  { id: "30", label: "Last 30 days", days: 30 },
+  { id: "90", label: "Last 90 days", days: 90 },
+  { id: "365", label: "Last 365 days", days: 365 },
+  { id: "all", label: "All time (since 2019-04-15)", days: null as number | null },
+];
+
+type Category = "mortality" | "std" | "immunisation" | "nutrition" | "covid" | "programmes";
 
 const CATEGORY_LABELS: Record<Category, string> = {
   mortality: "Mortality & Births",
   std: "STD Incidence",
   immunisation: "Immunisation",
   nutrition: "Nutrition",
+  covid: "COVID-19",
+  programmes: "Health Programme Participation",
 };
 
 interface MortalityMetric {
@@ -96,6 +130,37 @@ const STD_METRICS: StdMetric[] = [
 
 const STD_FIRST_YEAR = 2017;
 
+interface CovidMetric {
+  id: string;
+  label: string;
+  field: keyof CovidRow;
+  unit: string;
+  higherIsWorse: boolean;
+}
+
+const COVID_METRICS: CovidMetric[] = [
+  { id: "cases", label: "COVID-19 cases", field: "covid_cases_abs", unit: "cases", higherIsWorse: true },
+  { id: "deaths", label: "COVID-19 deaths", field: "covid_deaths_abs", unit: "deaths", higherIsWorse: true },
+  { id: "cases_child", label: "Cases — children", field: "covid_cases_child_abs", unit: "cases", higherIsWorse: true },
+  { id: "cases_adolescent", label: "Cases — adolescents", field: "covid_cases_adolescent_abs", unit: "cases", higherIsWorse: true },
+  { id: "cases_adult", label: "Cases — adults", field: "covid_cases_adult_abs", unit: "cases", higherIsWorse: true },
+  { id: "cases_elderly", label: "Cases — elderly", field: "covid_cases_elderly_abs", unit: "cases", higherIsWorse: true },
+];
+
+interface ProgrammeMetric {
+  id: string;
+  label: string;
+  field: keyof ProgrammeRow;
+  unit: string;
+  higherIsWorse: boolean;
+}
+
+const PROGRAMME_METRICS: ProgrammeMetric[] = [
+  { id: "blood", label: "Blood donations", field: "blood_donations_abs", unit: "donations", higherIsWorse: false },
+  { id: "organ", label: "Organ pledges", field: "organ_pledges_abs", unit: "pledges", higherIsWorse: false },
+  { id: "pekab40", label: "PeKa B40 screenings", field: "pekab40_screenings_abs", unit: "screenings", higherIsWorse: false },
+];
+
 const SERIES_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"];
 
 function fmt(v: number | null | undefined, digits = 1): string {
@@ -107,11 +172,16 @@ export default function HealthOutcomes() {
   const { data: stateOutcomes } = useData<StateOutcomeRow[]>("health_outcomes_state.json");
   const { data: immunisation } = useData<ImmunisationRow[]>("immunisation_national.json");
   const { data: nutrition } = useData<NutritionRow[]>("nutrition_national.json");
+  const { data: covid } = useData<CovidRow[]>("covid_state.json");
+  const { data: programmes } = useData<ProgrammeRow[]>("health_programmes_state.json");
+  const { data: pekaDaily } = useData<PekaDailyRow[]>("pekab40_screenings_daily_state.json");
 
   const [category, setCategory] = useState<Category>("mortality");
   const [state, setState] = useState<string>("Johor");
   const [year, setYear] = useState<number | null>(null);
   const [mortalityMetricId, setMortalityMetricId] = useState(MORTALITY_METRICS[0].id);
+  const [covidMetricId, setCovidMetricId] = useState(COVID_METRICS[0].id);
+  const [programmeMetricId, setProgrammeMetricId] = useState(PROGRAMME_METRICS[0].id);
   const [sex, setSex] = useState<string>("both");
 
   // Ask MHET: pre-apply a filter passed via router location state, once on mount.
@@ -135,6 +205,16 @@ export default function HealthOutcomes() {
 
   const stdYears = useMemo(() => mortalityYears.filter((y) => y >= STD_FIRST_YEAR), [mortalityYears]);
 
+  const covidYears = useMemo(() => {
+    if (!covid) return [];
+    return Array.from(new Set(covid.map((r) => r.year))).sort((a, b) => b - a);
+  }, [covid]);
+
+  const programmeYears = useMemo(() => {
+    if (!programmes) return [];
+    return Array.from(new Set(programmes.map((r) => r.year))).sort((a, b) => b - a);
+  }, [programmes]);
+
   const immunisationYears = useMemo(() => {
     if (!immunisation) return [];
     return Array.from(new Set(immunisation.map((r) => r.year))).sort((a, b) => b - a);
@@ -150,7 +230,16 @@ export default function HealthOutcomes() {
     return Array.from(new Set(nutrition.map((r) => r.sex))).sort();
   }, [nutrition]);
 
-  const yearsForCategory = category === "std" ? stdYears : category === "immunisation" ? immunisationYears : mortalityYears;
+  const yearsForCategory =
+    category === "std"
+      ? stdYears
+      : category === "immunisation"
+        ? immunisationYears
+        : category === "covid"
+          ? covidYears
+          : category === "programmes"
+            ? programmeYears
+            : mortalityYears;
   const effectiveYear = year ?? yearsForCategory[0] ?? null;
 
   function selectCategory(next: Category) {
@@ -189,6 +278,112 @@ export default function HealthOutcomes() {
     return stateOutcomes.find((r) => r.state === state && r.year === effectiveYear) ?? null;
   }, [stateOutcomes, state, effectiveYear]);
 
+  // ---- STD ----
+  const stdTrendData = useMemo(
+    () =>
+      stateSeries
+        .filter((r) => r.year >= STD_FIRST_YEAR)
+        .map((r) => ({
+          year: r.year,
+          HIV: r.std_hiv_incidence_per_100k,
+          AIDS: r.std_aids_incidence_per_100k,
+          Syphilis: r.std_syphilis_incidence_per_100k,
+          Gonorrhea: r.std_gonorrhea_incidence_per_100k,
+        })),
+    [stateSeries]
+  );
+  const stdTrendSeries: Series[] = STD_METRICS.map((m) => ({ key: m.label, label: m.label, color: m.color }));
+
+  const stdSnapshot = useMemo(() => {
+    if (!stateOutcomes || effectiveYear === null) return [];
+    return stateOutcomes
+      .filter((r) => r.year === effectiveYear && r.std_hiv_incidence_per_100k !== null)
+      .map((r) => ({ state: r.state, value: r.std_hiv_incidence_per_100k as number }));
+  }, [stateOutcomes, effectiveYear]);
+
+  // ---- COVID-19 ----
+  const covidMetric = COVID_METRICS.find((m) => m.id === covidMetricId)!;
+
+  const covidStateSeries = useMemo(() => {
+    if (!covid) return [];
+    return covid.filter((r) => r.state === state).sort((a, b) => a.year - b.year);
+  }, [covid, state]);
+
+  const covidTrendData = useMemo(
+    () => covidStateSeries.map((r) => ({ year: r.year, [covidMetric.label]: r[covidMetric.field] as number | null })),
+    [covidStateSeries, covidMetric]
+  );
+  const covidHasData = covidTrendData.some((d) => d[covidMetric.label] !== null && d[covidMetric.label] !== undefined);
+
+  const covidSnapshot = useMemo(() => {
+    if (!covid || effectiveYear === null) return [];
+    return covid
+      .filter((r) => r.year === effectiveYear && r[covidMetric.field] !== null)
+      .map((r) => ({ state: r.state, value: r[covidMetric.field] as number }));
+  }, [covid, effectiveYear, covidMetric]);
+
+  const selectedCovidRow = useMemo(() => {
+    if (!covid || effectiveYear === null) return null;
+    return covid.find((r) => r.state === state && r.year === effectiveYear) ?? null;
+  }, [covid, state, effectiveYear]);
+
+  // ---- Health Programme Participation ----
+  const programmeMetric = PROGRAMME_METRICS.find((m) => m.id === programmeMetricId)!;
+
+  const programmeStateSeries = useMemo(() => {
+    if (!programmes) return [];
+    return programmes.filter((r) => r.state === state).sort((a, b) => a.year - b.year);
+  }, [programmes, state]);
+
+  const programmeTrendData = useMemo(
+    () => programmeStateSeries.map((r) => ({ year: r.year, [programmeMetric.label]: r[programmeMetric.field] as number | null })),
+    [programmeStateSeries, programmeMetric]
+  );
+  const programmeHasData = programmeTrendData.some(
+    (d) => d[programmeMetric.label] !== null && d[programmeMetric.label] !== undefined
+  );
+
+  const programmeSnapshot = useMemo(() => {
+    if (!programmes || effectiveYear === null) return [];
+    return programmes
+      .filter((r) => r.year === effectiveYear && r[programmeMetric.field] !== null)
+      .map((r) => ({ state: r.state, value: r[programmeMetric.field] as number }));
+  }, [programmes, effectiveYear, programmeMetric]);
+
+  const selectedProgrammeRow = useMemo(() => {
+    if (!programmes || effectiveYear === null) return null;
+    return programmes.find((r) => r.state === state && r.year === effectiveYear) ?? null;
+  }, [programmes, state, effectiveYear]);
+
+  // ---- PeKa B40 daily screenings — day-level trend, distinct from the annual sum above ----
+  const [pekaRangeId, setPekaRangeId] = useState("90");
+  const pekaRange = PEKA_RANGE_OPTIONS.find((r) => r.id === pekaRangeId)!;
+
+  const pekaDailyLatestDate = useMemo(() => {
+    if (!pekaDaily || pekaDaily.length === 0) return null;
+    return pekaDaily.reduce((max, r) => (r.date > max ? r.date : max), pekaDaily[0].date);
+  }, [pekaDaily]);
+
+  const pekaDailyFiltered = useMemo(() => {
+    if (!pekaDaily || !pekaDailyLatestDate) return [];
+    const rows = pekaDaily.filter((r) => r.state === state);
+    if (pekaRange.days === null) return rows;
+    const cutoff = new Date(pekaDailyLatestDate);
+    cutoff.setDate(cutoff.getDate() - pekaRange.days);
+    const cutoffStr = cutoff.toISOString().slice(0, 10);
+    return rows.filter((r) => r.date >= cutoffStr);
+  }, [pekaDaily, pekaDailyLatestDate, state, pekaRange]);
+
+  const pekaDailyTotal = useMemo(
+    () => pekaDailyFiltered.reduce((sum, r) => sum + (r.screenings ?? 0), 0),
+    [pekaDailyFiltered]
+  );
+
+  const pekaDailyTableColumns: Column[] = [
+    { key: "date", label: "Date" },
+    { key: "screenings", label: "Screenings", numeric: true },
+  ];
+
   // Insight card content follows whichever category is currently selected —
   // Immunisation/Nutrition are genuinely national-only in this dataset (no
   // state breakdown exists), so those show an honest InsufficientData
@@ -214,31 +409,28 @@ export default function HealthOutcomes() {
         reason: `Fewer than two states report HIV incidence for ${effectiveYear ?? "the selected year"}.`,
       };
     }
+    if (category === "covid") {
+      return {
+        rows: covid as unknown as Row[] | null,
+        valueField: covidMetric.field as string,
+        metricLabel: covidMetric.label,
+        unit: covidMetric.unit,
+        higherIsWorse: covidMetric.higherIsWorse,
+        reason: `Fewer than two states report ${covidMetric.label.toLowerCase()} for ${effectiveYear ?? "the selected year"}.`,
+      };
+    }
+    if (category === "programmes") {
+      return {
+        rows: programmes as unknown as Row[] | null,
+        valueField: programmeMetric.field as string,
+        metricLabel: programmeMetric.label,
+        unit: programmeMetric.unit,
+        higherIsWorse: programmeMetric.higherIsWorse,
+        reason: `Fewer than two states report ${programmeMetric.label.toLowerCase()} for ${effectiveYear ?? "the selected year"}.`,
+      };
+    }
     return null;
-  }, [category, stateOutcomes, mortalityMetric, effectiveYear]);
-
-  // ---- STD ----
-  const stdTrendData = useMemo(
-    () =>
-      stateSeries
-        .filter((r) => r.year >= STD_FIRST_YEAR)
-        .map((r) => ({
-          year: r.year,
-          HIV: r.std_hiv_incidence_per_100k,
-          AIDS: r.std_aids_incidence_per_100k,
-          Syphilis: r.std_syphilis_incidence_per_100k,
-          Gonorrhea: r.std_gonorrhea_incidence_per_100k,
-        })),
-    [stateSeries]
-  );
-  const stdTrendSeries: Series[] = STD_METRICS.map((m) => ({ key: m.label, label: m.label, color: m.color }));
-
-  const stdSnapshot = useMemo(() => {
-    if (!stateOutcomes || effectiveYear === null) return [];
-    return stateOutcomes
-      .filter((r) => r.year === effectiveYear && r.std_hiv_incidence_per_100k !== null)
-      .map((r) => ({ state: r.state, value: r.std_hiv_incidence_per_100k as number }));
-  }, [stateOutcomes, effectiveYear]);
+  }, [category, stateOutcomes, mortalityMetric, covid, covidMetric, programmes, programmeMetric, effectiveYear]);
 
   // ---- Immunisation ----
   const immunisationTrendData = useMemo(() => {
@@ -305,6 +497,27 @@ export default function HealthOutcomes() {
         { key: "coverage_pct", label: "Coverage (%)", numeric: true },
       ];
     }
+    if (category === "covid") {
+      return [
+        { key: "state", label: "State" },
+        { key: "year", label: "Year", numeric: true },
+        { key: "covid_cases_abs", label: "Cases", numeric: true },
+        { key: "covid_deaths_abs", label: "Deaths", numeric: true },
+        { key: "covid_cases_child_abs", label: "Cases (children)", numeric: true },
+        { key: "covid_cases_adolescent_abs", label: "Cases (adolescents)", numeric: true },
+        { key: "covid_cases_adult_abs", label: "Cases (adults)", numeric: true },
+        { key: "covid_cases_elderly_abs", label: "Cases (elderly)", numeric: true },
+      ];
+    }
+    if (category === "programmes") {
+      return [
+        { key: "state", label: "State" },
+        { key: "year", label: "Year", numeric: true },
+        { key: "blood_donations_abs", label: "Blood donations", numeric: true },
+        { key: "organ_pledges_abs", label: "Organ pledges", numeric: true },
+        { key: "pekab40_screenings_abs", label: "PeKa B40 screenings", numeric: true },
+      ];
+    }
     return [
       { key: "year", label: "Year", numeric: true },
       { key: "sex", label: "Sex" },
@@ -321,10 +534,23 @@ export default function HealthOutcomes() {
       return stateOutcomes.filter((r) => r.year >= STD_FIRST_YEAR) as unknown as Record<string, unknown>[];
     if (category === "immunisation" && immunisation) return immunisation as unknown as Record<string, unknown>[];
     if (category === "nutrition" && nutrition) return nutrition as unknown as Record<string, unknown>[];
+    if (category === "covid" && covid) return covid as unknown as Record<string, unknown>[];
+    if (category === "programmes" && programmes) return programmes as unknown as Record<string, unknown>[];
     return [];
-  }, [category, stateOutcomes, immunisation, nutrition]);
+  }, [category, stateOutcomes, immunisation, nutrition, covid, programmes]);
 
-  const tableSourceKey = category === "mortality" ? "deaths" : category === "std" ? "std" : category === "immunisation" ? "immunisation" : "nutrition";
+  const tableSourceKey =
+    category === "mortality"
+      ? "deaths"
+      : category === "std"
+        ? "std"
+        : category === "immunisation"
+          ? "immunisation"
+          : category === "covid"
+            ? "covid"
+            : category === "programmes"
+              ? "health_programmes"
+              : "nutrition";
 
   return (
     <div>
@@ -373,7 +599,47 @@ export default function HealthOutcomes() {
             </div>
           )}
 
-          {(category === "mortality" || category === "std") && (
+          {category === "covid" && (
+            <div>
+              <label htmlFor="covid-metric-select" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Metric
+              </label>
+              <select
+                id="covid-metric-select"
+                value={covidMetricId}
+                onChange={(e) => setCovidMetricId(e.target.value)}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                {COVID_METRICS.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {category === "programmes" && (
+            <div>
+              <label htmlFor="programme-metric-select" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Metric
+              </label>
+              <select
+                id="programme-metric-select"
+                value={programmeMetricId}
+                onChange={(e) => setProgrammeMetricId(e.target.value)}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                {PROGRAMME_METRICS.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {(category === "mortality" || category === "std" || category === "covid" || category === "programmes") && (
             <div>
               <label htmlFor="state-select" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
                 State
@@ -442,6 +708,10 @@ export default function HealthOutcomes() {
               "Immunisation coverage is reported at national level only — no state breakdown exists in this dataset."}
             {category === "nutrition" &&
               `Nutrition status is a single national survey (NHMS ${nutritionYear ?? "2019"}) — no state breakdown or other survey year exists in this dataset.`}
+            {category === "covid" &&
+              "Aggregated from daily case/death counts to annual state totals — the latest year is partial (data continues to the ingestion date)."}
+            {category === "programmes" &&
+              "Aggregated from daily participation counts to annual state totals — each indicator starts in a different year and the latest year is partial."}
           </p>
         </div>
 
@@ -587,6 +857,176 @@ export default function HealthOutcomes() {
               )}
               <SourceNote sourceKey="std" year={effectiveYear ?? undefined} />
             </section>
+          </>
+        )}
+
+        {/* ---------------- COVID-19 ---------------- */}
+        {category === "covid" && (
+          <>
+            <section>
+              <KPISummarySection
+                title={`${state} — ${effectiveYear ?? "…"}`}
+                headingId="covid-kpis"
+                columns={3}
+                items={[
+                  { label: "COVID-19 cases", value: fmt(selectedCovidRow?.covid_cases_abs, 0), unit: "cases" },
+                  { label: "COVID-19 deaths", value: fmt(selectedCovidRow?.covid_deaths_abs, 0), unit: "deaths" },
+                  { label: "Cases — children", value: fmt(selectedCovidRow?.covid_cases_child_abs, 0), unit: "cases" },
+                  { label: "Cases — adolescents", value: fmt(selectedCovidRow?.covid_cases_adolescent_abs, 0), unit: "cases" },
+                  { label: "Cases — adults", value: fmt(selectedCovidRow?.covid_cases_adult_abs, 0), unit: "cases" },
+                  { label: "Cases — elderly", value: fmt(selectedCovidRow?.covid_cases_elderly_abs, 0), unit: "cases" },
+                ]}
+              />
+              <SourceNote sourceKey="covid" year={effectiveYear ?? undefined} />
+            </section>
+
+            <section aria-labelledby="covid-trend">
+              <h2 id="covid-trend" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+                {covidMetric.label} over time — {state}
+              </h2>
+              {covidHasData ? (
+                <LineChartCard
+                  title={`${covidMetric.label} (${covidMetric.unit})`}
+                  data={covidTrendData}
+                  xKey="year"
+                  series={[{ key: covidMetric.label, label: covidMetric.label, color: "#eb6834" }]}
+                />
+              ) : (
+                <InsufficientData reason={`${covidMetric.label} is not published for ${state} in this dataset.`} />
+              )}
+              <SourceNote sourceKey="covid" year={effectiveYear ?? undefined} />
+            </section>
+
+            <section aria-labelledby="covid-ranking">
+              <h2 id="covid-ranking" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+                {covidMetric.label} by state — {effectiveYear ?? "…"}
+              </h2>
+              {covidSnapshot.length > 0 ? (
+                <BarRankingCard
+                  title={`${covidMetric.label} (${covidMetric.unit})`}
+                  data={covidSnapshot}
+                  nameKey="state"
+                  valueKey="value"
+                  unit={covidMetric.unit}
+                  color="#eb6834"
+                  highlightWorst={covidMetric.higherIsWorse}
+                />
+              ) : (
+                <InsufficientData reason={`No states report ${covidMetric.label} for ${effectiveYear}.`} />
+              )}
+              <SourceNote sourceKey="covid" year={effectiveYear ?? undefined} />
+            </section>
+          </>
+        )}
+
+        {/* ---------------- Health Programme Participation ---------------- */}
+        {category === "programmes" && (
+          <>
+            <section>
+              <KPISummarySection
+                title={`${state} — ${effectiveYear ?? "…"}`}
+                headingId="programmes-kpis"
+                columns={3}
+                items={[
+                  { label: "Blood donations", value: fmt(selectedProgrammeRow?.blood_donations_abs, 0), unit: "donations" },
+                  { label: "Organ pledges", value: fmt(selectedProgrammeRow?.organ_pledges_abs, 0), unit: "pledges" },
+                  { label: "PeKa B40 screenings", value: fmt(selectedProgrammeRow?.pekab40_screenings_abs, 0), unit: "screenings" },
+                ]}
+              />
+              <p className="mt-2 text-xs text-ink-muted">
+                Each indicator starts in a different year (blood donations from 2006, organ pledges from 2009, PeKa
+                B40 from 2019) and the latest year is partial — a blank cell means the indicator had not started
+                yet, not that participation was zero.
+              </p>
+              <SourceNote sourceKey="health_programmes" year={effectiveYear ?? undefined} />
+            </section>
+
+            <section aria-labelledby="programmes-trend">
+              <h2 id="programmes-trend" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+                {programmeMetric.label} over time — {state}
+              </h2>
+              {programmeHasData ? (
+                <LineChartCard
+                  title={`${programmeMetric.label} (${programmeMetric.unit})`}
+                  data={programmeTrendData}
+                  xKey="year"
+                  series={[{ key: programmeMetric.label, label: programmeMetric.label, color: "#1baf7a" }]}
+                />
+              ) : (
+                <InsufficientData reason={`${programmeMetric.label} is not published for ${state} in this dataset.`} />
+              )}
+              <SourceNote sourceKey="health_programmes" year={effectiveYear ?? undefined} />
+            </section>
+
+            <section aria-labelledby="programmes-ranking">
+              <h2 id="programmes-ranking" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+                {programmeMetric.label} by state — {effectiveYear ?? "…"}
+              </h2>
+              {programmeSnapshot.length > 0 ? (
+                <BarRankingCard
+                  title={`${programmeMetric.label} (${programmeMetric.unit})`}
+                  data={programmeSnapshot}
+                  nameKey="state"
+                  valueKey="value"
+                  unit={programmeMetric.unit}
+                  color="#1baf7a"
+                  highlightWorst={programmeMetric.higherIsWorse}
+                />
+              ) : (
+                <InsufficientData reason={`No states report ${programmeMetric.label} for ${effectiveYear}.`} />
+              )}
+              <SourceNote sourceKey="health_programmes" year={effectiveYear ?? undefined} />
+            </section>
+
+            {programmeMetricId === "pekab40" && (
+              <section aria-labelledby="peka-daily">
+                <h2 id="peka-daily" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+                  PeKa B40 screenings — daily trend, {state}
+                </h2>
+                <p className="mb-3 max-w-3xl text-sm text-ink-secondary">
+                  Day-level screening counts, published daily by MOH — distinct from the annual totals above, and
+                  useful for spotting recent uptake or campaign response rather than year-over-year change.
+                </p>
+                <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
+                  <div>
+                    <label htmlFor="peka-range" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                      Range
+                    </label>
+                    <select
+                      id="peka-range"
+                      value={pekaRangeId}
+                      onChange={(e) => setPekaRangeId(e.target.value)}
+                      className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+                    >
+                      {PEKA_RANGE_OPTIONS.map((r) => (
+                        <option key={r.id} value={r.id}>
+                          {r.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <p className="text-xs text-ink-muted">
+                    {pekaDailyFiltered.length} day{pekaDailyFiltered.length === 1 ? "" : "s"}, {pekaDailyTotal.toLocaleString()} total
+                    screenings — latest data point: {pekaDailyLatestDate ?? "—"}
+                  </p>
+                </div>
+                {pekaDailyFiltered.length > 0 ? (
+                  <LineChartCard
+                    title={`Daily PeKa B40 screenings — ${state}`}
+                    data={pekaDailyFiltered.map((r) => ({ date: r.date, Screenings: r.screenings }))}
+                    xKey="date"
+                    series={[{ key: "Screenings", label: "Screenings", color: "#1baf7a" }]}
+                    height={280}
+                  />
+                ) : (
+                  <InsufficientData reason={`No daily PeKa B40 screening records for ${state} in this range.`} />
+                )}
+                <div className="mt-4">
+                  <DataTable columns={pekaDailyTableColumns} rows={pekaDailyFiltered as unknown as Record<string, unknown>[]} pageSize={15} />
+                </div>
+                <SourceNote sourceKey="pekab40_daily" />
+              </section>
+            )}
           </>
         )}
 

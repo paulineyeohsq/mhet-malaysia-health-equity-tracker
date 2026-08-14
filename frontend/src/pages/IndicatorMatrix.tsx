@@ -4,7 +4,7 @@ import CorrelationCaveat from "../components/CorrelationCaveat";
 import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
-import { findBestYear, buildPairs, computeCorrelationStats, interpretCorrelation } from "../lib/correlation";
+import { findBestYear, buildPairs, computeCorrelationStats, interpretCorrelation, type CorrelationPair } from "../lib/correlation";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, type FieldDef } from "../lib/determinantFields";
 
 /**
@@ -49,22 +49,32 @@ export default function IndicatorMatrix() {
   const results = useMemo(() => {
     const determinantRows = rowsByFile[determinant.file];
     return OUTCOME_FIELDS.filter((o) => selectedOutcomeIds.has(o.id)).map((outcome) => {
-      const outcomeRows = rowsByFile[outcome.file];
-      if (!outcomeRows || !determinantRows) {
-        return { outcome, year: null as number | null, stats: null, insufficientReason: "Data still loading." };
+      const base = { outcome, pairs: [] as CorrelationPair[] };
+      if (!rowsByFile[outcome.file] || !determinantRows) {
+        return { ...base, year: null as number | null, stats: null, insufficientReason: "Data still loading." };
       }
+      const outcomeRows = rowsByFile[outcome.file]!;
       const { year, n } = findBestYear(determinantRows, outcomeRows, determinant.field, outcome.field);
       if (year === null) {
-        return { outcome, year: null as number | null, stats: null, insufficientReason: `"${determinant.label}" and "${outcome.label}" share no common year with paired state-level data.` };
+        return { ...base, year: null as number | null, stats: null, insufficientReason: `"${determinant.label}" and "${outcome.label}" share no common year with paired state-level data.` };
       }
       const pairs = buildPairs(determinantRows, outcomeRows, year, determinant.field, outcome.field);
       const stats = computeCorrelationStats(pairs);
       if (!stats) {
-        return { outcome, year, stats: null, insufficientReason: `Only ${n} state(s) have paired data in ${year} (need at least 8).` };
+        return { ...base, year, pairs, stats: null, insufficientReason: `Only ${n} state(s) have paired data in ${year} (need at least 8).` };
       }
-      return { outcome, year, stats, insufficientReason: null as string | null };
+      return { ...base, year, pairs, stats, insufficientReason: null as string | null };
     });
   }, [selectedOutcomeIds, determinant, rowsByFile]);
+
+  const [drillDownOutcomeId, setDrillDownOutcomeId] = useState<string | null>(null);
+  const drillDown = results.find((r) => r.outcome.id === drillDownOutcomeId && r.stats) ?? null;
+
+  const drillDownColumns: Column[] = [
+    { key: "state", label: "State" },
+    { key: "x", label: determinant.label, numeric: true },
+    { key: "y", label: drillDown?.outcome.label ?? "Outcome", numeric: true },
+  ];
 
   const columns: Column[] = [
     { key: "outcome", label: "Outcome" },
@@ -168,6 +178,47 @@ export default function IndicatorMatrix() {
             insufficient paired data (fewer than 8 states) to compute a correlation for any common year — the
             sentence explains why, matching Determinants Explorer's InsufficientData wording for the same case.
           </p>
+        </div>
+
+        <div>
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            State-level breakdown
+          </h2>
+          <div className="rounded-lg border border-line-grid bg-surface p-4">
+            <label htmlFor="matrix-drilldown" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+              Drill into the 16 state values behind a result
+            </label>
+            <select
+              id="matrix-drilldown"
+              value={drillDownOutcomeId ?? ""}
+              onChange={(e) => setDrillDownOutcomeId(e.target.value || null)}
+              className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+            >
+              <option value="">Choose a result…</option>
+              {results
+                .filter((r) => r.stats)
+                .map((r) => (
+                  <option key={r.outcome.id} value={r.outcome.id}>
+                    {r.outcome.label} ({r.year})
+                  </option>
+                ))}
+            </select>
+            <div className="mt-4">
+              {drillDown ? (
+                <DataTable
+                  columns={drillDownColumns}
+                  rows={drillDown.pairs as unknown as Record<string, unknown>[]}
+                  searchable={false}
+                  pageSize={drillDown.pairs.length || 1}
+                />
+              ) : (
+                <p className="text-sm text-ink-secondary">
+                  Pick a result above to see the exact per-state values the correlation in that row was computed
+                  from — the same numbers Determinants Explorer would show for that specific pair.
+                </p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

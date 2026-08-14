@@ -14,11 +14,19 @@
       "update_frequency": "Irregular (HIES survey years); last updated 2025-12-31",
       "date_range": "1970-2024",
       "geographic_resolution": "national",
-      "dimensions": ["year"],
-      "variables": ["income_mean (RM)", "income_median (RM)"],
+      "dimensions": [
+        "year"
+      ],
+      "variables": [
+        "income_mean (RM)",
+        "income_median (RM)"
+      ],
       "unit": "RM/month",
       "missingness": "income_median missing for 1970 (survey did not report median that year)",
-      "joinable_with": ["hh_poverty", "hh_inequality via year"],
+      "joinable_with": [
+        "hh_poverty",
+        "hh_inequality via year"
+      ],
       "recommended_use": "National socioeconomic trend line (Overview page)",
       "limitations": "1970-1974 Peninsular Malaysia only; Sabah/Sarawak from 1976; citizens only from 1989. Survey years are irregular, not annual.",
       "status": "ingested"
@@ -29,14 +37,24 @@
       "url": "https://data.gov.my/data-catalogue/hh_income_state",
       "endpoint_csv": "https://storage.dosm.gov.my/hies/hh_income_state.csv",
       "description": "Mean/median household income by state, 1970-2024.",
-      "source_org": "DOSM", "update_frequency": "Irregular (HIES years)",
+      "source_org": "DOSM",
+      "update_frequency": "Irregular (HIES years)",
       "date_range": "1970-2024 (state coverage begins 1976 for Sabah/Sarawak)",
       "geographic_resolution": "state",
-      "dimensions": ["state", "year"],
-      "variables": ["income_mean (RM)", "income_median (RM)"],
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "income_mean (RM)",
+        "income_median (RM)"
+      ],
       "unit": "RM/month",
       "missingness": "Federal Territories (Labuan, Putrajaya) only reported from 2007",
-      "joinable_with": ["hh_poverty_state", "hh_inequality_state via state+year"],
+      "joinable_with": [
+        "hh_poverty_state",
+        "hh_inequality_state via state+year"
+      ],
       "recommended_use": "State choropleth + ranking (Socioeconomic Inequality page)",
       "limitations": "Same survey-year irregularity as national series.",
       "status": "ingested"
@@ -47,269 +65,527 @@
       "url": "https://data.gov.my/data-catalogue/hh_income_district",
       "endpoint_csv": "https://storage.dosm.gov.my/hies/hh_income_district.csv",
       "description": "Mean/median household income by administrative district.",
-      "source_org": "DOSM", "update_frequency": "Irregular",
+      "source_org": "DOSM",
+      "update_frequency": "Irregular",
       "date_range": "2019, 2022, 2024 only",
       "geographic_resolution": "district (160 districts)",
-      "dimensions": ["state", "district", "year"],
-      "variables": ["income_mean (RM)", "income_median (RM)"],
+      "dimensions": [
+        "state",
+        "district",
+        "year"
+      ],
+      "variables": [
+        "income_mean (RM)",
+        "income_median (RM)"
+      ],
       "unit": "RM/month",
       "missingness": "None in the 3 available years for included districts",
-      "joinable_with": ["hh_poverty_district", "hh_inequality_district", "hh_access_amenities via state+district+year"],
+      "joinable_with": [
+        "hh_poverty_district",
+        "hh_inequality_district",
+        "hh_access_amenities via state+district+year"
+      ],
       "recommended_use": "District-level choropleth map, the highest-resolution income indicator available",
       "limitations": "Only 3 cross-sectional years (2019/2022/2024), not a continuous series; do not interpolate between them.",
       "status": "ingested"
     },
     {
-      "id": "hh_poverty", "name": "Poverty Rate (Malaysia)",
+      "id": "hh_poverty",
+      "name": "Poverty Rate (Malaysia)",
       "url": "https://data.gov.my/data-catalogue/hh_poverty",
       "endpoint_csv": "https://storage.dosm.gov.my/hies/hh_poverty.csv",
       "description": "Absolute, hardcore and relative poverty rates, national, 1970-2024.",
-      "source_org": "DOSM", "update_frequency": "Irregular",
-      "date_range": "1970-2024", "geographic_resolution": "national",
-      "dimensions": ["year"],
-      "variables": ["poverty_absolute (%)", "poverty_hardcore (%)", "poverty_relative (%)"],
-      "unit": "%", "missingness": "poverty_relative not published before 1995",
-      "joinable_with": ["hh_income", "hh_inequality via year"],
+      "source_org": "DOSM",
+      "update_frequency": "Irregular",
+      "date_range": "1970-2024",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "year"
+      ],
+      "variables": [
+        "poverty_absolute (%)",
+        "poverty_hardcore (%)",
+        "poverty_relative (%)"
+      ],
+      "unit": "%",
+      "missingness": "poverty_relative not published before 1995",
+      "joinable_with": [
+        "hh_income",
+        "hh_inequality via year"
+      ],
       "recommended_use": "National trend (Overview, Socioeconomic Inequality)",
       "limitations": "Definitions of the Poverty Line Income have been revised over time by DOSM; pre/post-2019 PLI methodology differs — treat pre- and post-2019 absolute poverty rates as not fully comparable.",
       "status": "ingested"
     },
     {
-      "id": "hh_poverty_state", "name": "Poverty Rate by State",
+      "id": "hh_poverty_state",
+      "name": "Poverty Rate by State",
       "url": "https://data.gov.my/data-catalogue/hh_poverty_state",
       "endpoint_csv": "https://storage.dosm.gov.my/hies/hh_poverty_state.csv",
       "description": "Poverty rates by state, 1970-2024.",
-      "source_org": "DOSM", "update_frequency": "Irregular",
-      "date_range": "1970-2024", "geographic_resolution": "state",
-      "dimensions": ["state", "year"],
-      "variables": ["poverty_absolute (%)", "poverty_hardcore (%)", "poverty_relative (%)"],
-      "unit": "%", "missingness": "Relative poverty missing pre-1995; some states missing hardcore poverty pre-1995",
-      "joinable_with": ["hh_income_state", "hh_inequality_state"],
+      "source_org": "DOSM",
+      "update_frequency": "Irregular",
+      "date_range": "1970-2024",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "poverty_absolute (%)",
+        "poverty_hardcore (%)",
+        "poverty_relative (%)"
+      ],
+      "unit": "%",
+      "missingness": "Relative poverty missing pre-1995; some states missing hardcore poverty pre-1995",
+      "joinable_with": [
+        "hh_income_state",
+        "hh_inequality_state"
+      ],
       "recommended_use": "State choropleth (Health Equity Map, Socioeconomic Inequality)",
       "limitations": "Same PLI methodology caveat as hh_poverty.",
       "status": "ingested"
     },
     {
-      "id": "hh_poverty_district", "name": "Poverty Rate by District",
+      "id": "hh_poverty_district",
+      "name": "Poverty Rate by District",
       "url": "https://data.gov.my/data-catalogue/hh_poverty_district",
       "endpoint_csv": "https://storage.dosm.gov.my/hies/hh_poverty_district.csv",
       "description": "Absolute & relative poverty rate by district.",
-      "source_org": "DOSM", "update_frequency": "Irregular",
-      "date_range": "2019, 2022, 2024", "geographic_resolution": "district",
-      "dimensions": ["state", "district", "year"],
-      "variables": ["poverty_absolute (%)", "poverty_relative (%)"],
-      "unit": "%", "missingness": "none in available years",
-      "joinable_with": ["hh_income_district", "hh_inequality_district", "hh_access_amenities"],
+      "source_org": "DOSM",
+      "update_frequency": "Irregular",
+      "date_range": "2019, 2022, 2024",
+      "geographic_resolution": "district",
+      "dimensions": [
+        "state",
+        "district",
+        "year"
+      ],
+      "variables": [
+        "poverty_absolute (%)",
+        "poverty_relative (%)"
+      ],
+      "unit": "%",
+      "missingness": "none in available years",
+      "joinable_with": [
+        "hh_income_district",
+        "hh_inequality_district",
+        "hh_access_amenities"
+      ],
       "recommended_use": "District choropleth — highest-resolution poverty indicator available",
       "limitations": "Cross-sectional years only; hardcore poverty not published at district level.",
       "status": "ingested"
     },
     {
-      "id": "hh_inequality", "name": "Gini Coefficient (Malaysia)",
+      "id": "hh_inequality",
+      "name": "Gini Coefficient (Malaysia)",
       "url": "https://data.gov.my/data-catalogue/hh_inequality",
       "endpoint_csv": "https://storage.dosm.gov.my/hies/hh_inequality.csv",
       "description": "National Gini coefficient of gross household income, 1970-2024.",
-      "source_org": "DOSM", "update_frequency": "Irregular",
-      "date_range": "1970-2024", "geographic_resolution": "national",
-      "dimensions": ["year"], "variables": ["gini (0-1)"], "unit": "index (0-1)",
-      "missingness": "none", "joinable_with": ["hh_income", "hh_poverty"],
+      "source_org": "DOSM",
+      "update_frequency": "Irregular",
+      "date_range": "1970-2024",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "year"
+      ],
+      "variables": [
+        "gini (0-1)"
+      ],
+      "unit": "index (0-1)",
+      "missingness": "none",
+      "joinable_with": [
+        "hh_income",
+        "hh_poverty"
+      ],
       "recommended_use": "National inequality trend",
-      "limitations": "Based on gross income before tax/transfers.", "status": "ingested"
+      "limitations": "Based on gross income before tax/transfers.",
+      "status": "ingested"
     },
     {
-      "id": "hh_inequality_state", "name": "Gini Coefficient by State",
+      "id": "hh_inequality_state",
+      "name": "Gini Coefficient by State",
       "url": "https://data.gov.my/data-catalogue/hh_inequality_state",
       "endpoint_csv": "https://storage.dosm.gov.my/hies/hh_inequality_state.csv",
       "description": "Gini coefficient by state, 1974-2024.",
-      "source_org": "DOSM", "update_frequency": "Irregular",
-      "date_range": "1974-2024", "geographic_resolution": "state",
-      "dimensions": ["state", "year"], "variables": ["gini (0-1)"], "unit": "index (0-1)",
+      "source_org": "DOSM",
+      "update_frequency": "Irregular",
+      "date_range": "1974-2024",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "gini (0-1)"
+      ],
+      "unit": "index (0-1)",
       "missingness": "Sabah/Sarawak from 1979; FTs from 2007",
-      "joinable_with": ["hh_income_state", "hh_poverty_state"],
-      "recommended_use": "State choropleth + ranking", "limitations": "Gross income basis.",
+      "joinable_with": [
+        "hh_income_state",
+        "hh_poverty_state"
+      ],
+      "recommended_use": "State choropleth + ranking",
+      "limitations": "Gross income basis.",
       "status": "ingested"
     },
     {
-      "id": "hh_inequality_district", "name": "Gini Coefficient by District",
+      "id": "hh_inequality_district",
+      "name": "Gini Coefficient by District",
       "url": "https://data.gov.my/data-catalogue/hh_inequality_district",
       "endpoint_csv": "https://storage.dosm.gov.my/hies/hh_inequality_district.csv",
       "description": "Gini coefficient by district.",
-      "source_org": "DOSM", "update_frequency": "Irregular",
-      "date_range": "2019, 2022, 2024", "geographic_resolution": "district",
-      "dimensions": ["state", "district", "year"], "variables": ["gini (0-1)"], "unit": "index (0-1)",
+      "source_org": "DOSM",
+      "update_frequency": "Irregular",
+      "date_range": "2019, 2022, 2024",
+      "geographic_resolution": "district",
+      "dimensions": [
+        "state",
+        "district",
+        "year"
+      ],
+      "variables": [
+        "gini (0-1)"
+      ],
+      "unit": "index (0-1)",
       "missingness": "none in available years",
-      "joinable_with": ["hh_income_district", "hh_poverty_district"],
-      "recommended_use": "District choropleth", "limitations": "Cross-sectional years only.",
+      "joinable_with": [
+        "hh_income_district",
+        "hh_poverty_district"
+      ],
+      "recommended_use": "District choropleth",
+      "limitations": "Cross-sectional years only.",
       "status": "ingested"
     },
     {
-      "id": "hh_access_amenities", "name": "Access to Basic Amenities by State & District",
+      "id": "hh_access_amenities",
+      "name": "Access to Basic Amenities by State & District",
       "url": "https://data.gov.my/data-catalogue/hh_access_amenities",
       "endpoint_csv": "https://storage.dosm.gov.my/hies/hh_access_amenities.csv",
       "description": "% of households with piped water, sanitary latrines, and electricity, by state and district.",
-      "source_org": "DOSM (from HIES)", "update_frequency": "~biennial",
+      "source_org": "DOSM (from HIES)",
+      "update_frequency": "~biennial",
       "date_range": "2022 ingested (dataset covers 2016-2024)",
       "geographic_resolution": "district",
-      "dimensions": ["state", "district", "year"],
-      "variables": ["sanitation (%)", "electricity (%)", "piped_water (%)"], "unit": "%",
+      "dimensions": [
+        "state",
+        "district",
+        "year"
+      ],
+      "variables": [
+        "sanitation (%)",
+        "electricity (%)",
+        "piped_water (%)"
+      ],
+      "unit": "%",
       "missingness": "A few remote Sabah/Sarawak districts (e.g. Kalabakan) have null electricity/piped_water in source",
-      "joinable_with": ["hh_income_district", "hh_poverty_district", "hh_inequality_district"],
+      "joinable_with": [
+        "hh_income_district",
+        "hh_poverty_district",
+        "hh_inequality_district"
+      ],
       "recommended_use": "Basic-amenities choropleth, socioeconomic vulnerability domain",
       "limitations": "Only the 2022 cross-section was ingested in this build (see METHODOLOGY.md); 2016/2018/2020/2024 exist upstream and can be pulled by re-running ingest_data.py.",
       "status": "ingested"
     },
     {
-      "id": "population_state", "name": "Population Table: States",
+      "id": "population_state",
+      "name": "Population Table: States",
       "url": "https://data.gov.my/data-catalogue/population_state",
       "endpoint_csv": "https://storage.dosm.gov.my/population/population_state.csv",
       "description": "DOSM intercensal population estimates by state, sex, age band and ethnicity.",
-      "source_org": "DOSM", "update_frequency": "Annual",
+      "source_org": "DOSM",
+      "update_frequency": "Annual",
       "date_range": "Full series 1970-2026; this build ingested 2020-2023 (overall age/ethnicity, by sex)",
       "geographic_resolution": "state",
-      "dimensions": ["state", "year", "sex"],
-      "variables": ["population (thousands)"], "unit": "thousands of persons",
+      "dimensions": [
+        "state",
+        "year",
+        "sex"
+      ],
+      "variables": [
+        "population (thousands)"
+      ],
+      "unit": "thousands of persons",
       "missingness": "none in ingested slice",
-      "joinable_with": ["healthcare_staff, hospital_beds via state+year (population denominator)"],
+      "joinable_with": [
+        "healthcare_staff, hospital_beds via state+year (population denominator)"
+      ],
       "recommended_use": "Denominator for per-100,000 healthcare access rates",
       "limitations": "Full dataset also has 5-year age bands and 7 ethnicity categories; only 'overall age' x 'overall ethnicity' x sex was ingested in this build due to the raw file's size. Re-run ingest_data.py for full disaggregation.",
       "status": "ingested"
     },
     {
-      "id": "population_district", "name": "Population Table: Administrative Districts",
+      "id": "population_district",
+      "name": "Population Table: Administrative Districts",
       "url": "https://data.gov.my/data-catalogue/population_district",
       "endpoint_csv": "https://storage.dosm.gov.my/population/population_district.csv",
       "description": "District population 2020-2024 by sex/age/ethnicity (official DOSM live series).",
-      "source_org": "DOSM", "update_frequency": "Annual",
+      "source_org": "DOSM",
+      "update_frequency": "Annual",
       "date_range": "2020-2024",
       "geographic_resolution": "district",
-      "dimensions": ["state", "district", "year", "sex", "age", "ethnicity"],
-      "variables": ["population (thousands)"], "unit": "thousands of persons",
+      "dimensions": [
+        "state",
+        "district",
+        "year",
+        "sex",
+        "age",
+        "ethnicity"
+      ],
+      "variables": [
+        "population (thousands)"
+      ],
+      "unit": "thousands of persons",
       "missingness": "n/a",
-      "joinable_with": ["hh_income_district etc."],
+      "joinable_with": [
+        "hh_income_district etc."
+      ],
       "recommended_use": "District population denominators for 2020-2024",
       "limitations": "NOT ingested in this build (raw file exceeds the sandbox fetch-size limit encountered during this session — see METHODOLOGY.md). The dashboard instead uses the DOSM census_district series (below) for district population, which only runs through 2020.",
       "status": "identified_not_ingested"
     },
     {
-      "id": "census_district", "name": "Census District Table (DOSM data-open GitHub mirror)",
+      "id": "census_district",
+      "name": "Census District Table (DOSM data-open GitHub mirror)",
       "url": "https://github.com/dosm-malaysia/data-open/tree/main/datasets/census",
       "endpoint_csv": "https://raw.githubusercontent.com/dosm-malaysia/data-open/main/datasets/census/census_district.csv",
       "description": "Historical census population by district, sex, ethnicity and broad age band, decennial + intercensal, 1970-2020.",
-      "source_org": "DOSM (official GitHub open-data mirror)", "update_frequency": "Per census cycle",
-      "date_range": "1970-2020", "geographic_resolution": "district",
-      "dimensions": ["state", "district", "year"],
-      "variables": ["population_total", "sex_male", "sex_female", "ethnicity_bumi/chinese/indian/other",
-                     "age_0_14/15_64/65_above", "housing, marital, religion fields (not all used)"],
+      "source_org": "DOSM (official GitHub open-data mirror)",
+      "update_frequency": "Per census cycle",
+      "date_range": "1970-2020",
+      "geographic_resolution": "district",
+      "dimensions": [
+        "state",
+        "district",
+        "year"
+      ],
+      "variables": [
+        "population_total",
+        "sex_male",
+        "sex_female",
+        "ethnicity_bumi/chinese/indian/other",
+        "age_0_14/15_64/65_above",
+        "housing, marital, religion fields (not all used)"
+      ],
       "unit": "persons",
       "missingness": "Many fields blank for pre-1991 census rounds (not all questions asked every census)",
-      "joinable_with": ["socioeconomic_district via state+district"],
+      "joinable_with": [
+        "socioeconomic_district via state+district"
+      ],
       "recommended_use": "District population time series & structure (Population Equity page)",
       "limitations": "Only census years (1970,1980,1991,2000,2010,2020) plus a few intercensal points — not annual. Stops at 2020; use population_district (identified_not_ingested) for 2021-2024 if extending this pipeline.",
       "status": "ingested"
     },
     {
-      "id": "hospital_beds", "name": "Hospital Beds by State and Hospital Type",
+      "id": "hospital_beds",
+      "name": "Hospital Beds by State and Hospital Type",
       "url": "https://data.gov.my/data-catalogue/hospital_beds",
       "endpoint_csv": "https://storage.data.gov.my/healthcare/hospital_beds.csv",
       "description": "Public + non-MOH hospital bed counts, national/state/district, by facility type.",
-      "source_org": "Ministry of Health Malaysia", "update_frequency": "Annual",
+      "source_org": "Ministry of Health Malaysia",
+      "update_frequency": "Annual",
       "date_range": "National/state series 2015-2022 ingested in full; district-level ingested for 2022 only",
       "geographic_resolution": "district",
-      "dimensions": ["state", "district", "year", "type"],
-      "variables": ["beds (count)"], "unit": "count",
+      "dimensions": [
+        "state",
+        "district",
+        "year",
+        "type"
+      ],
+      "variables": [
+        "beds (count)"
+      ],
+      "unit": "count",
       "missingness": "0 recorded explicitly for districts with no hospital (not blank)",
-      "joinable_with": ["population_state/district for per-100k rate"],
+      "joinable_with": [
+        "population_state/district for per-100k rate"
+      ],
       "recommended_use": "Healthcare Access page, beds-per-100,000 map",
       "limitations": "District-level series only ingested for 2022 (most recent year) in this build; full 2015-2022 district panel can be pulled by re-running ingest_data.py in an unrestricted network environment.",
       "status": "ingested"
     },
     {
-      "id": "healthcare_staff", "name": "Healthcare Staff by State and Staff Type",
+      "id": "healthcare_staff",
+      "name": "Healthcare Staff by State and Staff Type",
       "url": "https://data.gov.my/data-catalogue/healthcare_staff",
       "endpoint_csv": "https://storage.data.gov.my/healthcare/healthcare_staff.csv",
       "description": "Public-sector healthcare workforce (doctors, dentists, nurses, community nurses), national + state.",
-      "source_org": "Ministry of Health Malaysia", "update_frequency": "Annual",
-      "date_range": "2014-2022", "geographic_resolution": "state",
-      "dimensions": ["state", "year", "type"], "variables": ["staff (count)"], "unit": "count",
-      "missingness": "none", "joinable_with": ["population_state for per-100k rate"],
+      "source_org": "Ministry of Health Malaysia",
+      "update_frequency": "Annual",
+      "date_range": "2014-2022",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year",
+        "type"
+      ],
+      "variables": [
+        "staff (count)"
+      ],
+      "unit": "count",
+      "missingness": "none",
+      "joinable_with": [
+        "population_state for per-100k rate"
+      ],
       "recommended_use": "Healthcare workforce density map/ranking",
       "limitations": "Public sector only — excludes private-sector doctors/nurses, which are a significant share of urban healthcare capacity.",
       "status": "ingested"
     },
     {
-      "id": "death_state", "name": "Annual Deaths by State",
+      "id": "death_state",
+      "name": "Annual Deaths by State",
       "url": "https://data.gov.my/data-catalogue/deaths_state",
       "endpoint_csv": "https://storage.dosm.gov.my/demography/death_state.csv",
       "description": "Crude death counts and rate by state of usual residence.",
-      "source_org": "National Registration Department / DOSM", "update_frequency": "Annual",
-      "date_range": "2000-2022", "geographic_resolution": "state",
-      "dimensions": ["state", "year"], "variables": ["abs (count)", "rate (per 1,000)"], "unit": "per 1,000 population",
-      "missingness": "none", "joinable_with": ["birth_state, death_maternal_state via state+year"],
-      "recommended_use": "Mortality trend / equity map", "limitations": "State = deceased's usual residence, not place of death.",
+      "source_org": "National Registration Department / DOSM",
+      "update_frequency": "Annual",
+      "date_range": "2000-2022",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "abs (count)",
+        "rate (per 1,000)"
+      ],
+      "unit": "per 1,000 population",
+      "missingness": "none",
+      "joinable_with": [
+        "birth_state, death_maternal_state via state+year"
+      ],
+      "recommended_use": "Mortality trend / equity map",
+      "limitations": "State = deceased's usual residence, not place of death.",
       "status": "ingested"
     },
     {
-      "id": "death_maternal_state", "name": "Annual Maternal Deaths by State",
+      "id": "death_maternal_state",
+      "name": "Annual Maternal Deaths by State",
       "url": "https://data.gov.my/data-catalogue/deaths_maternal_state",
       "endpoint_csv": "https://storage.dosm.gov.my/demography/death_maternal_state.csv",
       "description": "Maternal death counts and rate per 100,000 live births, by state.",
-      "source_org": "National Registration Department / DOSM", "update_frequency": "Annual",
-      "date_range": "2000-2022", "geographic_resolution": "state",
-      "dimensions": ["state", "year"], "variables": ["abs (count)", "rate (per 100,000 live births)"],
+      "source_org": "National Registration Department / DOSM",
+      "update_frequency": "Annual",
+      "date_range": "2000-2022",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "abs (count)",
+        "rate (per 100,000 live births)"
+      ],
       "unit": "per 100,000 live births",
-      "missingness": "none", "joinable_with": ["birth_state"],
+      "missingness": "none",
+      "joinable_with": [
+        "birth_state"
+      ],
       "recommended_use": "Maternal health equity (Health Outcomes page)",
       "limitations": "Small annual counts per state -> rates are volatile year-to-year for smaller states; treat single-year state comparisons cautiously.",
       "status": "ingested"
     },
     {
-      "id": "deaths_early_childhood_state", "name": "Annual Early Childhood Deaths by State",
+      "id": "deaths_early_childhood_state",
+      "name": "Annual Early Childhood Deaths by State",
       "url": "https://data.gov.my/data-catalogue/deaths_early_childhood_state",
       "endpoint_csv": "https://storage.dosm.gov.my/demography/deaths_early_childhood_state.csv",
       "description": "Perinatal, neonatal, infant, toddler and total under-5 death counts/rates, by state.",
-      "source_org": "National Registration Department / DOSM", "update_frequency": "Annual",
-      "date_range": "2000-2022", "geographic_resolution": "state",
-      "dimensions": ["state", "year", "type"], "variables": ["abs (count)", "rate"], "unit": "varies by type (see METHODOLOGY.md)",
-      "missingness": "none", "joinable_with": ["birth_state (denominator)"],
+      "source_org": "National Registration Department / DOSM",
+      "update_frequency": "Annual",
+      "date_range": "2000-2022",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year",
+        "type"
+      ],
+      "variables": [
+        "abs (count)",
+        "rate"
+      ],
+      "unit": "varies by type (see METHODOLOGY.md)",
+      "missingness": "none",
+      "joinable_with": [
+        "birth_state (denominator)"
+      ],
       "recommended_use": "Infant/child mortality equity (Health Outcomes page)",
       "limitations": "Rate denominator differs by sub-type (per-1,000-live-births for infant/neonatal/perinatal; per-1,000-population for toddler) — do not compare rates across types directly.",
       "status": "ingested"
     },
     {
-      "id": "birth_state", "name": "Annual Live Births by State",
+      "id": "birth_state",
+      "name": "Annual Live Births by State",
       "url": "https://data.gov.my/data-catalogue/births_annual_state",
       "endpoint_csv": "https://storage.dosm.gov.my/demography/birth_state.csv",
       "description": "Live birth counts and crude birth rate by state.",
-      "source_org": "National Registration Department / DOSM", "update_frequency": "Annual",
-      "date_range": "2000-2022", "geographic_resolution": "state",
-      "dimensions": ["state", "year"], "variables": ["abs (count)", "rate (per 1,000)"], "unit": "per 1,000 population",
-      "missingness": "none", "joinable_with": ["death_maternal_state, deaths_early_childhood_state"],
+      "source_org": "National Registration Department / DOSM",
+      "update_frequency": "Annual",
+      "date_range": "2000-2022",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "abs (count)",
+        "rate (per 1,000)"
+      ],
+      "unit": "per 1,000 population",
+      "missingness": "none",
+      "joinable_with": [
+        "death_maternal_state, deaths_early_childhood_state"
+      ],
       "recommended_use": "Denominator for maternal/infant mortality rates; fertility trend",
-      "limitations": "State = mother's usual residence, not place of birth.", "status": "ingested"
+      "limitations": "State = mother's usual residence, not place of birth.",
+      "status": "ingested"
     },
     {
-      "id": "infant_immunisation", "name": "Infant Immunisation Coverage",
+      "id": "infant_immunisation",
+      "name": "Infant Immunisation Coverage",
       "url": "https://data.gov.my/data-catalogue/infant_immunisation",
       "endpoint_csv": "https://storage.data.gov.my/healthcare/infant_immunisation.csv",
       "description": "Annual coverage rate for measles/MMR, DPT, Hepatitis B, polio.",
-      "source_org": "Ministry of Health Malaysia", "update_frequency": "Annual",
-      "date_range": "2000-2023", "geographic_resolution": "national",
-      "dimensions": ["year", "disease"], "variables": ["rate (%)"], "unit": "%",
+      "source_org": "Ministry of Health Malaysia",
+      "update_frequency": "Annual",
+      "date_range": "2000-2023",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "year",
+        "disease"
+      ],
+      "variables": [
+        "rate (%)"
+      ],
+      "unit": "%",
       "missingness": "none",
-      "joinable_with": ["nutrition_national via year (loosely, both national child-health series)"],
+      "joinable_with": [
+        "nutrition_national via year (loosely, both national child-health series)"
+      ],
       "recommended_use": "National immunisation trend (Health Outcomes page)",
       "limitations": "National level only — no state/district breakdown available from data.gov.my. Coverage can exceed 100% because it is aggregated-count-based, not individual-linked.",
       "status": "ingested"
     },
     {
-      "id": "nutrition_status_u5_sex", "name": "Nutritional Status of Children Under 5 by Sex",
+      "id": "nutrition_status_u5_sex",
+      "name": "Nutritional Status of Children Under 5 by Sex",
       "url": "https://data.gov.my/data-catalogue/nutrition_children_sex",
       "endpoint_csv": "https://storage.data.gov.my/healthcare/nutrition_status_u5_sex.csv",
       "description": "WHO-standard WAZ/HAZ/WHZ distribution (underweight/stunting/wasting/overweight prevalence) for under-5 children.",
       "source_org": "Ministry of Health Malaysia (National Health & Morbidity Survey)",
       "update_frequency": "Per NHMS cycle (irregular)",
-      "date_range": "2019 only", "geographic_resolution": "national",
-      "dimensions": ["sex", "indicator", "range"], "variables": ["prevalence (%)"], "unit": "%",
+      "date_range": "2019 only",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "sex",
+        "indicator",
+        "range"
+      ],
+      "variables": [
+        "prevalence (%)"
+      ],
+      "unit": "%",
       "missingness": "none",
       "joinable_with": [],
       "recommended_use": "Child nutrition equity by sex (Health Outcomes page)",
@@ -317,31 +593,60 @@
       "status": "ingested"
     },
     {
-      "id": "std_state", "name": "Sexually Transmitted Diseases by State",
+      "id": "std_state",
+      "name": "Sexually Transmitted Diseases by State",
       "url": "https://data.gov.my/data-catalogue/std_state",
       "endpoint_csv": "https://storage.data.gov.my/healthcare/std_state.csv",
       "description": "Case counts and incidence (per 100,000) for HIV, AIDS, syphilis, gonorrhea, chancroid, by state.",
-      "source_org": "Ministry of Health Malaysia", "update_frequency": "Annual",
-      "date_range": "2017-2022", "geographic_resolution": "state",
-      "dimensions": ["state", "year", "disease"], "variables": ["cases (count)", "incidence (per 100,000)"],
+      "source_org": "Ministry of Health Malaysia",
+      "update_frequency": "Annual",
+      "date_range": "2017-2022",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year",
+        "disease"
+      ],
+      "variables": [
+        "cases (count)",
+        "incidence (per 100,000)"
+      ],
       "unit": "per 100,000 population",
-      "missingness": "none", "joinable_with": ["population_state"],
+      "missingness": "none",
+      "joinable_with": [
+        "population_state"
+      ],
       "recommended_use": "Infectious-disease equity map (Health Outcomes page)",
       "limitations": "Reported/diagnosed cases only — true incidence, especially for HIV/AIDS, is understated due to under-testing; comparisons across states may partly reflect differences in testing access rather than true incidence.",
       "status": "ingested"
     },
     {
-      "id": "hies_2019_snapshot", "name": "HIES 2019 State Snapshot (DOSM data-open GitHub mirror)",
+      "id": "hies_2019_snapshot",
+      "name": "HIES 2019 State Snapshot (DOSM data-open GitHub mirror)",
       "url": "https://github.com/dosm-malaysia/data-open/tree/main/datasets/economy",
       "endpoint_csv": "https://raw.githubusercontent.com/dosm-malaysia/data-open/main/datasets/economy/hies_2019.csv",
       "description": "Cross-check snapshot: income, expenditure, gini and poverty rate by state, 2019, from DOSM's own published GitHub mirror.",
-      "source_org": "DOSM (official GitHub open-data mirror)", "update_frequency": "static",
-      "date_range": "2019", "geographic_resolution": "state",
-      "dimensions": ["state"], "variables": ["income_mean", "expenditure_mean", "gini", "poverty_rate"], "unit": "mixed",
+      "source_org": "DOSM (official GitHub open-data mirror)",
+      "update_frequency": "static",
+      "date_range": "2019",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state"
+      ],
+      "variables": [
+        "income_mean",
+        "expenditure_mean",
+        "gini",
+        "poverty_rate"
+      ],
+      "unit": "mixed",
       "missingness": "none",
-      "joinable_with": ["socioeconomic_state.json (used as an internal consistency cross-check)"],
+      "joinable_with": [
+        "socioeconomic_state.json (used as an internal consistency cross-check)"
+      ],
       "recommended_use": "Data-quality cross-validation — used only to sanity-check the API-sourced hh_income_state/hh_poverty_state/hh_inequality_state figures for 2019, not loaded into the dashboard directly.",
-      "limitations": "Single year, state-level only.", "status": "ingested_reference_only"
+      "limitations": "Single year, state-level only.",
+      "status": "ingested_reference_only"
     },
     {
       "id": "nhms_ncd_2019",
@@ -353,11 +658,24 @@
       "update_frequency": "Per NHMS NCD cycle (4-yearly)",
       "date_range": "2015, 2019, 2023",
       "geographic_resolution": "national (2015 and 2019 only), state",
-      "dimensions": ["state", "year"],
-      "variables": ["<indicator>_prevalence_pct", "<indicator>_ci_lower/upper (2015 and 2019 only)", "<indicator>_n (2015 and 2019 only)", "<indicator>_unreliable (bool, 2019 only, for indicators the source report itself flags as small-sample/high-RSE)", "shared across years: known_diabetes, known_hypertension, raised_blood_glucose, raised_blood_pressure, raised_cholesterol, known_hypercholesterolaemia, undiagnosed_diabetes, undiagnosed_hypertension, undiagnosed_hypercholesterolaemia (undiagnosed_* populated for 2015 and 2023 only), underweight, abdominal_obesity, current_smoker", "2019-only: physical_inactivity, current_drinker, overweight, obesity", "2015-only: physically_active (inverse framing of physical_inactivity, NOT the same field — not algebraically derived from it)"],
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "<indicator>_prevalence_pct",
+        "<indicator>_ci_lower/upper (2015 and 2019 only)",
+        "<indicator>_n (2015 and 2019 only)",
+        "<indicator>_unreliable (bool, 2019 only, for indicators the source report itself flags as small-sample/high-RSE)",
+        "shared across years: known_diabetes, known_hypertension, raised_blood_glucose, raised_blood_pressure, raised_cholesterol, known_hypercholesterolaemia, undiagnosed_diabetes, undiagnosed_hypertension, undiagnosed_hypercholesterolaemia (undiagnosed_* populated for 2015 and 2023 only), underweight, abdominal_obesity, current_smoker",
+        "2019-only: physical_inactivity, current_drinker, overweight, obesity",
+        "2015-only: physically_active (inverse framing of physical_inactivity, NOT the same field — not algebraically derived from it)"
+      ],
       "unit": "% (weighted survey estimate; 2015/2019 have 95% CI, 2023 point estimate only)",
       "missingness": "2015: no Sabah/W.P. Labuan rows (source reports them as one combined unit — splitting it would be fabrication, so both are null rather than guessed), no current_drinker (not disaggregated by state that cycle), no overweight/obesity (those table pages did not extract as text in this PDF in either pdftotext mode — likely image-rendered — and were not guessed at). 2019: none for the 16 states/FTs + national. 2023: state-level only for 9 indicators, no Malaysia row, no CI/n published in the source table.",
-      "joinable_with": ["socioeconomic_state.json, healthcare_access_state.json via state (for Determinants Explorer)"],
+      "joinable_with": [
+        "socioeconomic_state.json, healthcare_access_state.json via state (for Determinants Explorer)"
+      ],
       "recommended_use": "State-level NCD risk-factor outcomes for the Determinants Explorer (WHY) — the only survey-based (as opposed to administrative-registry) indicators in this dataset, and (for diabetes/hypertension/hypercholesterolaemia) the only indicators in the whole pipeline with three time points available for a before/after read",
       "limitations": "UNLIKE every other file in this pipeline, this dataset was not fetched from a data.gov.my/DOSM open-data endpoint — NHMS results are not published there. Every figure was manually transcribed from its respective Table X.Y in the relevant year's NHMS Technical Report PDF — see scripts/transform_data.py::build_nhms_ncd() for the exact table/page citation per indicator/year — each cross-checked against the report's own summary figures (2015 and 2019: Malaysia-level subtotal row in the same table; 2023: the report's own highest/lowest narrative sentences, which matched the extracted table exactly on every figure checked; 2015's physically_active table was additionally checked against its own \"highest was Kelantan/Pahang\" narrative sentence, which also matched exactly). Male/female-split columns were NEVER transcribed for any indicator/year because the source PDFs' two-column table layouts did not extract reliably enough to trust those numbers (2015/2019 used a mix of `pdftotext -layout` and `-raw` depending on which extracted that specific table cleanly; 2023's dedicated by-state tables extracted cleanly with `-raw`). Overweight/obesity use the WHO Asian (Malaysian CPG) BMI cutoffs, not the WHO international cutoffs also published alongside them in the source, in the years where they are present. current_drinker (2019 only) has several states flagged `_unreliable: true` (small sample / high relative standard error, as flagged with \"*\" in the source). **2015/2019 figures are crude prevalence; 2023 figures are age-standardised — these are NOT a precise apples-to-apples trend** across all three years, read any change as suggestive, not exact (2015 vs. 2019 IS on the same crude basis and is a fairer comparison). An NHMS 2011 (Vol. II) extraction attempt was abandoned after finding table titles frequently detached from their data by page-break artifacts in that specific PDF, and one spot-checked table's confidence interval did not exactly match the report's own stated CI (12.1–13.6 extracted vs. 12.2–13.5 stated) — a reliability risk this pipeline is not willing to accept without a cleaner source; 2011 is not included. NHMS 1996/2006 predate the comparable NCD survey series (per the 2019 report's own \"11.2% (2011) -> 13.4% (2015) -> 18.3% (2019)\" trend framing) and were not attempted.",
       "status": "ingested"
@@ -372,40 +690,451 @@
       "update_frequency": "One-off (no repeat cycle identified as of this audit)",
       "date_range": "2017 only",
       "geographic_resolution": "national, state",
-      "dimensions": ["state", "year"],
-      "variables": ["depression_prevalence_pct", "anxiety_prevalence_pct", "stress_prevalence_pct", "<indicator>_ci_lower/upper", "<indicator>_n (unweighted sample count)"],
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "depression_prevalence_pct",
+        "anxiety_prevalence_pct",
+        "stress_prevalence_pct",
+        "<indicator>_ci_lower/upper",
+        "<indicator>_n (unweighted sample count)"
+      ],
       "unit": "% (weighted survey estimate, 95% CI)",
       "missingness": "none for the 16 states/FTs + national",
-      "joinable_with": ["population_state.json via state (population context only — do NOT join against adult NCD indicators as if the same population)"],
+      "joinable_with": [
+        "population_state.json via state (population context only — do NOT join against adult NCD indicators as if the same population)"
+      ],
       "recommended_use": "The one youth-mental-health indicator in this pipeline — usable in the Determinants Explorer, but keep separate from nhms_ncd_state.json's adult indicators in any comparison",
       "limitations": "CRITICAL: this survey covers secondary-school-going ADOLESCENTS AGED 13-17, not adults and not the general population — it is a fundamentally different denominator from every other health indicator in this pipeline and must never be presented as if comparable to adult prevalence figures (e.g. adult diabetes or hypertension). School-based sampling also means adolescents not attending school (dropouts) are not represented. Manually transcribed from Tables 3.3.1/3.4.1/3.5.1 of the source PDF (not a data.gov.my/DOSM endpoint — same manual-transcription caveat as nhms_ncd_2019), cross-checked against the report's own stated highest-prevalence-state narrative for all three sub-scales (depression, anxiety, stress) — matched exactly. Single cross-sectional year (2017); no repeat cycle of this specific survey has been identified in the NHMS catalogue as of this audit, so no trend is possible.",
       "status": "ingested"
     },
     {
-      "id": "administrative_boundaries", "name": "DOSM Administrative Boundaries (state & district GeoJSON)",
+      "id": "administrative_boundaries",
+      "name": "DOSM Administrative Boundaries (state & district GeoJSON)",
       "url": "https://github.com/dosm-malaysia/data-open/tree/main/datasets/geodata",
       "endpoint": "https://raw.githubusercontent.com/dosm-malaysia/data-open/main/datasets/geodata/administrative_1_state.geojson (and administrative_2_district.geojson)",
       "description": "Official DOSM state and district administrative boundary polygons, used for the interactive choropleth map and to compute centroid coordinates for the geo lookup table.",
-      "source_org": "DOSM (official GitHub open-data mirror)", "update_frequency": "static",
-      "date_range": "current boundaries", "geographic_resolution": "state, district",
-      "dimensions": ["state", "district"], "variables": ["geometry"], "unit": "n/a",
-      "missingness": "none", "joinable_with": ["all state/district datasets via state+district name"],
+      "source_org": "DOSM (official GitHub open-data mirror)",
+      "update_frequency": "static",
+      "date_range": "current boundaries",
+      "geographic_resolution": "state, district",
+      "dimensions": [
+        "state",
+        "district"
+      ],
+      "variables": [
+        "geometry"
+      ],
+      "unit": "n/a",
+      "missingness": "none",
+      "joinable_with": [
+        "all state/district datasets via state+district name"
+      ],
       "recommended_use": "Choropleth map base layer; centroid coordinates for the geo_lookup table",
       "limitations": "Boundaries reflect the file's publication date; not guaranteed to match the very latest gazette changes.",
+      "status": "ingested"
+    },
+    {
+      "id": "population_parlimen",
+      "name": "Population by Parliamentary Constituency",
+      "url": "https://data.gov.my/data-catalogue/population_parlimen",
+      "endpoint": "https://storage.dosm.gov.my/population/population_parlimen.csv",
+      "description": "Annual population estimates by federal parliamentary constituency (parlimen), by sex, 2020-2024.",
+      "source_org": "Department of Statistics Malaysia (DOSM)",
+      "update_frequency": "annual",
+      "date_range": "2020-2024",
+      "geographic_resolution": "parliamentary constituency (222 seats)",
+      "dimensions": [
+        "parlimen",
+        "state",
+        "year",
+        "sex"
+      ],
+      "variables": [
+        "population_thousands"
+      ],
+      "unit": "thousands of persons",
+      "missingness": "none observed in the ingested slice",
+      "joinable_with": [
+        "population_dun via parlimen name (DUNs nest within parlimen)"
+      ],
+      "recommended_use": "Table/ranking of constituency population size only — see limitations before using for choropleth mapping",
+      "limitations": "No boundary GeoJSON for parliamentary constituencies exists in DOSM's open-data mirror, so this cannot be shown on the choropleth map — table/ranking display only. Kept to the 'overall citizenship, overall ethnicity' slice — despite its header name, the raw 'age' column in this source is actually citizenship status (citizen/noncitizen/overall), and there is no real age or ethnicity breakdown at all.",
+      "status": "ingested"
+    },
+    {
+      "id": "population_dun",
+      "name": "Population by State Legislative Assembly Constituency (DUN)",
+      "url": "https://data.gov.my/data-catalogue/population_dun",
+      "endpoint": "https://storage.dosm.gov.my/population/population_dun.csv",
+      "description": "Annual population estimates by state legislative assembly constituency (DUN), by sex, 2020-2024.",
+      "source_org": "Department of Statistics Malaysia (DOSM)",
+      "update_frequency": "annual",
+      "date_range": "2020-2024",
+      "geographic_resolution": "DUN (state assembly constituency, 587 seats across Peninsular states + Sabah/Sarawak)",
+      "dimensions": [
+        "dun",
+        "parlimen",
+        "state",
+        "year",
+        "sex"
+      ],
+      "variables": [
+        "population_thousands"
+      ],
+      "unit": "thousands of persons",
+      "missingness": "none observed in the ingested slice",
+      "joinable_with": [
+        "population_parlimen via parlimen name"
+      ],
+      "recommended_use": "Table/ranking of constituency population size only — see limitations before using for choropleth mapping",
+      "limitations": "No boundary GeoJSON for DUN constituencies exists in DOSM's open-data mirror — table/ranking display only, no map. Kept to the 'overall citizenship, overall ethnicity' slice — despite its header name, the raw 'age' column in this source is actually citizenship status (citizen/noncitizen/overall), and there is no real age or ethnicity breakdown at all.",
+      "status": "ingested"
+    },
+    {
+      "id": "population_district_full",
+      "name": "Population by District (2020-2025, current series)",
+      "url": "https://data.gov.my/data-catalogue/population_district",
+      "endpoint": "https://storage.dosm.gov.my/population/population_district.csv",
+      "description": "Annual district-level population estimates by sex, 2020-2025 — DOSM's current post-census intercensal series, kept alongside (not replacing) the historical census_district-derived population_district.json already in the pipeline.",
+      "source_org": "Department of Statistics Malaysia (DOSM)",
+      "update_frequency": "annual",
+      "date_range": "2020-2025",
+      "geographic_resolution": "district",
+      "dimensions": [
+        "state",
+        "district",
+        "year",
+        "sex"
+      ],
+      "variables": [
+        "population_thousands"
+      ],
+      "unit": "thousands of persons",
+      "missingness": "none observed in the ingested slice",
+      "joinable_with": [
+        "population_district (historical) via state+district",
+        "socioeconomic_district",
+        "healthcare_access_district_2022"
+      ],
+      "recommended_use": "Most current district population denominators (2020 onward); use the historical population_district.json for years before 2020",
+      "limitations": "Kept to the 'overall age, overall ethnicity' slice — the source also has 5-year age bands and 7 ethnicity categories, not carried through in this pass. Two district-population files now coexist in the pipeline (this one and the historical census-derived one); consumers must pick the one matching their year range rather than assuming continuity.",
+      "status": "ingested"
+    },
+    {
+      "id": "hies_malaysia_percentile",
+      "name": "Household Income by Percentile (Malaysia)",
+      "url": "https://data.gov.my/data-catalogue/hies_malaysia_percentile",
+      "endpoint": "https://storage.dosm.gov.my/hies/hies_malaysia_percentile.csv",
+      "description": "National household income distribution by percentile (1st-100th), by income variable, 2019-2024.",
+      "source_org": "Department of Statistics Malaysia (DOSM)",
+      "update_frequency": "irregular (HIES survey years)",
+      "date_range": "2019-2024",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "year",
+        "percentile"
+      ],
+      "variables": [
+        "income_rm"
+      ],
+      "unit": "RM",
+      "missingness": "none observed in the ingested slice",
+      "joinable_with": [
+        "socioeconomic_national via year"
+      ],
+      "recommended_use": "Income-inequality visualisation beyond the mean/median already in hh_income (e.g. bottom-40 vs top-20 percentile gap)",
+      "limitations": "National only — no state or district breakdown by percentile exists in the open catalogue. Survey years are irregular, not annual.",
+      "status": "ingested"
+    },
+    {
+      "id": "marriages",
+      "name": "Marriages (Malaysia, national + state)",
+      "url": "https://data.gov.my/data-catalogue/marriages",
+      "endpoint": "https://storage.dosm.gov.my/demography/marriages.csv (national), marriages_state.csv (state)",
+      "description": "Annual registered marriages, absolute count and rate per 1,000 population, by sex, national and state, 2017-2022.",
+      "source_org": "Department of Statistics Malaysia (DOSM)",
+      "update_frequency": "annual",
+      "date_range": "2017-2022",
+      "geographic_resolution": "national, state",
+      "dimensions": [
+        "year",
+        "state",
+        "sex"
+      ],
+      "variables": [
+        "marriages_abs",
+        "marriage_rate_per_1000"
+      ],
+      "unit": "count; rate per 1,000 population",
+      "missingness": "none observed in the ingested slice",
+      "joinable_with": [
+        "fertility_state via state+year",
+        "population_state via state+year"
+      ],
+      "recommended_use": "Family-formation trend context alongside fertility_state",
+      "limitations": "Registration-based (civil + Islamic registries combined per DOSM methodology) — does not capture unregistered unions.",
+      "status": "ingested"
+    },
+    {
+      "id": "fertility_state",
+      "name": "Fertility Rates by State",
+      "url": "https://data.gov.my/data-catalogue/fertility_state",
+      "endpoint": "https://storage.dosm.gov.my/demography/fertility_state.csv",
+      "description": "Total fertility rate (TFR) and age-specific fertility rates (5-year bands, 15-49) by state, 2001-2024.",
+      "source_org": "Department of Statistics Malaysia (DOSM)",
+      "update_frequency": "annual",
+      "date_range": "2001-2024",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year",
+        "age_group"
+      ],
+      "variables": [
+        "fertility_rate"
+      ],
+      "unit": "TFR: births per woman; ASFR: births per 1,000 women in age band",
+      "missingness": "none observed in the ingested slice",
+      "joinable_with": [
+        "marriages_state via state+year",
+        "population_state via state+year"
+      ],
+      "recommended_use": "Reproductive-health / demographic-transition trend by state",
+      "limitations": "age_group='tfr' rows are the summary total fertility rate, on a different scale (births per woman) from the 5-year-band rows (births per 1,000 women) — must be filtered/plotted separately, never averaged together.",
+      "status": "ingested"
+    },
+    {
+      "id": "health_programmes_state",
+      "name": "Health Programme Participation by State (blood donation, organ pledges, PeKa B40 screenings)",
+      "url": "https://data.gov.my/data-catalogue/blood_donations_state; organ_pledges_state; pekab40_screenings_state",
+      "endpoint": "https://storage.data.gov.my/healthcare/blood_donations_state.csv, organ_pledges_state.csv, pekab40_screenings_state.csv",
+      "description": "Annual state totals of blood donations, organ-pledge registrations, and PeKa B40 (national health screening programme for B40 households) screenings, aggregated from daily source data.",
+      "source_org": "Ministry of Health Malaysia (MOH) via data.gov.my",
+      "update_frequency": "source is daily; aggregated here to annual",
+      "date_range": "blood donations from 2006, organ pledges from 2009, PeKa B40 from 2019 — all through the latest available date (partial for the current year)",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "blood_donations_abs",
+        "organ_pledges_abs",
+        "pekab40_screenings_abs"
+      ],
+      "unit": "count (annual sum of daily source values)",
+      "missingness": "each indicator starts in a different year (see date_range); a state/year with no source rows for an indicator shows null, not 0",
+      "joinable_with": [
+        "healthcare_access_state via state+year"
+      ],
+      "recommended_use": "Health-system engagement / civic health-participation trend by state",
+      "limitations": "The most recent year in each series is a partial year (source data continues to the ingestion date, not year-end) — do not compare the latest year's total to prior full-year totals without accounting for this. Organ pledges and screenings are counts of new registrations/events, not cumulative totals or unique individuals served.",
+      "status": "ingested"
+    },
+    {
+      "id": "covid_cases",
+      "name": "COVID-19 Cases and Deaths by State",
+      "url": "https://data.gov.my/data-catalogue/covid_cases; covid_cases_age; covid_deaths_linelist",
+      "endpoint": "https://storage.data.gov.my/healthcare/covid_cases.csv, covid_cases_age.csv, covid_deaths_linelist.csv",
+      "description": "Annual state totals of confirmed COVID-19 cases (overall and by age band: child/adolescent/adult/elderly) and deaths, aggregated from daily case counts and an individual-level death line list, 2020-2025.",
+      "source_org": "Ministry of Health Malaysia (MOH) via data.gov.my",
+      "update_frequency": "source is daily; aggregated here to annual",
+      "date_range": "2020-2025",
+      "geographic_resolution": "state, national",
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "covid_cases_abs",
+        "covid_deaths_abs",
+        "covid_cases_child_abs",
+        "covid_cases_adolescent_abs",
+        "covid_cases_adult_abs",
+        "covid_cases_elderly_abs"
+      ],
+      "unit": "count",
+      "missingness": "2025 is a partial year (data continues to the ingestion date); death counts derived by aggregating the individual-level line list, which has no confirmed-case-linkage field beyond state/date",
+      "joinable_with": [
+        "health_outcomes_state via state+year (different domain — pandemic vs chronic-disease outcomes, join with care)"
+      ],
+      "recommended_use": "Pandemic-period outbreak burden by state, kept separate from the chronic-disease indicators in health_outcomes_state.json",
+      "limitations": "Deliberately not merged into health_outcomes_state.json — COVID is an acute outbreak indicator, not a chronic NCD/mortality indicator, and mixing them would misrepresent both. covid_deaths_linelist is one row per death (not a count field), so death totals were derived by counting rows per state+year.",
+      "status": "ingested"
+    },
+    {
+      "id": "mnha",
+      "name": "Malaysia National Health Accounts (MNHA)",
+      "url": "https://data.gov.my/data-catalogue/mnha; mnha_moh",
+      "endpoint": "https://storage.data.gov.my/healthcare/mnha.csv, mnha_moh.csv",
+      "description": "Annual national health expenditure — total (teh) and current (ceh) health expenditure by sector (total/private/public), plus MOH-specific expenditure, 2013-2022.",
+      "source_org": "Ministry of Health Malaysia (MOH) via data.gov.my",
+      "update_frequency": "annual",
+      "date_range": "2013-2022",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "year",
+        "variable",
+        "sector"
+      ],
+      "variables": [
+        "expenditure_myr"
+      ],
+      "unit": "RM",
+      "missingness": "none observed in the ingested slice",
+      "joinable_with": [
+        "healthcare_access_national via year"
+      ],
+      "recommended_use": "Healthcare financing trend (new Financing page) — total/private/public expenditure and MOH's share",
+      "limitations": "National only, no state breakdown exists in the open catalogue. The 'moh' variable is MOH's own public expenditure subset — it must never be summed with the teh/ceh totals, as that would double-count (MOH spending is already part of public sector expenditure in those totals).",
+      "status": "ingested"
+    },
+    {
+      "id": "sanitation_access",
+      "name": "Basic Sanitation Access by State (annual series)",
+      "url": "https://data.gov.my/data-catalogue/sanitation_access",
+      "endpoint": "https://storage.data.gov.my/healthcare/sanitation_access.csv",
+      "description": "Annual proportion of households with access to basic sanitation, by state, 2001-2022. A longer annual time series than the existing single-year (2022) district-level hh_access_amenities snapshot.",
+      "source_org": "Department of Statistics Malaysia (DOSM) via data.gov.my",
+      "update_frequency": "annual",
+      "date_range": "2001-2022",
+      "geographic_resolution": "state, national",
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "sanitation_access_pct"
+      ],
+      "unit": "%",
+      "missingness": "none observed in the ingested slice",
+      "joinable_with": [
+        "water_access_state via state+year",
+        "healthcare_access_district_2022 (different geography level — state vs district, and different year)"
+      ],
+      "recommended_use": "State-level sanitation trend over time, complementing the single-year district snapshot",
+      "limitations": "State-level only for this series — for district-level detail, use the existing 2022-only hh_access_amenities/healthcare_access_district_2022 dataset instead.",
+      "status": "ingested"
+    },
+    {
+      "id": "water_access",
+      "name": "Basic Water Access by State (annual series, urban/rural)",
+      "url": "https://data.gov.my/data-catalogue/water_access",
+      "endpoint": "https://storage.data.gov.my/water/water_access.csv",
+      "description": "Annual proportion of households with access to basic water supply, by state and urban/rural strata, 2000-2022.",
+      "source_org": "Department of Statistics Malaysia (DOSM) via data.gov.my",
+      "update_frequency": "annual",
+      "date_range": "2000-2022",
+      "geographic_resolution": "state, national",
+      "dimensions": [
+        "state",
+        "year",
+        "strata"
+      ],
+      "variables": [
+        "water_access_pct"
+      ],
+      "unit": "%",
+      "missingness": "none observed in the ingested slice",
+      "joinable_with": [
+        "sanitation_access_state via state+year"
+      ],
+      "recommended_use": "Urban/rural water-access equity gap by state over time",
+      "limitations": "strata='overall' rows are a state-level summary, distinct from and not additive with the 'urban'/'rural' rows — filter by the strata field intentionally rather than mixing all three.",
+      "status": "ingested"
+    },
+    {
+      "id": "electricity_access",
+      "name": "Household Electricity Access by Region",
+      "url": "https://data.gov.my/data-catalogue/electricity_access",
+      "endpoint": "https://storage.data.gov.my/energy/electricity_access.csv",
+      "description": "Annual count of households with electricity access, by utility-operator region, 2011-2021.",
+      "source_org": "Energy Commission Malaysia via data.gov.my",
+      "update_frequency": "annual",
+      "date_range": "2011-2021",
+      "geographic_resolution": "4 utility-operator regions (Malaysia, Semenanjung Malaysia, Sabah, Sarawak) — NOT the standard 16-state schema",
+      "dimensions": [
+        "region",
+        "year"
+      ],
+      "variables": [
+        "households_with_electricity"
+      ],
+      "unit": "count of households",
+      "missingness": "none observed in the ingested slice",
+      "joinable_with": [
+        "none directly — region keys do not match the 16-state schema used elsewhere in this app"
+      ],
+      "recommended_use": "National/regional electrification trend only, shown as its own standalone table",
+      "limitations": "Reports raw household counts, not a percentage or rate, and cannot be normalised without an independent regional household-count denominator. Deliberately kept in its own file (electricity_access_region.json) rather than force-joined onto the 16-state schema used by every other dataset in this app, since 'Semenanjung Malaysia' spans 11 states and cannot be disaggregated back to them from this source.",
+      "status": "ingested"
+    },
+    {
+      "id": "nutrition_children_strata",
+      "name": "Nutrition Status of Children Under 5, Urban/Rural (2019)",
+      "url": "https://data.gov.my/data-catalogue/nutrition_status_u5_strata",
+      "endpoint": "https://storage.data.gov.my/healthcare/nutrition_status_u5_strata.csv",
+      "description": "Prevalence of underweight/stunting/wasting/overweight among children under 5, by urban/rural strata, national, 2019. Direct counterpart to the already-ingested sex-disaggregated nutrition_status_u5_sex.",
+      "source_org": "Ministry of Health Malaysia (MOH) via data.gov.my",
+      "update_frequency": "single survey year",
+      "date_range": "2019",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "strata",
+        "indicator"
+      ],
+      "variables": [
+        "prevalence_pct"
+      ],
+      "unit": "%",
+      "missingness": "single year only — no trend possible",
+      "joinable_with": [
+        "nutrition_national.json via year+indicator (sex vs strata are separate disaggregations of the same 2019 survey, not combinable into one cross-tab)"
+      ],
+      "recommended_use": "Urban/rural nutrition-equity comparison for under-5 children, alongside the existing sex-based comparison",
+      "limitations": "Single year (2019) — cannot show a trend. Urban/rural and male/female are separate disaggregations from the same survey; the underlying microdata to cross-tabulate both at once is not in the open catalogue.",
+      "status": "ingested"
+    },
+    {
+      "id": "pekab40_screenings_daily",
+      "name": "PeKa B40 Health Screenings by State (daily)",
+      "url": "https://data.gov.my/data-catalogue/pekab40_screenings_state",
+      "endpoint": "https://storage.data.gov.my/healthcare/pekab40_screenings_state.csv",
+      "description": "Daily count of PeKa B40 (national health screening programme for B40-household Malaysians aged 50+) screenings conducted, by state, 2019 to present. The day-level counterpart to health_programmes_state.json, which sums this same source to annual totals for cross-programme comparison.",
+      "source_org": "Ministry of Health Malaysia (MOH) via data.gov.my / data.moh.gov.my",
+      "update_frequency": "daily",
+      "date_range": "2019-04-15 onward (continuously updated)",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "date"
+      ],
+      "variables": [
+        "screenings"
+      ],
+      "unit": "count (daily)",
+      "missingness": "none observed in the ingested slice",
+      "joinable_with": [
+        "health_programmes_state.json via state (health_programmes_state is the annual sum of this same series)"
+      ],
+      "recommended_use": "Recent screening-uptake trend by state (e.g. campaign response, day-to-day participation) — for year-over-year comparison, use health_programmes_state.json instead, which is already annually aggregated",
+      "limitations": "The most recent days are close to the ingestion date and may still be subject to revision/backfill by the source. Raw daily counts are volatile (weekday/weekend and public-holiday effects) — a 7/30-day rolling view is more informative than any single day.",
       "status": "ingested"
     }
   ],
   "identified_but_not_yet_ingested": [
-    {"id": "population_parlimen", "name": "Population by Parliamentary Constituency", "reason": "Different geography (electoral, not administrative) — out of scope for this state/district-focused build."},
-    {"id": "population_dun", "name": "Population by State Legislative Assembly", "reason": "Same as above."},
-    {"id": "hies_malaysia_percentile", "name": "Household Income by Percentile", "reason": "Would enable a concentration-index calculation for Page 7 but requires percentile-level micro-aggregates not yet pulled."},
-    {"id": "marriages / marriages_state / fertility_state", "name": "Marriage & fertility datasets", "reason": "Lower direct relevance to health equity; deferred for a future iteration."},
-    {"id": "blood_donations_state / organ_pledges_state / pekab40_screenings_state", "name": "Health programme participation datasets", "reason": "Daily-grain datasets requiring heavier aggregation; deferred."},
-    {"id": "covid_cases / covid_cases_age / covid_deaths_linelist", "name": "COVID-19 datasets", "reason": "Deferred — a distinct outbreak-analytics use case rather than chronic health-equity monitoring; can be added as a new domain without redesigning the schema."},
-    {"id": "mnha / mnha_moh", "name": "National Health Accounts (health expenditure)", "reason": "Valuable for a future 'healthcare financing equity' domain; deferred."},
-    {"id": "sanitation_access / electricity_access / water_access (state-level long series)", "name": "Standalone amenities time series", "reason": "hh_access_amenities (district-level, 2022) was prioritised instead since it matches the geographic resolution of the income/poverty/gini district series; these longer state-level series remain available for a future time-series amenities view."},
-    {"id": "population_district (live 2020-2024 full disaggregation)", "name": "Full district population by sex/age/ethnicity", "reason": "Raw file exceeded the sandbox's single-request fetch-size limit during this build; the historical census_district series was used instead. Re-running scripts/ingest_data.py from an unrestricted network environment will pull this in full."},
-    {"id": "nutrition_children_strata", "name": "Nutritional Status of Children Under 5 by Strata", "reason": "Confirmed to exist at data.gov.my/data-catalogue/nutrition_children_strata (MOH, urban/rural, 2019, national level) during a 2026-08-13 audit for the MY-HEO urban/rural gap — the real counterpart to the already-ingested nutrition_children_sex. Not yet ingested; would follow the identical transform_data.py pattern already used for the sex-disaggregated version. Confirmed to be the ONLY urban/rural-stratified dataset in DOSM's or MOH's open catalogues as of this audit."},
-    {"id": "nhms_ncd_2011", "name": "NCD Risk Factor Prevalence by State (NHMS 2011, Vol. II)", "reason": "Attempted during the 2026-08-13 NHMS multi-year extraction (see nhms_ncd_2019's limitations field): NHMS 2011 Volume II (iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2011-VolumeII.pdf) does contain state-level NCD tables in principle, but this specific PDF's text extraction repeatedly detached table titles from their data across page breaks, and the one table spot-checked against the report's own stated 95% CI showed a small mismatch (12.1-13.6 extracted vs. 12.2-13.5 stated) — high enough error risk that extraction was abandoned rather than risk publishing wrong figures. Would need a cleaner source (e.g. a non-scanned original, or manual page-by-page verification) to attempt again."}
+    {
+      "id": "nhms_older_persons_2025",
+      "name": "Older Persons Health — Diabetes, Hypertension, Hypercholesterolaemia, Dementia, Frailty (NHMS 2025)",
+      "reason": "Confirmed during a 2026-08-13 check of iku.nih.gov.my/nhms2025: a new NHMS 2025 survey of adults aged 60+ exists, covering diabetes/hypertension/hypercholesterolaemia specifically in that age group plus dementia, cognitive impairment, depression, falls, frailty and caregiver burden — a genuinely new population subgroup (older persons) not otherwise represented in this dataset. Only a national-level fact sheet and key-findings infographic are published so far (iku.nih.gov.my/images/nhms-2025/factsheet_eng.pdf, checked directly — 0 state-name mentions across the whole document); no state-disaggregated technical report exists yet. Re-check this source when a full technical report is published — historically (NHMS 2019/2023) that has lagged the fact sheet by roughly a year."
+    },
+    {
+      "id": "nhms_ncd_2011",
+      "name": "NCD Risk Factor Prevalence by State (NHMS 2011, Vol. II)",
+      "reason": "Attempted during the 2026-08-13 NHMS multi-year extraction (see nhms_ncd_2019's limitations field): NHMS 2011 Volume II (iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2011-VolumeII.pdf) does contain state-level NCD tables in principle, but this specific PDF's text extraction repeatedly detached table titles from their data across page breaks, and the one table spot-checked against the report's own stated 95% CI showed a small mismatch (12.1-13.6 extracted vs. 12.2-13.5 stated) — high enough error risk that extraction was abandoned rather than risk publishing wrong figures. Would need a cleaner source (e.g. a non-scanned original, or manual page-by-page verification) to attempt again."
+    }
   ]
 }

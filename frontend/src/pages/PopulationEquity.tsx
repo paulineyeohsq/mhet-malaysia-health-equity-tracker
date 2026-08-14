@@ -53,6 +53,39 @@ interface NutritionRow {
   prevalence_pct: number | null;
 }
 
+interface MarriageNationalRow {
+  year: number;
+  sex: "male" | "female";
+  marriages_abs: number | null;
+  marriage_rate_per_1000: number | null;
+}
+
+interface FertilityStateRow {
+  state: string;
+  year: number;
+  age_group: string;
+  fertility_rate: number | null;
+}
+
+interface ParlimenRow {
+  parlimen: string;
+  state: string;
+  year: number;
+  sex: "both" | "male" | "female";
+  population_thousands: number | null;
+}
+
+interface DunRow {
+  dun: string;
+  parlimen: string;
+  state: string;
+  year: number;
+  sex: "both" | "male" | "female";
+  population_thousands: number | null;
+}
+
+const FERTILITY_AGE_BANDS = ["15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49"];
+
 const SERIES_COLORS = [
   "#2a78d6", // series-1
   "#eb6834", // series-2
@@ -73,6 +106,10 @@ export default function PopulationEquity() {
   const { data: popState } = useData<PopStateRow[]>("population_state.json");
   const { data: popDistrict } = useData<PopDistrictRow[]>("population_district.json");
   const { data: nutrition } = useData<NutritionRow[]>("nutrition_national.json");
+  const { data: marriagesNational } = useData<MarriageNationalRow[]>("marriages_national.json");
+  const { data: fertilityState } = useData<FertilityStateRow[]>("fertility_state.json");
+  const { data: popParlimen } = useData<ParlimenRow[]>("population_parlimen.json");
+  const { data: popDun } = useData<DunRow[]>("population_dun.json");
 
   // ---- Derived year lists ----
   const stateYears = useMemo(
@@ -312,6 +349,74 @@ export default function PopulationEquity() {
     [popDistrict]
   );
 
+  // ---- Marriages & fertility ----
+  const marriageTrendData = useMemo(() => {
+    if (!marriagesNational) return [];
+    const byYear = new Map<number, Record<string, number | null>>();
+    marriagesNational.forEach((r) => {
+      if (!byYear.has(r.year)) byYear.set(r.year, {});
+      byYear.get(r.year)![r.sex] = r.marriage_rate_per_1000;
+    });
+    return Array.from(byYear.entries())
+      .sort((a, b) => a[0] - b[0])
+      .map(([yr, vals]) => ({ year: yr, ...vals }));
+  }, [marriagesNational]);
+
+  const fertilityYears = useMemo(() => {
+    if (!fertilityState) return [];
+    return Array.from(new Set(fertilityState.map((r) => r.year))).sort((a, b) => b - a);
+  }, [fertilityState]);
+  const [fertilityYear, setFertilityYear] = useState<number | null>(null);
+  const effectiveFertilityYear = fertilityYear ?? fertilityYears[0] ?? null;
+
+  const tfrByState = useMemo(() => {
+    if (!fertilityState || effectiveFertilityYear === null) return [];
+    return fertilityState
+      .filter((r) => r.year === effectiveFertilityYear && r.age_group === "tfr" && r.fertility_rate !== null)
+      .map((r) => ({ state: r.state, value: r.fertility_rate as number }));
+  }, [fertilityState, effectiveFertilityYear]);
+
+  const [asfrState, setAsfrState] = useState<string>("Johor");
+  const asfrData = useMemo(() => {
+    if (!fertilityState || effectiveFertilityYear === null) return [];
+    return FERTILITY_AGE_BANDS.map((band) => {
+      const row = fertilityState.find(
+        (r) => r.state === asfrState && r.year === effectiveFertilityYear && r.age_group === band
+      );
+      return { ageGroup: band, "Fertility rate": row?.fertility_rate ?? null };
+    });
+  }, [fertilityState, effectiveFertilityYear, asfrState]);
+
+  // ---- Electoral geography (parliamentary constituency / DUN) — table only, no boundary map exists ----
+  const [electoralState, setElectoralState] = useState<string>("Johor");
+  const parlimenForState = useMemo(() => {
+    if (!popParlimen) return [];
+    const latest = Math.max(...popParlimen.map((r) => r.year));
+    return popParlimen
+      .filter((r) => r.state === electoralState && r.year === latest && r.sex === "both")
+      .sort((a, b) => (b.population_thousands ?? 0) - (a.population_thousands ?? 0));
+  }, [popParlimen, electoralState]);
+
+  const dunForState = useMemo(() => {
+    if (!popDun) return [];
+    const latest = Math.max(...popDun.map((r) => r.year));
+    return popDun
+      .filter((r) => r.state === electoralState && r.year === latest && r.sex === "both")
+      .sort((a, b) => (b.population_thousands ?? 0) - (a.population_thousands ?? 0));
+  }, [popDun, electoralState]);
+
+  const parlimenColumns: Column[] = [
+    { key: "parlimen", label: "Parliamentary constituency" },
+    { key: "year", label: "Year", numeric: true },
+    { key: "population_thousands", label: "Population (thousands)", numeric: true },
+  ];
+  const dunColumns: Column[] = [
+    { key: "dun", label: "DUN" },
+    { key: "parlimen", label: "Parliamentary constituency" },
+    { key: "year", label: "Year", numeric: true },
+    { key: "population_thousands", label: "Population (thousands)", numeric: true },
+  ];
+
   return (
     <div>
       <PageHeader
@@ -512,6 +617,107 @@ export default function PopulationEquity() {
             )}
           </div>
           <SourceNote sourceKey="population" year={latestStateYear ?? undefined} />
+        </section>
+
+        {/* Marriages & fertility */}
+        <section aria-labelledby="pop-marriages">
+          <h2 id="pop-marriages" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            Marriages and fertility
+          </h2>
+          <p className="mb-3 max-w-3xl text-sm text-ink-secondary">
+            Family-formation indicators alongside population structure — registered marriage rate (national) and
+            fertility rate (state), from the same DOSM demography series.
+          </p>
+          <div className="grid gap-4 lg:grid-cols-2">
+            {marriageTrendData.length > 0 ? (
+              <LineChartCard
+                title="Marriage rate, national (per 1,000 population)"
+                data={marriageTrendData}
+                xKey="year"
+                series={[
+                  { key: "female", label: "Rate per 1,000 females", color: SERIES_COLORS[4] },
+                  { key: "male", label: "Rate per 1,000 males", color: SERIES_COLORS[0] },
+                ]}
+                unit="per 1,000"
+              />
+            ) : (
+              <InsufficientData reason="No national marriage rate data available." />
+            )}
+            {tfrByState.length > 0 ? (
+              <BarRankingCard
+                title={`Total fertility rate by state — ${effectiveFertilityYear ?? "…"}`}
+                data={tfrByState}
+                nameKey="state"
+                valueKey="value"
+                unit="births per woman"
+                color={SERIES_COLORS[2]}
+              />
+            ) : (
+              <InsufficientData reason={`No total fertility rate data for ${effectiveFertilityYear ?? "the selected year"}.`} />
+            )}
+          </div>
+          <SourceNote sourceKey="marriages" year={undefined} />
+
+          <div className="mt-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
+            <div>
+              <label htmlFor="asfr-state" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                State
+              </label>
+              <select
+                id="asfr-state"
+                value={asfrState}
+                onChange={(e) => setAsfrState(e.target.value)}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                {stateOptionsForAge.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {fertilityYears.length > 0 && (
+              <div>
+                <label htmlFor="asfr-year" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                  Year
+                </label>
+                <select
+                  id="asfr-year"
+                  value={effectiveFertilityYear ?? ""}
+                  onChange={(e) => setFertilityYear(Number(e.target.value))}
+                  className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+                >
+                  {fertilityYears.map((y) => (
+                    <option key={y} value={y}>
+                      {y}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+          </div>
+          <div className="mt-2 rounded-lg border border-line-grid bg-surface p-4">
+            <h3 className="mb-2 text-sm font-medium text-ink-primary">
+              Age-specific fertility rate — {asfrState}, {effectiveFertilityYear ?? "…"}
+            </h3>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={asfrData} margin={{ top: 8, right: 24, bottom: 4, left: 0 }}>
+                <CartesianGrid stroke="#e1e0d9" vertical={false} />
+                <XAxis dataKey="ageGroup" stroke="#898781" tick={{ fontSize: 12, fill: "#52514e" }} tickLine={false} />
+                <YAxis stroke="#898781" tick={{ fontSize: 12, fill: "#52514e" }} tickLine={false} axisLine={false} width={48} />
+                <Tooltip
+                  formatter={(v) => [v === null ? "—" : `${v} per 1,000 women`, "Fertility rate"]}
+                  contentStyle={{ fontSize: 12, border: "1px solid #e1e0d9", borderRadius: 6 }}
+                />
+                <Bar dataKey="Fertility rate" fill={SERIES_COLORS[3]} radius={[4, 4, 0, 0]} maxBarSize={60} />
+              </BarChart>
+            </ResponsiveContainer>
+            <p className="mt-2 text-xs text-ink-muted">
+              Births per 1,000 women in each 5-year age band — a different scale from the total fertility rate (TFR,
+              births per woman) shown in the ranking above; the two are never plotted together.
+            </p>
+          </div>
+          <SourceNote sourceKey="fertility" year={effectiveFertilityYear ?? undefined} />
         </section>
 
         {/* Age structure */}
@@ -766,6 +972,61 @@ export default function PopulationEquity() {
             <InsufficientData reason="No district population data available." />
           )}
           <SourceNote sourceKey="census" year={latestCensusYear ?? undefined} />
+        </section>
+
+        {/* Electoral geography — table only, no boundary map exists */}
+        <section aria-labelledby="pop-electoral">
+          <h2 id="pop-electoral" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            Population by electoral geography
+          </h2>
+          <div className="mb-3 rounded-lg border border-line-axis bg-plane p-3 text-xs text-ink-secondary">
+            <strong className="text-ink-primary">No boundary map exists for this geography.</strong> DOSM's open-data
+            mirror does not publish parliamentary constituency or state-assembly (DUN) boundary files, so this is
+            shown as a sortable table only — never on the choropleth map used for states/districts elsewhere on this
+            dashboard.
+          </div>
+          <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
+            <div>
+              <label htmlFor="electoral-state" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                State
+              </label>
+              <select
+                id="electoral-state"
+                value={electoralState}
+                onChange={(e) => setElectoralState(e.target.value)}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                {stateOptionsForAge.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="grid gap-4 lg:grid-cols-2">
+            <div className="rounded-lg border border-line-grid bg-surface p-4">
+              <h3 className="mb-2 text-sm font-medium text-ink-primary">
+                Parliamentary constituencies — {electoralState}
+              </h3>
+              {parlimenForState.length > 0 ? (
+                <DataTable columns={parlimenColumns} rows={parlimenForState as unknown as Record<string, unknown>[]} searchable={false} pageSize={10} />
+              ) : (
+                <InsufficientData reason={`No parliamentary constituency data for ${electoralState}.`} />
+              )}
+            </div>
+            <div className="rounded-lg border border-line-grid bg-surface p-4">
+              <h3 className="mb-2 text-sm font-medium text-ink-primary">
+                State assembly (DUN) constituencies — {electoralState}
+              </h3>
+              {dunForState.length > 0 ? (
+                <DataTable columns={dunColumns} rows={dunForState as unknown as Record<string, unknown>[]} searchable={false} pageSize={10} />
+              ) : (
+                <InsufficientData reason={`No DUN constituency data for ${electoralState}.`} />
+              )}
+            </div>
+          </div>
+          <SourceNote sourceKey="population_electoral" />
         </section>
 
         {/* Full browsing tables */}

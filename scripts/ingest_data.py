@@ -140,6 +140,69 @@ DATASETS = [
     {"id": "std_state", "category": "health_outcomes", "filename": "std_state.csv",
      "method": "api", "api_id": "std_state", "filter_years": list(range(2017, 2023)),
      "note": "Direct CSV fetch observed to fail (binary-data error); JSON API paginated by year works reliably."},
+
+    # -- Electoral-geography population (no boundary GeoJSON exists for these in DOSM's open mirror; table-only) --
+    {"id": "population_parlimen", "category": "demography", "filename": "population_parlimen.csv",
+     "method": "csv", "url": "https://storage.dosm.gov.my/population/population_parlimen.csv"},
+    {"id": "population_dun", "category": "demography", "filename": "population_dun.csv",
+     "method": "csv", "url": "https://storage.dosm.gov.my/population/population_dun.csv"},
+
+    # -- Full district population (2020-2024, sex/age/ethnicity) — supersedes the census_district fallback if this succeeds --
+    {"id": "population_district_full", "category": "demography", "filename": "population_district_full.csv",
+     "method": "csv", "url": "https://storage.dosm.gov.my/population/population_district.csv",
+     "note": "Previously observed to exceed the sandbox's single-request fetch-size limit (see dataset_inventory.json); retrying here since the sandbox/network environment may differ. If this fails, the existing census_district fallback stays in use and this entry's failure is logged, not forced."},
+
+    # -- Income percentile --
+    {"id": "hies_malaysia_percentile", "category": "socioeconomic", "filename": "hies_malaysia_percentile.csv",
+     "method": "csv", "url": "https://storage.dosm.gov.my/hies/hies_malaysia_percentile.csv"},
+
+    # -- Marriages & fertility --
+    {"id": "marriages", "category": "demography", "filename": "marriages.csv",
+     "method": "csv", "url": "https://storage.dosm.gov.my/demography/marriages.csv"},
+    {"id": "marriages_state", "category": "demography", "filename": "marriages_state.csv",
+     "method": "csv", "url": "https://storage.dosm.gov.my/demography/marriages_state.csv"},
+    {"id": "fertility_state", "category": "demography", "filename": "fertility_state.csv",
+     "method": "csv", "url": "https://storage.dosm.gov.my/demography/fertility_state.csv"},
+
+    # -- Health programme participation (daily grain, state-level; aggregated to annual in transform_data.py) --
+    {"id": "blood_donations_state", "category": "health_outcomes", "filename": "blood_donations_state.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/healthcare/blood_donations_state.csv",
+     "note": "Daily grain. If direct CSV fails/truncates, fall back to method='api' with api_id='blood_donations_state', year-paginated like std_state."},
+    {"id": "organ_pledges_state", "category": "health_outcomes", "filename": "organ_pledges_state.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/healthcare/organ_pledges_state.csv",
+     "note": "Daily grain, data from 2009 onward. Same API fallback note as blood_donations_state applies."},
+    {"id": "pekab40_screenings_state", "category": "health_outcomes", "filename": "pekab40_screenings_state.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/healthcare/pekab40_screenings_state.csv",
+     "note": "Daily grain. Same API fallback note as blood_donations_state applies."},
+
+    # -- COVID-19 (distinct outbreak-analytics domain; daily grain aggregated to annual in transform_data.py) --
+    {"id": "covid_cases", "category": "health_outcomes", "filename": "covid_cases.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/healthcare/covid_cases.csv",
+     "note": "Daily grain, pandemic period. Same API fallback note as blood_donations_state applies."},
+    {"id": "covid_cases_age", "category": "health_outcomes", "filename": "covid_cases_age.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/healthcare/covid_cases_age.csv"},
+    {"id": "covid_deaths_linelist", "category": "health_outcomes", "filename": "covid_deaths_linelist.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/healthcare/covid_deaths_linelist.csv",
+     "note": "Individual-level line list, not pre-aggregated — highest size/complexity risk of this batch. If this fails, it is logged back to dataset_inventory.json's identified_but_not_yet_ingested with the failure reason rather than forced."},
+
+    # -- National Health Accounts (healthcare financing; national level only) --
+    {"id": "mnha", "category": "healthcare", "filename": "mnha.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/healthcare/mnha.csv"},
+    {"id": "mnha_moh", "category": "healthcare", "filename": "mnha_moh.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/healthcare/mnha_moh.csv"},
+
+    # -- Basic amenities (longer state-level annual series, distinct from hh_access_amenities' 2022 district snapshot) --
+    {"id": "sanitation_access", "category": "healthcare", "filename": "sanitation_access.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/healthcare/sanitation_access.csv"},
+    {"id": "water_access", "category": "healthcare", "filename": "water_access.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/water/water_access.csv"},
+    {"id": "electricity_access", "category": "healthcare", "filename": "electricity_access.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/energy/electricity_access.csv",
+     "note": "State column here is only 4 utility-operator regions (Malaysia/Semenanjung/Sabah/Sarawak), NOT the usual 16 states — kept structurally separate in transform_data.py rather than force-joined onto the 16-state schema."},
+
+    # -- Nutrition by strata (national, urban/rural, 2019 — counterpart to nutrition_status_u5_sex) --
+    {"id": "nutrition_children_strata", "category": "health_outcomes", "filename": "nutrition_status_u5_strata.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/healthcare/nutrition_status_u5_strata.csv"},
 ]
 
 API_BASE = "https://api.data.gov.my/data-catalogue"
