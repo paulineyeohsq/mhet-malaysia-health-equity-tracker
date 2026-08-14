@@ -1,10 +1,13 @@
 // gemini-2.0-flash / gemini-2.5-flash are no longer available to new-user
 // API keys as of this session (confirmed directly against the live API,
-// not assumed) — gemini-3-flash-preview is the current fast/cheap tier.
+// not assumed). Deliberately avoiding "-preview"-tagged models after that
+// experience — gemini-3-flash-preview worked but carries the same
+// deprecation risk. gemini-3.5-flash is the current non-preview fast/cheap
+// tier, confirmed working against this key.
 //
 // Kept in sync verbatim with worker/src/gemini.ts (the Cloudflare version
 // of this same backend) — update both if either changes.
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent";
 
 export interface ChatMessage {
   role: "user" | "assistant";
