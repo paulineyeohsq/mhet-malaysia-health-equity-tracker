@@ -88,7 +88,10 @@ export const DETERMINANT_FIELDS: FieldDef[] = [
   // "more disadvantaged" direction for e.g. marriage rate), not an equity claim.
   { id: "sanitation_det", label: "Basic sanitation access", file: "sanitation_access_state.json", field: "sanitation_access_pct", unit: "%", sourceKey: "sanitation", higherIsWorse: false },
   { id: "water_det", label: "Basic water access (overall)", file: "water_access_state.json", field: "water_access_pct", unit: "%", sourceKey: "water", higherIsWorse: false, filter: (r) => r.strata === "overall" },
+  { id: "water_urban_det", label: "Basic water access (urban)", file: "water_access_state.json", field: "water_access_pct", unit: "%", sourceKey: "water", higherIsWorse: false, filter: (r) => r.strata === "urban" },
+  { id: "water_rural_det", label: "Basic water access (rural)", file: "water_access_state.json", field: "water_access_pct", unit: "%", sourceKey: "water", higherIsWorse: false, filter: (r) => r.strata === "rural" },
   { id: "marriage_rate_det", label: "Marriage rate (female population)", file: "marriages_state.json", field: "marriage_rate_per_1000", unit: "per 1,000 population", sourceKey: "marriages", higherIsWorse: false, filter: (r) => r.sex === "female" },
+  { id: "marriage_rate_male_det", label: "Marriage rate (male population)", file: "marriages_state.json", field: "marriage_rate_per_1000", unit: "per 1,000 population", sourceKey: "marriages", higherIsWorse: false, filter: (r) => r.sex === "male" },
   { id: "tfr_det", label: "Total fertility rate", file: "fertility_state.json", field: "fertility_rate", unit: "births per woman", sourceKey: "fertility", higherIsWorse: false, filter: (r) => r.age_group === "tfr" },
   { id: "blood_donations_det", label: "Blood donations", file: "health_programmes_state.json", field: "blood_donations_abs", unit: "donations", sourceKey: "health_programmes", higherIsWorse: false },
   { id: "organ_pledges_det", label: "Organ pledges", file: "health_programmes_state.json", field: "organ_pledges_abs", unit: "pledges", sourceKey: "health_programmes", higherIsWorse: false },

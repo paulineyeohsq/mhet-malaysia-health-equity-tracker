@@ -87,6 +87,11 @@ interface WaterNationalRow {
   water_access_pct: number | null;
 }
 
+interface SanitationNationalRow {
+  year: number;
+  sanitation_access_pct: number | null;
+}
+
 interface ElectricityRegionRow {
   region: string;
   year: number;
@@ -140,6 +145,7 @@ export default function SocioeconomicInequality() {
   const { data: sanitationState } = useData<SanitationStateRow[]>("sanitation_access_state.json");
   const { data: waterState } = useData<WaterStateRow[]>("water_access_state.json");
   const { data: waterNational } = useData<WaterNationalRow[]>("water_access_national.json");
+  const { data: sanitationNational } = useData<SanitationNationalRow[]>("sanitation_access_national.json");
   const { data: electricityRegion } = useData<ElectricityRegionRow[]>("electricity_access_region.json");
 
   const latestNational = useMemo(() => {
@@ -242,9 +248,29 @@ export default function SocioeconomicInequality() {
       .sort((a, b) => a.percentile - b.percentile);
   }, [percentileData, effectivePercentileYear]);
 
+  // Median charted alongside mean (same RM scale, directly comparable —
+  // divergence between the two is itself a skewness signal within each
+  // percentile band). Minimum/maximum are ingested but deliberately not
+  // charted here: they're extreme per-percentile-band values, not another
+  // central-tendency measure, and would distort this chart's scale — see
+  // Data Explorer for the raw minimum/maximum figures.
+  const percentileMedianByPercentile = useMemo(() => {
+    if (!percentileData || effectivePercentileYear === null) return new Map<number, number | null>();
+    const m = new Map<number, number | null>();
+    percentileData
+      .filter((r) => r.year === effectivePercentileYear && r.variable === "median")
+      .forEach((r) => m.set(r.percentile, r.income_rm));
+    return m;
+  }, [percentileData, effectivePercentileYear]);
+
   const percentileChartData = useMemo(
-    () => percentileMeanRows.map((r) => ({ percentile: r.percentile, "Mean income": r.income_rm })),
-    [percentileMeanRows]
+    () =>
+      percentileMeanRows.map((r) => ({
+        percentile: r.percentile,
+        "Mean income": r.income_rm,
+        "Median income": percentileMedianByPercentile.get(r.percentile) ?? null,
+      })),
+    [percentileMeanRows, percentileMedianByPercentile]
   );
 
   function avgIncomeForRange(lo: number, hi: number): number | null {
@@ -300,6 +326,14 @@ export default function SocioeconomicInequality() {
       .sort((a, b) => a[0] - b[0])
       .map(([yr, vals]) => ({ year: yr, ...vals }));
   }, [waterNational]);
+
+  const sanitationNationalTrendData = useMemo(() => {
+    if (!sanitationNational) return [];
+    return sanitationNational
+      .filter((r) => r.sanitation_access_pct !== null)
+      .map((r) => ({ year: r.year, "Sanitation access": r.sanitation_access_pct }))
+      .sort((a, b) => a.year - b.year);
+  }, [sanitationNational]);
 
   const electricityLatestYear = useMemo(() => {
     if (!electricityRegion) return null;
@@ -582,15 +616,22 @@ export default function SocioeconomicInequality() {
 
           {percentileChartData.length > 0 ? (
             <LineChartCard
-              title={`Mean income by percentile (RM/month) — ${effectivePercentileYear ?? "…"}`}
+              title={`Mean vs median income by percentile (RM/month) — ${effectivePercentileYear ?? "…"}`}
               data={percentileChartData}
               xKey="percentile"
-              series={[{ key: "Mean income", label: "Mean income (RM)", color: "#2a78d6" }]}
+              series={[
+                { key: "Mean income", label: "Mean income (RM)", color: "#2a78d6" },
+                { key: "Median income", label: "Median income (RM)", color: "#1baf7a" },
+              ]}
               unit="RM"
             />
           ) : (
             <InsufficientData reason={`No percentile income data for ${effectivePercentileYear ?? "the selected year"}.`} />
           )}
+          <p className="mt-2 text-xs text-ink-muted">
+            This dataset also publishes minimum/maximum income per percentile band — not charted here (extreme
+            values would distort this chart's scale) but available via Data Explorer.
+          </p>
           <SourceNote sourceKey="hies_percentile" year={effectivePercentileYear ?? undefined} extra="National only — no state or district percentile breakdown exists" />
         </section>
 
@@ -662,7 +703,19 @@ export default function SocioeconomicInequality() {
               <InsufficientData reason={`No states report ${amenityIndicator.label.toLowerCase()} for ${effectiveAmenityYear ?? "the selected year"}.`} />
             )}
 
-            {waterStrataTrendData.length > 0 ? (
+            {amenityIndicatorId === "sanitation" ? (
+              sanitationNationalTrendData.length > 0 ? (
+                <LineChartCard
+                  title="Sanitation access, national trend (%)"
+                  data={sanitationNationalTrendData}
+                  xKey="year"
+                  series={[{ key: "Sanitation access", label: "Sanitation access", color: "#1baf7a" }]}
+                  unit="%"
+                />
+              ) : (
+                <InsufficientData reason="No national sanitation access trend records available." />
+              )
+            ) : waterStrataTrendData.length > 0 ? (
               <LineChartCard
                 title="Water access, national — urban vs. rural (%)"
                 data={waterStrataTrendData}

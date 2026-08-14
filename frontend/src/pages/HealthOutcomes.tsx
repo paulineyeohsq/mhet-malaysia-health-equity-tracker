@@ -201,6 +201,7 @@ export default function HealthOutcomes() {
   const { data: hivIncidence } = useData<HivIncidenceRow[]>("hiv_incidence_national.json");
   const { data: ethnicityDeaths } = useData<EthnicityDeathRow[]>("deaths_ethnicity_state.json");
   const { data: covid } = useData<CovidRow[]>("covid_state.json");
+  const { data: covidNational } = useData<CovidRow[]>("covid_national.json");
   const { data: programmes } = useData<ProgrammeRow[]>("health_programmes_state.json");
   const { data: pekaDaily } = useData<PekaDailyRow[]>("pekab40_screenings_daily_state.json");
 
@@ -384,6 +385,11 @@ export default function HealthOutcomes() {
     if (!covid || effectiveYear === null) return null;
     return covid.find((r) => r.state === state && r.year === effectiveYear) ?? null;
   }, [covid, state, effectiveYear]);
+
+  const selectedCovidNationalRow = useMemo(() => {
+    if (!covidNational || effectiveYear === null) return null;
+    return covidNational.find((r) => r.year === effectiveYear) ?? null;
+  }, [covidNational, effectiveYear]);
 
   // ---- Health Programme Participation ----
   const programmeMetric = PROGRAMME_METRICS.find((m) => m.id === programmeMetricId)!;
@@ -994,6 +1000,8 @@ export default function HealthOutcomes() {
                   { label: "Cases — adolescents", value: fmt(selectedCovidRow?.covid_cases_adolescent_abs, 0), unit: "cases" },
                   { label: "Cases — adults", value: fmt(selectedCovidRow?.covid_cases_adult_abs, 0), unit: "cases" },
                   { label: "Cases — elderly", value: fmt(selectedCovidRow?.covid_cases_elderly_abs, 0), unit: "cases" },
+                  { label: "Malaysia total cases", value: fmt(selectedCovidNationalRow?.covid_cases_abs, 0), unit: "cases" },
+                  { label: "Malaysia total deaths", value: fmt(selectedCovidNationalRow?.covid_deaths_abs, 0), unit: "deaths" },
                 ]}
               />
               <SourceNote sourceKey="covid" year={effectiveYear ?? undefined} />
