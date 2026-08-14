@@ -39,7 +39,14 @@ export async function callGemini(
   const body = {
     system_instruction: { parts: [{ text: `${systemPrompt}\n\n${contextBlock}` }] },
     contents,
-    generationConfig: { temperature: 0.2, maxOutputTokens: 800 },
+    // gemini-3-flash-preview is a thinking model — maxOutputTokens counts
+    // internal reasoning tokens too. Confirmed live that with no
+    // thinkingBudget cap, a plain question spent 731/800 tokens on
+    // invisible thinking and got cut off mid-answer (finishReason
+    // MAX_TOKENS). thinkingBudget: 0 skips that for this grounded-QA use
+    // case (no multi-step reasoning needed), and 1024 leaves headroom for
+    // the "explain this chart" exception in the system prompt.
+    generationConfig: { temperature: 0.2, maxOutputTokens: 1024, thinkingConfig: { thinkingBudget: 0 } },
   };
 
   const res = await fetch(GEMINI_URL, {
