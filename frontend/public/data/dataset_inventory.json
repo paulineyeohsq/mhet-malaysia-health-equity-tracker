@@ -621,6 +621,143 @@
       "status": "ingested"
     },
     {
+      "id": "sdg_03-3-1",
+      "name": "HIV Incidence per 1,000 Uninfected Population (SDG 3.3.1)",
+      "url": "https://open.dosm.gov.my/data-catalogue/sdg_03-3-1",
+      "endpoint_csv": "https://storage.dosm.gov.my/sdg/sdg_03-3-1.csv",
+      "description": "New HIV infections per 1,000 uninfected population, by sex, national level only.",
+      "source_org": "Ministry of Health Malaysia",
+      "update_frequency": "Annual",
+      "date_range": "2016-2022",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "year",
+        "sex"
+      ],
+      "variables": [
+        "incidence (per 1,000 uninfected population)"
+      ],
+      "unit": "per 1,000 uninfected population",
+      "missingness": "none",
+      "joinable_with": [],
+      "recommended_use": "A methodologically cleaner HIV trend than std_state's crude diagnosed-case counts (denominator is uninfected population, not raw case counts) — no state breakdown though, so use alongside std_state rather than instead of it.",
+      "limitations": "National only, no state or district breakdown. Complements but does not replace std_state.",
+      "status": "ingested"
+    },
+    {
+      "id": "stillbirth_state",
+      "name": "Annual Stillbirths by State",
+      "url": "https://open.dosm.gov.my/data-catalogue/stillbirths_state",
+      "endpoint_csv": "https://storage.dosm.gov.my/demography/stillbirth_state.csv",
+      "description": "Stillbirth counts and rate (per 1,000 total births) by state.",
+      "source_org": "National Registration Department / DOSM",
+      "update_frequency": "Annual",
+      "date_range": "2000-2024",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "abs (count)",
+        "rate (per 1,000 total births)"
+      ],
+      "unit": "per 1,000 total births",
+      "missingness": "none",
+      "joinable_with": [
+        "birth_state, death_maternal_state via state+year (merged into health_outcomes_state.json)"
+      ],
+      "recommended_use": "Perinatal-health equity alongside maternal/infant mortality on the Health Outcomes page.",
+      "limitations": "A newly-added indicator to this project — not previously tracked.",
+      "status": "ingested"
+    },
+    {
+      "id": "death_sex_ethnic_state",
+      "name": "Annual Deaths by State, Sex & Ethnicity",
+      "url": "https://open.dosm.gov.my/data-catalogue/deaths_sex_ethnic_state",
+      "endpoint_csv": "https://storage.dosm.gov.my/demography/death_sex_ethnic_state.csv",
+      "description": "Death counts by state, sex, and ethnicity (bumi_malay, bumi_other, chinese, indian, other_citizen, other_noncitizen, plus DOSM's own \"overall\" cross-check total).",
+      "source_org": "National Registration Department / DOSM",
+      "update_frequency": "Annual",
+      "date_range": "2000-2024",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year",
+        "sex",
+        "ethnicity"
+      ],
+      "variables": [
+        "abs (count)"
+      ],
+      "unit": "count",
+      "missingness": "none",
+      "joinable_with": [
+        "population_district via state+district+year (must be aggregated to state level first — see limitations)"
+      ],
+      "recommended_use": "The first dataset in this project that cross-tabulates ethnicity with a health outcome — see docs/DATA_SOURCES.md for the earlier (now outdated) finding that no such dataset existed. Shown as raw counts in the UI, not rates: this project has no state-level population-by-ethnicity dataset (population_state.json only breaks population down by sex, not ethnicity) — only population_district.json/population_district_full.json have an ethnicity breakdown, at district level. A per-capita rate would require summing those district-level ethnicity population figures up to state level first; until that's built, raw counts are shown with an explicit caveat rather than an uncomputed or fabricated rate.",
+      "limitations": "Absolute counts only, no published per-ethnicity-group death rate, and no ready-made state-level ethnicity population denominator exists elsewhere in this project to compute one. The \"overall\" ethnicity value is DOSM's own cross-check total across the other six groups, not a distinct ethnicity — exclude it from any per-ethnicity comparison. Comparing raw counts across ethnic groups without population normalisation is misleading since group population sizes differ substantially — the UI must disclose this, not silently imply comparability.",
+      "status": "ingested"
+    },
+    {
+      "id": "death_district_sex",
+      "name": "Annual Deaths by District & Sex",
+      "url": "https://open.dosm.gov.my/data-catalogue/deaths_district_sex",
+      "endpoint_csv": "https://storage.dosm.gov.my/demography/death_district_sex.csv",
+      "description": "District-resolution upgrade of death_state (which is state-only) — death counts and rate by district and sex.",
+      "source_org": "National Registration Department / DOSM",
+      "update_frequency": "Annual",
+      "date_range": "2020-2024",
+      "geographic_resolution": "district",
+      "dimensions": [
+        "state",
+        "district",
+        "year",
+        "sex"
+      ],
+      "variables": [
+        "abs (count)",
+        "rate (per 1,000)"
+      ],
+      "unit": "per 1,000 population",
+      "missingness": "none",
+      "joinable_with": [
+        "population_district_full via state+district+year"
+      ],
+      "recommended_use": "District-level mortality equity comparisons, where death_state's state-only resolution is too coarse.",
+      "limitations": "Shorter time range (2020-2024 only) than death_state (2000-2022) — a resolution upgrade, not a full historical replacement.",
+      "status": "ingested"
+    },
+    {
+      "id": "birth_district_sex",
+      "name": "Annual Live Births by District & Sex",
+      "url": "https://open.dosm.gov.my/data-catalogue/births_district_sex",
+      "endpoint_csv": "https://storage.dosm.gov.my/demography/birth_district_sex.csv",
+      "description": "District-resolution upgrade of birth_state (which is state-only) — live birth counts and rate by district and sex.",
+      "source_org": "National Registration Department / DOSM",
+      "update_frequency": "Annual",
+      "date_range": "2020-2024",
+      "geographic_resolution": "district",
+      "dimensions": [
+        "state",
+        "district",
+        "year",
+        "sex"
+      ],
+      "variables": [
+        "abs (count)",
+        "rate (per 1,000)"
+      ],
+      "unit": "per 1,000 population",
+      "missingness": "none",
+      "joinable_with": [
+        "death_district_sex, population_district_full via state+district+year"
+      ],
+      "recommended_use": "District-level birth-rate context alongside deaths_district_sex, and a district-level denominator source for other district-level health outcomes.",
+      "limitations": "Shorter time range (2020-2024 only) than birth_state (state-level, longer history) — a resolution upgrade, not a full historical replacement.",
+      "status": "ingested"
+    },
+    {
       "id": "hies_2019_snapshot",
       "name": "HIES 2019 State Snapshot (DOSM data-open GitHub mirror)",
       "url": "https://github.com/dosm-malaysia/data-open/tree/main/datasets/economy",

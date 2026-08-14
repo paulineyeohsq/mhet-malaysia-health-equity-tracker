@@ -362,6 +362,7 @@ def build_health_outcomes_state(pop_lookup):
     death_ec = read_csv(RAW / "health_outcomes" / "deaths_early_childhood_state.csv")
     birth = read_csv(RAW / "health_outcomes" / "birth_state.csv")
     std = read_csv(RAW / "health_outcomes" / "std_state.csv")
+    stillbirth = read_csv(RAW / "health_outcomes" / "stillbirth_state.csv")
 
     def idx_simple(rows):
         d = {}
@@ -375,6 +376,7 @@ def build_health_outcomes_state(pop_lookup):
     death_idx = idx_simple(death)
     mat_idx = idx_simple(death_mat)
     birth_idx = idx_simple(birth)
+    stillbirth_idx = idx_simple(stillbirth)
 
     ec_idx = defaultdict(dict)  # (state, year) -> {type: {abs, rate}}
     for r in death_ec:
@@ -392,7 +394,7 @@ def build_health_outcomes_state(pop_lookup):
             "cases": num(r.get("cases")), "incidence_per_100k": num(r.get("incidence")),
         }
 
-    keys = sorted(set(death_idx) | set(mat_idx) | set(birth_idx) | set(ec_idx) | set(std_idx))
+    keys = sorted(set(death_idx) | set(mat_idx) | set(birth_idx) | set(ec_idx) | set(std_idx) | set(stillbirth_idx))
     out = []
     for st, yr in keys:
         ec = ec_idx.get((st, yr), {})
@@ -404,6 +406,8 @@ def build_health_outcomes_state(pop_lookup):
             "maternal_mortality_rate_per_100k_births": mat_idx.get((st, yr), {}).get("rate"),
             "crude_birth_rate_per_1000": birth_idx.get((st, yr), {}).get("rate"),
             "births_abs": birth_idx.get((st, yr), {}).get("abs"),
+            "stillbirths_abs": stillbirth_idx.get((st, yr), {}).get("abs"),
+            "stillbirth_rate_per_1000": stillbirth_idx.get((st, yr), {}).get("rate"),
             "infant_deaths_abs": ec.get("infant", {}).get("abs"),
             "infant_mortality_rate": ec.get("infant", {}).get("rate"),
             "neonatal_deaths_abs": ec.get("neonatal", {}).get("abs"),
@@ -457,7 +461,21 @@ def build_health_outcomes_national():
             "prevalence_pct": num(r.get("prevalence")),
         })
     write_json("nutrition_national.json", nutrition_out)
-    return immun_out, nutrition_out
+
+    # HIV incidence per 1,000 uninfected population (SDG 3.3.1) — national
+    # only, no state breakdown published. A cleaner incidence metric than
+    # std_state's crude diagnosed-case counts (which explicitly carries an
+    # under-testing bias caveat); kept as a separate file rather than merged
+    # into std_state's incidence-per-100k-diagnosed-cases fields since the
+    # denominator basis differs (uninfected population vs. general population).
+    hiv = read_csv(RAW / "health_outcomes" / "sdg_03-3-1.csv")
+    hiv_out = [
+        {"year": year_of(r["date"]), "sex": r["sex"], "hiv_incidence_per_1000_uninfected": num(r.get("incidence"))}
+        for r in hiv
+    ]
+    write_json("hiv_incidence_national.json", hiv_out)
+
+    return immun_out, nutrition_out, hiv_out
 
 
 # ---------------------------------------------------------------------------
@@ -758,6 +776,57 @@ def build_hies_percentile():
 
 
 # ---------------------------------------------------------------------------
+# 14b. Deaths by state + sex + ethnicity — DOSM's death_sex_ethnic_state.csv.
+#
+# Long format (one row per state/year/sex/ethnicity combination), not merged
+# into health_outcomes_state.json's wide per-state-year format since it adds
+# two extra dimensions. "overall" is DOSM's own ethnicity-group total row
+# (sum across bumi_malay/bumi_other/chinese/indian/other_citizen/
+# other_noncitizen) — kept as-is, not dropped, but any ethnicity comparison
+# built on this file should exclude it (it isn't a real ethnicity group,
+# it's a cross-check total).
+# ---------------------------------------------------------------------------
+def build_deaths_ethnicity_state():
+    rows = read_csv(RAW / "health_outcomes" / "death_sex_ethnic_state.csv")
+    out = [
+        {
+            "state": canonical_state(r["state"]), "year": year_of(r["date"]),
+            "sex": r["sex"], "ethnicity": r["ethnicity"], "deaths_abs": num(r.get("abs")),
+        }
+        for r in rows
+    ]
+    write_json("deaths_ethnicity_state.json", out)
+    return out
+
+
+# ---------------------------------------------------------------------------
+# 14c. Deaths and births by district + sex — district-resolution upgrade of
+# death_state.csv/birth_state.csv (which are state-only). Long format
+# (one row per district/year/sex), matching marriages_state.json's shape.
+# ---------------------------------------------------------------------------
+def build_district_vital_stats():
+    deaths = read_csv(RAW / "health_outcomes" / "death_district_sex.csv")
+    write_json("deaths_district_sex.json", [
+        {
+            "state": canonical_state(r["state"]), "district": canonical_district(canonical_state(r["state"]), r.get("district")),
+            "year": year_of(r["date"]), "sex": r["sex"],
+            "deaths_abs": num(r.get("abs")), "death_rate_per_1000": num(r.get("rate")),
+        }
+        for r in deaths
+    ])
+
+    births = read_csv(RAW / "health_outcomes" / "birth_district_sex.csv")
+    write_json("births_district_sex.json", [
+        {
+            "state": canonical_state(r["state"]), "district": canonical_district(canonical_state(r["state"]), r.get("district")),
+            "year": year_of(r["date"]), "sex": r["sex"],
+            "births_abs": num(r.get("abs")), "birth_rate_per_1000": num(r.get("rate")),
+        }
+        for r in births
+    ])
+
+
+# ---------------------------------------------------------------------------
 # 15. Marriages (national + state) and fertility (state, TFR + ASFR)
 # ---------------------------------------------------------------------------
 def build_marriages_fertility():
@@ -997,6 +1066,8 @@ def main():
     build_health_outcomes_national()
     build_nhms_ncd()
     build_nhms_adolescent_mental_health()
+    build_deaths_ethnicity_state()
+    build_district_vital_stats()
     build_population_electoral()
     build_population_district_full()
     build_hies_percentile()

@@ -96,6 +96,10 @@ PUBLISHED_FILES = [
     ("data/processed/water_access_national.json", "water_access_national.json"),
     ("data/processed/electricity_access_region.json", "electricity_access_region.json"),
     ("data/processed/nutrition_strata_national.json", "nutrition_strata_national.json"),
+    ("data/processed/hiv_incidence_national.json", "hiv_incidence_national.json"),
+    ("data/processed/deaths_ethnicity_state.json", "deaths_ethnicity_state.json"),
+    ("data/processed/deaths_district_sex.json", "deaths_district_sex.json"),
+    ("data/processed/births_district_sex.json", "births_district_sex.json"),
 ]
 
 
