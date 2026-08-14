@@ -21,6 +21,8 @@ interface StateOutcomeRow {
   maternal_mortality_rate_per_100k_births: number | null;
   crude_birth_rate_per_1000: number | null;
   births_abs: number | null;
+  stillbirths_abs: number | null;
+  stillbirth_rate_per_1000: number | null;
   infant_deaths_abs: number | null;
   infant_mortality_rate: number | null;
   neonatal_deaths_abs: number | null;
@@ -50,6 +52,20 @@ interface NutritionRow {
   range: string;
   description: string;
   prevalence_pct: number | null;
+}
+
+interface HivIncidenceRow {
+  year: number;
+  sex: string;
+  hiv_incidence_per_1000_uninfected: number | null;
+}
+
+interface EthnicityDeathRow {
+  state: string;
+  year: number;
+  sex: string;
+  ethnicity: string;
+  deaths_abs: number | null;
 }
 
 interface CovidRow {
@@ -84,7 +100,7 @@ const PEKA_RANGE_OPTIONS = [
   { id: "all", label: "All time (since 2019-04-15)", days: null as number | null },
 ];
 
-type Category = "mortality" | "std" | "immunisation" | "nutrition" | "covid" | "programmes";
+type Category = "mortality" | "std" | "immunisation" | "nutrition" | "covid" | "programmes" | "ethnicity";
 
 const CATEGORY_LABELS: Record<Category, string> = {
   mortality: "Mortality & Births",
@@ -93,6 +109,16 @@ const CATEGORY_LABELS: Record<Category, string> = {
   nutrition: "Nutrition",
   covid: "COVID-19",
   programmes: "Health Programme Participation",
+  ethnicity: "Deaths by Ethnicity",
+};
+
+const ETHNICITY_LABELS: Record<string, string> = {
+  bumi_malay: "Malay",
+  bumi_other: "Other Bumiputera",
+  chinese: "Chinese",
+  indian: "Indian",
+  other_citizen: "Other citizen",
+  other_noncitizen: "Non-citizen",
 };
 
 interface MortalityMetric {
@@ -172,7 +198,10 @@ export default function HealthOutcomes() {
   const { data: stateOutcomes } = useData<StateOutcomeRow[]>("health_outcomes_state.json");
   const { data: immunisation } = useData<ImmunisationRow[]>("immunisation_national.json");
   const { data: nutrition } = useData<NutritionRow[]>("nutrition_national.json");
+  const { data: hivIncidence } = useData<HivIncidenceRow[]>("hiv_incidence_national.json");
+  const { data: ethnicityDeaths } = useData<EthnicityDeathRow[]>("deaths_ethnicity_state.json");
   const { data: covid } = useData<CovidRow[]>("covid_state.json");
+  const { data: covidNational } = useData<CovidRow[]>("covid_national.json");
   const { data: programmes } = useData<ProgrammeRow[]>("health_programmes_state.json");
   const { data: pekaDaily } = useData<PekaDailyRow[]>("pekab40_screenings_daily_state.json");
 
@@ -230,6 +259,11 @@ export default function HealthOutcomes() {
     return Array.from(new Set(nutrition.map((r) => r.sex))).sort();
   }, [nutrition]);
 
+  const ethnicityYears = useMemo(() => {
+    if (!ethnicityDeaths) return [];
+    return Array.from(new Set(ethnicityDeaths.map((r) => r.year))).sort((a, b) => b - a);
+  }, [ethnicityDeaths]);
+
   const yearsForCategory =
     category === "std"
       ? stdYears
@@ -239,7 +273,9 @@ export default function HealthOutcomes() {
           ? covidYears
           : category === "programmes"
             ? programmeYears
-            : mortalityYears;
+            : category === "ethnicity"
+              ? ethnicityYears
+              : mortalityYears;
   const effectiveYear = year ?? yearsForCategory[0] ?? null;
 
   function selectCategory(next: Category) {
@@ -294,6 +330,29 @@ export default function HealthOutcomes() {
   );
   const stdTrendSeries: Series[] = STD_METRICS.map((m) => ({ key: m.label, label: m.label, color: m.color }));
 
+  // National HIV incidence (SDG 3.3.1) — a methodologically cleaner metric
+  // than std_state's crude diagnosed-case counts (denominator is uninfected
+  // population, not raw counts), but published national-only with no state
+  // breakdown, so it's shown as a separate complementary chart rather than
+  // merged into the state-level STD sections above.
+  const hivIncidenceNationalTrend = useMemo(() => {
+    if (!hivIncidence) return [];
+    const byYear = new Map<number, { year: number; Both: number | null; Male: number | null; Female: number | null }>();
+    hivIncidence.forEach((r) => {
+      if (!byYear.has(r.year)) byYear.set(r.year, { year: r.year, Both: null, Male: null, Female: null });
+      const row = byYear.get(r.year)!;
+      if (r.sex === "both") row.Both = r.hiv_incidence_per_1000_uninfected;
+      if (r.sex === "male") row.Male = r.hiv_incidence_per_1000_uninfected;
+      if (r.sex === "female") row.Female = r.hiv_incidence_per_1000_uninfected;
+    });
+    return Array.from(byYear.values()).sort((a, b) => a.year - b.year);
+  }, [hivIncidence]);
+  const hivIncidenceNationalSeries: Series[] = [
+    { key: "Both", label: "Both sexes", color: "#2a78d6" },
+    { key: "Male", label: "Male", color: "#7ba7e0" },
+    { key: "Female", label: "Female", color: "#0d366b" },
+  ];
+
   const stdSnapshot = useMemo(() => {
     if (!stateOutcomes || effectiveYear === null) return [];
     return stateOutcomes
@@ -326,6 +385,11 @@ export default function HealthOutcomes() {
     if (!covid || effectiveYear === null) return null;
     return covid.find((r) => r.state === state && r.year === effectiveYear) ?? null;
   }, [covid, state, effectiveYear]);
+
+  const selectedCovidNationalRow = useMemo(() => {
+    if (!covidNational || effectiveYear === null) return null;
+    return covidNational.find((r) => r.year === effectiveYear) ?? null;
+  }, [covidNational, effectiveYear]);
 
   // ---- Health Programme Participation ----
   const programmeMetric = PROGRAMME_METRICS.find((m) => m.id === programmeMetricId)!;
@@ -432,6 +496,27 @@ export default function HealthOutcomes() {
     return null;
   }, [category, stateOutcomes, mortalityMetric, covid, covidMetric, programmes, programmeMetric, effectiveYear]);
 
+  // ---- Deaths by ethnicity ----
+  // Shown as raw counts, not rates: this project has no state-level
+  // population-by-ethnicity dataset to normalise against (population_state
+  // only breaks down by sex; only the district-level population files have
+  // an ethnicity breakdown) — see dataset_inventory.json's entry for
+  // death_sex_ethnic_state for the full explanation. "overall" is DOSM's
+  // own cross-check total across the other groups, not a real ethnicity —
+  // excluded from the comparison below.
+  const ethnicitySnapshot = useMemo(() => {
+    if (!ethnicityDeaths || effectiveYear === null) return [];
+    return ethnicityDeaths
+      .filter((r) => r.state === state && r.year === effectiveYear && r.sex === "both" && r.ethnicity !== "overall" && r.deaths_abs !== null)
+      .map((r) => ({ ethnicity: ETHNICITY_LABELS[r.ethnicity] ?? r.ethnicity, value: r.deaths_abs as number }));
+  }, [ethnicityDeaths, state, effectiveYear]);
+
+  const ethnicityTotal = useMemo(() => {
+    if (!ethnicityDeaths || effectiveYear === null) return null;
+    const overall = ethnicityDeaths.find((r) => r.state === state && r.year === effectiveYear && r.sex === "both" && r.ethnicity === "overall");
+    return overall?.deaths_abs ?? null;
+  }, [ethnicityDeaths, state, effectiveYear]);
+
   // ---- Immunisation ----
   const immunisationTrendData = useMemo(() => {
     if (!immunisation) return [];
@@ -476,6 +561,7 @@ export default function HealthOutcomes() {
         { key: "crude_birth_rate_per_1000", label: "Crude birth rate", numeric: true, cautionField: "births_abs" },
         { key: "maternal_mortality_rate_per_100k_births", label: "Maternal mortality", numeric: true, cautionField: "maternal_deaths_abs" },
         { key: "infant_mortality_rate", label: "Infant mortality", numeric: true, cautionField: "infant_deaths_abs" },
+        { key: "stillbirth_rate_per_1000", label: "Stillbirths", numeric: true, cautionField: "stillbirths_abs" },
         { key: "neonatal_mortality_rate", label: "Neonatal mortality", numeric: true, cautionField: "neonatal_deaths_abs" },
         { key: "under5_mortality_rate", label: "Under-5 mortality", numeric: true, cautionField: "under5_deaths_abs" },
       ];
@@ -518,6 +604,15 @@ export default function HealthOutcomes() {
         { key: "pekab40_screenings_abs", label: "PeKa B40 screenings", numeric: true },
       ];
     }
+    if (category === "ethnicity") {
+      return [
+        { key: "state", label: "State" },
+        { key: "year", label: "Year", numeric: true },
+        { key: "sex", label: "Sex" },
+        { key: "ethnicity", label: "Ethnicity" },
+        { key: "deaths_abs", label: "Deaths (count)", numeric: true },
+      ];
+    }
     return [
       { key: "year", label: "Year", numeric: true },
       { key: "sex", label: "Sex" },
@@ -536,8 +631,9 @@ export default function HealthOutcomes() {
     if (category === "nutrition" && nutrition) return nutrition as unknown as Record<string, unknown>[];
     if (category === "covid" && covid) return covid as unknown as Record<string, unknown>[];
     if (category === "programmes" && programmes) return programmes as unknown as Record<string, unknown>[];
+    if (category === "ethnicity" && ethnicityDeaths) return ethnicityDeaths.filter((r) => r.state === state) as unknown as Record<string, unknown>[];
     return [];
-  }, [category, stateOutcomes, immunisation, nutrition, covid, programmes]);
+  }, [category, stateOutcomes, immunisation, nutrition, covid, programmes, ethnicityDeaths, state]);
 
   const tableSourceKey =
     category === "mortality"
@@ -550,7 +646,9 @@ export default function HealthOutcomes() {
             ? "covid"
             : category === "programmes"
               ? "health_programmes"
-              : "nutrition";
+              : category === "ethnicity"
+                ? "deaths_ethnicity"
+                : "nutrition";
 
   return (
     <div>
@@ -639,7 +737,7 @@ export default function HealthOutcomes() {
             </div>
           )}
 
-          {(category === "mortality" || category === "std" || category === "covid" || category === "programmes") && (
+          {(category === "mortality" || category === "std" || category === "covid" || category === "programmes" || category === "ethnicity") && (
             <div>
               <label htmlFor="state-select" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
                 State
@@ -712,6 +810,8 @@ export default function HealthOutcomes() {
               "Aggregated from daily case/death counts to annual state totals — the latest year is partial (data continues to the ingestion date)."}
             {category === "programmes" &&
               "Aggregated from daily participation counts to annual state totals — each indicator starts in a different year and the latest year is partial."}
+            {category === "ethnicity" &&
+              "Raw death counts by ethnicity, not rates — this project has no state-level population-by-ethnicity dataset to normalise against, so ethnic groups' absolute counts are not directly comparable (larger groups will show larger counts regardless of relative risk)."}
           </p>
         </div>
 
@@ -731,7 +831,9 @@ export default function HealthOutcomes() {
           reason={
             insightSource
               ? insightSource.reason
-              : `${CATEGORY_LABELS[category]} is reported at national level only in this dataset — no state-level comparison is possible.`
+              : category === "ethnicity"
+                ? "Deaths by ethnicity are raw counts, not a comparable rate — no state-vs-state equity gap can be computed from this data without a matching population-by-ethnicity denominator (see the note above)."
+                : `${CATEGORY_LABELS[category]} is reported at national level only in this dataset — no state-level comparison is possible.`
           }
         />
 
@@ -748,6 +850,7 @@ export default function HealthOutcomes() {
                   { label: "Crude birth rate", value: fmt(selectedStateRow?.crude_birth_rate_per_1000), unit: "per 1,000", caution: isSmallCount(selectedStateRow?.births_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
                   { label: "Maternal mortality", value: fmt(selectedStateRow?.maternal_mortality_rate_per_100k_births), unit: "per 100k births", caution: isSmallCount(selectedStateRow?.maternal_deaths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
                   { label: "Infant mortality", value: fmt(selectedStateRow?.infant_mortality_rate), unit: "per 1,000 births", caution: isSmallCount(selectedStateRow?.infant_deaths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
+                  { label: "Stillbirths", value: fmt(selectedStateRow?.stillbirth_rate_per_1000), unit: "per 1,000 total births", caution: isSmallCount(selectedStateRow?.stillbirths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
                   { label: "Neonatal mortality", value: fmt(selectedStateRow?.neonatal_mortality_rate), unit: "per 1,000 births", caution: isSmallCount(selectedStateRow?.neonatal_deaths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
                   { label: "Perinatal mortality", value: fmt(selectedStateRow?.perinatal_mortality_rate), unit: "per 1,000 births", caution: isSmallCount(selectedStateRow?.perinatal_deaths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
                   { label: "Toddler mortality", value: fmt(selectedStateRow?.toddler_mortality_rate), unit: "per 1,000", caution: isSmallCount(selectedStateRow?.toddler_deaths_abs) ? SMALL_COUNT_CAUTION_TEXT : undefined },
@@ -857,6 +960,28 @@ export default function HealthOutcomes() {
               )}
               <SourceNote sourceKey="std" year={effectiveYear ?? undefined} />
             </section>
+
+            <section aria-labelledby="hiv-incidence-national">
+              <h2 id="hiv-incidence-national" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+                HIV incidence — national trend (SDG 3.3.1)
+              </h2>
+              <p className="mb-2 text-xs text-ink-muted">
+                New HIV infections per 1,000 people not already living with HIV — a cleaner incidence metric than the
+                diagnosed-case counts above, but published national-only with no state breakdown.
+              </p>
+              {hivIncidenceNationalTrend.length > 0 ? (
+                <LineChartCard
+                  title="HIV incidence (per 1,000 uninfected population)"
+                  data={hivIncidenceNationalTrend}
+                  xKey="year"
+                  series={hivIncidenceNationalSeries}
+                  unit="per 1,000"
+                />
+              ) : (
+                <InsufficientData reason="No national HIV incidence records available." />
+              )}
+              <SourceNote sourceKey="hiv_incidence" />
+            </section>
           </>
         )}
 
@@ -875,6 +1000,8 @@ export default function HealthOutcomes() {
                   { label: "Cases — adolescents", value: fmt(selectedCovidRow?.covid_cases_adolescent_abs, 0), unit: "cases" },
                   { label: "Cases — adults", value: fmt(selectedCovidRow?.covid_cases_adult_abs, 0), unit: "cases" },
                   { label: "Cases — elderly", value: fmt(selectedCovidRow?.covid_cases_elderly_abs, 0), unit: "cases" },
+                  { label: "Malaysia total cases", value: fmt(selectedCovidNationalRow?.covid_cases_abs, 0), unit: "cases" },
+                  { label: "Malaysia total deaths", value: fmt(selectedCovidNationalRow?.covid_deaths_abs, 0), unit: "deaths" },
                 ]}
               />
               <SourceNote sourceKey="covid" year={effectiveYear ?? undefined} />
@@ -1027,6 +1154,45 @@ export default function HealthOutcomes() {
                 <SourceNote sourceKey="pekab40_daily" />
               </section>
             )}
+          </>
+        )}
+
+        {/* ---------------- Deaths by ethnicity ---------------- */}
+        {category === "ethnicity" && (
+          <>
+            <section>
+              <div className="mb-4 rounded-lg border border-line-axis bg-plane p-3 text-sm text-ink-secondary">
+                <strong>Raw counts, not rates.</strong> This project has no state-level population-by-ethnicity
+                dataset to normalise against — larger ethnic groups will show larger death counts regardless of
+                relative risk. Do not read this chart as a per-capita comparison.
+              </div>
+              <KPISummarySection
+                title={`${state} — ${effectiveYear ?? "…"}, both sexes`}
+                headingId="ethnicity-kpis"
+                columns={2}
+                items={[{ label: "Total deaths (all ethnicities)", value: fmt(ethnicityTotal, 0), unit: "deaths" }]}
+              />
+              <SourceNote sourceKey="deaths_ethnicity" year={effectiveYear ?? undefined} />
+            </section>
+
+            <section aria-labelledby="ethnicity-ranking">
+              <h2 id="ethnicity-ranking" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+                Deaths by ethnicity — {state}, {effectiveYear ?? "…"}
+              </h2>
+              {ethnicitySnapshot.length > 0 ? (
+                <BarRankingCard
+                  title="Deaths (count)"
+                  data={ethnicitySnapshot}
+                  nameKey="ethnicity"
+                  valueKey="value"
+                  unit="deaths"
+                  color="#7a4fb5"
+                />
+              ) : (
+                <InsufficientData reason={`No ethnicity-disaggregated death records for ${state} in ${effectiveYear}.`} />
+              )}
+              <SourceNote sourceKey="deaths_ethnicity" year={effectiveYear ?? undefined} extra="Excludes DOSM's own 'overall' cross-check total row." />
+            </section>
           </>
         )}
 

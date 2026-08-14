@@ -16,7 +16,14 @@ export const PAGE_DATA_FILES: Record<string, string[]> = {
     "healthcare_access_national.json",
     "population_state.json",
   ],
-  "/map": ["socioeconomic_state.json", "healthcare_access_state.json", "health_outcomes_state.json"],
+  "/map": [
+    "socioeconomic_state.json",
+    "healthcare_access_state.json",
+    "health_outcomes_state.json",
+    "fertility_state.json",
+    "deaths_district_sex.json",
+    "births_district_sex.json",
+  ],
   "/socioeconomic": [
     "socioeconomic_national.json",
     "socioeconomic_state.json",
@@ -35,6 +42,8 @@ export const PAGE_DATA_FILES: Record<string, string[]> = {
     "covid_state.json",
     "health_programmes_state.json",
     "pekab40_screenings_daily_state.json",
+    "hiv_incidence_national.json",
+    "deaths_ethnicity_state.json",
   ],
   "/healthcare-access": [
     "healthcare_access_national.json",

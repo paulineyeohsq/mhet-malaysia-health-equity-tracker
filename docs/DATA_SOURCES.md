@@ -196,6 +196,41 @@ All from the Household Income and Expenditure Survey (HIES), an irregular
 - Case counts and incidence (per 100,000) for HIV, AIDS, syphilis, gonorrhea, chancroid, by state.
 - **Limitations:** Reported/diagnosed cases only — true incidence, especially for HIV/AIDS, is understated due to under-testing; comparisons across states may partly reflect differences in testing access rather than true incidence.
 
+### HIV Incidence per 1,000 Uninfected Population (SDG 3.3.1)
+- **URL:** https://open.dosm.gov.my/data-catalogue/sdg_03-3-1
+- **Source org:** Ministry of Health Malaysia
+- **Date range:** 2016–2022 · **Geographic resolution:** national · **Update frequency:** Annual
+- New HIV infections per 1,000 uninfected population, by sex — a methodologically cleaner metric than std_state's crude diagnosed-case counts (added 2026-08-14, after a coverage re-audit found it live on OpenDOSM).
+- **Limitations:** National only, no state or district breakdown. Complements but does not replace std_state.
+
+### Annual Stillbirths by State
+- **URL:** https://open.dosm.gov.my/data-catalogue/stillbirths_state
+- **Source org:** National Registration Department / DOSM
+- **Date range:** 2000–2024 · **Geographic resolution:** state · **Update frequency:** Annual
+- Stillbirth counts and rate (per 1,000 total births) by state — a genuinely new indicator this project didn't previously track (added 2026-08-14).
+- **Limitations:** None specific beyond the standard state-of-usual-residence caveat shared with the other vital-statistics tables above.
+
+### Annual Deaths by State, Sex & Ethnicity
+- **URL:** https://open.dosm.gov.my/data-catalogue/deaths_sex_ethnic_state
+- **Source org:** National Registration Department / DOSM
+- **Date range:** 2000–2024 · **Geographic resolution:** state · **Update frequency:** Annual
+- Death counts by state, sex, and ethnicity (Malay, other Bumiputera, Chinese, Indian, other citizen, non-citizen, plus DOSM's own "overall" cross-check total). Added 2026-08-14 — see the "Confirmed unavailable" section below for why this supersedes an earlier, now-outdated finding that no such dataset existed.
+- **Limitations:** Absolute counts only, no published per-ethnicity-group death rate — this project has no state-level population-by-ethnicity dataset to compute one against (only the district-level population tables have an ethnicity breakdown). Shown in the dashboard as raw counts with an explicit non-rate caveat, not as a per-capita comparison. The "overall" ethnicity value is DOSM's own cross-check total, not a distinct group.
+
+### Annual Deaths by District & Sex
+- **URL:** https://open.dosm.gov.my/data-catalogue/deaths_district_sex
+- **Source org:** National Registration Department / DOSM
+- **Date range:** 2020–2024 · **Geographic resolution:** district · **Update frequency:** Annual
+- District-resolution upgrade of "Annual Deaths by State" above (added 2026-08-14) — death counts and rate by district and sex.
+- **Limitations:** Shorter time range (2020–2024) than the state-level series (2000–2022) — a resolution upgrade, not a full historical replacement.
+
+### Annual Live Births by District & Sex
+- **URL:** https://open.dosm.gov.my/data-catalogue/births_district_sex
+- **Source org:** National Registration Department / DOSM
+- **Date range:** 2020–2024 · **Geographic resolution:** district · **Update frequency:** Annual
+- District-resolution upgrade of "Annual Live Births by State" above (added 2026-08-14) — live birth counts and rate by district and sex.
+- **Limitations:** Shorter time range (2020–2024) than the state-level series — a resolution upgrade, not a full historical replacement.
+
 ---
 
 ## Geographic (base layer, used by all domains above)
@@ -257,11 +292,20 @@ agency.
   catalogues — almost certainly suppressed for small-area privacy/
   disclosure-risk reasons. **Path forward:** a formal MOH data-sharing
   request, likely requiring an ethics/IRB approval given small-cell risk.
-- **Ethnicity-linked health outcomes.** No dataset in either catalogue
-  ever cross-tabulates ethnicity with a health/mortality/morbidity figure
-  — population_district's ethnicity fields are population counts only.
-  **Path forward:** same as above — a formal request, not an open-data gap
-  that can be closed by searching harder.
+- ~~**Ethnicity-linked health outcomes.** No dataset in either catalogue
+  ever cross-tabulates ethnicity with a health/mortality/morbidity figure.~~
+  **UPDATE 2026-08-14: this finding was wrong and has been corrected.**
+  DOSM has since published `deaths_sex_ethnic_state` (deaths by state,
+  sex, and ethnicity) — confirmed live at
+  https://open.dosm.gov.my/data-catalogue/deaths_sex_ethnic_state and
+  ingested into this project (see "Annual Deaths by State, Sex & Ethnicity"
+  above). Whether this is a genuinely new DOSM publication or was
+  simply missed during the original catalogue check is unclear; either
+  way, don't treat this specific "confirmed unavailable" entry as
+  reliable going forward — re-check the live catalogue before repeating
+  the claim. A per-ethnicity-group *rate* (not just raw counts) still
+  isn't available, since no state-level population-by-ethnicity dataset
+  exists to normalise against — that narrower gap remains open.
 - **Confidence intervals / margins of error** on any published aggregate
   figure. DOSM/MOH publish point estimates only in their open tables; survey
   design-effect/variance data isn't part of the open release. **Path

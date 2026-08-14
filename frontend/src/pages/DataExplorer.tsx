@@ -78,6 +78,17 @@ const DATASETS: DatasetDef[] = [
     ],
   },
   {
+    id: "hies_percentile_national",
+    label: "Income by Percentile — National",
+    file: "hies_percentile_national.json",
+    columns: [
+      { key: "year", label: "Year", numeric: true },
+      { key: "percentile", label: "Percentile", numeric: true },
+      { key: "variable", label: "Variable (mean/median/minimum/maximum)" },
+      { key: "income_rm", label: "Income (RM)", numeric: true },
+    ],
+  },
+  {
     id: "population_state",
     label: "Population — State",
     file: "population_state.json",
@@ -106,6 +117,18 @@ const DATASETS: DatasetDef[] = [
       { key: "age_0_14", label: "Age 0-14", numeric: true },
       { key: "age_15_64", label: "Age 15-64", numeric: true },
       { key: "age_65_above", label: "Age 65+", numeric: true },
+    ],
+  },
+  {
+    id: "population_district_full",
+    label: "Population — District (2020-2025, no ethnicity/age breakdown)",
+    file: "population_district_full.json",
+    columns: [
+      { key: "state", label: "State" },
+      { key: "district", label: "District" },
+      { key: "year", label: "Year", numeric: true },
+      { key: "sex", label: "Sex" },
+      { key: "population_thousands", label: "Population (thousands)", numeric: true },
     ],
   },
   {
