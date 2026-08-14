@@ -16,15 +16,17 @@ import KPISummarySection from "../components/KPISummarySection";
 import SourceNote from "../components/SourceNote";
 import LineChartCard from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
-import DataTable, { type Column } from "../components/DataTable";
+import DataTable, { type Column, toCSV } from "../components/DataTable";
 import ChoroplethMap, { type ChoroplethDatum } from "../components/ChoroplethMap";
 import InsufficientData from "../components/InsufficientData";
 import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
+import ChartToolbar from "../components/ChartToolbar";
 import { useData } from "../lib/useData";
 import type { SOURCES } from "../lib/sources";
 import type { Row } from "../lib/equity";
 import { findBestYear, buildPairs, computeCorrelationStats, CORRELATION_MIN_PAIRS } from "../lib/correlation";
 import CorrelationCaveat from "../components/CorrelationCaveat";
+import { useChat, buildExplainPrompt } from "../lib/chatContext";
 
 interface NationalRow {
   year: number;
@@ -136,6 +138,7 @@ const HEALTH_INDICATORS: { id: HealthIndicatorId; label: string; unit: string; s
 ];
 
 export default function SocioeconomicInequality() {
+  const { explain } = useChat();
   const { data: national } = useData<NationalRow[]>("socioeconomic_national.json");
   const { data: stateData } = useData<StateRow[]>("socioeconomic_state.json");
   const { data: districtData } = useData<DistrictRow[]>("socioeconomic_district.json");
@@ -831,6 +834,20 @@ export default function SocioeconomicInequality() {
                   <h3 className="mb-2 text-sm font-medium text-ink-primary">
                     {socioIndicator.label} vs. {healthIndicator.label} — {correlationInput.year}
                   </h3>
+                  <ChartToolbar
+                    showingTable={false}
+                    onExplain={() => {
+                      const cols: Column[] = [
+                        { key: "state", label: "State" },
+                        { key: "x", label: socioIndicator.label, numeric: true },
+                        { key: "y", label: healthIndicator.label, numeric: true },
+                      ];
+                      const csv = toCSV(cols, correlationInput.pairs as unknown as Record<string, unknown>[]);
+                      explain(
+                        buildExplainPrompt(`${socioIndicator.label} vs. ${healthIndicator.label} — ${correlationInput.year}`, csv, correlationInput.pairs.length)
+                      );
+                    }}
+                  />
                   <ResponsiveContainer width="100%" height={320}>
                     <ComposedChart margin={{ top: 8, right: 20, bottom: 24, left: 8 }}>
                       <CartesianGrid stroke="#e1e0d9" />
