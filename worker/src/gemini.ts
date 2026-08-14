@@ -1,10 +1,13 @@
 // gemini-2.0-flash / gemini-2.5-flash are no longer available to new-user
-// API keys as of this session (confirmed directly against the live API,
-// not assumed). Deliberately avoiding "-preview"-tagged models after that
-// experience — gemini-3-flash-preview worked but carries the same
-// deprecation risk. gemini-3.5-flash is the current non-preview fast/cheap
-// tier, confirmed working against this key.
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent";
+// API keys as of this session. Tried gemini-3.5-flash (non-preview, to
+// dodge deprecation risk) but its free-tier quota is
+// GenerateRequestsPerDayPerProjectPerModel-FreeTier: 20 requests/day —
+// confirmed directly against the live API — which is unusable for a real
+// chat feature. Reverted to gemini-3-flash-preview: still "-preview"-
+// tagged (real future deprecation risk), but its free-tier daily quota is
+// high enough to actually function, and each model has its own separate
+// quota bucket so this one wasn't affected by exhausting 3.5-flash's.
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
 
 export interface ChatMessage {
   role: "user" | "assistant";
