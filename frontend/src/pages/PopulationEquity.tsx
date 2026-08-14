@@ -15,11 +15,13 @@ import KPISummarySection from "../components/KPISummarySection";
 import SourceNote from "../components/SourceNote";
 import LineChartCard, { type Series } from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
-import DataTable, { type Column } from "../components/DataTable";
+import DataTable, { type Column, toCSV } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
+import ChartToolbar from "../components/ChartToolbar";
 import { useData } from "../lib/useData";
 import { computeGroupMeanGap, fmt, type Row } from "../lib/equity";
 import { MALAYSIA_STATES, EAST_MALAYSIA_STATES, PENINSULAR_STATES } from "../lib/geoConstants";
+import { useChat, buildExplainPrompt } from "../lib/chatContext";
 
 interface PopStateRow {
   state: string;
@@ -103,6 +105,7 @@ const GROUP_FIELDS = [
 ];
 
 export default function PopulationEquity() {
+  const { explain } = useChat();
   const { data: popState } = useData<PopStateRow[]>("population_state.json");
   const { data: popDistrict } = useData<PopDistrictRow[]>("population_district.json");
   const { data: nutrition } = useData<NutritionRow[]>("nutrition_national.json");
@@ -589,6 +592,18 @@ export default function PopulationEquity() {
                 <h3 className="mb-2 text-sm font-medium text-ink-primary">
                   Male vs. female population by state — {latestStateYear}
                 </h3>
+                <ChartToolbar
+                  showingTable={false}
+                  onExplain={() => {
+                    const cols: Column[] = [
+                      { key: "state", label: "State" },
+                      { key: "Male", label: "Male (thousands)", numeric: true },
+                      { key: "Female", label: "Female (thousands)", numeric: true },
+                    ];
+                    const csv = toCSV(cols, sexByState.slice(0, 60) as unknown as Record<string, unknown>[]);
+                    explain(buildExplainPrompt(`Male vs. female population by state — ${latestStateYear}`, csv, sexByState.length));
+                  }}
+                />
                 <ResponsiveContainer width="100%" height={Math.max(260, sexByState.length * 26)}>
                   <BarChart data={sexByState} layout="vertical" margin={{ top: 4, right: 24, bottom: 4, left: 4 }}>
                     <CartesianGrid stroke="#e1e0d9" horizontal={false} />
@@ -700,6 +715,17 @@ export default function PopulationEquity() {
             <h3 className="mb-2 text-sm font-medium text-ink-primary">
               Age-specific fertility rate — {asfrState}, {effectiveFertilityYear ?? "…"}
             </h3>
+            <ChartToolbar
+              showingTable={false}
+              onExplain={() => {
+                const cols: Column[] = [
+                  { key: "ageGroup", label: "Age group" },
+                  { key: "Fertility rate", label: "Fertility rate (per 1,000 women)", numeric: true },
+                ];
+                const csv = toCSV(cols, asfrData as unknown as Record<string, unknown>[]);
+                explain(buildExplainPrompt(`Age-specific fertility rate — ${asfrState}, ${effectiveFertilityYear ?? "the selected year"}`, csv, asfrData.length));
+              }}
+            />
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={asfrData} margin={{ top: 8, right: 24, bottom: 4, left: 0 }}>
                 <CartesianGrid stroke="#e1e0d9" vertical={false} />
@@ -772,6 +798,23 @@ export default function PopulationEquity() {
               <h3 className="mb-2 text-sm font-medium text-ink-primary">
                 Age group shares — {ageGeo === "__all__" ? "All Malaysia" : ageGeo}, {effectiveAgeYear}
               </h3>
+              <ChartToolbar
+                showingTable={false}
+                onExplain={() => {
+                  const cols: Column[] = [
+                    { key: "group", label: "Age group" },
+                    { key: "Share", label: "Share of population (%)", numeric: true },
+                  ];
+                  const csv = toCSV(cols, ageBreakdown.data as unknown as Record<string, unknown>[]);
+                  explain(
+                    buildExplainPrompt(
+                      `Age group shares — ${ageGeo === "__all__" ? "All Malaysia" : ageGeo}, ${effectiveAgeYear}`,
+                      csv,
+                      ageBreakdown.data.length
+                    )
+                  );
+                }}
+              />
               <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={ageBreakdown.data} margin={{ top: 8, right: 24, bottom: 4, left: 0 }}>
                   <CartesianGrid stroke="#e1e0d9" vertical={false} />
@@ -908,6 +951,21 @@ export default function PopulationEquity() {
               <h3 className="mb-2 text-sm font-medium text-ink-primary">
                 Ethnicity share of population — {ethnicityLabel}, {effectiveEthnicityYear}
               </h3>
+              <ChartToolbar
+                showingTable={false}
+                onExplain={() => {
+                  const cols: Column[] = [
+                    { key: "Bumiputera", label: "Bumiputera", numeric: true },
+                    { key: "Chinese", label: "Chinese", numeric: true },
+                    { key: "Indian", label: "Indian", numeric: true },
+                    { key: "Other", label: "Other", numeric: true },
+                  ];
+                  const csv = toCSV(cols, ethnicityChart.data as unknown as Record<string, unknown>[]);
+                  explain(
+                    buildExplainPrompt(`Ethnicity share of population — ${ethnicityLabel}, ${effectiveEthnicityYear}`, csv, ethnicityChart.data.length)
+                  );
+                }}
+              />
               <ResponsiveContainer width="100%" height={140}>
                 <BarChart
                   data={ethnicityChart.data}

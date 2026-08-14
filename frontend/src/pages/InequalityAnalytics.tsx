@@ -15,10 +15,12 @@ import PageHeader from "../components/PageHeader";
 import StatTile from "../components/StatTile";
 import SourceNote from "../components/SourceNote";
 import BarRankingCard from "../components/BarRankingCard";
-import DataTable, { type Column } from "../components/DataTable";
+import DataTable, { type Column, toCSV } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
 import MetadataPanel from "../components/MetadataPanel";
+import ChartToolbar from "../components/ChartToolbar";
 import { useData } from "../lib/useData";
+import { useChat, buildExplainPrompt } from "../lib/chatContext";
 import type { SOURCES } from "../lib/sources";
 import { computeGapStats, computeAverage, yearsWithCoverage, fmt, type Row } from "../lib/equity";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
@@ -263,6 +265,7 @@ function ciInterpretation(ind: OutcomeIndicator, ci: number): string {
 }
 
 export default function InequalityAnalytics() {
+  const { explain } = useChat();
   const { data: healthOutcomes } = useData<Row[]>("health_outcomes_state.json");
   const { data: healthcareAccess } = useData<Row[]>("healthcare_access_state.json");
   const { data: socioeconomic } = useData<SocioeconomicRow[]>("socioeconomic_state.json");
@@ -975,6 +978,18 @@ export default function InequalityAnalytics() {
                 <h3 className="mb-2 text-sm font-medium text-ink-primary">
                   Concentration curve — {sesIndicator.label}, {sesYear}
                 </h3>
+                <ChartToolbar
+                  showingTable={false}
+                  onExplain={() => {
+                    const cols: Column[] = [
+                      { key: "x", label: "Cumulative population share (%)", numeric: true },
+                      { key: "curve", label: "Concentration curve (%)", numeric: true },
+                      { key: "equality", label: "Line of equality (%)", numeric: true },
+                    ];
+                    const csv = toCSV(cols, ciResult.curve as unknown as Record<string, unknown>[]);
+                    explain(buildExplainPrompt(`Concentration curve — ${sesIndicator.label}, ${sesYear}`, csv, ciResult.curve.length));
+                  }}
+                />
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={ciResult.curve} margin={{ top: 8, right: 12, bottom: 20, left: 0 }}>
                     <CartesianGrid stroke="#e1e0d9" vertical={false} />

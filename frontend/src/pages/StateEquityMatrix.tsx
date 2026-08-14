@@ -15,11 +15,14 @@ import StatTile from "../components/StatTile";
 import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
 import CorrelationCaveat from "../components/CorrelationCaveat";
+import ChartToolbar from "../components/ChartToolbar";
+import { toCSV, type Column } from "../components/DataTable";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
 import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, CORRELATION_MIN_PAIRS, type CorrelationPair } from "../lib/correlation";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
+import { useChat, buildExplainPrompt } from "../lib/chatContext";
 
 type MatrixPair = CorrelationPair & { year?: number };
 
@@ -40,6 +43,7 @@ function fmtVal(v: number | null, decimals = 1): string {
 }
 
 export default function StateEquityMatrix() {
+  const { explain } = useChat();
   const { data: healthOutcomes } = useData<Row[]>("health_outcomes_state.json");
   const { data: healthcareAccess } = useData<Row[]>("healthcare_access_state.json");
   const { data: socioeconomic } = useData<Row[]>("socioeconomic_state.json");
@@ -338,6 +342,18 @@ export default function StateEquityMatrix() {
                 {resource.label} vs. {burden.label} — {yearLabel}
                 {!stats && <span className="ml-2 text-xs font-normal text-ink-muted">(trend line needs ≥{CORRELATION_MIN_PAIRS} points; {pairs.length} available)</span>}
               </h2>
+              <ChartToolbar
+                showingTable={false}
+                onExplain={() => {
+                  const cols: Column[] = [
+                    { key: "state", label: "State" },
+                    { key: "x", label: resource.label, numeric: true },
+                    { key: "y", label: burden.label, numeric: true },
+                  ];
+                  const csv = toCSV(cols, pairs.slice(0, 60) as unknown as Record<string, unknown>[]);
+                  explain(buildExplainPrompt(`${resource.label} vs. ${burden.label} — ${yearLabel}`, csv, pairs.length));
+                }}
+              />
               <ResponsiveContainer width="100%" height={380}>
                 <ComposedChart margin={{ top: 8, right: 24, bottom: 28, left: 8 }}>
                   <CartesianGrid stroke="#e1e0d9" />

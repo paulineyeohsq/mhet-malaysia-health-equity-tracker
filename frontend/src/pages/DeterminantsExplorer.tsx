@@ -22,10 +22,12 @@ import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
 import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, interpretCorrelation, CORRELATION_MIN_PAIRS } from "../lib/correlation";
 import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
+import { useChat, buildExplainPrompt } from "../lib/chatContext";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 export default function DeterminantsExplorer() {
+  const { explain } = useChat();
   const { data: healthOutcomes } = useData<Row[]>("health_outcomes_state.json");
   const { data: healthcareAccess } = useData<Row[]>("healthcare_access_state.json");
   const { data: socioeconomic } = useData<Row[]>("socioeconomic_state.json");
@@ -171,6 +173,11 @@ export default function DeterminantsExplorer() {
   function handleExportCSV() {
     const csv = toCSV(tableColumns, rankedPairs as unknown as Record<string, unknown>[]);
     downloadCSV(`determinants_${determinant.id}_${outcome.id}.csv`, csv);
+  }
+
+  function handleExplain() {
+    const csv = toCSV(tableColumns, (rankedPairs as unknown as Record<string, unknown>[]).slice(0, 60));
+    explain(buildExplainPrompt(`${determinant.label} vs. ${outcome.label} — ${yearLabel}`, csv, rankedPairs.length));
   }
 
   async function handleExportPNG() {
@@ -333,6 +340,7 @@ export default function DeterminantsExplorer() {
                   onToggleTable={() => setShowTable((v) => !v)}
                   onExportCSV={handleExportCSV}
                   onExportPNG={handleExportPNG}
+                  onExplain={handleExplain}
                   pngPending={pngPending}
                 />
                 {!showTable && (
