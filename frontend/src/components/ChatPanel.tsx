@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useChat } from "../lib/chatContext";
+import MarkdownLite from "./MarkdownLite";
 
 /**
  * Floating chat toggle + right-side drawer. State/networking lives in
@@ -77,7 +78,7 @@ export default function ChatPanel() {
                   m.role === "user" ? "bg-seq-100 text-ink-primary" : "border border-line-grid bg-plane text-ink-primary"
                 }`}
               >
-                {m.content}
+                {m.role === "assistant" ? <MarkdownLite text={m.content} /> : m.content}
               </div>
             </div>
           ))}
