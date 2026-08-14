@@ -1,0 +1,13 @@
+[build]
+  publish = "public"
+  command = "true"
+  # No real build step — public/index.html is already final, and edge
+  # functions are bundled by Netlify's own Deno-based packager
+  # independently of this "build" stage. `command = "true"` is a no-op
+  # (belt-and-braces: a stray package.json or other auto-detected build
+  # config elsewhere in this repo should never make this site's deploy
+  # fail trying to run a build command that doesn't apply to it).
+
+# The edge function's own path config (netlify/edge-functions/chat.ts's
+# `export const config = { path: "/chat" }`) already registers its route —
+# no [[edge_functions]] declaration needed here.
