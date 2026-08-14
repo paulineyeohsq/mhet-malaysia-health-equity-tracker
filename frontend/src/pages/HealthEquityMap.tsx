@@ -46,6 +46,8 @@ const INDICATORS: IndicatorDef[] = [
   { id: "covid_cases", label: "COVID-19 cases (annual)", sourceKey: "covid", unit: "cases", file: "covid_state.json", valueField: "covid_cases_abs", geographies: ["state"], higherIsWorse: true },
   { id: "financing_programmes", label: "PeKa B40 screenings (annual)", sourceKey: "health_programmes", unit: "screenings", file: "health_programmes_state.json", valueField: "pekab40_screenings_abs", geographies: ["state"], higherIsWorse: false },
   { id: "fertility_tfr", label: "Total fertility rate", sourceKey: "fertility", unit: "births/woman", file: "fertility_state.json", valueField: "fertility_rate", geographies: ["state"], higherIsWorse: false, filterField: "age_group", filterValue: "tfr" },
+  { id: "district_death_rate", label: "Death rate (district)", sourceKey: "deaths_district", unit: "per 1,000", file: "deaths_district_sex.json", valueField: "death_rate_per_1000", geographies: ["district"], higherIsWorse: true, absField: "deaths_abs", filterField: "sex", filterValue: "both" },
+  { id: "district_birth_rate", label: "Birth rate (district)", sourceKey: "births_district", unit: "per 1,000", file: "births_district_sex.json", valueField: "birth_rate_per_1000", geographies: ["district"], higherIsWorse: false, absField: "births_abs", filterField: "sex", filterValue: "both" },
 ];
 
 export default function HealthEquityMap() {
