@@ -93,6 +93,17 @@ export const DETERMINANT_FIELDS: FieldDef[] = [
   { id: "marriage_rate_det", label: "Marriage rate (female population)", file: "marriages_state.json", field: "marriage_rate_per_1000", unit: "per 1,000 population", sourceKey: "marriages", higherIsWorse: false, filter: (r) => r.sex === "female" },
   { id: "marriage_rate_male_det", label: "Marriage rate (male population)", file: "marriages_state.json", field: "marriage_rate_per_1000", unit: "per 1,000 population", sourceKey: "marriages", higherIsWorse: false, filter: (r) => r.sex === "male" },
   { id: "tfr_det", label: "Total fertility rate", file: "fertility_state.json", field: "fertility_rate", unit: "births per woman", sourceKey: "fertility", higherIsWorse: false, filter: (r) => r.age_group === "tfr" },
+  // Age-specific fertility rate (ASFR) by state, one determinant per DOSM's
+  // 5-year age band — on a different scale from TFR above (births per 1,000
+  // women in the band, not births per woman overall), so kept as separate
+  // selectable determinants rather than folded into the TFR one.
+  { id: "asfr_15_19_det", label: "Fertility rate, age 15-19", file: "fertility_state.json", field: "fertility_rate", unit: "per 1,000 women", sourceKey: "fertility", higherIsWorse: false, filter: (r) => r.age_group === "15-19" },
+  { id: "asfr_20_24_det", label: "Fertility rate, age 20-24", file: "fertility_state.json", field: "fertility_rate", unit: "per 1,000 women", sourceKey: "fertility", higherIsWorse: false, filter: (r) => r.age_group === "20-24" },
+  { id: "asfr_25_29_det", label: "Fertility rate, age 25-29", file: "fertility_state.json", field: "fertility_rate", unit: "per 1,000 women", sourceKey: "fertility", higherIsWorse: false, filter: (r) => r.age_group === "25-29" },
+  { id: "asfr_30_34_det", label: "Fertility rate, age 30-34", file: "fertility_state.json", field: "fertility_rate", unit: "per 1,000 women", sourceKey: "fertility", higherIsWorse: false, filter: (r) => r.age_group === "30-34" },
+  { id: "asfr_35_39_det", label: "Fertility rate, age 35-39", file: "fertility_state.json", field: "fertility_rate", unit: "per 1,000 women", sourceKey: "fertility", higherIsWorse: false, filter: (r) => r.age_group === "35-39" },
+  { id: "asfr_40_44_det", label: "Fertility rate, age 40-44", file: "fertility_state.json", field: "fertility_rate", unit: "per 1,000 women", sourceKey: "fertility", higherIsWorse: false, filter: (r) => r.age_group === "40-44" },
+  { id: "asfr_45_49_det", label: "Fertility rate, age 45-49", file: "fertility_state.json", field: "fertility_rate", unit: "per 1,000 women", sourceKey: "fertility", higherIsWorse: false, filter: (r) => r.age_group === "45-49" },
   { id: "blood_donations_det", label: "Blood donations", file: "health_programmes_state.json", field: "blood_donations_abs", unit: "donations", sourceKey: "health_programmes", higherIsWorse: false },
   { id: "organ_pledges_det", label: "Organ pledges", file: "health_programmes_state.json", field: "organ_pledges_abs", unit: "pledges", sourceKey: "health_programmes", higherIsWorse: false },
   { id: "pekab40_det", label: "PeKa B40 screenings", file: "health_programmes_state.json", field: "pekab40_screenings_abs", unit: "screenings", sourceKey: "health_programmes", higherIsWorse: false },
