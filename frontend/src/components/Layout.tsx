@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
 import AskMhet from "./AskMhet";
 import ChatPanel from "./ChatPanel";
+import { ChatProvider } from "../lib/chatContext";
 
 interface NavItem {
   to: string;
@@ -114,9 +115,11 @@ export default function Layout() {
 
       {/* Main content */}
       <main id="main-content" className="flex-1 min-w-0">
-        <AskMhet />
-        <Outlet />
-        <ChatPanel />
+        <ChatProvider>
+          <AskMhet />
+          <Outlet />
+          <ChatPanel />
+        </ChatProvider>
       </main>
     </div>
   );

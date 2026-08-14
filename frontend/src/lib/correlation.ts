@@ -72,6 +72,56 @@ export function buildPairs(xRows: Row[], yRows: Row[], year: number, xField: str
   return pairs;
 }
 
+/**
+ * Every year (not just the single "best" one) where at least one state has a
+ * non-null value for both fields — powers an explicit year picker instead of
+ * silently auto-selecting a year. Sorted most recent first.
+ */
+export function findYearsWithPairs(xRows: Row[], yRows: Row[], xField: string, yField: string): { year: number; n: number }[] {
+  const xYears = new Set(xRows.map((r) => r.year as number));
+  const yYears = new Set(yRows.map((r) => r.year as number));
+  const commonYears = [...xYears].filter((y) => yYears.has(y)).sort((a, b) => b - a);
+
+  const results: { year: number; n: number }[] = [];
+  for (const y of commonYears) {
+    const n = buildPairs(xRows, yRows, y, xField, yField).length;
+    if (n > 0) results.push({ year: y, n });
+  }
+  return results;
+}
+
+export interface PooledPair extends CorrelationPair {
+  year: number;
+}
+
+/**
+ * Joins every (state, year) where BOTH datasets have a real value for the
+ * chosen fields, across ALL years at once — not restricted to one shared
+ * year. Each state can contribute more than one point (one per year it has
+ * data), which increases n but means the result mixes multiple time
+ * periods; callers must disclose this rather than presenting it as a
+ * single-year snapshot. Structurally compatible with computeCorrelationStats
+ * (PooledPair is a CorrelationPair plus `year`).
+ */
+export function buildPooledPairs(xRows: Row[], yRows: Row[], xField: string, yField: string): PooledPair[] {
+  const yByStateYear = new Map<string, unknown>();
+  for (const row of yRows) {
+    const v = row[yField];
+    if (typeof v === "number") yByStateYear.set(`${row.state as string}|${row.year as number}`, v);
+  }
+  const pairs: PooledPair[] = [];
+  for (const row of xRows) {
+    const x = row[xField];
+    if (typeof x !== "number") continue;
+    const key = `${row.state as string}|${row.year as number}`;
+    const y = yByStateYear.get(key);
+    if (typeof y === "number") {
+      pairs.push({ state: row.state as string, year: row.year as number, x, y });
+    }
+  }
+  return pairs.sort((a, b) => a.year - b.year || a.state.localeCompare(b.state));
+}
+
 export interface CorrelationStats {
   pearson: number;
   spearman: number;

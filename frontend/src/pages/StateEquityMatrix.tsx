@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ResponsiveContainer,
   ComposedChart,
@@ -17,9 +17,11 @@ import InsufficientData from "../components/InsufficientData";
 import CorrelationCaveat from "../components/CorrelationCaveat";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
-import { findBestYear, buildPairs, computeCorrelationStats, CORRELATION_MIN_PAIRS } from "../lib/correlation";
-import { OUTCOME_FIELDS, DETERMINANT_FIELDS, type FieldDef } from "../lib/determinantFields";
+import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, CORRELATION_MIN_PAIRS, type CorrelationPair } from "../lib/correlation";
+import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
+
+type MatrixPair = CorrelationPair & { year?: number };
 
 /**
  * "Resource" indicators for this page — the subset of DETERMINANT_FIELDS
@@ -43,6 +45,11 @@ export default function StateEquityMatrix() {
   const { data: socioeconomic } = useData<Row[]>("socioeconomic_state.json");
   const { data: nhmsNcd } = useData<Row[]>("nhms_ncd_state.json");
   const { data: nhmsAdolescentMentalHealth } = useData<Row[]>("nhms_adolescent_mental_health_state.json");
+  const { data: sanitation } = useData<Row[]>("sanitation_access_state.json");
+  const { data: water } = useData<Row[]>("water_access_state.json");
+  const { data: marriages } = useData<Row[]>("marriages_state.json");
+  const { data: fertility } = useData<Row[]>("fertility_state.json");
+  const { data: healthProgrammes } = useData<Row[]>("health_programmes_state.json");
 
   const rowsByFile: Record<FieldDef["file"], Row[] | null> = useMemo(
     () => ({
@@ -51,36 +58,112 @@ export default function StateEquityMatrix() {
       "socioeconomic_state.json": socioeconomic,
       "nhms_ncd_state.json": nhmsNcd,
       "nhms_adolescent_mental_health_state.json": nhmsAdolescentMentalHealth,
+      "sanitation_access_state.json": sanitation,
+      "water_access_state.json": water,
+      "marriages_state.json": marriages,
+      "fertility_state.json": fertility,
+      "health_programmes_state.json": healthProgrammes,
     }),
-    [healthOutcomes, healthcareAccess, socioeconomic, nhmsNcd, nhmsAdolescentMentalHealth]
+    [healthOutcomes, healthcareAccess, socioeconomic, nhmsNcd, nhmsAdolescentMentalHealth, sanitation, water, marriages, fertility, healthProgrammes]
   );
 
   const [resourceId, setResourceId] = useState("beds_det");
   const [burdenId, setBurdenId] = useState("cdr");
   const [stateA, setStateA] = useState("Kelantan");
   const [stateB, setStateB] = useState("Selangor");
+  const [yearMode, setYearMode] = useState<string>("auto");
 
   const resource = ALL_RESOURCE_CANDIDATE_FIELDS.find((f) => f.id === resourceId)!;
   const burden = OUTCOME_FIELDS.find((f) => f.id === burdenId)!;
 
-  const resourceRows = rowsByFile[resource.file];
-  const burdenRows = rowsByFile[burden.file];
+  const resourceRows = rowsForField(rowsByFile[resource.file], resource);
+  const burdenRows = rowsForField(rowsByFile[burden.file], burden);
 
-  const { year } = useMemo(() => {
-    if (!resourceRows || !burdenRows) return { year: null as number | null, n: 0 };
-    return findBestYear(resourceRows, burdenRows, resource.field, burden.field);
-  }, [resourceRows, burdenRows, resource, burden]);
+  // Whether each resource option could ever produce a chart against the
+  // currently selected burden — viable if EITHER the best single year, OR
+  // pooling across all years, reaches the minimum pair count. Mirrors
+  // Determinants Explorer's determinantViability pattern.
+  const resourceViability = useMemo(() => {
+    const result: Record<string, boolean> = {};
+    if (!burdenRows) return result;
+    for (const res of ALL_RESOURCE_CANDIDATE_FIELDS) {
+      const rRows = rowsForField(rowsByFile[res.file], res);
+      if (!rRows) {
+        result[res.id] = true; // still loading
+        continue;
+      }
+      const { n } = findBestYear(rRows, burdenRows, res.field, burden.field);
+      const pooledN = buildPooledPairs(rRows, burdenRows, res.field, burden.field).length;
+      result[res.id] = n >= CORRELATION_MIN_PAIRS || pooledN >= CORRELATION_MIN_PAIRS;
+    }
+    return result;
+  }, [burden, burdenRows, rowsByFile]);
 
-  const pairs = useMemo(() => {
-    if (!resourceRows || !burdenRows || year === null) return [];
-    return buildPairs(resourceRows, burdenRows, year, resource.field, burden.field);
-  }, [resourceRows, burdenRows, year, resource, burden]);
+  useEffect(() => {
+    if (resourceViability[resourceId] === false) {
+      const firstViable = ALL_RESOURCE_CANDIDATE_FIELDS.find((f) => resourceViability[f.id] !== false);
+      if (firstViable) setResourceId(firstViable.id);
+    }
+  }, [resourceViability, resourceId]);
+
+  const availableYears = useMemo(() => {
+    if (!resourceRows || !burdenRows) return [];
+    return findYearsWithPairs(resourceRows, burdenRows, resource.field, burden.field);
+  }, [resourceRows, burdenRows, resource.field, burden.field]);
+
+  useEffect(() => {
+    if (yearMode === "auto" || yearMode === "pooled") return;
+    if (!availableYears.some((y) => String(y.year) === yearMode)) setYearMode("auto");
+  }, [availableYears, yearMode]);
+
+  const isPooled = yearMode === "pooled";
+  const fixedYear = yearMode !== "auto" && yearMode !== "pooled" ? Number(yearMode) : null;
+
+  const { year, pairs } = useMemo(() => {
+    if (!resourceRows || !burdenRows) return { year: null as number | null, pairs: [] as MatrixPair[] };
+    if (isPooled) {
+      return { year: null as number | null, pairs: buildPooledPairs(resourceRows, burdenRows, resource.field, burden.field) };
+    }
+    if (fixedYear !== null) {
+      return { year: fixedYear, pairs: buildPairs(resourceRows, burdenRows, fixedYear, resource.field, burden.field) };
+    }
+    const best = findBestYear(resourceRows, burdenRows, resource.field, burden.field);
+    if (best.year === null) return { year: null as number | null, pairs: [] as MatrixPair[] };
+    return { year: best.year, pairs: buildPairs(resourceRows, burdenRows, best.year, resource.field, burden.field) };
+  }, [resourceRows, burdenRows, resource.field, burden.field, isPooled, fixedYear]);
+
+  const yearLabel = isPooled ? "pooled, all years" : String(year ?? "");
 
   const stats = useMemo(() => computeCorrelationStats(pairs), [pairs]);
 
+  // States actually present in the resolved pairs for the current mode —
+  // used to grey out State A/B options that would otherwise look pickable
+  // but resolve to nothing.
+  const statesWithData = useMemo(() => new Set(pairs.map((p) => p.state)), [pairs]);
+
+  useEffect(() => {
+    if (statesWithData.size === 0) return;
+    if (!statesWithData.has(stateA)) {
+      const fallback = MALAYSIA_STATES.find((s) => statesWithData.has(s));
+      if (fallback) setStateA(fallback);
+    }
+    if (!statesWithData.has(stateB)) {
+      const fallback = MALAYSIA_STATES.find((s) => statesWithData.has(s) && s !== stateA);
+      if (fallback) setStateB(fallback);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [statesWithData]);
+
   const otherPairs = pairs.filter((p) => p.state !== stateA && p.state !== stateB);
-  const pairA = pairs.find((p) => p.state === stateA) ?? null;
-  const pairB = pairs.find((p) => p.state === stateB) ?? null;
+  const pairsForA = pairs.filter((p) => p.state === stateA);
+  const pairsForB = pairs.filter((p) => p.state === stateB);
+  // The single most-recent point per state, used for the deviation panel —
+  // in pooled mode a state can have several points (one per year); the
+  // panel shows the latest one rather than trying to average across years.
+  const representative = (statePairs: MatrixPair[]) =>
+    statePairs.length === 0 ? null : statePairs.reduce((latest, p) => ((p.year ?? 0) >= (latest.year ?? 0) ? p : latest), statePairs[0]);
+  const pairA = representative(pairsForA);
+  const pairB = representative(pairsForB);
 
   function predictedAt(x: number): number | null {
     if (!stats) return null;
@@ -117,18 +200,36 @@ export default function StateEquityMatrix() {
               className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
             >
               <optgroup label="Health-system resources">
-                {RESOURCE_FIELDS.map((f) => (
-                  <option key={f.id} value={f.id}>
-                    {f.label}
-                  </option>
-                ))}
+                {RESOURCE_FIELDS.map((f) => {
+                  const viable = resourceViability[f.id] ?? true;
+                  return (
+                    <option
+                      key={f.id}
+                      value={f.id}
+                      disabled={!viable}
+                      title={viable ? undefined : `${f.label} and ${burden.label} never share enough paired state data, in any year or pooled — no correlation is possible for this pair.`}
+                    >
+                      {f.label}
+                      {!viable ? " (no usable data with this burden)" : ""}
+                    </option>
+                  );
+                })}
               </optgroup>
               <optgroup label="Broader socioeconomic determinants">
-                {DETERMINANT_FIELDS.filter((f) => !RESOURCE_FIELD_IDS.includes(f.id)).map((f) => (
-                  <option key={f.id} value={f.id}>
-                    {f.label}
-                  </option>
-                ))}
+                {DETERMINANT_FIELDS.filter((f) => !RESOURCE_FIELD_IDS.includes(f.id)).map((f) => {
+                  const viable = resourceViability[f.id] ?? true;
+                  return (
+                    <option
+                      key={f.id}
+                      value={f.id}
+                      disabled={!viable}
+                      title={viable ? undefined : `${f.label} and ${burden.label} never share enough paired state data, in any year or pooled — no correlation is possible for this pair.`}
+                    >
+                      {f.label}
+                      {!viable ? " (no usable data with this burden)" : ""}
+                    </option>
+                  );
+                })}
               </optgroup>
             </select>
           </div>
@@ -150,6 +251,25 @@ export default function StateEquityMatrix() {
             </select>
           </div>
           <div>
+            <label htmlFor="matrix-year" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+              Year
+            </label>
+            <select
+              id="matrix-year"
+              value={yearMode}
+              onChange={(e) => setYearMode(e.target.value)}
+              className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+            >
+              <option value="auto">Auto (best year)</option>
+              <option value="pooled">Combine all years (pooled)</option>
+              {availableYears.map((y) => (
+                <option key={y.year} value={String(y.year)}>
+                  {y.year} ({y.n} states)
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
             <label htmlFor="matrix-state-a" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
               State A
             </label>
@@ -159,11 +279,15 @@ export default function StateEquityMatrix() {
               onChange={(e) => setStateA(e.target.value)}
               className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
             >
-              {MALAYSIA_STATES.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
+              {MALAYSIA_STATES.map((s) => {
+                const has = statesWithData.size === 0 || statesWithData.has(s);
+                return (
+                  <option key={s} value={s} disabled={!has} title={has ? undefined : `No ${resource.label.toLowerCase()} / ${burden.label.toLowerCase()} data for ${s} in this year mode.`}>
+                    {s}
+                    {!has ? " (no data)" : ""}
+                  </option>
+                );
+              })}
             </select>
           </div>
           <div>
@@ -176,29 +300,43 @@ export default function StateEquityMatrix() {
               onChange={(e) => setStateB(e.target.value)}
               className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
             >
-              {MALAYSIA_STATES.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
+              {MALAYSIA_STATES.map((s) => {
+                const has = statesWithData.size === 0 || statesWithData.has(s);
+                return (
+                  <option key={s} value={s} disabled={!has} title={has ? undefined : `No ${resource.label.toLowerCase()} / ${burden.label.toLowerCase()} data for ${s} in this year mode.`}>
+                    {s}
+                    {!has ? " (no data)" : ""}
+                  </option>
+                );
+              })}
             </select>
           </div>
         </div>
 
-        {!year || pairs.length < 2 ? (
+        {isPooled && (
+          <div className="rounded-lg border border-line-axis bg-plane p-3 text-xs text-ink-secondary">
+            <strong className="text-ink-primary">Pooled across years.</strong> The scatter plots every state×year
+            point with real data for both fields — a state can appear more than once. The deviation panels below
+            use each state's most recent available point, not an average across years.
+          </div>
+        )}
+
+        {pairs.length < 2 ? (
           <InsufficientData
             reason={
-              year
-                ? `Only ${pairs.length} state(s) have paired data for "${resource.label}" and "${burden.label}" in ${year} — not enough to plot.`
-                : `"${resource.label}" and "${burden.label}" share no common year with paired state-level data.`
+              isPooled
+                ? `Only ${pairs.length} pooled state-year point(s) for "${resource.label}" and "${burden.label}" — not enough to plot.`
+                : year
+                  ? `Only ${pairs.length} state(s) have paired data for "${resource.label}" and "${burden.label}" in ${year} — not enough to plot.`
+                  : `"${resource.label}" and "${burden.label}" share no common year with paired state-level data for the selected year mode.`
             }
           />
         ) : (
           <>
             <div className="rounded-lg border border-line-grid bg-surface p-4">
               <h2 className="mb-2 text-sm font-medium text-ink-primary">
-                {resource.label} vs. {burden.label} — {year}
-                {!stats && <span className="ml-2 text-xs font-normal text-ink-muted">(trend line needs ≥{CORRELATION_MIN_PAIRS} states; {pairs.length} available)</span>}
+                {resource.label} vs. {burden.label} — {yearLabel}
+                {!stats && <span className="ml-2 text-xs font-normal text-ink-muted">(trend line needs ≥{CORRELATION_MIN_PAIRS} points; {pairs.length} available)</span>}
               </h2>
               <ResponsiveContainer width="100%" height={380}>
                 <ComposedChart margin={{ top: 8, right: 24, bottom: 28, left: 8 }}>
@@ -227,13 +365,16 @@ export default function StateEquityMatrix() {
                     cursor={{ strokeDasharray: "3 3" }}
                     contentStyle={{ fontSize: 12, border: "1px solid #e1e0d9", borderRadius: 6 }}
                     formatter={(value, _name, item) => [String(value), item?.payload?.state ?? ""]}
-                    labelFormatter={() => ""}
+                    labelFormatter={(_label, payload) => {
+                      const p = payload?.[0]?.payload as MatrixPair | undefined;
+                      return p && isPooled && p.year !== undefined ? `${p.year}` : "";
+                    }}
                   />
                   <Legend wrapperStyle={{ fontSize: 12 }} verticalAlign="top" />
                   <Scatter name="Other states" data={otherPairs} fill="#c9c7bf" />
                   {stats && (
                     <Line
-                      name="Linear trend (16 states)"
+                      name="Linear trend"
                       data={stats.regressionLine}
                       dataKey="y"
                       stroke="#898781"
@@ -245,17 +386,19 @@ export default function StateEquityMatrix() {
                       isAnimationActive={false}
                     />
                   )}
-                  {pairA && <Scatter name={stateA} data={[pairA]} fill="#2a78d6" shape="circle" legendType="circle" />}
-                  {pairB && <Scatter name={stateB} data={[pairB]} fill="#eb6834" shape="circle" legendType="circle" />}
+                  {pairsForA.length > 0 && <Scatter name={stateA} data={pairsForA} fill="#2a78d6" shape="circle" legendType="circle" />}
+                  {pairsForB.length > 0 && <Scatter name={stateB} data={pairsForB} fill="#eb6834" shape="circle" legendType="circle" />}
                 </ComposedChart>
               </ResponsiveContainer>
               <p className="mt-2 text-xs text-ink-muted">
-                Each grey point is one of the other Malaysian states in {year}; {stateA} is highlighted blue, {stateB}
-                orange. The dashed line is a simple linear trend across all states with paired data — descriptive
-                only, not predictive or causal.
+                {isPooled
+                  ? `Each grey point is one of the other Malaysian states in one year; ${stateA} is highlighted blue, ${stateB} orange — each may appear more than once (one point per year it has data).`
+                  : `Each grey point is one of the other Malaysian states in ${yearLabel}; ${stateA} is highlighted blue, ${stateB} orange.`}{" "}
+                The dashed line is a simple linear trend across all points with paired data — descriptive only, not
+                predictive or causal.
               </p>
-              <SourceNote sourceKey={resource.sourceKey} year={year} />
-              <SourceNote sourceKey={burden.sourceKey} year={year} />
+              <SourceNote sourceKey={resource.sourceKey} year={yearLabel} />
+              <SourceNote sourceKey={burden.sourceKey} year={yearLabel} />
             </div>
 
             <div className="grid gap-4 lg:grid-cols-2">
@@ -266,9 +409,10 @@ export default function StateEquityMatrix() {
                 <div key={name} className="rounded-lg border border-line-grid bg-surface p-4">
                   <h3 className="mb-2 text-sm font-medium" style={{ color }}>
                     {name}
+                    {isPooled && pair?.year !== undefined ? ` — ${pair.year} (most recent available)` : ""}
                   </h3>
                   {!pair ? (
-                    <InsufficientData reason={`No paired ${resource.label.toLowerCase()} / ${burden.label.toLowerCase()} data for ${name} in ${year}.`} />
+                    <InsufficientData reason={`No paired ${resource.label.toLowerCase()} / ${burden.label.toLowerCase()} data for ${name}${isPooled ? "" : ` in ${yearLabel}`}.`} />
                   ) : (
                     <div className="space-y-3">
                       <div className="grid grid-cols-2 gap-3">
@@ -281,8 +425,8 @@ export default function StateEquityMatrix() {
                         </p>
                       ) : (
                         <p className="text-xs text-ink-muted">
-                          Fewer than {CORRELATION_MIN_PAIRS} states have paired data this year, so no trend line was
-                          fitted — deviation from an expected value cannot be computed, only the raw values above.
+                          Fewer than {CORRELATION_MIN_PAIRS} points have paired data, so no trend line was fitted —
+                          deviation from an expected value cannot be computed, only the raw values above.
                         </p>
                       )}
                     </div>

@@ -1,49 +1,20 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
-import { CHAT_WORKER_URL } from "../lib/chatConfig";
-
-interface ChatMessage {
-  role: "user" | "assistant";
-  content: string;
-}
+import { useChat } from "../lib/chatContext";
 
 /**
- * Floating chat toggle + right-side drawer. Calls the chat-proxy Worker
- * (see /worker), which grounds answers in the real data relevant to
- * whatever page the user is currently on (location.pathname).
+ * Floating chat toggle + right-side drawer. State/networking lives in
+ * ChatProvider (see lib/chatContext.tsx) so other components — e.g. a
+ * chart's "Explain this" button — can drive the same conversation; this
+ * component is presentation only.
  */
 export default function ChatPanel() {
-  const location = useLocation();
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const { open, setOpen, messages, loading, error, clearError, send } = useChat();
   const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  async function send() {
-    const text = input.trim();
-    if (!text || loading) return;
-    const next: ChatMessage[] = [...messages, { role: "user", content: text }];
-    setMessages(next);
+  function handleSend() {
+    if (!input.trim() || loading) return;
+    void send(input);
     setInput("");
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(`${CHAT_WORKER_URL}/chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next, path: location.pathname }),
-      });
-      const data = (await res.json()) as { reply?: string; error?: string };
-      if (!res.ok || !data.reply) {
-        throw new Error(data.error ?? `HTTP ${res.status}`);
-      }
-      setMessages([...next, { role: "assistant", content: data.reply }]);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
-    } finally {
-      setLoading(false);
-    }
   }
 
   return (
@@ -120,7 +91,7 @@ export default function ChatPanel() {
           {error && (
             <div className="rounded-lg border border-status-critical bg-status-critical/10 px-3 py-2 text-sm text-status-critical">
               {error}
-              <button type="button" onClick={() => setError(null)} className="ml-2 underline">
+              <button type="button" onClick={clearError} className="ml-2 underline">
                 Dismiss
               </button>
             </div>
@@ -134,7 +105,7 @@ export default function ChatPanel() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") send();
+                if (e.key === "Enter") handleSend();
               }}
               disabled={loading}
               placeholder="Ask a question…"
@@ -142,7 +113,7 @@ export default function ChatPanel() {
             />
             <button
               type="button"
-              onClick={send}
+              onClick={handleSend}
               disabled={loading || !input.trim()}
               className="rounded-md bg-series-1 px-3 py-1.5 text-sm text-white disabled:opacity-50"
             >
