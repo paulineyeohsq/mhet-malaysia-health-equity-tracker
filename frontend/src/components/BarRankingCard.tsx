@@ -3,6 +3,7 @@ import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Toolti
 import ChartToolbar from "./ChartToolbar";
 import DataTable, { toCSV, downloadCSV, type Column } from "./DataTable";
 import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
+import { useChat, buildExplainPrompt } from "../lib/chatContext";
 
 export default function BarRankingCard({
   title,
@@ -33,6 +34,7 @@ export default function BarRankingCard({
   const [showTable, setShowTable] = useState(false);
   const [pngPending, setPngPending] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
+  const { explain } = useChat();
 
   const tableColumns: Column[] = [
     { key: nameKey, label: nameKey },
@@ -42,6 +44,11 @@ export default function BarRankingCard({
   function handleExportCSV() {
     const csv = toCSV(tableColumns, sorted as Record<string, unknown>[]);
     downloadCSV(`${(title ?? "chart").replace(/[^a-z0-9]+/gi, "_").toLowerCase()}.csv`, csv);
+  }
+
+  function handleExplain() {
+    const csv = toCSV(tableColumns, sorted.slice(0, 60) as Record<string, unknown>[]);
+    explain(buildExplainPrompt(title ?? "this chart", csv, sorted.length));
   }
 
   async function handleExportPNG() {
@@ -67,6 +74,7 @@ export default function BarRankingCard({
         onToggleTable={() => setShowTable((v) => !v)}
         onExportCSV={handleExportCSV}
         onExportPNG={handleExportPNG}
+        onExplain={handleExplain}
         pngPending={pngPending}
       />
       {showTable ? (

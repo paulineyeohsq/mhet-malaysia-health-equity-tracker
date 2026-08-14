@@ -1,4 +1,7 @@
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent";
+// gemini-2.0-flash / gemini-2.5-flash are no longer available to new-user
+// API keys as of this session (confirmed directly against the live API,
+// not assumed) — gemini-3-flash-preview is the current fast/cheap tier.
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
 
 export interface ChatMessage {
   role: "user" | "assistant";

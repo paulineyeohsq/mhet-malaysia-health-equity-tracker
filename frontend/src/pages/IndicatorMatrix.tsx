@@ -1,18 +1,20 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageHeader from "../components/PageHeader";
 import CorrelationCaveat from "../components/CorrelationCaveat";
 import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
-import { findBestYear, buildPairs, computeCorrelationStats, interpretCorrelation, type CorrelationPair } from "../lib/correlation";
-import { OUTCOME_FIELDS, DETERMINANT_FIELDS, type FieldDef } from "../lib/determinantFields";
+import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, interpretCorrelation, type CorrelationPair } from "../lib/correlation";
+import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
+
+type MatrixPair = CorrelationPair & { year?: number };
 
 /**
  * A wider scan across Determinants Explorer's same correlation engine —
  * one determinant against every selected outcome at once, as a sortable
  * table, instead of one outcome-vs-determinant pair per click. Reuses
- * findBestYear/buildPairs/computeCorrelationStats/interpretCorrelation
- * from lib/correlation.ts verbatim — no new statistics.
+ * findBestYear/buildPairs/buildPooledPairs/computeCorrelationStats/
+ * interpretCorrelation from lib/correlation.ts verbatim — no new statistics.
  */
 export default function IndicatorMatrix() {
   const { data: healthOutcomes } = useData<Row[]>("health_outcomes_state.json");
@@ -20,6 +22,11 @@ export default function IndicatorMatrix() {
   const { data: socioeconomic } = useData<Row[]>("socioeconomic_state.json");
   const { data: nhmsNcd } = useData<Row[]>("nhms_ncd_state.json");
   const { data: nhmsAdolescentMentalHealth } = useData<Row[]>("nhms_adolescent_mental_health_state.json");
+  const { data: sanitation } = useData<Row[]>("sanitation_access_state.json");
+  const { data: water } = useData<Row[]>("water_access_state.json");
+  const { data: marriages } = useData<Row[]>("marriages_state.json");
+  const { data: fertility } = useData<Row[]>("fertility_state.json");
+  const { data: healthProgrammes } = useData<Row[]>("health_programmes_state.json");
 
   const rowsByFile: Record<FieldDef["file"], Row[] | null> = useMemo(
     () => ({
@@ -28,12 +35,42 @@ export default function IndicatorMatrix() {
       "socioeconomic_state.json": socioeconomic,
       "nhms_ncd_state.json": nhmsNcd,
       "nhms_adolescent_mental_health_state.json": nhmsAdolescentMentalHealth,
+      "sanitation_access_state.json": sanitation,
+      "water_access_state.json": water,
+      "marriages_state.json": marriages,
+      "fertility_state.json": fertility,
+      "health_programmes_state.json": healthProgrammes,
     }),
-    [healthOutcomes, healthcareAccess, socioeconomic, nhmsNcd, nhmsAdolescentMentalHealth]
+    [healthOutcomes, healthcareAccess, socioeconomic, nhmsNcd, nhmsAdolescentMentalHealth, sanitation, water, marriages, fertility, healthProgrammes]
   );
 
   const [determinantId, setDeterminantId] = useState(DETERMINANT_FIELDS[1].id);
   const determinant = DETERMINANT_FIELDS.find((f) => f.id === determinantId)!;
+  const determinantRows = rowsForField(rowsByFile[determinant.file], determinant);
+
+  // "auto" = today's behaviour (each outcome uses its own best year).
+  // "pooled" = every state×year pair across all years, per outcome.
+  // A specific year forces every outcome onto that same one year, so rows
+  // are directly comparable to each other, unlike "auto".
+  const [yearMode, setYearMode] = useState<string>("auto");
+
+  const availableYears = useMemo(() => {
+    if (!determinantRows) return [];
+    const years = new Set<number>();
+    for (const outcome of OUTCOME_FIELDS) {
+      const outcomeRows = rowsForField(rowsByFile[outcome.file], outcome);
+      if (!outcomeRows) continue;
+      for (const y of findYearsWithPairs(determinantRows, outcomeRows, determinant.field, outcome.field)) {
+        years.add(y.year);
+      }
+    }
+    return Array.from(years).sort((a, b) => b - a);
+  }, [determinantRows, rowsByFile, determinant]);
+
+  useEffect(() => {
+    if (yearMode === "auto" || yearMode === "pooled") return;
+    if (!availableYears.includes(Number(yearMode))) setYearMode("auto");
+  }, [availableYears, yearMode]);
 
   const [selectedOutcomeIds, setSelectedOutcomeIds] = useState<Set<string>>(() => new Set(OUTCOME_FIELDS.map((f) => f.id)));
 
@@ -46,14 +83,35 @@ export default function IndicatorMatrix() {
     });
   }
 
+  const isPooled = yearMode === "pooled";
+  const fixedYear = yearMode !== "auto" && yearMode !== "pooled" ? Number(yearMode) : null;
+
   const results = useMemo(() => {
-    const determinantRows = rowsByFile[determinant.file];
     return OUTCOME_FIELDS.filter((o) => selectedOutcomeIds.has(o.id)).map((outcome) => {
-      const base = { outcome, pairs: [] as CorrelationPair[] };
-      if (!rowsByFile[outcome.file] || !determinantRows) {
+      const base = { outcome, pairs: [] as MatrixPair[] };
+      const outcomeRows = rowsForField(rowsByFile[outcome.file], outcome);
+      if (!outcomeRows || !determinantRows) {
         return { ...base, year: null as number | null, stats: null, insufficientReason: "Data still loading." };
       }
-      const outcomeRows = rowsByFile[outcome.file]!;
+
+      if (isPooled) {
+        const pairs = buildPooledPairs(determinantRows, outcomeRows, determinant.field, outcome.field);
+        const stats = computeCorrelationStats(pairs);
+        if (!stats) {
+          return { ...base, year: null as number | null, pairs, stats: null, insufficientReason: `Only ${pairs.length} pooled state-year point(s) across all years (need at least 8).` };
+        }
+        return { ...base, year: null as number | null, pairs, stats, insufficientReason: null as string | null };
+      }
+
+      if (fixedYear !== null) {
+        const pairs = buildPairs(determinantRows, outcomeRows, fixedYear, determinant.field, outcome.field);
+        const stats = computeCorrelationStats(pairs);
+        if (!stats) {
+          return { ...base, year: fixedYear, pairs, stats: null, insufficientReason: `Only ${pairs.length} state(s) have paired data in ${fixedYear} (need at least 8).` };
+        }
+        return { ...base, year: fixedYear, pairs, stats, insufficientReason: null as string | null };
+      }
+
       const { year, n } = findBestYear(determinantRows, outcomeRows, determinant.field, outcome.field);
       if (year === null) {
         return { ...base, year: null as number | null, stats: null, insufficientReason: `"${determinant.label}" and "${outcome.label}" share no common year with paired state-level data.` };
@@ -65,21 +123,28 @@ export default function IndicatorMatrix() {
       }
       return { ...base, year, pairs, stats, insufficientReason: null as string | null };
     });
-  }, [selectedOutcomeIds, determinant, rowsByFile]);
+  }, [selectedOutcomeIds, determinant, rowsByFile, determinantRows, isPooled, fixedYear]);
 
   const [drillDownOutcomeId, setDrillDownOutcomeId] = useState<string | null>(null);
   const drillDown = results.find((r) => r.outcome.id === drillDownOutcomeId && r.stats) ?? null;
 
-  const drillDownColumns: Column[] = [
-    { key: "state", label: "State" },
-    { key: "x", label: determinant.label, numeric: true },
-    { key: "y", label: drillDown?.outcome.label ?? "Outcome", numeric: true },
-  ];
+  const drillDownColumns: Column[] = isPooled
+    ? [
+        { key: "state", label: "State" },
+        { key: "year", label: "Year", numeric: true },
+        { key: "x", label: determinant.label, numeric: true },
+        { key: "y", label: drillDown?.outcome.label ?? "Outcome", numeric: true },
+      ]
+    : [
+        { key: "state", label: "State" },
+        { key: "x", label: determinant.label, numeric: true },
+        { key: "y", label: drillDown?.outcome.label ?? "Outcome", numeric: true },
+      ];
 
   const columns: Column[] = [
     { key: "outcome", label: "Outcome" },
-    { key: "year", label: "Year used", numeric: true },
-    { key: "n", label: "n states", numeric: true },
+    { key: "year", label: isPooled ? "Year(s)" : "Year used", numeric: !isPooled },
+    { key: "n", label: isPooled ? "n state-years" : "n states", numeric: true },
     { key: "pearson", label: "Pearson r", numeric: true },
     { key: "spearman", label: "Spearman ρ", numeric: true },
     { key: "strength", label: "Strength & direction" },
@@ -87,7 +152,7 @@ export default function IndicatorMatrix() {
 
   const tableRows = results.map((r) => ({
     outcome: r.outcome.label,
-    year: r.year,
+    year: isPooled ? "pooled" : r.year,
     n: r.stats?.n ?? null,
     pearson: r.stats ? r.stats.pearson.toFixed(3) : null,
     spearman: r.stats ? r.stats.spearman.toFixed(3) : null,
@@ -109,21 +174,51 @@ export default function IndicatorMatrix() {
         <CorrelationCaveat />
 
         <div className="rounded-lg border border-line-grid bg-surface p-4">
-          <label htmlFor="matrix-determinant" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
-            Potential determinant
-          </label>
-          <select
-            id="matrix-determinant"
-            value={determinantId}
-            onChange={(e) => setDeterminantId(e.target.value)}
-            className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
-          >
-            {DETERMINANT_FIELDS.map((f) => (
-              <option key={f.id} value={f.id}>
-                {f.label}
-              </option>
-            ))}
-          </select>
+          <div className="flex flex-wrap items-end gap-4">
+            <div>
+              <label htmlFor="matrix-determinant" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Potential determinant
+              </label>
+              <select
+                id="matrix-determinant"
+                value={determinantId}
+                onChange={(e) => setDeterminantId(e.target.value)}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                {DETERMINANT_FIELDS.map((f) => (
+                  <option key={f.id} value={f.id}>
+                    {f.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label htmlFor="matrix-year" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Year
+              </label>
+              <select
+                id="matrix-year"
+                value={yearMode}
+                onChange={(e) => setYearMode(e.target.value)}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                <option value="auto">Auto (best year per outcome)</option>
+                <option value="pooled">Combine all years (pooled)</option>
+                {availableYears.map((y) => (
+                  <option key={y} value={String(y)}>
+                    {y}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+          {isPooled && (
+            <div className="mt-3 rounded-lg border border-line-axis bg-plane p-3 text-xs text-ink-secondary">
+              <strong className="text-ink-primary">Pooled across years.</strong> Every result below uses all
+              state×year points with real data for that pair, not one snapshot year — the same state can appear
+              more than once. This increases the sample size but mixes different time periods together.
+            </div>
+          )}
 
           <div className="mt-4">
             <div className="mb-2 flex items-center justify-between">
@@ -172,11 +267,13 @@ export default function IndicatorMatrix() {
             <p className="text-sm text-ink-secondary">Select at least one outcome above.</p>
           )}
           <p className="mt-2 text-xs text-ink-muted">
-            Each row uses the most recent year with the most complete state-level pairing for that specific
-            outcome/determinant pair — years can differ row to row, exactly as in Determinants Explorer. Where a
-            row's "Strength & direction" cell reads as a sentence instead of e.g. "Strong positive", there was
-            insufficient paired data (fewer than 8 states) to compute a correlation for any common year — the
-            sentence explains why, matching Determinants Explorer's InsufficientData wording for the same case.
+            {isPooled
+              ? "Every row is pooled across all years with real data for that outcome/determinant pair — n counts state×year points, not states, and the same state can contribute more than once."
+              : fixedYear !== null
+                ? `Every row is fixed to ${fixedYear} — rows with no data in this specific year show "Insufficient data" rather than falling back to a different year.`
+                : "Each row uses the most recent year with the most complete state-level pairing for that specific outcome/determinant pair — years can differ row to row, exactly as in Determinants Explorer."}{" "}
+            Where a row's "Strength & direction" cell reads as a sentence instead of e.g. "Strong positive", there
+            was insufficient paired data (fewer than 8 points) to compute a correlation — the sentence explains why.
           </p>
         </div>
 
@@ -199,7 +296,7 @@ export default function IndicatorMatrix() {
                 .filter((r) => r.stats)
                 .map((r) => (
                   <option key={r.outcome.id} value={r.outcome.id}>
-                    {r.outcome.label} ({r.year})
+                    {r.outcome.label} ({isPooled ? "pooled" : r.year})
                   </option>
                 ))}
             </select>

@@ -6,7 +6,7 @@ import InsufficientData from "../components/InsufficientData";
 import { useData } from "../lib/useData";
 import { buildStateTrend, computeAverage, type Row } from "../lib/equity";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
-import { OUTCOME_FIELDS, DETERMINANT_FIELDS, type FieldDef } from "../lib/determinantFields";
+import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 
 const ALL_FIELDS: FieldDef[] = [...OUTCOME_FIELDS, ...DETERMINANT_FIELDS];
 
@@ -23,6 +23,11 @@ export default function Trends() {
   const { data: socioeconomic } = useData<Row[]>("socioeconomic_state.json");
   const { data: nhmsNcd } = useData<Row[]>("nhms_ncd_state.json");
   const { data: nhmsAdolescentMentalHealth } = useData<Row[]>("nhms_adolescent_mental_health_state.json");
+  const { data: sanitation } = useData<Row[]>("sanitation_access_state.json");
+  const { data: water } = useData<Row[]>("water_access_state.json");
+  const { data: marriages } = useData<Row[]>("marriages_state.json");
+  const { data: fertility } = useData<Row[]>("fertility_state.json");
+  const { data: healthProgrammes } = useData<Row[]>("health_programmes_state.json");
 
   const rowsByFile: Record<FieldDef["file"], Row[] | null> = {
     "health_outcomes_state.json": healthOutcomes,
@@ -30,13 +35,18 @@ export default function Trends() {
     "socioeconomic_state.json": socioeconomic,
     "nhms_ncd_state.json": nhmsNcd,
     "nhms_adolescent_mental_health_state.json": nhmsAdolescentMentalHealth,
+    "sanitation_access_state.json": sanitation,
+    "water_access_state.json": water,
+    "marriages_state.json": marriages,
+    "fertility_state.json": fertility,
+    "health_programmes_state.json": healthProgrammes,
   };
 
   const [state, setState] = useState(MALAYSIA_STATES[0]);
   const [fieldId, setFieldId] = useState(DETERMINANT_FIELDS[1].id);
   const field = ALL_FIELDS.find((f) => f.id === fieldId)!;
 
-  const rows = rowsByFile[field.file];
+  const rows = rowsForField(rowsByFile[field.file], field);
 
   const chartData = useMemo(() => {
     const stateTrend = buildStateTrend(rows, state, field.field);

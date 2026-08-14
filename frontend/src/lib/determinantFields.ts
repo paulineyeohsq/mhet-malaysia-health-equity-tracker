@@ -1,14 +1,39 @@
 import type { SOURCES } from "./sources";
+import type { Row } from "./equity";
 
 export interface FieldDef {
   id: string;
   label: string;
-  file: "health_outcomes_state.json" | "healthcare_access_state.json" | "socioeconomic_state.json" | "nhms_ncd_state.json" | "nhms_adolescent_mental_health_state.json";
+  file:
+    | "health_outcomes_state.json"
+    | "healthcare_access_state.json"
+    | "socioeconomic_state.json"
+    | "nhms_ncd_state.json"
+    | "nhms_adolescent_mental_health_state.json"
+    | "sanitation_access_state.json"
+    | "water_access_state.json"
+    | "marriages_state.json"
+    | "fertility_state.json"
+    | "health_programmes_state.json";
   field: string;
   unit: string;
   sourceKey: keyof typeof SOURCES;
   /** true if a higher value reflects greater disadvantage (used for research-question phrasing). */
   higherIsWorse: boolean;
+  /**
+   * Some source files carry an extra dimension (sex, strata, age_group)
+   * beyond state+year, so state+year alone isn't a unique key until that
+   * dimension is pinned to one value. Apply via rowsForField() below before
+   * handing rows to the correlation engine, which assumes one row per
+   * state+year.
+   */
+  filter?: (row: Row) => boolean;
+}
+
+/** Applies a FieldDef's optional row filter, if any. Use this instead of reading rowsByFile[field.file] directly whenever the field may have a filter. */
+export function rowsForField(rows: Row[] | null, field: FieldDef): Row[] | null {
+  if (!rows || !field.filter) return rows;
+  return rows.filter(field.filter);
 }
 
 /**
@@ -58,4 +83,14 @@ export const DETERMINANT_FIELDS: FieldDef[] = [
   { id: "gini", label: "Gini coefficient", file: "socioeconomic_state.json", field: "gini", unit: "index (0-1)", sourceKey: "gini", higherIsWorse: true },
   { id: "staff_det", label: "Healthcare staff availability", file: "healthcare_access_state.json", field: "staff_per_100k", unit: "per 100,000 population", sourceKey: "healthcare_staff", higherIsWorse: false },
   { id: "beds_det", label: "Hospital bed availability", file: "healthcare_access_state.json", field: "beds_per_100k", unit: "per 100,000 population", sourceKey: "hospital_beds", higherIsWorse: false },
+  // The following are neutral demographic/civic-participation determinants —
+  // higherIsWorse is set to false as a non-judgemental default (there is no
+  // "more disadvantaged" direction for e.g. marriage rate), not an equity claim.
+  { id: "sanitation_det", label: "Basic sanitation access", file: "sanitation_access_state.json", field: "sanitation_access_pct", unit: "%", sourceKey: "sanitation", higherIsWorse: false },
+  { id: "water_det", label: "Basic water access (overall)", file: "water_access_state.json", field: "water_access_pct", unit: "%", sourceKey: "water", higherIsWorse: false, filter: (r) => r.strata === "overall" },
+  { id: "marriage_rate_det", label: "Marriage rate (female population)", file: "marriages_state.json", field: "marriage_rate_per_1000", unit: "per 1,000 population", sourceKey: "marriages", higherIsWorse: false, filter: (r) => r.sex === "female" },
+  { id: "tfr_det", label: "Total fertility rate", file: "fertility_state.json", field: "fertility_rate", unit: "births per woman", sourceKey: "fertility", higherIsWorse: false, filter: (r) => r.age_group === "tfr" },
+  { id: "blood_donations_det", label: "Blood donations", file: "health_programmes_state.json", field: "blood_donations_abs", unit: "donations", sourceKey: "health_programmes", higherIsWorse: false },
+  { id: "organ_pledges_det", label: "Organ pledges", file: "health_programmes_state.json", field: "organ_pledges_abs", unit: "pledges", sourceKey: "health_programmes", higherIsWorse: false },
+  { id: "pekab40_det", label: "PeKa B40 screenings", file: "health_programmes_state.json", field: "pekab40_screenings_abs", unit: "screenings", sourceKey: "health_programmes", higherIsWorse: false },
 ];

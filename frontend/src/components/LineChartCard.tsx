@@ -12,6 +12,7 @@ import {
 import ChartToolbar from "./ChartToolbar";
 import DataTable, { toCSV, downloadCSV, type Column } from "./DataTable";
 import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
+import { useChat, buildExplainPrompt } from "../lib/chatContext";
 
 export interface Series {
   key: string;
@@ -38,6 +39,7 @@ export default function LineChartCard({
   const [showTable, setShowTable] = useState(false);
   const [pngPending, setPngPending] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
+  const { explain } = useChat();
 
   const tableColumns: Column[] = [
     { key: xKey, label: xKey },
@@ -47,6 +49,12 @@ export default function LineChartCard({
   function handleExportCSV() {
     const csv = toCSV(tableColumns, data as Record<string, unknown>[]);
     downloadCSV(`${(title ?? "chart").replace(/[^a-z0-9]+/gi, "_").toLowerCase()}.csv`, csv);
+  }
+
+  function handleExplain() {
+    const rows = data as Record<string, unknown>[];
+    const csv = toCSV(tableColumns, rows.slice(0, 60));
+    explain(buildExplainPrompt(title ?? "this chart", csv, rows.length));
   }
 
   async function handleExportPNG() {
@@ -71,6 +79,7 @@ export default function LineChartCard({
         onToggleTable={() => setShowTable((v) => !v)}
         onExportCSV={handleExportCSV}
         onExportPNG={handleExportPNG}
+        onExplain={handleExplain}
         pngPending={pngPending}
       />
       {showTable ? (

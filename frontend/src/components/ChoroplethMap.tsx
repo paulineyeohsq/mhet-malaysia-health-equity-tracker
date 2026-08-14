@@ -5,6 +5,7 @@ import type { Layer, StyleFunction, LeafletMouseEvent, Path } from "leaflet";
 import type { Feature, Geometry } from "geojson";
 import ChartToolbar from "./ChartToolbar";
 import DataTable, { toCSV, downloadCSV, type Column } from "./DataTable";
+import { useChat, buildExplainPrompt } from "../lib/chatContext";
 
 export interface ChoroplethDatum {
   name: string; // state or district name, must match geojson `state`/`district` property
@@ -131,6 +132,7 @@ export default function ChoroplethMap({
   // silently fails, this component sticks to what a zero-dependency
   // approach can actually deliver (table + CSV).
   const [showTable, setShowTable] = useState(false);
+  const { explain } = useChat();
   const tableColumns: Column[] = [
     { key: "name", label: nameProperty === "district" ? "District" : "State" },
     { key: "value", label: unitLabel ? `Value (${unitLabel})` : "Value", numeric: true },
@@ -141,9 +143,21 @@ export default function ChoroplethMap({
     downloadCSV(`${nameProperty}_map.csv`, csv);
   }
 
+  function handleExplain() {
+    const rows = data as unknown as Record<string, unknown>[];
+    const csv = toCSV(tableColumns, rows.slice(0, 60));
+    const mapTitle = `${nameProperty === "district" ? "District" : "State"} map${unitLabel ? ` (${unitLabel})` : ""}`;
+    explain(buildExplainPrompt(mapTitle, csv, rows.length));
+  }
+
   return (
     <div>
-      <ChartToolbar showingTable={showTable} onToggleTable={() => setShowTable((v) => !v)} onExportCSV={handleExportCSV} />
+      <ChartToolbar
+        showingTable={showTable}
+        onToggleTable={() => setShowTable((v) => !v)}
+        onExportCSV={handleExportCSV}
+        onExplain={handleExplain}
+      />
       {showTable ? (
         <DataTable columns={tableColumns} rows={data as unknown as Record<string, unknown>[]} searchable pageSize={20} />
       ) : (
