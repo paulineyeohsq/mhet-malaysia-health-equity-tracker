@@ -29,9 +29,13 @@ netlify-chat/
   public/index.html                  # placeholder — the real content is the /chat API
   netlify/edge-functions/
     chat.ts                          # handler — CORS, rate limit, grounding, Gemini call
-    pageData.ts                      # route → data-file map (keep in sync with worker/src/pageData.ts)
-    systemPrompt.ts                  # guardrail prompt (keep in sync with worker/src/systemPrompt.ts)
-    gemini.ts                        # Gemini API client (keep in sync with worker/src/gemini.ts)
+    lib/                             # shared modules — must live outside the top level of
+                                      # edge-functions/, since Netlify's bundler treats every
+                                      # top-level .ts file there as its own function and errors
+                                      # on ones with no `export default` handler
+      pageData.ts                    # route → data-file map (keep in sync with worker/src/pageData.ts)
+      systemPrompt.ts                # guardrail prompt (keep in sync with worker/src/systemPrompt.ts)
+      gemini.ts                      # Gemini API client (keep in sync with worker/src/gemini.ts)
 ```
 
 ## Local development

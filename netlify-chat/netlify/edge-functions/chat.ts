@@ -1,8 +1,8 @@
 import { getStore } from "@netlify/blobs";
 import type { Config, Context } from "@netlify/edge-functions";
-import { bundleFor } from "./pageData.ts";
-import { SYSTEM_PROMPT } from "./systemPrompt.ts";
-import { callGemini, GeminiError, type ChatMessage } from "./gemini.ts";
+import { bundleFor } from "./lib/pageData.ts";
+import { SYSTEM_PROMPT } from "./lib/systemPrompt.ts";
+import { callGemini, GeminiError, type ChatMessage } from "./lib/gemini.ts";
 
 /**
  * Netlify Edge Function port of worker/src/index.ts (the Cloudflare
