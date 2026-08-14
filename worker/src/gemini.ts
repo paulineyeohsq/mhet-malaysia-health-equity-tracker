@@ -1,7 +1,10 @@
 // gemini-2.0-flash / gemini-2.5-flash are no longer available to new-user
 // API keys as of this session (confirmed directly against the live API,
-// not assumed) — gemini-3-flash-preview is the current fast/cheap tier.
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent";
+// not assumed). Deliberately avoiding "-preview"-tagged models after that
+// experience — gemini-3-flash-preview worked but carries the same
+// deprecation risk. gemini-3.5-flash is the current non-preview fast/cheap
+// tier, confirmed working against this key.
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent";
 
 export interface ChatMessage {
   role: "user" | "assistant";
@@ -36,7 +39,14 @@ export async function callGemini(
   const body = {
     system_instruction: { parts: [{ text: `${systemPrompt}\n\n${contextBlock}` }] },
     contents,
-    generationConfig: { temperature: 0.2, maxOutputTokens: 800 },
+    // gemini-3-flash-preview is a thinking model — maxOutputTokens counts
+    // internal reasoning tokens too. Confirmed live that with no
+    // thinkingBudget cap, a plain question spent 731/800 tokens on
+    // invisible thinking and got cut off mid-answer (finishReason
+    // MAX_TOKENS). thinkingBudget: 0 skips that for this grounded-QA use
+    // case (no multi-step reasoning needed), and 1024 leaves headroom for
+    // the "explain this chart" exception in the system prompt.
+    generationConfig: { temperature: 0.2, maxOutputTokens: 1024, thinkingConfig: { thinkingBudget: 0 } },
   };
 
   const res = await fetch(GEMINI_URL, {
