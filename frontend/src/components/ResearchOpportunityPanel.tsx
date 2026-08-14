@@ -42,7 +42,11 @@ export default function ResearchOpportunityPanel({
   const isWorseThanAverage =
     stateValue !== null && average ? (outcome.higherIsWorse ? stateValue > average.mean : stateValue < average.mean) : false;
 
-  const districtDataAvailable = outcome.file !== "health_outcomes_state.json";
+  // Only healthcare_access_state.json has a real district-level counterpart
+  // in this project (healthcare_access_district_2022.json). Every other
+  // outcome file — including health_outcomes_state.json, the NHMS survey
+  // files, and fertility_state.json — is state-only.
+  const districtDataAvailable = outcome.file === "healthcare_access_state.json";
 
   const questions = generateResearchQuestions({
     state,
