@@ -96,11 +96,11 @@ export default function Methodology() {
           <P>
             As of this build, the project's{" "}
             <ExtLink href="https://data.gov.my/data-catalogue">dataset inventory</ExtLink> documents{" "}
-            <span className="font-medium text-ink-primary">24 datasets that have been fully ingested</span> — with
+            <span className="font-medium text-ink-primary">44 datasets that have been fully ingested</span> — with
             raw files under <Code>data/raw/</Code> and processed outputs under <Code>data/processed/</Code>,
             produced by the pipeline described below — and{" "}
             <span className="font-medium text-ink-primary">
-              9 additional datasets that were identified and schema-verified but not yet ingested
+              7 additional datasets that were identified and schema-verified but not yet ingested
             </span>{" "}
             into this build (for example, income-percentile microdata that would be needed for a concentration-index
             calculation, and the live 2020–2024 district population series, whose raw file exceeded the sandboxed
@@ -357,12 +357,18 @@ export default function Methodology() {
               2022 only, even though longer series exist upstream at data.gov.my.
             </li>
             <li>
-              <span className="font-medium text-ink-primary">No ethnicity–health linkage.</span> Ethnicity
-              composition data is available only at the district level, from historical census tables, with no
-              matching health-outcome dataset broken down by ethnicity anywhere in the sources used. Accordingly,
-              no ethnicity-disaggregated health or socioeconomic analysis is presented anywhere on this
-              dashboard — the Population Equity page shows ethnicity composition strictly as a standalone
-              population-structure view, not fused with any outcome indicator, for exactly this reason.
+              <span className="font-medium text-ink-primary">Ethnicity–health linkage: counts only, no rate.</span>{" "}
+              <span className="line-through text-ink-muted">
+                No ethnicity-linked health outcome dataset exists in either catalogue.
+              </span>{" "}
+              <span className="font-medium text-ink-primary">Update (2026-08-14):</span> this earlier finding was
+              wrong. DOSM publishes annual deaths by state, sex and ethnicity, now ingested into this build and
+              shown on the Health Outcomes page as a dedicated "Deaths by Ethnicity" view. What is still missing is
+              a per-ethnicity-group <em>rate</em> — there is no state-level population-by-ethnicity denominator in
+              this project's sources (only the district-level census tables break population down by ethnicity), so
+              the dashboard shows raw death counts by ethnicity with an explicit non-rate caveat, not a per-capita
+              comparison. Ethnicity composition itself is still shown separately, as a standalone population-structure
+              view on the Population Equity page.
             </li>
             <li>
               <span className="font-medium text-ink-primary">STD incidence: 2017–2022 only.</span> Sexually

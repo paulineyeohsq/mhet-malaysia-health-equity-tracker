@@ -1272,6 +1272,31 @@
       "id": "nhms_ncd_2011",
       "name": "NCD Risk Factor Prevalence by State (NHMS 2011, Vol. II)",
       "reason": "Attempted during the 2026-08-13 NHMS multi-year extraction (see nhms_ncd_2019's limitations field): NHMS 2011 Volume II (iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2011-VolumeII.pdf) does contain state-level NCD tables in principle, but this specific PDF's text extraction repeatedly detached table titles from their data across page breaks, and the one table spot-checked against the report's own stated 95% CI showed a small mismatch (12.1-13.6 extracted vs. 12.2-13.5 stated) — high enough error risk that extraction was abandoned rather than risk publishing wrong figures. Would need a cleaner source (e.g. a non-scanned original, or manual page-by-page verification) to attempt again."
+    },
+    {
+      "id": "life_expectancy_state",
+      "name": "Life Expectancy by State, Sex & Ethnicity",
+      "reason": "Confirmed during a 2026-08-14 catalogue re-audit: DOSM publishes an interactive Life Expectancy dashboard (open.dosm.gov.my/dashboard/life-expectancy) covering 1957-2025 by state/sex/ethnicity, and an annual 'Abridged Life Tables Malaysia' publication. No stable machine-readable data-catalogue CSV/API entry was found behind either (a guessed catalogue URL 404'd) — the dashboard may be backed only by data published as PDF life tables rather than an open download. Needs a manual check of the dashboard's own network requests, or OpenDOSM's full catalogue index, to find a real ingestible endpoint before attempting."
+    },
+    {
+      "id": "causes_of_death",
+      "name": "Causes of Death, ICD-Coded (by state/district)",
+      "reason": "Confirmed during the 2026-08-14 audit: DOSM publishes an annual 'Statistics on Causes of Death' report and an interactive 'Cause of Death Calculator' (kalkulator.dosm.gov.my/cod/) built on 2000-2023 medically-certified-death data. No confirmed open CSV/API dataset was found behind either — search results point to PDF releases and the calculator tool itself, not a data-catalogue entry. Would need direct confirmation on open.dosm.gov.my/data.gov.my, or reverse-engineering the calculator's own data source, before attempting."
+    },
+    {
+      "id": "divorce_state",
+      "name": "Divorce Statistics by State",
+      "reason": "Confirmed during the 2026-08-14 audit: DOSM publishes annual marriage-and-divorce reports including divorce counts and crude divorce rate, complementing the already-ingested marriages_state dataset. These appear to be PDF-only releases — no divorce-specific data-catalogue entry (analogous to marriages_state's CSV) was found. Re-check OpenDOSM's demography catalogue directly for a 'divorce_state'-style entry before attempting."
+    },
+    {
+      "id": "clinic_counts",
+      "name": "Number of Healthcare Clinics by Type",
+      "reason": "Confirmed during the 2026-08-14 audit: a clinic-count dataset (klinik kesihatan/klinik desa counts) exists but only on the deprecated archive.data.gov.my portal, covering 2000-2019. This project's hospital_beds/healthcare_staff datasets cover beds and staff, not facility counts, and only for hospitals, not clinics — a real resolution gap. Unclear whether a current equivalent exists on the live data.gov.my catalogue; needs a direct search there before attempting."
+    },
+    {
+      "id": "disability_statistics",
+      "name": "Person with Disability (OKU) Statistics",
+      "reason": "Confirmed during the 2026-08-14 audit: DOSM publishes an annual 'Person with Disability Statistics' report (2023/2024 editions found) using JKM registry figures. Appears to be released as a narrative PDF publication, not a confirmed open dataset table — no data-catalogue entry found. Needs direct confirmation on open.dosm.gov.my before attempting."
     }
   ]
 }
