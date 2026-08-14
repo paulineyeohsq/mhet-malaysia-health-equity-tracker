@@ -7,7 +7,7 @@ import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
 import { yearsWithCoverage } from "../lib/equity";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
-import { OUTCOME_FIELDS, DETERMINANT_FIELDS } from "../lib/determinantFields";
+import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 import { buildStructuredQuestion } from "../lib/researchQuestionTemplates";
 
 const POPULATION_SCOPES = ["General population", "Older adults (65+)", "Children under 5", "Adults of working age"];
@@ -17,6 +17,21 @@ export default function ResearchOpportunities() {
   const location = useLocation();
   const { data: healthOutcomes } = useData<Row[]>("health_outcomes_state.json");
   const { data: healthcareAccess } = useData<Row[]>("healthcare_access_state.json");
+  const { data: nhmsNcd } = useData<Row[]>("nhms_ncd_state.json");
+  const { data: nhmsAdolescentMentalHealth } = useData<Row[]>("nhms_adolescent_mental_health_state.json");
+  const { data: fertility } = useData<Row[]>("fertility_state.json");
+  const OUTCOME_SOURCES: Record<FieldDef["file"], Row[] | null> = {
+    "health_outcomes_state.json": healthOutcomes,
+    "healthcare_access_state.json": healthcareAccess,
+    "nhms_ncd_state.json": nhmsNcd,
+    "nhms_adolescent_mental_health_state.json": nhmsAdolescentMentalHealth,
+    "fertility_state.json": fertility,
+    "socioeconomic_state.json": null,
+    "sanitation_access_state.json": null,
+    "water_access_state.json": null,
+    "marriages_state.json": null,
+    "health_programmes_state.json": null,
+  };
 
   const [selectedState, setSelectedState] = useState<string>(MALAYSIA_STATES[0]);
   const [outcomeId, setOutcomeId] = useState(OUTCOME_FIELDS[1].id); // mmr by default
@@ -32,7 +47,7 @@ export default function ResearchOpportunities() {
 
   const outcome = OUTCOME_FIELDS.find((f) => f.id === outcomeId)!;
   const determinant = DETERMINANT_FIELDS.find((f) => f.id === determinantId);
-  const outcomeRows = outcome.file === "health_outcomes_state.json" ? healthOutcomes : healthcareAccess;
+  const outcomeRows = useMemo(() => rowsForField(OUTCOME_SOURCES[outcome.file], outcome), [OUTCOME_SOURCES[outcome.file], outcome]);
   const year = useMemo(() => yearsWithCoverage(outcomeRows, outcome.field)[0] ?? null, [outcomeRows, outcome.field]);
 
   // Minimal embedded Research Question Builder (deterministic templates, not chat).

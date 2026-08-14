@@ -70,6 +70,8 @@ export const OUTCOME_FIELDS: FieldDef[] = [
   { id: "adolescent_depression", label: "Adolescent depression prevalence (NHMS 2017, ages 13-17)", file: "nhms_adolescent_mental_health_state.json", field: "depression_prevalence_pct", unit: "% (survey estimate, secondary-school students aged 13-17 — NOT adults)", sourceKey: "nhms_adolescent_mental_health", higherIsWorse: true },
   { id: "adolescent_anxiety", label: "Adolescent anxiety prevalence (NHMS 2017, ages 13-17)", file: "nhms_adolescent_mental_health_state.json", field: "anxiety_prevalence_pct", unit: "% (survey estimate, secondary-school students aged 13-17 — NOT adults)", sourceKey: "nhms_adolescent_mental_health", higherIsWorse: true },
   { id: "adolescent_stress", label: "Adolescent stress prevalence (NHMS 2017, ages 13-17)", file: "nhms_adolescent_mental_health_state.json", field: "stress_prevalence_pct", unit: "% (survey estimate, secondary-school students aged 13-17 — NOT adults)", sourceKey: "nhms_adolescent_mental_health", higherIsWorse: true },
+  { id: "tfr_out", label: "Total fertility rate", file: "fertility_state.json", field: "fertility_rate", unit: "births per woman", sourceKey: "fertility", higherIsWorse: false, filter: (r) => r.age_group === "tfr" },
+  { id: "stillbirth_out", label: "Stillbirth rate", file: "health_outcomes_state.json", field: "stillbirth_rate_per_1000", unit: "per 1,000 total births", sourceKey: "deaths", higherIsWorse: true },
 ];
 
 /**

@@ -17,28 +17,40 @@ import type { SOURCES } from "../lib/sources";
 interface BurdenIndicator {
   id: string;
   label: string;
+  file: "health_outcomes_state.json" | "nhms_ncd_state.json";
   field: string;
   unit: string;
   sourceKey: keyof typeof SOURCES;
+  filter?: (r: Row) => boolean;
 }
 
 const BURDEN_INDICATORS: BurdenIndicator[] = [
-  { id: "mmr", label: "Maternal mortality rate", field: "maternal_mortality_rate_per_100k_births", unit: "per 100,000 live births", sourceKey: "maternal_deaths" },
-  { id: "cdr", label: "Crude death rate", field: "crude_death_rate_per_1000", unit: "per 1,000 population", sourceKey: "deaths" },
-  { id: "hiv", label: "HIV incidence", field: "std_hiv_incidence_per_100k", unit: "per 100,000 population", sourceKey: "std" },
+  { id: "mmr", label: "Maternal mortality rate", file: "health_outcomes_state.json", field: "maternal_mortality_rate_per_100k_births", unit: "per 100,000 live births", sourceKey: "maternal_deaths" },
+  { id: "cdr", label: "Crude death rate", file: "health_outcomes_state.json", field: "crude_death_rate_per_1000", unit: "per 1,000 population", sourceKey: "deaths" },
+  { id: "infant", label: "Infant mortality rate", file: "health_outcomes_state.json", field: "infant_mortality_rate", unit: "per 1,000 live births", sourceKey: "early_childhood_deaths" },
+  { id: "under5", label: "Under-5 mortality rate", file: "health_outcomes_state.json", field: "under5_mortality_rate", unit: "per 1,000 live births", sourceKey: "early_childhood_deaths" },
+  { id: "stillbirth", label: "Stillbirth rate", file: "health_outcomes_state.json", field: "stillbirth_rate_per_1000", unit: "per 1,000 total births", sourceKey: "deaths" },
+  { id: "hiv", label: "HIV incidence (diagnosed cases)", file: "health_outcomes_state.json", field: "std_hiv_incidence_per_100k", unit: "per 100,000 population", sourceKey: "std" },
+  { id: "diabetes", label: "Known diabetes prevalence (NHMS)", file: "nhms_ncd_state.json", field: "known_diabetes_prevalence_pct", unit: "%", sourceKey: "nhms_ncd" },
+  { id: "hypertension", label: "Known hypertension prevalence (NHMS)", file: "nhms_ncd_state.json", field: "known_hypertension_prevalence_pct", unit: "%", sourceKey: "nhms_ncd" },
 ];
 
 interface AccessIndicator {
   id: string;
   label: string;
+  file: "healthcare_access_state.json" | "sanitation_access_state.json" | "water_access_state.json" | "health_programmes_state.json";
   field: string;
   unit: string;
   sourceKey: keyof typeof SOURCES;
+  filter?: (r: Row) => boolean;
 }
 
 const ACCESS_INDICATORS: AccessIndicator[] = [
-  { id: "staff", label: "Healthcare staff availability", field: "staff_per_100k", unit: "per 100,000 population", sourceKey: "healthcare_staff" },
-  { id: "beds", label: "Hospital bed availability", field: "beds_per_100k", unit: "per 100,000 population", sourceKey: "hospital_beds" },
+  { id: "staff", label: "Healthcare staff availability", file: "healthcare_access_state.json", field: "staff_per_100k", unit: "per 100,000 population", sourceKey: "healthcare_staff" },
+  { id: "beds", label: "Hospital bed availability", file: "healthcare_access_state.json", field: "beds_per_100k", unit: "per 100,000 population", sourceKey: "hospital_beds" },
+  { id: "sanitation", label: "Basic sanitation access", file: "sanitation_access_state.json", field: "sanitation_access_pct", unit: "%", sourceKey: "sanitation" },
+  { id: "water", label: "Basic water access", file: "water_access_state.json", field: "water_access_pct", unit: "%", sourceKey: "water", filter: (r) => r.strata === "overall" },
+  { id: "pekab40", label: "PeKa B40 screening reach (annual)", file: "health_programmes_state.json", field: "pekab40_screenings_abs", unit: "screenings", sourceKey: "health_programmes" },
 ];
 
 const COMPONENT_LABELS: Record<string, string> = {
@@ -48,11 +60,12 @@ const COMPONENT_LABELS: Record<string, string> = {
   equity: "Equity gap (deviation from national average)",
 };
 
-function valuesByState(rows: Row[] | null, year: number | null, field: string): Map<string, number | null> {
+function valuesByState(rows: Row[] | null, year: number | null, field: string, filter?: (r: Row) => boolean): Map<string, number | null> {
   const m = new Map<string, number | null>();
   if (!rows || year === null) return m;
+  const filtered = filter ? rows.filter(filter) : rows;
   for (const state of MALAYSIA_STATES) {
-    const row = rows.find((r) => r.state === state && r.year === year);
+    const row = filtered.find((r) => r.state === state && r.year === year);
     const v = row ? row[field] : undefined;
     m.set(state, typeof v === "number" ? v : null);
   }
@@ -64,24 +77,41 @@ export default function PriorityAreas() {
   const { data: healthOutcomes } = useData<Row[]>("health_outcomes_state.json");
   const { data: socioeconomic } = useData<Row[]>("socioeconomic_state.json");
   const { data: healthcareAccess } = useData<Row[]>("healthcare_access_state.json");
+  const { data: nhmsNcd } = useData<Row[]>("nhms_ncd_state.json");
+  const { data: sanitationAccess } = useData<Row[]>("sanitation_access_state.json");
+  const { data: waterAccess } = useData<Row[]>("water_access_state.json");
+  const { data: healthProgrammes } = useData<Row[]>("health_programmes_state.json");
+
+  const BURDEN_SOURCES: Record<BurdenIndicator["file"], Row[] | null> = {
+    "health_outcomes_state.json": healthOutcomes,
+    "nhms_ncd_state.json": nhmsNcd,
+  };
+  const ACCESS_SOURCES: Record<AccessIndicator["file"], Row[] | null> = {
+    "healthcare_access_state.json": healthcareAccess,
+    "sanitation_access_state.json": sanitationAccess,
+    "water_access_state.json": waterAccess,
+    "health_programmes_state.json": healthProgrammes,
+  };
 
   const [burdenId, setBurdenId] = useState(BURDEN_INDICATORS[0].id);
   const [accessId, setAccessId] = useState(ACCESS_INDICATORS[0].id);
   const burden = BURDEN_INDICATORS.find((b) => b.id === burdenId)!;
   const access = ACCESS_INDICATORS.find((a) => a.id === accessId)!;
+  const burdenRows = BURDEN_SOURCES[burden.file];
+  const accessRows = ACCESS_SOURCES[access.file];
 
   const [weights, setWeights] = useState<Record<string, number>>({ burden: 25, ses: 25, access: 25, equity: 25 });
   const totalWeight = Object.values(weights).reduce((s, w) => s + w, 0) || 1;
 
-  const burdenYear = useMemo(() => yearsWithCoverage(healthOutcomes, burden.field)[0] ?? null, [healthOutcomes, burden.field]);
+  const burdenYear = useMemo(() => yearsWithCoverage(burdenRows, burden.field)[0] ?? null, [burdenRows, burden.field]);
   const povertyYear = useMemo(() => yearsWithCoverage(socioeconomic, "poverty_absolute")[0] ?? null, [socioeconomic]);
-  const accessYear = useMemo(() => yearsWithCoverage(healthcareAccess, access.field)[0] ?? null, [healthcareAccess, access.field]);
+  const accessYear = useMemo(() => yearsWithCoverage(accessRows, access.field)[0] ?? null, [accessRows, access.field]);
 
-  const burdenValues = useMemo(() => valuesByState(healthOutcomes, burdenYear, burden.field), [healthOutcomes, burdenYear, burden.field]);
+  const burdenValues = useMemo(() => valuesByState(burdenRows, burdenYear, burden.field, burden.filter), [burdenRows, burdenYear, burden.field, burden.filter]);
   const sesValues = useMemo(() => valuesByState(socioeconomic, povertyYear, "poverty_absolute"), [socioeconomic, povertyYear]);
-  const accessValues = useMemo(() => valuesByState(healthcareAccess, accessYear, access.field), [healthcareAccess, accessYear, access.field]);
+  const accessValues = useMemo(() => valuesByState(accessRows, accessYear, access.field, access.filter), [accessRows, accessYear, access.field, access.filter]);
 
-  const burdenAverage = useMemo(() => computeAverage(healthOutcomes, burdenYear, burden.field), [healthOutcomes, burdenYear, burden.field]);
+  const burdenAverage = useMemo(() => computeAverage(burdenRows, burdenYear, burden.field), [burdenRows, burdenYear, burden.field]);
   const equityValues = useMemo(() => {
     const m = new Map<string, number | null>();
     for (const [state, v] of burdenValues) {
