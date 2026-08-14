@@ -1,4 +1,12 @@
-# `/worker` — MHET chat proxy
+# `/worker` — MHET chat proxy (Cloudflare, currently dormant)
+
+> **Not the active deployment.** This project's chat backend is currently
+> deployed via `/netlify-chat` (Netlify Edge Functions) instead, since that's
+> the account the maintainer had available. This directory is kept as a
+> working, tested alternative (same logic, same Gemini model, verified
+> against a live key) in case Cloudflare is preferred later — `/netlify-chat`
+> and this directory are kept in sync by hand when either's core logic
+> changes; see its own README for the currently-live setup.
 
 A small Cloudflare Worker that powers the "MHET Assistant" chat panel in the
 dashboard. It does exactly one thing beyond what the static site already
