@@ -47,6 +47,14 @@ version floor Cloudflare's `wrangler` has); if your machine is on an older
 Node, you can't run it locally and must rely on the deployed environment,
 or the Netlify REST API directly, to verify changes.
 
+`package.json` here exists solely so Netlify's build step can resolve the
+bare `@netlify/blobs` import in `chat.ts` — confirmed via isolated testing
+that a build-based deploy fails with a generic "exit code 2" error if this
+dependency isn't declared, even though nothing here runs `npm install`
+against it directly otherwise. Don't add a `scripts` field — an
+auto-detected build script that doesn't apply to this site is a separate
+way to break the same build stage.
+
 ## Deploy
 
 Deployed via the Netlify REST API (`https://api.netlify.com/api/v1/`),
