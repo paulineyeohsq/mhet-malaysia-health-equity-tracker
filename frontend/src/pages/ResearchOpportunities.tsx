@@ -66,7 +66,16 @@ export default function ResearchOpportunities() {
   const { explain, loading: chatLoading } = useChat();
 
   function handleSuggest() {
-    const rows: string[] = ["Indicator | Unit | Year | Worst state | Worst value | Best state | Best value | Ratio (worst/best)"];
+    // Markdown table, not a loose pipe-separated wall of text — a real
+    // header/separator row gives the model an unambiguous column
+    // structure to align against, which a same-content free-text version
+    // of this prompt did not: a live test surfaced Gemini stating numbers
+    // for one row that didn't match the real data it was given, despite
+    // an explicit "don't invent numbers" instruction. Units are dropped
+    // from the table (kept only in the on-page selects) since the long
+    // NHMS methodology parentheticals were adding noise without helping
+    // the model pick a row.
+    const rows: string[] = ["| Indicator | Year | Worst state | Worst value | Best state | Best value | Ratio |", "|---|---|---|---|---|---|---|"];
     for (const field of OUTCOME_FIELDS) {
       let fieldRows = rowsForField(OUTCOME_SOURCES[field.file], field);
       // NHMS survey fields carry a per-indicator "<stem>_unreliable" flag
@@ -81,19 +90,24 @@ export default function ResearchOpportunities() {
       const stats = computeGroupGapStats(fieldRows, year, field.field, field.higherIsWorse);
       if (!stats || stats.ratio === null || year === null) continue;
       rows.push(
-        `${field.label} | ${field.unit} | ${year} | ${stats.worst.name} | ${fmt(stats.worst.value, 1)} | ${stats.best.name} | ${fmt(stats.best.value, 1)} | ${fmt(stats.ratio, 1)}×`
+        `| ${field.label} | ${year} | ${stats.worst.name} | ${fmt(stats.worst.value, 1)} | ${stats.best.name} | ${fmt(stats.best.value, 1)} | ${fmt(stats.ratio, 1)}× |`
       );
     }
-    if (rows.length < 2) return;
+    if (rows.length < 3) return;
     explain(
-      `I'm using the Malaysia Health Equity Observatory dashboard's Research Opportunities page. Below is a real, ` +
-        `computed table — for every health/socioeconomic outcome indicator this dashboard tracks, the state reporting ` +
-        `the worst value, the state reporting the best value, and the ratio between them, all in the most recent year ` +
-        `each indicator has data for. Do not invent or estimate any number not shown here.\n\n${rows.join("\n")}\n\n` +
-        `Recommend ONE indicator and state from this table as the most compelling starting point for further ` +
-        `research — not necessarily the single largest ratio, but the one you judge most policy-relevant, actionable, ` +
-        `or under-explored for a health-equity researcher. Name the exact indicator and state from the table (so it's ` +
-        `unambiguous which row you mean) and explain your reasoning in 2-3 sentences.`
+      `I'm using the Malaysia Health Equity Observatory dashboard's Research Opportunities page. The table below is ` +
+        `the ONLY data you may use for this task — a real, computed table for every outcome indicator this dashboard ` +
+        `tracks: the state reporting the worst value, the state reporting the best value, and the ratio between them, ` +
+        `all in the most recent year each indicator has data for.\n\n${rows.join("\n")}\n\n` +
+        `Rules:\n` +
+        `- Use ONLY the numbers in this table. Do not use outside knowledge about Malaysian health statistics, and ` +
+        `do not recalculate, round differently, or restate any number other than exactly as it appears above.\n` +
+        `- Pick exactly ONE row as the most compelling starting point for further research — not necessarily the ` +
+        `largest ratio, but the one you judge most policy-relevant, actionable, or under-explored.\n\n` +
+        `Respond in exactly this format:\n` +
+        `INDICATOR: <exact indicator name, copied from the table>\n` +
+        `ROW: <the exact matching row, copied verbatim from the table above, unchanged>\n` +
+        `WHY THIS ONE: <2-3 sentences of your own reasoning>`
     );
   }
 
