@@ -18,6 +18,15 @@ interface ChatContextValue {
   send: (text: string) => Promise<void>;
   /** Opens the panel and sends a pre-built prompt — used by chart "Explain this" buttons. */
   explain: (prompt: string) => void;
+  /**
+   * One-off call to the same /chat endpoint that returns the reply text
+   * directly to the caller instead of opening the panel or touching the
+   * shared `messages`/`open` state — for callers that want to render the
+   * AI's answer inline in their own card (e.g. Research Opportunities'
+   * suggestion cards) rather than in the global chat panel. Throws on
+   * failure; callers own their own loading/error state.
+   */
+  askDirect: (prompt: string) => Promise<string>;
 }
 
 const EXPLAIN_ROW_CAP = 60;
@@ -96,6 +105,22 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     [send]
   );
 
+  const askDirect = useCallback(
+    async (prompt: string): Promise<string> => {
+      const res = await fetch(`${CHAT_WORKER_URL}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ messages: [{ role: "user", content: prompt }], path: location.pathname }),
+      });
+      const data = (await res.json()) as { reply?: string; error?: string };
+      if (!res.ok || !data.reply) {
+        throw new Error(data.error ?? `HTTP ${res.status}`);
+      }
+      return data.reply;
+    },
+    [location.pathname]
+  );
+
   const value: ChatContextValue = {
     open,
     setOpen,
@@ -105,6 +130,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     clearError: () => setError(null),
     send,
     explain,
+    askDirect,
   };
 
   return <ChatContext.Provider value={value}>{children}</ChatContext.Provider>;
