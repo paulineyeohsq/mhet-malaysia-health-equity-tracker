@@ -130,13 +130,31 @@ export interface CorrelationStats {
   regressionLine: { x: number; y: number }[];
   slope: number;
   intercept: number;
+  /** false when n is below CORRELATION_RELIABLE_MIN — the stat is still real
+   * and shown, not hidden, but callers should render a caution alongside it
+   * rather than presenting it with the same confidence as a larger sample. */
+  reliable: boolean;
 }
 
-const MIN_PAIRS = 8;
+// The absolute floor below which a correlation isn't just unreliable but
+// mathematically meaningless to show at all: n=2 always produces |r|=1
+// trivially (a line always fits exactly through 2 points), so it conveys
+// nothing. n=3 is the smallest sample where r can actually vary.
+const MIN_PAIRS_COMPUTABLE = 3;
 
-/** Full correlation + linear regression summary for a set of (x,y) pairs, or null if too few/degenerate. */
+// The sample size below which a real, computed correlation is flagged as
+// low-reliability rather than hidden — deliberately NOT a hard block.
+// Small samples are still real data; hiding them entirely would be less
+// honest than showing the number with an explicit caution, matching this
+// project's existing convention for small underlying counts (see
+// lib/reliability.ts's isSmallCount/SMALL_COUNT_CAUTION_TEXT).
+export const CORRELATION_RELIABLE_MIN = 8;
+
+/** Full correlation + linear regression summary for a set of (x,y) pairs, or
+ * null only when a correlation is mathematically undefined/meaningless
+ * (fewer than 3 pairs, or no variance in x or y) — NOT merely "small". */
 export function computeCorrelationStats(pairs: CorrelationPair[]): CorrelationStats | null {
-  if (pairs.length < MIN_PAIRS) return null;
+  if (pairs.length < MIN_PAIRS_COMPUTABLE) return null;
   const xs = pairs.map((p) => p.x);
   const ys = pairs.map((p) => p.y);
   if (new Set(xs).size < 2 || new Set(ys).size < 2) return null;
@@ -157,10 +175,15 @@ export function computeCorrelationStats(pairs: CorrelationPair[]): CorrelationSt
     ],
     slope: regression.m,
     intercept: regression.b,
+    reliable: pairs.length >= CORRELATION_RELIABLE_MIN,
   };
 }
 
-export const CORRELATION_MIN_PAIRS = MIN_PAIRS;
+/** @deprecated Use CORRELATION_RELIABLE_MIN (an advisory flag threshold, not
+ * a hard block) — kept as an alias so existing call sites that gate
+ * visibility on this constant keep compiling; new code should not treat
+ * this as a reason to hide a result. */
+export const CORRELATION_MIN_PAIRS = MIN_PAIRS_COMPUTABLE;
 
 /**
  * Qualitative label for a Pearson r, using the conventional Evans (1996)

@@ -601,11 +601,18 @@ export default function Trends() {
 
           {!corrStats ? (
             <InsufficientData
-              reason={`Only ${corrPairs.length} year(s) have a reported value for both "${corrX.label}" and "${corrY.label}" (need at least 8).`}
+              reason={`Only ${corrPairs.length} year(s) have a reported value for both "${corrX.label}" and "${corrY.label}" — need at least 3 for a correlation to be mathematically meaningful at all.`}
             />
           ) : (
             <div className="grid gap-4 lg:grid-cols-3">
               <div className="grid grid-cols-2 gap-3 lg:col-span-1 lg:grid-cols-1">
+                {!corrStats.reliable && (
+                  <div className="col-span-2 rounded-md border border-status-warning bg-status-warning/10 p-2 text-xs text-ink-primary lg:col-span-1">
+                    <span className="font-medium">Low sample size (n={corrStats.n}).</span> Shown, not hidden — but
+                    with fewer than 8 years, this estimate is more sensitive to individual outliers than a longer
+                    time series. Treat as a rough signal, not a settled result.
+                  </div>
+                )}
                 <StatTile label="Strength & direction" value={corrInterpretation!.label} sublabel="Qualitative read of Pearson r below" />
                 <StatTile label="Pearson r" value={corrStats.pearson.toFixed(3)} sublabel="Linear association" />
                 <StatTile label="Spearman ρ" value={corrStats.spearman.toFixed(3)} sublabel="Rank association" />

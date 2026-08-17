@@ -4,7 +4,7 @@ import CorrelationCaveat from "../components/CorrelationCaveat";
 import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
-import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, interpretCorrelation, type CorrelationPair } from "../lib/correlation";
+import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, interpretCorrelation, CORRELATION_MIN_PAIRS, type CorrelationPair } from "../lib/correlation";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 
 type MatrixPair = CorrelationPair & { year?: number };
@@ -107,7 +107,7 @@ export default function IndicatorMatrix() {
         const pairs = buildPooledPairs(determinantRows, outcomeRows, determinant.field, outcome.field);
         const stats = computeCorrelationStats(pairs);
         if (!stats) {
-          return { ...base, year: null as number | null, pairs, stats: null, insufficientReason: `Only ${pairs.length} pooled state-year point(s) across all years (need at least 8).` };
+          return { ...base, year: null as number | null, pairs, stats: null, insufficientReason: `Only ${pairs.length} pooled state-year point(s) across all years (need at least ${CORRELATION_MIN_PAIRS}).` };
         }
         return { ...base, year: null as number | null, pairs, stats, insufficientReason: null as string | null };
       }
@@ -116,7 +116,7 @@ export default function IndicatorMatrix() {
         const pairs = buildPairs(determinantRows, outcomeRows, fixedYear, determinant.field, outcome.field);
         const stats = computeCorrelationStats(pairs);
         if (!stats) {
-          return { ...base, year: fixedYear, pairs, stats: null, insufficientReason: `Only ${pairs.length} state(s) have paired data in ${fixedYear} (need at least 8).` };
+          return { ...base, year: fixedYear, pairs, stats: null, insufficientReason: `Only ${pairs.length} state(s) have paired data in ${fixedYear} (need at least ${CORRELATION_MIN_PAIRS}).` };
         }
         return { ...base, year: fixedYear, pairs, stats, insufficientReason: null as string | null };
       }
@@ -128,7 +128,7 @@ export default function IndicatorMatrix() {
       const pairs = buildPairs(determinantRows, outcomeRows, year, determinant.field, outcome.field);
       const stats = computeCorrelationStats(pairs);
       if (!stats) {
-        return { ...base, year, pairs, stats: null, insufficientReason: `Only ${n} state(s) have paired data in ${year} (need at least 8).` };
+        return { ...base, year, pairs, stats: null, insufficientReason: `Only ${n} state(s) have paired data in ${year} (need at least ${CORRELATION_MIN_PAIRS}).` };
       }
       return { ...base, year, pairs, stats, insufficientReason: null as string | null };
     });
@@ -165,7 +165,7 @@ export default function IndicatorMatrix() {
     n: r.stats?.n ?? null,
     pearson: r.stats ? r.stats.pearson.toFixed(3) : null,
     spearman: r.stats ? r.stats.spearman.toFixed(3) : null,
-    strength: r.stats ? interpretCorrelation(r.stats.pearson).label : r.insufficientReason,
+    strength: r.stats ? interpretCorrelation(r.stats.pearson).label + (r.stats.reliable ? "" : ` (low n=${r.stats.n}, interpret with caution)`) : r.insufficientReason,
   }));
 
   function handleExportCSV() {
