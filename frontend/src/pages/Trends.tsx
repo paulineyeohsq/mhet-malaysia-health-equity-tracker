@@ -6,7 +6,7 @@ import InsufficientData from "../components/InsufficientData";
 import { useData } from "../lib/useData";
 import { buildStateTrend, computeAverage, type Row, type TrendPoint } from "../lib/equity";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
-import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
+import { OUTCOME_FIELDS, DETERMINANT_FIELDS, NATIONAL_FIELDS, rowsForField, type FieldDef, type NationalFieldDef } from "../lib/determinantFields";
 import { SOURCES } from "../lib/sources";
 
 const ALL_FIELDS: FieldDef[] = [...OUTCOME_FIELDS, ...DETERMINANT_FIELDS];
@@ -48,6 +48,22 @@ export default function Trends() {
   const { data: forestReserve } = useData<Row[]>("forest_reserve_state.json");
   const { data: waterConsumption } = useData<Row[]>("water_consumption_state.json");
   const { data: waterProduction } = useData<Row[]>("water_production_state.json");
+  const { data: airPollution } = useData<Row[]>("air_pollution_national.json");
+  const { data: ghgEmissions } = useData<Row[]>("ghg_emissions_national.json");
+  const { data: waterPollutionBasin } = useData<Row[]>("water_pollution_basin_national.json");
+  const { data: electricityConsumption } = useData<Row[]>("electricity_consumption_national.json");
+  const { data: electricitySupply } = useData<Row[]>("electricity_supply_national.json");
+
+  const nationalRowsByFile: Record<NationalFieldDef["file"], Row[] | null> = useMemo(
+    () => ({
+      "air_pollution_national.json": airPollution,
+      "ghg_emissions_national.json": ghgEmissions,
+      "water_pollution_basin_national.json": waterPollutionBasin,
+      "electricity_consumption_national.json": electricityConsumption,
+      "electricity_supply_national.json": electricitySupply,
+    }),
+    [airPollution, ghgEmissions, waterPollutionBasin, electricityConsumption, electricitySupply]
+  );
 
   const rowsByFile: Record<FieldDef["file"], Row[] | null> = useMemo(
     () => ({
@@ -115,20 +131,37 @@ export default function Trends() {
     } else {
       for (const fid of overlayFieldIds) {
         const f = ALL_FIELDS.find((x) => x.id === fid);
-        if (!f) continue;
-        const rows2 = rowsForField(rowsByFile[f.file], f);
+        const nf = f ? undefined : NATIONAL_FIELDS.find((x) => x.id === fid);
+        if (!f && !nf) continue;
+
         let points: TrendPoint[];
-        if (overlayMode === "indicators-state") {
-          points = buildStateTrend(rows2, overlayState, f.field);
-        } else {
+        if (nf) {
+          // National-only field: no state dimension, so the same one
+          // national figure per year is used regardless of overlayState —
+          // it's already "the national average" by definition.
+          const nationalRows = nationalRowsByFile[nf.file];
+          const rows2 = nf.filter && nationalRows ? nationalRows.filter(nf.filter) : nationalRows;
           const years = Array.from(new Set((rows2 ?? []).map((r) => r.year as number))).sort((a, b) => a - b);
           points = years
-            .map((y) => ({ year: y, value: computeAverage(rows2, y, f.field)?.mean ?? NaN }))
-            .filter((p) => !Number.isNaN(p.value));
+            .map((y) => ({ year: y, value: (rows2 ?? []).find((r) => r.year === y)?.[nf.field] as number | null | undefined }))
+            .filter((p): p is { year: number; value: number } => typeof p.value === "number");
+        } else {
+          const field = f!;
+          const rows2 = rowsForField(rowsByFile[field.file], field);
+          if (overlayMode === "indicators-state") {
+            points = buildStateTrend(rows2, overlayState, field.field);
+          } else {
+            const years = Array.from(new Set((rows2 ?? []).map((r) => r.year as number))).sort((a, b) => a - b);
+            points = years
+              .map((y) => ({ year: y, value: computeAverage(rows2, y, field.field)?.mean ?? NaN }))
+              .filter((p) => !Number.isNaN(p.value));
+          }
         }
+
+        const label = (f ?? nf)!.label;
         for (const p of indexTrend(points)) {
           if (!byYear.has(p.year)) byYear.set(p.year, {});
-          byYear.get(p.year)![f.label] = p.value;
+          byYear.get(p.year)![label] = p.value;
         }
       }
     }
@@ -136,14 +169,14 @@ export default function Trends() {
     return Array.from(byYear.entries())
       .sort((a, b) => a[0] - b[0])
       .map(([yr, vals]) => ({ year: yr, ...vals }));
-  }, [overlayMode, overlayFieldIds, overlayState, overlayStates, overlaySingleField, rowsByFile]);
+  }, [overlayMode, overlayFieldIds, overlayState, overlayStates, overlaySingleField, rowsByFile, nationalRowsByFile]);
 
   const overlaySeries: Series[] =
     overlayMode === "states-indicator"
       ? overlayStates.map((s, i) => ({ key: s, label: s, color: OVERLAY_COLORS[i % OVERLAY_COLORS.length] }))
       : overlayFieldIds
-          .map((fid) => ALL_FIELDS.find((f) => f.id === fid))
-          .filter((f): f is FieldDef => !!f)
+          .map((fid) => ALL_FIELDS.find((f) => f.id === fid) ?? NATIONAL_FIELDS.find((f) => f.id === fid))
+          .filter((f): f is FieldDef | NationalFieldDef => !!f)
           .map((f, i) => ({ key: f.label, label: f.label, color: OVERLAY_COLORS[i % OVERLAY_COLORS.length] }));
 
   const series: Series[] = [
@@ -272,11 +305,28 @@ export default function Trends() {
                 </div>
               )}
               <p className="mb-2 text-xs font-medium uppercase tracking-wide text-ink-muted">
-                Indicators (up to {MAX_OVERLAY_SERIES}) — each rescaled to its own first plotted year = 100, since
-                indicators here don't share a unit
+                State-level indicators (up to {MAX_OVERLAY_SERIES} total) — each rescaled to its own first plotted
+                year = 100, since indicators here don't share a unit
               </p>
               <div className="flex max-h-48 flex-wrap gap-x-4 gap-y-1.5 overflow-y-auto">
                 {ALL_FIELDS.map((f) => (
+                  <label key={f.id} className="flex items-center gap-1.5 text-sm text-ink-secondary">
+                    <input
+                      type="checkbox"
+                      checked={overlayFieldIds.includes(f.id)}
+                      disabled={!overlayFieldIds.includes(f.id) && overlayFieldIds.length >= MAX_OVERLAY_SERIES}
+                      onChange={() => toggleOverlayField(f.id)}
+                    />
+                    {f.label}
+                  </label>
+                ))}
+              </div>
+              <p className="mb-2 mt-3 text-xs font-medium uppercase tracking-wide text-ink-muted">
+                National-only indicators — no state breakdown exists in the source, so the same national figure is
+                plotted regardless of the state selected above
+              </p>
+              <div className="flex max-h-48 flex-wrap gap-x-4 gap-y-1.5 overflow-y-auto">
+                {NATIONAL_FIELDS.map((f) => (
                   <label key={f.id} className="flex items-center gap-1.5 text-sm text-ink-secondary">
                     <input
                       type="checkbox"
@@ -359,7 +409,13 @@ export default function Trends() {
                 <div className="mt-2 text-xs leading-relaxed text-ink-muted">
                   Each series independently rescaled so its own first plotted year = 100 — only relative change over
                   time is comparable across indicators, not absolute values. Sources:{" "}
-                  {Array.from(new Set(overlayFieldIds.map((fid) => ALL_FIELDS.find((f) => f.id === fid)?.sourceKey).filter((k): k is FieldDef["sourceKey"] => !!k)))
+                  {Array.from(
+                    new Set(
+                      overlayFieldIds
+                        .map((fid) => ALL_FIELDS.find((f) => f.id === fid)?.sourceKey ?? NATIONAL_FIELDS.find((f) => f.id === fid)?.sourceKey)
+                        .filter((k): k is FieldDef["sourceKey"] => !!k)
+                    )
+                  )
                     .map((k, i, arr) => (
                       <span key={k}>
                         <a href={SOURCES[k].url} target="_blank" rel="noreferrer" className="text-series-1 underline underline-offset-2 hover:text-seq-600">

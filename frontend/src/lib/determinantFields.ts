@@ -33,6 +33,47 @@ export interface FieldDef {
   filter?: (row: Row) => boolean;
 }
 
+/**
+ * National-only indicators — no state dimension in the source at all (see
+ * each dataset's `geographic_resolution` in dataset_inventory.json), so
+ * unlike FieldDef these can never be grouped/ranked/averaged by state. Kept
+ * as a separate, smaller registry rather than folded into FieldDef so that
+ * anything doing a state comparison (Determinants Explorer, Indicator
+ * Matrix, Research Opportunities, State Equity Gap Matrix, priority
+ * scoring) never accidentally picks one up. Trends' "Multiple indicators —
+ * Malaysia average" overlay mode is the one place these ARE usable
+ * alongside state-level fields, since that mode already plots one national
+ * figure per indicator per year — for these fields that figure is simply
+ * read directly rather than averaged across states.
+ */
+export interface NationalFieldDef {
+  id: string;
+  label: string;
+  file:
+    | "air_pollution_national.json"
+    | "ghg_emissions_national.json"
+    | "water_pollution_basin_national.json"
+    | "electricity_consumption_national.json"
+    | "electricity_supply_national.json";
+  field: string;
+  unit: string;
+  sourceKey: keyof typeof SOURCES;
+  filter?: (row: Row) => boolean;
+}
+
+export const NATIONAL_FIELDS: NationalFieldDef[] = [
+  { id: "air_co_nat", label: "Air pollution — CO (national)", file: "air_pollution_national.json", field: "concentration", unit: "ppm", sourceKey: "air_pollution", filter: (r) => r.pollutant === "CO" },
+  { id: "air_no2_nat", label: "Air pollution — NO2 (national)", file: "air_pollution_national.json", field: "concentration", unit: "ppm", sourceKey: "air_pollution", filter: (r) => r.pollutant === "NO2" },
+  { id: "air_o3_nat", label: "Air pollution — O3 (national)", file: "air_pollution_national.json", field: "concentration", unit: "ppm", sourceKey: "air_pollution", filter: (r) => r.pollutant === "O3" },
+  { id: "air_pm10_nat", label: "Air pollution — PM10 (national)", file: "air_pollution_national.json", field: "concentration", unit: "µg/m³", sourceKey: "air_pollution", filter: (r) => r.pollutant === "PM 10" },
+  { id: "air_pm25_nat", label: "Air pollution — PM2.5 (national)", file: "air_pollution_national.json", field: "concentration", unit: "µg/m³", sourceKey: "air_pollution", filter: (r) => r.pollutant === "PM 2.5" },
+  { id: "air_so2_nat", label: "Air pollution — SO2 (national)", file: "air_pollution_national.json", field: "concentration", unit: "ppm", sourceKey: "air_pollution", filter: (r) => r.pollutant === "SO2" },
+  { id: "ghg_total_nat", label: "GHG emissions, total (national)", file: "ghg_emissions_national.json", field: "emissions_gg_co2e", unit: "Gg CO2e", sourceKey: "ghg_emissions", filter: (r) => r.source === "total" },
+  { id: "river_clean_nat", label: "River basins classified clean, BOD5 (national)", file: "water_pollution_basin_national.json", field: "proportion_pct", unit: "%", sourceKey: "water_pollution", filter: (r) => r.measure === "bod5" && r.status === "clean" },
+  { id: "electricity_consumption_nat", label: "Electricity consumption, total (national)", file: "electricity_consumption_national.json", field: "consumption_mkwh", unit: "MKWh", sourceKey: "electricity_flow", filter: (r) => r.sector === "total" },
+  { id: "electricity_supply_nat", label: "Electricity supply, total (national)", file: "electricity_supply_national.json", field: "supply_mkwh", unit: "MKWh", sourceKey: "electricity_flow", filter: (r) => r.sector === "total" },
+];
+
 /** Applies a FieldDef's optional row filter, if any. Use this instead of reading rowsByFile[field.file] directly whenever the field may have a filter. */
 export function rowsForField(rows: Row[] | null, field: FieldDef): Row[] | null {
   if (!rows || !field.filter) return rows;
