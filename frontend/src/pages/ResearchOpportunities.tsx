@@ -17,6 +17,107 @@ import { INVENTORY_MAP } from "../lib/inventoryMap";
 const POPULATION_SCOPES = ["General population", "Older adults (65+)", "Children under 5", "Adults of working age"];
 const EQUITY_DIMENSIONS = ["Income", "Poverty", "Healthcare access", "Geographic (state-level)"];
 
+/**
+ * Bridges common ways a user might phrase an interest to the actual words
+ * used in OUTCOME_FIELDS labels — e.g. a user typing "access" should match
+ * "Healthcare staff availability" even though "access" isn't literally in
+ * that label. Deliberately a small, reviewable, hand-written map rather
+ * than an AI call: matching which real indicators exist is a closed-set
+ * lookup this app can answer deterministically, so it isn't left to an LLM
+ * to (possibly inconsistently) decide. Keys/values are lowercase tokens.
+ */
+const TOPIC_SYNONYMS: Record<string, string[]> = {
+  diabetes: ["diabetes", "glucose", "sugar"],
+  glucose: ["glucose", "diabetes", "sugar"],
+  sugar: ["glucose", "diabetes"],
+  hypertension: ["hypertension", "pressure"],
+  pressure: ["pressure", "hypertension"],
+  cholesterol: ["cholesterol", "hypercholesterolaemia"],
+  cardiovascular: ["cholesterol", "pressure", "hypertension"],
+  heart: ["cholesterol", "pressure", "hypertension"],
+  obesity: ["obesity", "overweight", "underweight", "abdominal"],
+  overweight: ["overweight", "obesity", "abdominal"],
+  weight: ["overweight", "obesity", "underweight", "abdominal"],
+  bmi: ["overweight", "obesity", "underweight", "abdominal"],
+  smoking: ["smoker"],
+  tobacco: ["smoker"],
+  cigarette: ["smoker"],
+  alcohol: ["drinker", "drinking"],
+  drinking: ["drinker", "alcohol"],
+  exercise: ["inactivity", "active"],
+  activity: ["inactivity", "active"],
+  inactive: ["inactivity"],
+  sedentary: ["inactivity"],
+  mental: ["depression", "anxiety", "stress"],
+  psychological: ["depression", "anxiety", "stress"],
+  depression: ["depression"],
+  anxiety: ["anxiety"],
+  stress: ["stress"],
+  maternal: ["maternal", "birth"],
+  pregnancy: ["maternal", "fertility", "birth"],
+  childbirth: ["maternal", "birth"],
+  child: ["under5"],
+  children: ["under5"],
+  hiv: ["hiv"],
+  aids: ["hiv"],
+  sti: ["hiv"],
+  std: ["hiv"],
+  healthcare: ["staff", "bed", "hospital", "availability"],
+  hospital: ["staff", "bed", "hospital", "availability"],
+  access: ["staff", "bed", "hospital", "availability"],
+  staff: ["staff", "availability"],
+  workforce: ["staff", "availability"],
+  doctor: ["staff", "availability"],
+  nurse: ["staff", "availability"],
+  clinic: ["staff", "bed", "hospital"],
+  fertility: ["fertility", "birth"],
+  birth: ["birth", "fertility"],
+  adolescent: ["adolescent"],
+  teen: ["adolescent"],
+  teenager: ["adolescent"],
+  youth: ["adolescent"],
+  death: ["death", "mortality"],
+  mortality: ["death", "mortality"],
+  dying: ["death", "mortality"],
+  ncd: ["diabetes", "hypertension", "cholesterol", "glucose"],
+  chronic: ["diabetes", "hypertension", "cholesterol", "glucose"],
+  noncommunicable: ["diabetes", "hypertension", "cholesterol", "glucose"],
+};
+
+function tokenize(text: string): string[] {
+  return (text.toLowerCase().match(/[a-z]+/g) ?? []).filter((w) => w.length >= 3);
+}
+
+/**
+ * Deterministic (not AI-decided) relevance match: expands the user's typed
+ * words via TOPIC_SYNONYMS, then scores each OUTCOME_FIELDS entry by token
+ * overlap with its label. Returns fields sorted by score, best first; empty
+ * array means nothing in this dashboard's tracked indicators matched by
+ * keyword — a real, honest "not covered here" result, not a guess.
+ */
+function matchOutcomeFields(interest: string): FieldDef[] {
+  const tokens = tokenize(interest);
+  if (tokens.length === 0) return [];
+  const expanded = new Set(tokens);
+  for (const t of tokens) {
+    // Try the token as-is, then a naive singular (strip trailing "s") —
+    // TOPIC_SYNONYMS is keyed on singular forms, so "teenagers"/"children"
+    // still resolve without needing every plural spelled out by hand.
+    const singular = t.endsWith("s") && t.length > 3 ? t.slice(0, -1) : t;
+    for (const syn of TOPIC_SYNONYMS[t] ?? TOPIC_SYNONYMS[singular] ?? []) expanded.add(syn);
+  }
+  const scored = OUTCOME_FIELDS.map((field) => {
+    const labelTokens = tokenize(field.label);
+    let score = 0;
+    for (const t of expanded) {
+      if (labelTokens.some((lw) => lw === t || lw.includes(t) || t.includes(lw))) score++;
+    }
+    return { field, score };
+  }).filter((x) => x.score > 0);
+  scored.sort((a, b) => b.score - a.score);
+  return scored.map((x) => x.field);
+}
+
 export default function ResearchOpportunities() {
   const location = useLocation();
   const { data: healthOutcomes } = useData<Row[]>("health_outcomes_state.json");
@@ -80,9 +181,9 @@ export default function ResearchOpportunities() {
   // parentheticals were adding noise without helping the model pick a row.
   // Shared by both the suggestion card and the research-interest card below
   // so they're always grounded in the exact same real numbers.
-  function buildGapTable(): string[] {
+  function buildGapTable(fields: FieldDef[] = OUTCOME_FIELDS): string[] {
     const rows: string[] = ["| Indicator | Year | Worst state | Worst value | Best state | Best value | Ratio |", "|---|---|---|---|---|---|---|"];
-    for (const field of OUTCOME_FIELDS) {
+    for (const field of fields) {
       let fieldRows = rowsForField(OUTCOME_SOURCES[field.file], field);
       // NHMS survey fields carry a per-indicator "<stem>_unreliable" flag
       // (small sample size / high relative standard error) — exclude those
@@ -156,8 +257,17 @@ export default function ResearchOpportunities() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [healthOutcomes, healthcareAccess, nhmsNcd, nhmsAdolescentMentalHealth, fertility, hasAutoSuggested]);
 
-  // ---- Explore by research interest (AI agent, same grounding rules) ----
+  // ---- Explore by research interest ----
+  // Relevance is decided deterministically (matchOutcomeFields, a keyword
+  // match against real indicator labels) rather than asking Gemini to pick
+  // relevant rows out of the full table — Gemini's job here is narrowed to
+  // explaining/phrasing questions about a table that's *already* scoped to
+  // the topic, which is both more reliable (a closed-set keyword match
+  // can't invent a match) and, empirically, keeps the model from drifting
+  // into a broad "here's everything in the table" summary instead of
+  // answering what was actually typed.
   const [interestText, setInterestText] = useState("");
+  const [interestMatchedFields, setInterestMatchedFields] = useState<FieldDef[] | null>(null);
   const [interestResult, setInterestResult] = useState<string | null>(null);
   const [interestLoading, setInterestLoading] = useState(false);
   const [interestError, setInterestError] = useState<string | null>(null);
@@ -165,11 +275,17 @@ export default function ResearchOpportunities() {
   async function handleInterestSubmit() {
     const trimmed = interestText.trim();
     if (!trimmed || interestLoading) return;
-    const rows = buildGapTable();
-    if (rows.length < 3) {
+    if (buildGapTable().length < 3) {
       setInterestError("Indicator data hasn't finished loading yet — try again in a moment.");
       return;
     }
+    const matched = matchOutcomeFields(trimmed);
+    setInterestMatchedFields(matched);
+    // Cap at 8 so a broad interest (e.g. "health") that matches many
+    // indicators doesn't balloon the prompt — the AI still only ever sees
+    // real, matched rows, just the strongest-scoring subset of them.
+    const scopedFields = matched.slice(0, 8);
+    const rows = buildGapTable(scopedFields.length > 0 ? scopedFields : OUTCOME_FIELDS);
     setInterestLoading(true);
     setInterestError(null);
     try {
@@ -179,16 +295,25 @@ export default function ResearchOpportunities() {
           `tracks: the state reporting the worst value, the state reporting the best value, and the ratio between them, ` +
           `all in the most recent year each indicator has data for.\n\n${rows.join("\n")}\n\n` +
           `A user of this dashboard has typed the following research interest, in their own words: "${trimmed}"\n\n` +
+          (scopedFields.length > 0
+            ? `This table has ALREADY been filtered by keyword match to only the indicators relevant to that stated ` +
+              `interest — every row below is relevant, none are extra. Discuss the row(s) below only; do not describe ` +
+              `or summarise any indicator not shown in this table.\n\n`
+            : `No indicator this dashboard tracks matched that stated interest by keyword, so the FULL indicator table ` +
+              `is shown below only so you can check for yourself. State plainly that nothing in this dashboard's ` +
+              `tracked indicators directly covers their interest. Only if one row is genuinely closely related may ` +
+              `you mention it as the nearest available proxy — do not force an unrelated match, and do not describe ` +
+              `the rest of the table.\n\n`) +
           `Rules:\n` +
           `- Use ONLY the numbers and indicators in the table above. Do not use outside knowledge about Malaysian ` +
           `health statistics, and do not recalculate, round differently, or restate any number other than exactly ` +
           `as it appears above.\n` +
-          `- Pick 1 to 3 rows from the table that are most relevant to the user's stated interest.\n` +
-          `- If nothing in the table is meaningfully related to their interest, say so plainly instead of forcing a match.\n\n` +
-          `For each row you pick, respond in this format:\n` +
+          `- For each relevant row, write one short suggested research question a researcher could investigate, tied ` +
+          `to the user's stated interest and the real gap shown in that row.\n\n` +
+          `For each row, respond in this format:\n` +
           `INDICATOR: <exact indicator name, copied from the table>\n` +
           `ROW: <the exact matching row, copied verbatim from the table above, unchanged>\n` +
-          `WHY RELEVANT: <1-2 sentences connecting it to the user's stated interest>`
+          `SUGGESTED QUESTION: <one research question tied to this row and the user's interest>`
       );
       setInterestResult(reply);
     } catch (e) {
@@ -306,7 +431,14 @@ export default function ResearchOpportunities() {
                 {interestError ? (
                   <p className="text-sm text-status-critical">Couldn't search: {interestError}</p>
                 ) : (
-                  <MarkdownLite text={interestResult as string} />
+                  <>
+                    <p className="mb-2 text-xs text-ink-muted">
+                      {interestMatchedFields && interestMatchedFields.length > 0
+                        ? `Matched by keyword to ${interestMatchedFields.length} tracked indicator${interestMatchedFields.length > 1 ? "s" : ""}: ${interestMatchedFields.map((f) => f.label).join(", ")}.`
+                        : "No tracked indicator matched your interest by keyword — showing the full indicator list for context; see below for what the assistant found."}
+                    </p>
+                    <MarkdownLite text={interestResult as string} />
+                  </>
                 )}
               </div>
             )}
