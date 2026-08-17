@@ -1260,6 +1260,237 @@
       "recommended_use": "Recent screening-uptake trend by state (e.g. campaign response, day-to-day participation) — for year-over-year comparison, use health_programmes_state.json instead, which is already annually aggregated",
       "limitations": "The most recent days are close to the ingestion date and may still be subject to revision/backfill by the source. Raw daily counts are volatile (weekday/weekend and public-holiday effects) — a 7/30-day rolling view is more informative than any single day.",
       "status": "ingested"
+    },
+    {
+      "id": "forest_reserve_state",
+      "name": "Area of Permanent Forest Reserves by State",
+      "url": "https://open.dosm.gov.my/data-catalogue/forest_reserve_state",
+      "endpoint_csv": "https://storage.data.gov.my/environment/forest_reserve_state.csv",
+      "description": "Area of permanent forest reserves as of year-end, by state.",
+      "source_org": "Forestry Department of Peninsular Malaysia / DOSM",
+      "update_frequency": "N/A (last updated 2024-08-13)",
+      "date_range": "2003-2021 (Sarawak 2010-2011 unavailable)",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "area_hectares"
+      ],
+      "unit": "hectares",
+      "missingness": "Sarawak 2010-2011 null in the source; W.P. Putrajaya reports 0 (genuinely negligible forest reserve area for a small federal territory, not missing data).",
+      "joinable_with": [
+        "forest_reserve_national.json via year (Malaysia/Peninsular totals)"
+      ],
+      "recommended_use": "Land-use / environmental-capacity context on the Environment page and as a determinant alongside health/socioeconomic outcomes.",
+      "limitations": "A national-total row also exists in the source under 'Semenanjung Malaysia' (Peninsular aggregate) — excluded from this state panel to avoid double-counting, same treatment as 'Malaysia' rows elsewhere in this pipeline.",
+      "status": "ingested"
+    },
+    {
+      "id": "forest_reserve",
+      "name": "Area of Permanent Forest Reserves (Malaysia)",
+      "url": "https://open.dosm.gov.my/data-catalogue/forest_reserve",
+      "endpoint_csv": "https://storage.data.gov.my/environment/forest_reserve.csv",
+      "description": "National total area of permanent forest reserves as of year-end.",
+      "source_org": "Forestry Department of Peninsular Malaysia / DOSM",
+      "update_frequency": "N/A (last updated 2024-08-13)",
+      "date_range": "2003-2021",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "year"
+      ],
+      "variables": [
+        "area_hectares"
+      ],
+      "unit": "hectares",
+      "missingness": "2010-2011 null in the source.",
+      "joinable_with": [
+        "forest_reserve_state.json via year"
+      ],
+      "recommended_use": "National forest-reserve trend line on the Environment page.",
+      "limitations": "National aggregate only; see forest_reserve_state for the state breakdown.",
+      "status": "ingested"
+    },
+    {
+      "id": "water_consumption",
+      "name": "Water Consumption by State and Sector",
+      "url": "https://open.dosm.gov.my/data-catalogue/water_consumption",
+      "endpoint_csv": "https://storage.data.gov.my/water/water_consumption.csv",
+      "description": "Annual water consumption by state, domestic vs non-domestic sector. Source is monthly; this pipeline aggregates to an annual mean daily rate per state/sector/year.",
+      "source_org": "National Water Services Commission (SPAN) / DOSM",
+      "update_frequency": "N/A (last updated 2024-09-01)",
+      "date_range": "2003-2022",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year",
+        "sector"
+      ],
+      "variables": [
+        "consumption_mld"
+      ],
+      "unit": "millions of litres per day (MLD), annual mean of monthly rates",
+      "missingness": "W.P. Kuala Lumpur and W.P. Putrajaya absent from the source entirely (served by Selangor's water utility, not billed/reported separately) — not a data gap, a genuine administrative-boundary mismatch between water-utility service areas and the 16 states.",
+      "joinable_with": [
+        "water_production_state.json via state+year"
+      ],
+      "recommended_use": "Water-infrastructure-capacity context on the Environment page.",
+      "limitations": "Most recent year's figure may be provisional per the source note. A rate (MLD), not a total — do not sum across years.",
+      "status": "ingested"
+    },
+    {
+      "id": "water_production",
+      "name": "Water Production by State",
+      "url": "https://open.dosm.gov.my/data-catalogue/water_production",
+      "endpoint_csv": "https://storage.data.gov.my/water/water_production.csv",
+      "description": "Annual water production by state. Source is monthly; this pipeline aggregates to an annual mean daily rate per state/year.",
+      "source_org": "National Water Services Commission (SPAN) / DOSM",
+      "update_frequency": "N/A (last updated 2024-09-01)",
+      "date_range": "2000-2022",
+      "geographic_resolution": "state",
+      "dimensions": [
+        "state",
+        "year"
+      ],
+      "variables": [
+        "production_mld"
+      ],
+      "unit": "millions of litres per day (MLD), annual mean of monthly rates",
+      "missingness": "Same W.P. Kuala Lumpur / W.P. Putrajaya absence as water_consumption.",
+      "joinable_with": [
+        "water_consumption_state.json via state+year"
+      ],
+      "recommended_use": "Water-infrastructure-capacity context on the Environment page.",
+      "limitations": "A rate (MLD), not a total — do not sum across years.",
+      "status": "ingested"
+    },
+    {
+      "id": "air_pollution",
+      "name": "Monthly Air Pollution",
+      "url": "https://open.dosm.gov.my/data-catalogue/air_pollution",
+      "endpoint_csv": "https://storage.data.gov.my/environment/air_pollution.csv",
+      "description": "Average concentration of key air pollutants (CO, NO2, O3, PM10, PM2.5, SO2), national. Source is monthly; this pipeline aggregates to an annual mean per pollutant/year.",
+      "source_org": "Department of Environment (DOE) / DOSM",
+      "update_frequency": "Annual (last updated 2023-11-27)",
+      "date_range": "2017-2022",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "year",
+        "pollutant"
+      ],
+      "variables": [
+        "concentration"
+      ],
+      "unit": "ppm (CO, NO2, O3, SO2) or µg/m³ (PM10, PM2.5) — mixed units by pollutant, do not compare pollutants directly",
+      "missingness": "A small minority of 2017 monthly values are null per the source note.",
+      "joinable_with": [],
+      "recommended_use": "National respiratory-health-relevant environmental context on the Environment page — not usable for any state-level equity comparison since the source has no state/station breakdown.",
+      "limitations": "National only — aggregated from monitoring stations across Malaysia with no station-by-station or state-level breakdown published. Cannot be used as a state determinant.",
+      "status": "ingested"
+    },
+    {
+      "id": "ghg_emissions",
+      "name": "Greenhouse Gas Emissions",
+      "url": "https://open.dosm.gov.my/data-catalogue/ghg_emissions",
+      "endpoint_csv": "https://storage.data.gov.my/environment/ghg_emissions.csv",
+      "description": "Annual greenhouse gas emissions by source (total, net, industrial_processes, agriculture, waste, lulucf, energy), national.",
+      "source_org": "Ministry of Natural Resources & Environmental Sustainability / DOSM",
+      "update_frequency": "N/A (last updated 2024-09-01)",
+      "date_range": "2014-2021",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "year",
+        "source"
+      ],
+      "variables": [
+        "emissions_gg_co2e"
+      ],
+      "unit": "gigagrams (Gg) of CO2 equivalent (CO2e)",
+      "missingness": "2020-2021 sectoral breakdown (net/industrial_processes/agriculture/waste/lulucf/energy) is null in the source — only 'total' is populated for those two years, described there as provisional.",
+      "joinable_with": [],
+      "recommended_use": "National climate/environment trend context on the Environment page.",
+      "limitations": "National only, no state breakdown — cannot be used as a state determinant.",
+      "status": "ingested"
+    },
+    {
+      "id": "water_pollution_basin",
+      "name": "River Basin Pollution Monitoring",
+      "url": "https://open.dosm.gov.my/data-catalogue/water_pollution_basin",
+      "endpoint_csv": "https://storage.data.gov.my/environment/water_pollution_basin.csv",
+      "description": "Proportion of monitored river basins classified as clean, slightly polluted, or polluted, by 3 primary water-pollution indicators (BOD5, NH3N, suspended solids).",
+      "source_org": "Department of Environment (DOE), Malaysia",
+      "update_frequency": "Annual (last updated 2024-09-01)",
+      "date_range": "2000-2021",
+      "geographic_resolution": "river basin, rolled up to national annual proportions in this pipeline",
+      "dimensions": [
+        "year",
+        "measure",
+        "status"
+      ],
+      "variables": [
+        "n_basins",
+        "proportion_pct",
+        "basins_monitored"
+      ],
+      "unit": "% of monitored basins",
+      "missingness": "none observed",
+      "joinable_with": [],
+      "recommended_use": "National water-quality trend context on the Environment page.",
+      "limitations": "River basins do not map 1:1 to states (a basin can span more than one state), so this is presented as a national proportion only, not a state determinant.",
+      "status": "ingested"
+    },
+    {
+      "id": "electricity_consumption",
+      "name": "Monthly Electricity Consumption",
+      "url": "https://open.dosm.gov.my/data-catalogue/electricity_consumption",
+      "endpoint_csv": "https://storage.data.gov.my/energy/electricity_consumption.csv",
+      "description": "Electricity consumption by sector (total, local, local_commercial, local_domestic, exports, losses), national. Source is monthly; this pipeline aggregates to an annual sum per sector/year.",
+      "source_org": "Tenaga Nasional Berhad / Sabah Electricity / Sarawak Energy / Energy Commission / DOSM",
+      "update_frequency": "Monthly (last updated 2024-09-01)",
+      "date_range": "2018-2024",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "year",
+        "sector"
+      ],
+      "variables": [
+        "consumption_mkwh"
+      ],
+      "unit": "millions of kilowatt-hours (MKWh), annual sum of monthly totals",
+      "missingness": "The most recent 6 months at source-fetch time were provisional; the latest available year's annual sum reflects only the months published so far, not necessarily a full 12 months — do not compare the most recent year's total against complete prior years without checking month coverage.",
+      "joinable_with": [
+        "electricity_supply_national.json via year"
+      ],
+      "recommended_use": "National energy-context alongside electricity_access_region.json (household access) on the Environment page.",
+      "limitations": "National only, no state breakdown — cannot be used as a state determinant. Complements, not a substitute for, electricity_access_region.json's household-access-rate data.",
+      "status": "ingested"
+    },
+    {
+      "id": "electricity_supply",
+      "name": "Electricity Supply",
+      "url": "https://open.dosm.gov.my/data-catalogue/electricity_supply",
+      "endpoint_csv": "https://storage.data.gov.my/energy/electricity_supply.csv",
+      "description": "Electricity supply by sector (total, local, local_public, local_private, imports, distribution), national. Source is monthly; this pipeline aggregates to an annual sum per sector/year.",
+      "source_org": "Tenaga Nasional Berhad / Sabah Electricity / Sarawak Energy / Energy Commission / DOSM",
+      "update_frequency": "Monthly (last updated 2024-09-01)",
+      "date_range": "2018-2024",
+      "geographic_resolution": "national",
+      "dimensions": [
+        "year",
+        "sector"
+      ],
+      "variables": [
+        "supply_mkwh"
+      ],
+      "unit": "millions of kilowatt-hours (MKWh), annual sum of monthly totals",
+      "missingness": "Same most-recent-6-months-provisional caveat as electricity_consumption.",
+      "joinable_with": [
+        "electricity_consumption_national.json via year"
+      ],
+      "recommended_use": "National energy-context alongside electricity_access_region.json (household access) on the Environment page.",
+      "limitations": "National only, no state breakdown — cannot be used as a state determinant.",
+      "status": "ingested"
     }
   ],
   "identified_but_not_yet_ingested": [

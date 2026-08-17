@@ -217,6 +217,34 @@ DATASETS = [
     # -- Nutrition by strata (national, urban/rural, 2019 — counterpart to nutrition_status_u5_sex) --
     {"id": "nutrition_children_strata", "category": "health_outcomes", "filename": "nutrition_status_u5_strata.csv",
      "method": "csv", "url": "https://storage.data.gov.my/healthcare/nutrition_status_u5_strata.csv"},
+
+    # -- Environment (added 2026-08-17, DOSM's "environment" catalogue category) --
+    {"id": "forest_reserve", "category": "environment", "filename": "forest_reserve.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/environment/forest_reserve.csv"},
+    {"id": "forest_reserve_state", "category": "environment", "filename": "forest_reserve_state.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/environment/forest_reserve_state.csv",
+     "note": "State column also includes a 'Semenanjung Malaysia' (Peninsular) regional aggregate row alongside the 16 real states — excluded from the state panel in transform_data.py, same treatment as the 'Malaysia' national aggregate elsewhere."},
+    {"id": "air_pollution", "category": "environment", "filename": "air_pollution.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/environment/air_pollution.csv",
+     "note": "National monthly pollutant concentrations only — no station or state breakdown in this source."},
+    {"id": "ghg_emissions", "category": "environment", "filename": "ghg_emissions.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/environment/ghg_emissions.csv",
+     "note": "National annual only. 2020-2021 'net'/sectoral rows are blank (provisional, no sectoral breakdown yet) — only 'total' is populated for those two years."},
+    {"id": "water_pollution_basin", "category": "environment", "filename": "water_pollution_basin.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/environment/water_pollution_basin.csv",
+     "note": "River-basin-level monitoring rolled up to a national annual proportion (clean/slightly polluted/polluted) — not state-resolution, since a river basin does not map 1:1 to a state."},
+    {"id": "water_consumption", "category": "environment", "filename": "water_consumption.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/water/water_consumption.csv",
+     "note": "Monthly by state and sector (domestic/nondomestic); aggregated to an annual mean rate (MLD) per state/sector/year in transform_data.py. W.P. Kuala Lumpur and W.P. Putrajaya are absent from the source (served by Selangor's water utility, not billed separately)."},
+    {"id": "water_production", "category": "environment", "filename": "water_production.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/water/water_production.csv",
+     "note": "Monthly by state; aggregated to an annual mean rate (MLD) per state/year in transform_data.py. Same W.P. Kuala Lumpur / W.P. Putrajaya absence as water_consumption."},
+    {"id": "electricity_consumption", "category": "environment", "filename": "electricity_consumption.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/energy/electricity_consumption.csv",
+     "note": "National monthly only, by sector (total/local/local_commercial/local_domestic/exports/losses); summed to an annual total (MKWh) per sector/year in transform_data.py."},
+    {"id": "electricity_supply", "category": "environment", "filename": "electricity_supply.csv",
+     "method": "csv", "url": "https://storage.data.gov.my/energy/electricity_supply.csv",
+     "note": "National monthly only, by sector (total/local/local_public/local_private/imports/distribution); summed to an annual total (MKWh) per sector/year in transform_data.py."},
 ]
 
 API_BASE = "https://api.data.gov.my/data-catalogue"

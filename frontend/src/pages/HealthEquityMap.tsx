@@ -55,6 +55,9 @@ const INDICATORS: IndicatorDef[] = [
   { id: "asfr_45_49", label: "Fertility rate, age 45-49 (ASFR)", sourceKey: "fertility", unit: "per 1,000 women", file: "fertility_state.json", valueField: "fertility_rate", geographies: ["state"], higherIsWorse: false, filterField: "age_group", filterValue: "45-49" },
   { id: "district_death_rate", label: "Death rate (district)", sourceKey: "deaths_district", unit: "per 1,000", file: "deaths_district_sex.json", valueField: "death_rate_per_1000", geographies: ["district"], higherIsWorse: true, absField: "deaths_abs", filterField: "sex", filterValue: "both" },
   { id: "district_birth_rate", label: "Birth rate (district)", sourceKey: "births_district", unit: "per 1,000", file: "births_district_sex.json", valueField: "birth_rate_per_1000", geographies: ["district"], higherIsWorse: false, absField: "births_abs", filterField: "sex", filterValue: "both" },
+  { id: "forest_reserve", label: "Permanent forest reserve area", sourceKey: "forest_reserve", unit: "ha", file: "forest_reserve_state.json", valueField: "area_hectares", geographies: ["state"], higherIsWorse: false },
+  { id: "water_consumption_domestic", label: "Domestic water consumption", sourceKey: "water_utilities", unit: "MLD", file: "water_consumption_state.json", valueField: "consumption_mld", geographies: ["state"], higherIsWorse: false, filterField: "sector", filterValue: "domestic" },
+  { id: "water_production", label: "Water production", sourceKey: "water_utilities", unit: "MLD", file: "water_production_state.json", valueField: "production_mld", geographies: ["state"], higherIsWorse: false },
 ];
 
 export default function HealthEquityMap() {

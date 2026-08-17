@@ -17,6 +17,7 @@ import Trends from "./pages/Trends";
 import PriorityAreas from "./pages/PriorityAreas";
 import ResearchOpportunities from "./pages/ResearchOpportunities";
 import Financing from "./pages/Financing";
+import Environment from "./pages/Environment";
 
 export default function App() {
   return (
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="health-outcomes" element={<HealthOutcomes />} />
           <Route path="healthcare-access" element={<HealthcareAccess />} />
           <Route path="financing" element={<Financing />} />
+          <Route path="environment" element={<Environment />} />
           <Route path="population" element={<PopulationEquity />} />
           <Route path="determinants" element={<DeterminantsExplorer />} />
           <Route path="matrix" element={<IndicatorMatrix />} />

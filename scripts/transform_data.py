@@ -1054,6 +1054,130 @@ def build_nutrition_strata_national():
     return out
 
 
+# ---------------------------------------------------------------------------
+# 21. Environment — DOSM's "environment" catalogue category. Forest reserve
+# area is genuinely state-level; water consumption/production are state-level
+# but monthly source grain, aggregated here to an annual mean rate per
+# state/year (a rate, not a total — summing 12 monthly MLD figures would not
+# be meaningful). Air pollution, GHG emissions, river-basin pollution and
+# electricity consumption/supply are all NATIONAL ONLY in this source (no
+# state or station breakdown), so unlike the state-level ones they are not
+# added to determinantFields.ts's state-comparison registry — they get their
+# own national-trend section on the Environment page instead, the same
+# treatment already used for other national-only datasets like mnha/GHG's
+# sibling sdg_03-3-1 HIV incidence.
+# ---------------------------------------------------------------------------
+def _mean_monthly_to_annual(rows, value_field, extra_key_fields=()):
+    """Returns {(state_or_none, year, *extra_keys): mean_of_available_months}.
+    Used for rate-like monthly values (concentration, MLD) where an annual
+    figure should be an average, not a sum."""
+    sums = defaultdict(float)
+    counts = defaultdict(int)
+    for r in rows:
+        st = canonical_state(r["state"]) if "state" in r else None
+        yr = year_of(r["date"])
+        v = num(r.get(value_field))
+        if v is None:
+            continue
+        key = (st, yr) + tuple(r.get(k) for k in extra_key_fields)
+        sums[key] += v
+        counts[key] += 1
+    return {k: sums[k] / counts[k] for k in sums}
+
+
+def _sum_monthly_to_annual(rows, value_field, extra_key_fields=()):
+    """Returns {(year, *extra_keys): sum_of_available_months} — for amount-like
+    monthly values (electricity MKWh) where an annual figure is a total."""
+    sums = defaultdict(float)
+    has_data = defaultdict(bool)
+    for r in rows:
+        yr = year_of(r["date"])
+        v = num(r.get(value_field))
+        if v is None:
+            continue
+        key = (yr,) + tuple(r.get(k) for k in extra_key_fields)
+        sums[key] += v
+        has_data[key] = True
+    return {k: sums[k] for k in has_data}
+
+
+def build_forest_reserve():
+    national = read_csv(RAW / "environment" / "forest_reserve.csv")
+    write_json("forest_reserve_national.json", [
+        {"year": year_of(r["date"]), "area_hectares": num(r.get("area"))}
+        for r in national
+    ])
+
+    state = read_csv(RAW / "environment" / "forest_reserve_state.csv")
+    out = [
+        {"state": canonical_state(r["state"]), "year": year_of(r["date"]), "area_hectares": num(r.get("area"))}
+        for r in state
+        if canonical_state(r["state"]) not in ("Malaysia", "Semenanjung Malaysia")
+    ]
+    write_json("forest_reserve_state.json", sorted(out, key=lambda r: (r["state"], r["year"])))
+    return out
+
+
+def build_water_utilities_state():
+    consumption = read_csv(RAW / "environment" / "water_consumption.csv")
+    consumption_means = _mean_monthly_to_annual(consumption, "value", extra_key_fields=("sector",))
+    out_consumption = [
+        {"state": st, "year": yr, "sector": sector, "consumption_mld": round(v, 2)}
+        for (st, yr, sector), v in consumption_means.items()
+        if st != "Malaysia"
+    ]
+    write_json("water_consumption_state.json", sorted(out_consumption, key=lambda r: (r["state"], r["year"], r["sector"])))
+
+    production = read_csv(RAW / "environment" / "water_production.csv")
+    production_means = _mean_monthly_to_annual(production, "value")
+    out_production = [
+        {"state": st, "year": yr, "production_mld": round(v, 2)}
+        for (st, yr), v in production_means.items()
+        if st != "Malaysia"
+    ]
+    write_json("water_production_state.json", sorted(out_production, key=lambda r: (r["state"], r["year"])))
+    return out_consumption, out_production
+
+
+def build_environment_national():
+    pollution = read_csv(RAW / "environment" / "air_pollution.csv")
+    pollution_means = _mean_monthly_to_annual(pollution, "concentration", extra_key_fields=("pollutant",))
+    write_json("air_pollution_national.json", sorted([
+        {"year": yr, "pollutant": pollutant, "concentration": round(v, 4)}
+        for (_st, yr, pollutant), v in pollution_means.items()
+    ], key=lambda r: (r["year"], r["pollutant"])))
+
+    ghg = read_csv(RAW / "environment" / "ghg_emissions.csv")
+    write_json("ghg_emissions_national.json", sorted([
+        {"year": year_of(r["date"]), "source": r["source"], "emissions_gg_co2e": num(r.get("emissions"))}
+        for r in ghg
+    ], key=lambda r: (r["year"], r["source"])))
+
+    basins = read_csv(RAW / "environment" / "water_pollution_basin.csv")
+    write_json("water_pollution_basin_national.json", sorted([
+        {
+            "year": year_of(r["date"]), "basins_monitored": num(r.get("basins_monitored")),
+            "measure": r["measure"], "status": r["status"].replace("__", "_"),
+            "n_basins": num(r.get("n_basins")), "proportion_pct": num(r.get("proportion")),
+        }
+        for r in basins
+    ], key=lambda r: (r["year"], r["measure"], r["status"])))
+
+    elec_consumption = read_csv(RAW / "environment" / "electricity_consumption.csv")
+    elec_consumption_sums = _sum_monthly_to_annual(elec_consumption, "consumption", extra_key_fields=("sector",))
+    write_json("electricity_consumption_national.json", sorted([
+        {"year": yr, "sector": sector, "consumption_mkwh": round(v, 1)}
+        for (yr, sector), v in elec_consumption_sums.items()
+    ], key=lambda r: (r["year"], r["sector"])))
+
+    elec_supply = read_csv(RAW / "environment" / "electricity_supply.csv")
+    elec_supply_sums = _sum_monthly_to_annual(elec_supply, "supply", extra_key_fields=("sector",))
+    write_json("electricity_supply_national.json", sorted([
+        {"year": yr, "sector": sector, "supply_mkwh": round(v, 1)}
+        for (yr, sector), v in elec_supply_sums.items()
+    ], key=lambda r: (r["year"], r["sector"])))
+
+
 def main():
     build_socioeconomic_national()
     build_socioeconomic_state()
@@ -1078,6 +1202,9 @@ def main():
     build_mnha_national()
     build_amenities_state()
     build_nutrition_strata_national()
+    build_forest_reserve()
+    build_water_utilities_state()
+    build_environment_national()
 
     log_path = OUT / "transform_log.txt"
     log_path.write_text("\n".join(LOG))
