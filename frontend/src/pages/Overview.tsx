@@ -153,7 +153,7 @@ export default function Overview() {
                 title="Median household income (RM/month)"
                 data={national.map((r) => ({ year: r.year, "Median income": r.income_median }))}
                 xKey="year"
-                series={[{ key: "Median income", label: "Median income (RM)", color: "#2a78d6" }]}
+                series={[{ key: "Median income", label: "Median income (RM)", color: "#3a7173" }]}
               />
             )}
             {national && (
@@ -196,7 +196,7 @@ export default function Overview() {
               nameKey="state"
               valueKey="income_median"
               unit="RM"
-              color="#2a78d6"
+              color="#3a7173"
             />
           </div>
           <SourceNote sourceKey="poverty" year={latestStateYear ?? undefined} />

@@ -12,7 +12,7 @@ export default function BarRankingCard({
   valueKey,
   unit,
   height,
-  color = "#2a78d6",
+  color = "#3a7173",
   highlightWorst,
 }: {
   title?: string;

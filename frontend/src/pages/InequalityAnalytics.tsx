@@ -753,7 +753,7 @@ export default function InequalityAnalytics() {
                   nameKey="state"
                   valueKey="value"
                   unit={primary.unit}
-                  color="#2a78d6"
+                  color="#3a7173"
                   highlightWorst={compareMode === "auto" && primary.higherIsWorse}
                 />
               </div>

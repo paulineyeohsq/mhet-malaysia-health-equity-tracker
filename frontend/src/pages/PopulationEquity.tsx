@@ -89,7 +89,7 @@ interface DunRow {
 const FERTILITY_AGE_BANDS = ["15-19", "20-24", "25-29", "30-34", "35-39", "40-44", "45-49"];
 
 const SERIES_COLORS = [
-  "#2a78d6", // series-1
+  "#3a7173", // series-1
   "#eb6834", // series-2
   "#1baf7a", // series-3
   "#eda100", // series-4

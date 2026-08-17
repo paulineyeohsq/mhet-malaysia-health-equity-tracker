@@ -68,7 +68,7 @@ export default function Financing() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mnha, years]);
   const trendSeries: Series[] = [
-    { key: "Total health expenditure (TEH)", label: "Total health expenditure (TEH)", color: "#2a78d6" },
+    { key: "Total health expenditure (TEH)", label: "Total health expenditure (TEH)", color: "#3a7173" },
     { key: "Current health expenditure (CEH)", label: "Current health expenditure (CEH)", color: "#1baf7a" },
     { key: "MOH expenditure", label: "MOH expenditure", color: "#eb6834" },
   ];

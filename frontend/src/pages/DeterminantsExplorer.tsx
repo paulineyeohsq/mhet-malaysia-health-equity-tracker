@@ -569,7 +569,7 @@ export default function DeterminantsExplorer() {
                             );
                           }}
                         />
-                        <Scatter name="States" data={rankedPairs} fill="#2a78d6" />
+                        <Scatter name="States" data={rankedPairs} fill="#3a7173" />
                         <Line
                           name="Linear fit"
                           data={stats.regressionLine}
@@ -741,7 +741,7 @@ export default function DeterminantsExplorer() {
                                 );
                               }}
                             />
-                            <Scatter name="Years" data={timePairs} fill="#2a78d6" />
+                            <Scatter name="Years" data={timePairs} fill="#3a7173" />
                             <Line
                               name="Linear fit"
                               data={timeStats.regressionLine}

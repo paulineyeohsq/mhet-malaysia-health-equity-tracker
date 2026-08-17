@@ -148,7 +148,7 @@ interface StdMetric {
 }
 
 const STD_METRICS: StdMetric[] = [
-  { id: "hiv", label: "HIV", field: "std_hiv_incidence_per_100k", color: "#2a78d6" },
+  { id: "hiv", label: "HIV", field: "std_hiv_incidence_per_100k", color: "#3a7173" },
   { id: "aids", label: "AIDS", field: "std_aids_incidence_per_100k", color: "#eb6834" },
   { id: "syphilis", label: "Syphilis", field: "std_syphilis_incidence_per_100k", color: "#1baf7a" },
   { id: "gonorrhea", label: "Gonorrhea", field: "std_gonorrhea_incidence_per_100k", color: "#eda100" },
@@ -187,7 +187,7 @@ const PROGRAMME_METRICS: ProgrammeMetric[] = [
   { id: "pekab40", label: "PeKa B40 screenings", field: "pekab40_screenings_abs", unit: "screenings", higherIsWorse: false },
 ];
 
-const SERIES_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"];
+const SERIES_COLORS = ["#3a7173", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"];
 
 function fmt(v: number | null | undefined, digits = 1): string {
   if (v === null || v === undefined || Number.isNaN(v)) return "—";
@@ -348,7 +348,7 @@ export default function HealthOutcomes() {
     return Array.from(byYear.values()).sort((a, b) => a.year - b.year);
   }, [hivIncidence]);
   const hivIncidenceNationalSeries: Series[] = [
-    { key: "Both", label: "Both sexes", color: "#2a78d6" },
+    { key: "Both", label: "Both sexes", color: "#3a7173" },
     { key: "Male", label: "Male", color: "#7ba7e0" },
     { key: "Female", label: "Female", color: "#0d366b" },
   ];
@@ -869,7 +869,7 @@ export default function HealthOutcomes() {
                   title={`${mortalityMetric.label} (${mortalityMetric.unit})`}
                   data={mortalityTrendData}
                   xKey="year"
-                  series={[{ key: mortalityMetric.label, label: mortalityMetric.label, color: "#2a78d6" }]}
+                  series={[{ key: mortalityMetric.label, label: mortalityMetric.label, color: "#3a7173" }]}
                 />
               ) : (
                 <InsufficientData
@@ -890,7 +890,7 @@ export default function HealthOutcomes() {
                   nameKey="state"
                   valueKey="value"
                   unit={mortalityMetric.unit}
-                  color="#2a78d6"
+                  color="#3a7173"
                   highlightWorst={mortalityMetric.higherIsWorse}
                 />
               ) : (
@@ -952,7 +952,7 @@ export default function HealthOutcomes() {
                   nameKey="state"
                   valueKey="value"
                   unit="per 100k"
-                  color="#2a78d6"
+                  color="#3a7173"
                   highlightWorst
                 />
               ) : (

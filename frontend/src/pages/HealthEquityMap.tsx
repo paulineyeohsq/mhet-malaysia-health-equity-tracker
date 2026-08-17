@@ -119,7 +119,7 @@ export default function HealthEquityMap() {
     return {
       breaks,
       labels: ["Low poverty tier", "Medium poverty tier", "High poverty tier"],
-      colors: ["#cde2fb", "#2a78d6", "#0d366b"],
+      colors: ["#e3f2f3", "#6f889d", "#1c3d60"],
     };
   }, [indicatorId, showTiers, choroplethData]);
 

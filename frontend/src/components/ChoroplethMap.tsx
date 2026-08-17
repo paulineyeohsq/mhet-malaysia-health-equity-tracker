@@ -32,7 +32,7 @@ export interface TierConfig {
  * null/no-data areas render in a flat neutral grey with a hatch-free "no
  * data" fill rather than being silently omitted.
  */
-const SEQ_RAMP = ["#cde2fb", "#9ec5f4", "#6da7ec", "#3987e5", "#2a78d6", "#1c5cab", "#0d366b"];
+const SEQ_RAMP = ["#e3f2f3", "#c2d4da", "#a1b6c2", "#8098aa", "#6f889d", "#4e6a85", "#1c3d60"];
 const NO_DATA = "#e1e0d9";
 
 function colorFor(value: number | null, min: number, max: number) {

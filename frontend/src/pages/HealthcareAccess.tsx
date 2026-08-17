@@ -236,7 +236,7 @@ export default function HealthcareAccess() {
                 }))}
                 xKey="year"
                 series={[
-                  { key: "MOH beds", label: "MOH beds", color: "#2a78d6" },
+                  { key: "MOH beds", label: "MOH beds", color: "#3a7173" },
                   { key: "Non-MOH beds", label: "Non-MOH beds", color: "#eb6834" },
                   { key: "Special institution beds", label: "Special institution beds", color: "#1baf7a" },
                 ]}
@@ -253,7 +253,7 @@ export default function HealthcareAccess() {
                 }))}
                 xKey="year"
                 series={[
-                  { key: "Doctors", label: "Doctors", color: "#2a78d6" },
+                  { key: "Doctors", label: "Doctors", color: "#3a7173" },
                   { key: "Dentists", label: "Dentists", color: "#eb6834" },
                   { key: "Nurses", label: "Nurses", color: "#1baf7a" },
                 ]}
@@ -314,7 +314,7 @@ export default function HealthcareAccess() {
                 nameKey="state"
                 valueKey="staff_per_100k"
                 unit="per 100k"
-                color="#2a78d6"
+                color="#3a7173"
               />
             ) : (
               <div>

@@ -27,7 +27,7 @@ import { SOURCES } from "../lib/sources";
 
 const ALL_FIELDS: FieldDef[] = [...OUTCOME_FIELDS, ...DETERMINANT_FIELDS];
 
-const OVERLAY_COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7"];
+const OVERLAY_COLORS = ["#3a7173", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7"];
 const MAX_OVERLAY_SERIES = 6;
 
 type OverlayMode = "indicators-average" | "indicators-state" | "states-indicator";
@@ -196,7 +196,7 @@ export default function Trends() {
           .map((f, i) => ({ key: f.label, label: f.label, color: OVERLAY_COLORS[i % OVERLAY_COLORS.length] }));
 
   const series: Series[] = [
-    { key: state, label: state, color: "#2a78d6" },
+    { key: state, label: state, color: "#3a7173" },
     { key: "Malaysia average", label: "Malaysia average (that year)", color: "#eb6834" },
   ];
 
@@ -679,7 +679,7 @@ export default function Trends() {
                               );
                             }}
                           />
-                          <Scatter name="Years" data={corrPairs} fill="#2a78d6" />
+                          <Scatter name="Years" data={corrPairs} fill="#3a7173" />
                           <Line
                             name="Linear fit"
                             data={corrStats.regressionLine}
