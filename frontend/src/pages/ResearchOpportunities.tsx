@@ -9,6 +9,7 @@ import { yearsWithCoverage, computeGroupGapStats, fmt } from "../lib/equity";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 import { buildStructuredQuestion } from "../lib/researchQuestionTemplates";
+import { findBestYear, buildPairs, computeCorrelationStats, interpretCorrelation } from "../lib/correlation";
 import { useChat } from "../lib/chatContext";
 import MetadataPanel from "../components/MetadataPanel";
 import MarkdownLite from "../components/MarkdownLite";
@@ -125,13 +126,14 @@ export default function ResearchOpportunities() {
   const { data: nhmsNcd } = useData<Row[]>("nhms_ncd_state.json");
   const { data: nhmsAdolescentMentalHealth } = useData<Row[]>("nhms_adolescent_mental_health_state.json");
   const { data: fertility } = useData<Row[]>("fertility_state.json");
+  const { data: socioeconomic } = useData<Row[]>("socioeconomic_state.json");
   const OUTCOME_SOURCES: Record<FieldDef["file"], Row[] | null> = {
     "health_outcomes_state.json": healthOutcomes,
     "healthcare_access_state.json": healthcareAccess,
     "nhms_ncd_state.json": nhmsNcd,
     "nhms_adolescent_mental_health_state.json": nhmsAdolescentMentalHealth,
     "fertility_state.json": fertility,
-    "socioeconomic_state.json": null,
+    "socioeconomic_state.json": socioeconomic,
     "sanitation_access_state.json": null,
     "water_access_state.json": null,
     "marriages_state.json": null,
@@ -201,6 +203,68 @@ export default function ResearchOpportunities() {
       );
     }
     return rows;
+  }
+
+  // Core, always-available determinants to check for a correlation against
+  // whichever outcomes the interest search matches — income/poverty/Gini
+  // (socioeconomic_state.json) plus healthcare staff/bed availability
+  // (healthcare_access_state.json), both already fetched above for other
+  // parts of this page. Deliberately a small fixed set, not all 23
+  // DETERMINANT_FIELDS: checking every determinant against every matched
+  // outcome would multiply the number of correlation computations and the
+  // prompt size for little added value, since these five are the most
+  // commonly asked-about determinants (and the ones with the broadest real
+  // state-level coverage) — see DeterminantsExplorer for the full picker.
+  const CORE_DETERMINANT_IDS = ["income", "poverty", "gini", "staff_det", "beds_det"];
+  const CORE_DETERMINANTS = DETERMINANT_FIELDS.filter((f) => CORE_DETERMINANT_IDS.includes(f.id));
+
+  /**
+   * Real Pearson/Spearman correlation (lib/correlation.ts — the same engine
+   * Determinants Explorer uses) between one outcome and each core
+   * determinant, for whichever single year has the most complete overlap.
+   * Returns the strongest of the five by |Pearson r|, or null if none of
+   * them share enough real, non-null state-year data to compute one at all
+   * — never a fabricated or estimated correlation.
+   */
+  function findTopCorrelation(outcomeField: FieldDef) {
+    const outcomeRows = rowsForField(OUTCOME_SOURCES[outcomeField.file], outcomeField);
+    if (!outcomeRows) return null;
+    let best: { determinant: FieldDef; year: number; n: number; stats: NonNullable<ReturnType<typeof computeCorrelationStats>> } | null = null;
+    for (const det of CORE_DETERMINANTS) {
+      // Guard against self-correlation: "Healthcare staff availability" and
+      // "Hospital bed availability" each appear as BOTH an outcome and a
+      // core determinant (same underlying file+field, just offered from
+      // two different pickers elsewhere on this page) — correlating a
+      // field against itself is always a trivial, meaningless r=1.00.
+      if (det.file === outcomeField.file && det.field === outcomeField.field) continue;
+      const detRows = rowsForField(OUTCOME_SOURCES[det.file], det);
+      if (!detRows) continue;
+      const { year, n } = findBestYear(detRows, outcomeRows, det.field, outcomeField.field);
+      if (year === null || n < 3) continue;
+      const pairs = buildPairs(detRows, outcomeRows, year, det.field, outcomeField.field);
+      const stats = computeCorrelationStats(pairs);
+      if (!stats) continue;
+      if (!best || Math.abs(stats.pearson) > Math.abs(best.stats.pearson)) {
+        best = { determinant: det, year, n, stats };
+      }
+    }
+    return best;
+  }
+
+  /** Plain-text lines summarising each field's strongest real correlation
+   * (or the honest absence of one), for the AI prompt below — computed
+   * entirely by lib/correlation.ts, the AI never computes or estimates a
+   * correlation itself. */
+  function buildCorrelationSummary(fields: FieldDef[]): string[] {
+    return fields.slice(0, 4).map((field) => {
+      const top = findTopCorrelation(field);
+      if (!top) {
+        return `- ${field.label}: no correlation could be computed against income, poverty rate, Gini coefficient, healthcare staff availability or hospital bed availability (not enough states report both in any shared year).`;
+      }
+      const { label } = interpretCorrelation(top.stats.pearson);
+      const cautionNote = top.stats.reliable ? "" : ` — based on only ${top.n} states, read with caution`;
+      return `- ${field.label} vs ${top.determinant.label} (${top.year}, n=${top.n} states): Pearson r = ${top.stats.pearson.toFixed(2)} (${label})${cautionNote}.`;
+    });
   }
 
   const [suggestion, setSuggestion] = useState<string | null>(null);
@@ -286,6 +350,11 @@ export default function ResearchOpportunities() {
     // real, matched rows, just the strongest-scoring subset of them.
     const scopedFields = matched.slice(0, 8);
     const rows = buildGapTable(scopedFields.length > 0 ? scopedFields : OUTCOME_FIELDS);
+    // Real, pre-computed correlations (lib/correlation.ts) between each
+    // matched outcome and this page's core determinants — capped to the
+    // top 4 matched fields internally by buildCorrelationSummary, same
+    // reasoning as the row cap above.
+    const correlationLines = scopedFields.length > 0 ? buildCorrelationSummary(scopedFields) : [];
     setInterestLoading(true);
     setInterestError(null);
     try {
@@ -294,25 +363,39 @@ export default function ResearchOpportunities() {
           `the ONLY data you may use for this task — a real, computed table for every outcome indicator this dashboard ` +
           `tracks: the state reporting the worst value, the state reporting the best value, and the ratio between them, ` +
           `all in the most recent year each indicator has data for.\n\n${rows.join("\n")}\n\n` +
+          (correlationLines.length > 0
+            ? `Real, already-computed correlations (Pearson r, single most-complete shared year per pair) between each ` +
+              `indicator above and this dashboard's core determinants (median household income, absolute poverty ` +
+              `rate, Gini coefficient, healthcare staff availability, hospital bed availability):\n\n` +
+              `${correlationLines.join("\n")}\n\n` +
+              `These are cross-sectional statistical associations only, computed directly from the data — not proof ` +
+              `of cause and effect. Never state or imply that one causes the other.\n\n`
+            : "") +
           `A user of this dashboard has typed the following research interest, in their own words: "${trimmed}"\n\n` +
           (scopedFields.length > 0
-            ? `This table has ALREADY been filtered by keyword match to only the indicators relevant to that stated ` +
-              `interest — every row below is relevant, none are extra. Discuss the row(s) below only; do not describe ` +
-              `or summarise any indicator not shown in this table.\n\n`
+            ? `The indicator table above has ALREADY been filtered by keyword match to only the indicators relevant ` +
+              `to that stated interest — every row is relevant, none are extra. Discuss the row(s) above only; do ` +
+              `not describe or summarise any indicator not shown in that table.\n\n`
             : `No indicator this dashboard tracks matched that stated interest by keyword, so the FULL indicator table ` +
-              `is shown below only so you can check for yourself. State plainly that nothing in this dashboard's ` +
+              `is shown above only so you can check for yourself. State plainly that nothing in this dashboard's ` +
               `tracked indicators directly covers their interest. Only if one row is genuinely closely related may ` +
               `you mention it as the nearest available proxy — do not force an unrelated match, and do not describe ` +
               `the rest of the table.\n\n`) +
           `Rules:\n` +
-          `- Use ONLY the numbers and indicators in the table above. Do not use outside knowledge about Malaysian ` +
-          `health statistics, and do not recalculate, round differently, or restate any number other than exactly ` +
-          `as it appears above.\n` +
-          `- For each relevant row, write one short suggested research question a researcher could investigate, tied ` +
-          `to the user's stated interest and the real gap shown in that row.\n\n` +
+          `- Use ONLY the numbers, indicators and correlation figures given above. Do not use outside knowledge ` +
+          `about Malaysian health statistics, and do not recalculate, round differently, or restate any number ` +
+          `other than exactly as it appears above.\n` +
+          `- If no correlation line was given for a row, say plainly that no correlation was computed for it — never ` +
+          `invent, guess, or describe a correlation number that wasn't provided.\n` +
+          `- For each relevant row, give: one sentence summarising the real gap (DATA SUMMARY), one sentence ` +
+          `summarising what the correlation figures show for that indicator — strength, direction, and that it is ` +
+          `an association only, not a cause (CORRELATION SUMMARY), and one specific research question tied to the ` +
+          `user's stated interest and this row's real numbers (SUGGESTED QUESTION).\n\n` +
           `For each row, respond in this format:\n` +
           `INDICATOR: <exact indicator name, copied from the table>\n` +
           `ROW: <the exact matching row, copied verbatim from the table above, unchanged>\n` +
+          `DATA SUMMARY: <one sentence>\n` +
+          `CORRELATION SUMMARY: <one sentence>\n` +
           `SUGGESTED QUESTION: <one research question tied to this row and the user's interest>`
       );
       setInterestResult(reply);
