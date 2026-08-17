@@ -119,6 +119,11 @@ export const PAGE_DATA_FILES: Record<string, string[]> = {
     "forest_reserve_state.json",
     "water_consumption_state.json",
     "water_production_state.json",
+    "air_pollution_national.json",
+    "ghg_emissions_national.json",
+    "water_pollution_basin_national.json",
+    "electricity_consumption_national.json",
+    "electricity_supply_national.json",
   ],
   "/analytics": [
     "health_outcomes_state.json",
