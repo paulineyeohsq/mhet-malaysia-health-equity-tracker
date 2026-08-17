@@ -1,10 +1,26 @@
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
+import {
+  ResponsiveContainer,
+  ComposedChart,
+  Scatter,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+} from "recharts";
 import PageHeader from "../components/PageHeader";
 import LineChartCard, { type Series } from "../components/LineChartCard";
 import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
+import StatTile from "../components/StatTile";
+import ChartToolbar from "../components/ChartToolbar";
+import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
 import { useData } from "../lib/useData";
 import { buildStateTrend, computeAverage, type Row, type TrendPoint } from "../lib/equity";
+import { computeCorrelationStats, interpretCorrelation, type CorrelationPair } from "../lib/correlation";
+import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
+import { useChat, buildExplainPrompt } from "../lib/chatContext";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, NATIONAL_FIELDS, rowsForField, type FieldDef, type NationalFieldDef } from "../lib/determinantFields";
 import { SOURCES } from "../lib/sources";
@@ -183,6 +199,81 @@ export default function Trends() {
     { key: state, label: state, color: "#2a78d6" },
     { key: "Malaysia average", label: "Malaysia average (that year)", color: "#eb6834" },
   ];
+
+  // ---- Correlate two indicators over time: pairs by YEAR (Malaysia-wide),
+  // not by state — the time-series complement to Determinants Explorer's
+  // by-state correlation, and the only place a state-level field (averaged
+  // across states per year) and a national-only field (already one figure
+  // per year) can be statistically compared against each other. ----
+  function trendPointsFor(id: string): TrendPoint[] {
+    const nf = NATIONAL_FIELDS.find((x) => x.id === id);
+    if (nf) {
+      const nationalRows = nationalRowsByFile[nf.file];
+      const filtered = nf.filter && nationalRows ? nationalRows.filter(nf.filter) : nationalRows;
+      const years = Array.from(new Set((filtered ?? []).map((r) => r.year as number))).sort((a, b) => a - b);
+      return years
+        .map((y) => ({ year: y, value: (filtered ?? []).find((r) => r.year === y)?.[nf.field] as number | null | undefined }))
+        .filter((p): p is TrendPoint => typeof p.value === "number");
+    }
+    const f = ALL_FIELDS.find((x) => x.id === id);
+    if (!f) return [];
+    const rows2 = rowsForField(rowsByFile[f.file], f);
+    const years = Array.from(new Set((rows2 ?? []).map((r) => r.year as number))).sort((a, b) => a - b);
+    return years
+      .map((y) => ({ year: y, value: computeAverage(rows2, y, f.field)?.mean ?? null }))
+      .filter((p): p is TrendPoint => typeof p.value === "number");
+  }
+
+  const CORR_FIELDS: (FieldDef | NationalFieldDef)[] = [...ALL_FIELDS, ...NATIONAL_FIELDS];
+  const [corrXId, setCorrXId] = useState(DETERMINANT_FIELDS[1].id);
+  const [corrYId, setCorrYId] = useState(NATIONAL_FIELDS[4].id); // PM2.5
+  const corrX = CORR_FIELDS.find((f) => f.id === corrXId)!;
+  const corrY = CORR_FIELDS.find((f) => f.id === corrYId)!;
+
+  const corrPairs: CorrelationPair[] = useMemo(() => {
+    const xPoints = trendPointsFor(corrXId);
+    const yByYear = new Map(trendPointsFor(corrYId).map((p) => [p.year, p.value]));
+    return xPoints
+      .filter((p) => yByYear.has(p.year))
+      .map((p) => ({ state: String(p.year), x: p.value, y: yByYear.get(p.year)! }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [corrXId, corrYId, rowsByFile, nationalRowsByFile]);
+
+  const corrStats = useMemo(() => computeCorrelationStats(corrPairs), [corrPairs]);
+  const corrInterpretation = corrStats ? interpretCorrelation(corrStats.pearson) : null;
+
+  const [corrShowTable, setCorrShowTable] = useState(false);
+  const [corrPngPending, setCorrPngPending] = useState(false);
+  const corrChartRef = useRef<HTMLDivElement>(null);
+  const { explain } = useChat();
+
+  const corrTableColumns: Column[] = [
+    { key: "state", label: "Year" },
+    { key: "x", label: `${corrX.label} (${corrX.unit})`, numeric: true },
+    { key: "y", label: `${corrY.label} (${corrY.unit})`, numeric: true },
+  ];
+
+  function handleCorrExportCSV() {
+    const csv = toCSV(corrTableColumns, corrPairs as unknown as Record<string, unknown>[]);
+    downloadCSV(`trend_correlation_${corrX.id}_${corrY.id}.csv`, csv);
+  }
+  function handleCorrExplain() {
+    const csv = toCSV(corrTableColumns, corrPairs as unknown as Record<string, unknown>[]);
+    explain(buildExplainPrompt(`${corrX.label} vs. ${corrY.label} over time`, csv, corrPairs.length));
+  }
+  async function handleCorrExportPNG() {
+    const svg = corrChartRef.current?.querySelector("svg");
+    if (!svg) return;
+    setCorrPngPending(true);
+    try {
+      const dataUrl = await svgToPngDataUrl(svg);
+      downloadDataUrl(dataUrl, `trend_correlation_${corrX.id}_${corrY.id}.png`);
+    } catch {
+      // Rasterization failed — CSV export still works.
+    } finally {
+      setCorrPngPending(false);
+    }
+  }
 
   return (
     <div>
@@ -427,6 +518,185 @@ export default function Trends() {
                 </div>
               )}
             </>
+          )}
+        </section>
+
+        {/* ---------------- Correlate two indicators over time (pairs by year, not state) ---------------- */}
+        <section aria-labelledby="trend-correlation" className="border-t border-line-grid pt-6">
+          <h2 id="trend-correlation" className="mb-1 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            Correlate two indicators over time
+          </h2>
+          <p className="mb-3 max-w-3xl text-sm text-ink-secondary">
+            Pick any two indicators — including national-only ones like air pollution that can't be compared by
+            state — and see whether they move together across the years both actually report.
+          </p>
+
+          <div className="mb-3 rounded-md border border-status-warning bg-status-warning/10 p-3 text-sm text-ink-primary">
+            <span className="font-medium">Correlation, not causation — and a time trend, not a state comparison.</span>{" "}
+            Each point below is one year of Malaysia-wide data, not one state. Two unrelated series can both trend
+            up or down over time and appear correlated for reasons that have nothing to do with each other
+            (a shared time trend, not a real relationship) — this risk is higher here than in a single-year,
+            state-by-state comparison. Treat any result as a starting hypothesis, never as evidence of a causal
+            link.
+          </div>
+
+          <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
+            <div>
+              <label htmlFor="corr-x" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Indicator X
+              </label>
+              <select
+                id="corr-x"
+                value={corrXId}
+                onChange={(e) => setCorrXId(e.target.value)}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                <optgroup label="State-level (Malaysia average)">
+                  {ALL_FIELDS.map((f) => (
+                    <option key={f.id} value={f.id}>
+                      {f.label}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="National-only">
+                  {NATIONAL_FIELDS.map((f) => (
+                    <option key={f.id} value={f.id}>
+                      {f.label}
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+            </div>
+            <div>
+              <label htmlFor="corr-y" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Indicator Y
+              </label>
+              <select
+                id="corr-y"
+                value={corrYId}
+                onChange={(e) => setCorrYId(e.target.value)}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                <optgroup label="State-level (Malaysia average)">
+                  {ALL_FIELDS.map((f) => (
+                    <option key={f.id} value={f.id}>
+                      {f.label}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="National-only">
+                  {NATIONAL_FIELDS.map((f) => (
+                    <option key={f.id} value={f.id}>
+                      {f.label}
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+            </div>
+            <p className="ml-auto max-w-md text-xs text-ink-muted">
+              State-level indicators are averaged across all reporting states for each year. National-only
+              indicators are already one Malaysia-wide figure per year.
+            </p>
+          </div>
+
+          {!corrStats ? (
+            <InsufficientData
+              reason={`Only ${corrPairs.length} year(s) have a reported value for both "${corrX.label}" and "${corrY.label}" (need at least 8).`}
+            />
+          ) : (
+            <div className="grid gap-4 lg:grid-cols-3">
+              <div className="grid grid-cols-2 gap-3 lg:col-span-1 lg:grid-cols-1">
+                <StatTile label="Strength & direction" value={corrInterpretation!.label} sublabel="Qualitative read of Pearson r below" />
+                <StatTile label="Pearson r" value={corrStats.pearson.toFixed(3)} sublabel="Linear association" />
+                <StatTile label="Spearman ρ" value={corrStats.spearman.toFixed(3)} sublabel="Rank association" />
+                <StatTile label="r²" value={corrStats.r2.toFixed(3)} sublabel={`n = ${corrStats.n} years`} />
+              </div>
+              <div className="lg:col-span-2">
+                <div className="rounded-lg border border-line-grid bg-surface p-4">
+                  <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-sm font-medium text-ink-primary">
+                      {corrX.label} vs. {corrY.label} — by year
+                    </h3>
+                  </div>
+                  <ChartToolbar
+                    showingTable={corrShowTable}
+                    onToggleTable={() => setCorrShowTable((v) => !v)}
+                    onExportCSV={handleCorrExportCSV}
+                    onExportPNG={handleCorrExportPNG}
+                    onExplain={handleCorrExplain}
+                    pngPending={corrPngPending}
+                  />
+                  {corrShowTable ? (
+                    <DataTable columns={corrTableColumns} rows={corrPairs as unknown as Record<string, unknown>[]} searchable={false} pageSize={corrPairs.length || 1} />
+                  ) : (
+                    <div ref={corrChartRef}>
+                      <ResponsiveContainer width="100%" height={320}>
+                        <ComposedChart margin={{ top: 8, right: 20, bottom: 24, left: 8 }}>
+                          <CartesianGrid stroke="#e1e0d9" />
+                          <XAxis
+                            type="number"
+                            dataKey="x"
+                            name={corrX.label}
+                            stroke="#898781"
+                            tick={{ fontSize: 11, fill: "#52514e" }}
+                            tickLine={false}
+                            label={{ value: `${corrX.label} (${corrX.unit})`, position: "insideBottom", offset: -16, fontSize: 12, fill: "#52514e" }}
+                          />
+                          <YAxis
+                            type="number"
+                            dataKey="y"
+                            name={corrY.label}
+                            stroke="#898781"
+                            tick={{ fontSize: 11, fill: "#52514e" }}
+                            tickLine={false}
+                            axisLine={false}
+                            width={56}
+                            label={{ value: corrY.unit, angle: -90, position: "insideLeft", fontSize: 12, fill: "#52514e" }}
+                          />
+                          <Tooltip
+                            cursor={{ strokeDasharray: "3 3" }}
+                            contentStyle={{ fontSize: 12, border: "1px solid #e1e0d9", borderRadius: 6 }}
+                            content={({ active, payload }) => {
+                              if (!active || !payload?.length) return null;
+                              const p = payload[0].payload as { state: string; x: number; y: number };
+                              return (
+                                <div className="rounded-md border border-line-grid bg-surface p-2 text-xs shadow-sm">
+                                  <p className="font-medium text-ink-primary">{p.state}</p>
+                                  <p className="text-ink-secondary">
+                                    {corrX.label}: {p.x}
+                                  </p>
+                                  <p className="text-ink-secondary">
+                                    {corrY.label}: {p.y}
+                                  </p>
+                                </div>
+                              );
+                            }}
+                          />
+                          <Scatter name="Years" data={corrPairs} fill="#2a78d6" />
+                          <Line
+                            name="Linear fit"
+                            data={corrStats.regressionLine}
+                            dataKey="y"
+                            stroke="#eb6834"
+                            strokeWidth={2}
+                            dot={false}
+                            activeDot={false}
+                            legendType="none"
+                            isAnimationActive={false}
+                          />
+                        </ComposedChart>
+                      </ResponsiveContainer>
+                    </div>
+                  )}
+                  <p className="mt-2 text-xs text-ink-muted">
+                    Each point is one year. The orange line is a simple linear regression fit, shown to summarise
+                    the linear trend only — it is descriptive, not predictive or causal.
+                  </p>
+                </div>
+                <SourceNote sourceKey={corrX.sourceKey} />
+                <SourceNote sourceKey={corrY.sourceKey} />
+              </div>
+            </div>
           )}
         </section>
       </div>
