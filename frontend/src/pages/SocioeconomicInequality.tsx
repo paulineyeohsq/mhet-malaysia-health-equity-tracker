@@ -825,6 +825,13 @@ export default function SocioeconomicInequality() {
           ) : (
             <div className="grid gap-4 lg:grid-cols-3">
               <div className="grid grid-cols-3 gap-3 lg:col-span-1 lg:grid-cols-1">
+                {!correlationStats.reliable && (
+                  <div className="col-span-3 rounded-md border border-status-warning bg-status-warning/10 p-2 text-xs text-ink-primary lg:col-span-1">
+                    <span className="font-medium">Low sample size (n={correlationStats.n}).</span> Shown, not hidden
+                    — but with fewer than 8 states, this estimate is more sensitive to individual outliers than a
+                    larger sample. Treat as a rough signal, not a settled result.
+                  </div>
+                )}
                 <StatTile label="Pearson r" value={correlationStats.pearson.toFixed(3)} sublabel="Linear association" />
                 <StatTile label="Spearman ρ" value={correlationStats.spearman.toFixed(3)} sublabel="Rank association" />
                 <StatTile label="r²" value={correlationStats.r2.toFixed(3)} sublabel={`n = ${correlationStats.n} states, ${correlationInput.year}`} />

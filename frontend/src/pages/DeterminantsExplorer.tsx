@@ -20,7 +20,7 @@ import ChartToolbar from "../components/ChartToolbar";
 import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
 import { useData } from "../lib/useData";
 import { computeAverage, type Row, type TrendPoint } from "../lib/equity";
-import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, interpretCorrelation, CORRELATION_MIN_PAIRS, type CorrelationPair } from "../lib/correlation";
+import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, interpretCorrelation, CORRELATION_MIN_PAIRS, CORRELATION_RELIABLE_MIN, type CorrelationPair } from "../lib/correlation";
 import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
 import { useChat, buildExplainPrompt } from "../lib/chatContext";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, NATIONAL_FIELDS, rowsForField, type FieldDef, type NationalFieldDef } from "../lib/determinantFields";
@@ -448,13 +448,21 @@ export default function DeterminantsExplorer() {
               isPooled
                 ? `Only ${correlationInput?.n ?? 0} pooled state-year point(s) have non-null values for both "${determinant.label}" and "${outcome.label}" across all years (need at least 8).`
                 : correlationInput && correlationInput.year !== null
-                  ? `Only ${correlationInput.n} state(s) have non-null values for both "${determinant.label}" and "${outcome.label}" in ${correlationInput.year} (need at least 8). This outcome or determinant is not reported for enough states.`
+                  ? `Only ${correlationInput.n} state(s) have non-null values for both "${determinant.label}" and "${outcome.label}" in ${correlationInput.year} (need at least ${CORRELATION_MIN_PAIRS}). This outcome or determinant is not reported for enough states.`
                   : `"${determinant.label}" and "${outcome.label}" share no common year with paired state-level data for the selected year mode.`
             }
           />
         ) : (
           <div className="grid gap-4 lg:grid-cols-3">
             <div className="grid grid-cols-2 gap-3 lg:col-span-1 lg:grid-cols-1">
+              {!stats.reliable && (
+                <div className="col-span-2 rounded-md border border-status-warning bg-status-warning/10 p-2 text-xs text-ink-primary lg:col-span-1">
+                  <span className="font-medium">Low sample size (n={stats.n}).</span> Shown, not hidden — but with
+                  fewer than {CORRELATION_RELIABLE_MIN} {isPooled ? "state-year points" : "states"}, this estimate
+                  is more sensitive to individual outliers than a larger sample. Treat as a rough signal, not a
+                  settled result.
+                </div>
+              )}
               <StatTile
                 label="Strength & direction"
                 value={interpretation!.label}
@@ -655,11 +663,18 @@ export default function DeterminantsExplorer() {
 
             {!timeStats ? (
               <InsufficientData
-                reason={`Only ${timePairs.length} year(s) have a reported value for both "${timeDeterminant.label}" and "${timeOutcome.label}" (need at least 8).`}
+                reason={`Only ${timePairs.length} year(s) have a reported value for both "${timeDeterminant.label}" and "${timeOutcome.label}" (need at least ${CORRELATION_MIN_PAIRS}).`}
               />
             ) : (
               <div className="grid gap-4 lg:grid-cols-3">
                 <div className="grid grid-cols-2 gap-3 lg:col-span-1 lg:grid-cols-1">
+                  {!timeStats.reliable && (
+                    <div className="col-span-2 rounded-md border border-status-warning bg-status-warning/10 p-2 text-xs text-ink-primary lg:col-span-1">
+                      <span className="font-medium">Low sample size (n={timeStats.n}).</span> Shown, not hidden —
+                      but with fewer than {CORRELATION_RELIABLE_MIN} years, this estimate is more sensitive to
+                      individual outliers than a longer time series. Treat as a rough signal, not a settled result.
+                    </div>
+                  )}
                   <StatTile label="Strength & direction" value={timeInterpretation!.label} sublabel="Qualitative read of Pearson r below" />
                   <StatTile label="Pearson r" value={timeStats.pearson.toFixed(3)} sublabel="Linear association" />
                   <StatTile label="Spearman ρ" value={timeStats.spearman.toFixed(3)} sublabel="Rank association" />
