@@ -11,6 +11,7 @@ import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from 
 import { buildStructuredQuestion } from "../lib/researchQuestionTemplates";
 import { useChat } from "../lib/chatContext";
 import MetadataPanel from "../components/MetadataPanel";
+import MarkdownLite from "../components/MarkdownLite";
 import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 const POPULATION_SCOPES = ["General population", "Older adults (65+)", "Children under 5", "Adults of working age"];
@@ -61,22 +62,25 @@ export default function ResearchOpportunities() {
   // its worst/best state, and the gap between them — and asked to pick
   // the most compelling starting point and explain why in its own words,
   // the same way "Explain this" already grounds Gemini in real chart data
-  // rather than letting it invent anything. The agent's answer appears in
-  // the Ask MY-HEO panel, not a synchronous on-page card, since there's no
-  // longer a single deterministic winner to parse back out and auto-fill
-  // the selects with.
-  const { explain, loading: chatLoading } = useChat();
+  // rather than letting it invent anything. The answer now renders directly
+  // in an on-page card (via askDirect, which doesn't touch the shared chat
+  // panel state), not the Ask MY-HEO panel — there's still no deterministic
+  // winner to parse back out and auto-fill the selects with, but showing it
+  // inline avoids sending the user to a different part of the page for an
+  // answer to a question they asked right here.
+  const { askDirect } = useChat();
 
-  function handleSuggest() {
-    // Markdown table, not a loose pipe-separated wall of text — a real
-    // header/separator row gives the model an unambiguous column
-    // structure to align against, which a same-content free-text version
-    // of this prompt did not: a live test surfaced Gemini stating numbers
-    // for one row that didn't match the real data it was given, despite
-    // an explicit "don't invent numbers" instruction. Units are dropped
-    // from the table (kept only in the on-page selects) since the long
-    // NHMS methodology parentheticals were adding noise without helping
-    // the model pick a row.
+  // Markdown table, not a loose pipe-separated wall of text — a real
+  // header/separator row gives the model an unambiguous column structure to
+  // align against, which a same-content free-text version of this prompt
+  // did not: a live test surfaced Gemini stating numbers for one row that
+  // didn't match the real data it was given, despite an explicit "don't
+  // invent numbers" instruction. Units are dropped from the table (kept
+  // only in the on-page selects) since the long NHMS methodology
+  // parentheticals were adding noise without helping the model pick a row.
+  // Shared by both the suggestion card and the research-interest card below
+  // so they're always grounded in the exact same real numbers.
+  function buildGapTable(): string[] {
     const rows: string[] = ["| Indicator | Year | Worst state | Worst value | Best state | Best value | Ratio |", "|---|---|---|---|---|---|---|"];
     for (const field of OUTCOME_FIELDS) {
       let fieldRows = rowsForField(OUTCOME_SOURCES[field.file], field);
@@ -95,22 +99,103 @@ export default function ResearchOpportunities() {
         `| ${field.label} | ${year} | ${stats.worst.name} | ${fmt(stats.worst.value, 1)} | ${stats.best.name} | ${fmt(stats.best.value, 1)} | ${fmt(stats.ratio, 1)}× |`
       );
     }
-    if (rows.length < 3) return;
-    explain(
-      `I'm using the Malaysia Health Equity Observatory dashboard's Research Opportunities page. The table below is ` +
-        `the ONLY data you may use for this task — a real, computed table for every outcome indicator this dashboard ` +
-        `tracks: the state reporting the worst value, the state reporting the best value, and the ratio between them, ` +
-        `all in the most recent year each indicator has data for.\n\n${rows.join("\n")}\n\n` +
-        `Rules:\n` +
-        `- Use ONLY the numbers in this table. Do not use outside knowledge about Malaysian health statistics, and ` +
-        `do not recalculate, round differently, or restate any number other than exactly as it appears above.\n` +
-        `- Pick exactly ONE row as the most compelling starting point for further research — not necessarily the ` +
-        `largest ratio, but the one you judge most policy-relevant, actionable, or under-explored.\n\n` +
-        `Respond in exactly this format:\n` +
-        `INDICATOR: <exact indicator name, copied from the table>\n` +
-        `ROW: <the exact matching row, copied verbatim from the table above, unchanged>\n` +
-        `WHY THIS ONE: <2-3 sentences of your own reasoning>`
-    );
+    return rows;
+  }
+
+  const [suggestion, setSuggestion] = useState<string | null>(null);
+  const [suggestLoading, setSuggestLoading] = useState(false);
+  const [suggestError, setSuggestError] = useState<string | null>(null);
+  const [excludeIndicators, setExcludeIndicators] = useState<string[]>([]);
+  const [hasAutoSuggested, setHasAutoSuggested] = useState(false);
+
+  async function handleSuggest() {
+    const rows = buildGapTable();
+    if (rows.length < 3 || suggestLoading) return;
+    setSuggestLoading(true);
+    setSuggestError(null);
+    try {
+      const exclusionRule = excludeIndicators.length
+        ? `- Do not pick these indicators again — they were already suggested in this session: ${excludeIndicators.join(", ")}. Choose a different one this time.\n`
+        : "";
+      const reply = await askDirect(
+        `I'm using the Malaysia Health Equity Observatory dashboard's Research Opportunities page. The table below is ` +
+          `the ONLY data you may use for this task — a real, computed table for every outcome indicator this dashboard ` +
+          `tracks: the state reporting the worst value, the state reporting the best value, and the ratio between them, ` +
+          `all in the most recent year each indicator has data for.\n\n${rows.join("\n")}\n\n` +
+          `Rules:\n` +
+          `- Use ONLY the numbers in this table. Do not use outside knowledge about Malaysian health statistics, and ` +
+          `do not recalculate, round differently, or restate any number other than exactly as it appears above.\n` +
+          `- Pick exactly ONE row as the most compelling starting point for further research — not necessarily the ` +
+          `largest ratio, but the one you judge most policy-relevant, actionable, or under-explored.\n` +
+          exclusionRule +
+          `\nRespond in exactly this format:\n` +
+          `INDICATOR: <exact indicator name, copied from the table>\n` +
+          `ROW: <the exact matching row, copied verbatim from the table above, unchanged>\n` +
+          `WHY THIS ONE: <2-3 sentences of your own reasoning>`
+      );
+      setSuggestion(reply);
+      const match = /INDICATOR:\s*(.+)/.exec(reply);
+      if (match) setExcludeIndicators((prev) => Array.from(new Set([...prev, match[1].trim()])));
+    } catch (e) {
+      setSuggestError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setSuggestLoading(false);
+    }
+  }
+
+  // Auto-generate one suggestion as soon as the real indicator data has
+  // loaded, so the card never sits empty waiting for a click — "Refresh"
+  // (same button, relabelled once a suggestion exists) is how a user asks
+  // for another. Guarded by hasAutoSuggested so this only ever fires once
+  // per page visit, not on every re-render as more datasets stream in.
+  useEffect(() => {
+    if (hasAutoSuggested) return;
+    if (buildGapTable().length < 3) return;
+    setHasAutoSuggested(true);
+    void handleSuggest();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [healthOutcomes, healthcareAccess, nhmsNcd, nhmsAdolescentMentalHealth, fertility, hasAutoSuggested]);
+
+  // ---- Explore by research interest (AI agent, same grounding rules) ----
+  const [interestText, setInterestText] = useState("");
+  const [interestResult, setInterestResult] = useState<string | null>(null);
+  const [interestLoading, setInterestLoading] = useState(false);
+  const [interestError, setInterestError] = useState<string | null>(null);
+
+  async function handleInterestSubmit() {
+    const trimmed = interestText.trim();
+    if (!trimmed || interestLoading) return;
+    const rows = buildGapTable();
+    if (rows.length < 3) {
+      setInterestError("Indicator data hasn't finished loading yet — try again in a moment.");
+      return;
+    }
+    setInterestLoading(true);
+    setInterestError(null);
+    try {
+      const reply = await askDirect(
+        `I'm using the Malaysia Health Equity Observatory dashboard's Research Opportunities page. The table below is ` +
+          `the ONLY data you may use for this task — a real, computed table for every outcome indicator this dashboard ` +
+          `tracks: the state reporting the worst value, the state reporting the best value, and the ratio between them, ` +
+          `all in the most recent year each indicator has data for.\n\n${rows.join("\n")}\n\n` +
+          `A user of this dashboard has typed the following research interest, in their own words: "${trimmed}"\n\n` +
+          `Rules:\n` +
+          `- Use ONLY the numbers and indicators in the table above. Do not use outside knowledge about Malaysian ` +
+          `health statistics, and do not recalculate, round differently, or restate any number other than exactly ` +
+          `as it appears above.\n` +
+          `- Pick 1 to 3 rows from the table that are most relevant to the user's stated interest.\n` +
+          `- If nothing in the table is meaningfully related to their interest, say so plainly instead of forcing a match.\n\n` +
+          `For each row you pick, respond in this format:\n` +
+          `INDICATOR: <exact indicator name, copied from the table>\n` +
+          `ROW: <the exact matching row, copied verbatim from the table above, unchanged>\n` +
+          `WHY RELEVANT: <1-2 sentences connecting it to the user's stated interest>`
+      );
+      setInterestResult(reply);
+    } catch (e) {
+      setInterestError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setInterestLoading(false);
+    }
   }
 
   const outcome = OUTCOME_FIELDS.find((f) => f.id === outcomeId)!;
@@ -151,20 +236,80 @@ export default function ResearchOpportunities() {
           <div className="rounded-lg border border-line-axis bg-plane p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="max-w-2xl text-sm text-ink-secondary">
-                Computes the real state-to-state gap for every outcome indicator this dashboard tracks, then hands
-                that data to the MY-HEO Assistant (Gemini) and asks it to pick the most compelling starting point and
-                explain why — the numbers are always real and computed, never invented, but the pick and the
-                reasoning come from the AI agent, not a fixed rule. Its answer opens in the chat panel.
+                Computes the real state-to-state gap for every outcome indicator this dashboard tracks, then asks the
+                MY-HEO Assistant (Gemini) to pick the most compelling starting point and explain why — the numbers
+                are always real and computed, never invented, but the pick and the reasoning come from the AI agent,
+                not a fixed rule.
               </p>
               <button
                 type="button"
                 onClick={handleSuggest}
-                disabled={chatLoading}
+                disabled={suggestLoading}
                 className="shrink-0 rounded-md bg-series-1 px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-60"
               >
-                {chatLoading ? "Asking MY-HEO Assistant…" : "Suggest a research question"}
+                {suggestLoading ? "Thinking…" : suggestion ? "Refresh — suggest another" : "Suggest a research question"}
               </button>
             </div>
+            <div className="mt-4 rounded-md border border-line-grid bg-surface p-4">
+              {suggestError ? (
+                <p className="text-sm text-status-critical">Couldn't get a suggestion: {suggestError}</p>
+              ) : suggestion ? (
+                <MarkdownLite text={suggestion} />
+              ) : (
+                <p className="text-sm text-ink-muted">
+                  {suggestLoading ? "Asking the MY-HEO Assistant…" : "Loading real indicator gaps…"}
+                </p>
+              )}
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="ro-interest">
+          <h2 id="ro-interest" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            Have a research interest in mind?
+          </h2>
+          <div className="rounded-lg border border-line-axis bg-plane p-4">
+            <p className="max-w-2xl text-sm text-ink-secondary">
+              Type a topic in your own words — the same real gap table above is matched against your interest, so any
+              question surfaced is tied to a real indicator this dashboard actually tracks, never an invented one.
+            </p>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                void handleInterestSubmit();
+              }}
+              className="mt-3 flex flex-wrap items-end gap-3"
+            >
+              <div className="min-w-[240px] flex-1">
+                <label htmlFor="ro-interest-input" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                  e.g. "diabetes in rural areas", "maternal health", "poverty and healthcare access"
+                </label>
+                <input
+                  id="ro-interest-input"
+                  type="text"
+                  value={interestText}
+                  onChange={(e) => setInterestText(e.target.value)}
+                  placeholder="Your research interest…"
+                  className="mt-1 w-full rounded-md border border-line-axis px-2 py-1.5 text-sm"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={interestLoading || !interestText.trim()}
+                className="shrink-0 rounded-md bg-series-1 px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-60"
+              >
+                {interestLoading ? "Searching…" : "Find relevant questions"}
+              </button>
+            </form>
+            {(interestResult || interestError) && (
+              <div className="mt-4 rounded-md border border-line-grid bg-surface p-4">
+                {interestError ? (
+                  <p className="text-sm text-status-critical">Couldn't search: {interestError}</p>
+                ) : (
+                  <MarkdownLite text={interestResult as string} />
+                )}
+              </div>
+            )}
           </div>
         </section>
 
