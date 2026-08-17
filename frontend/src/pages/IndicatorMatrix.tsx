@@ -6,6 +6,8 @@ import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
 import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, interpretCorrelation, CORRELATION_MIN_PAIRS, type CorrelationPair } from "../lib/correlation";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
+import MetadataPanel from "../components/MetadataPanel";
+import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 type MatrixPair = CorrelationPair & { year?: number };
 
@@ -181,6 +183,11 @@ export default function IndicatorMatrix() {
       />
       <div className="space-y-6 p-6 lg:p-10">
         <CorrelationCaveat />
+        <MetadataPanel
+          datasetIds={Array.from(
+            new Set([...OUTCOME_FIELDS, ...DETERMINANT_FIELDS].flatMap((f) => INVENTORY_MAP[f.file] ?? []))
+          )}
+        />
 
         <div className="rounded-lg border border-line-grid bg-surface p-4">
           <div className="flex flex-wrap items-end gap-4">

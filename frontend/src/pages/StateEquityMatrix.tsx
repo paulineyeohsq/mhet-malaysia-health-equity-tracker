@@ -23,6 +23,21 @@ import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, compute
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
 import { useChat, buildExplainPrompt } from "../lib/chatContext";
+import MetadataPanel from "../components/MetadataPanel";
+import { INVENTORY_MAP } from "../lib/inventoryMap";
+import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
+
+/** Which OUTCOME_FIELDS ids are built from small administrative event counts
+ * (deaths/births), and the underlying row field carrying that raw count —
+ * same abs-count fields HealthOutcomes.tsx already flags, reused here so
+ * this page's per-state comparison tiles carry the same small-count caution. */
+const OUTCOME_ABS_FIELD: Record<string, string> = {
+  cdr: "deaths_abs",
+  mmr: "maternal_deaths_abs",
+  imr: "infant_deaths_abs",
+  u5mr: "under5_deaths_abs",
+  cbr: "births_abs",
+};
 
 type MatrixPair = CorrelationPair & { year?: number };
 
@@ -200,6 +215,13 @@ export default function StateEquityMatrix() {
       />
       <div className="space-y-6 p-6 lg:p-10">
         <CorrelationCaveat />
+        <MetadataPanel
+          datasetIds={Array.from(
+            new Set(
+              [...ALL_RESOURCE_CANDIDATE_FIELDS, ...OUTCOME_FIELDS].flatMap((f) => INVENTORY_MAP[f.file] ?? [])
+            )
+          )}
+        />
 
         <div className="flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
           <div>
@@ -442,7 +464,20 @@ export default function StateEquityMatrix() {
                     <div className="space-y-3">
                       <div className="grid grid-cols-2 gap-3">
                         <StatTile label={resource.label} value={fmtVal(pair.x, 1)} unit={resource.unit} />
-                        <StatTile label={burden.label} value={fmtVal(pair.y, 1)} unit={burden.unit} />
+                        <StatTile
+                          label={burden.label}
+                          value={fmtVal(pair.y, 1)}
+                          unit={burden.unit}
+                          caution={(() => {
+                            const absFieldName = OUTCOME_ABS_FIELD[burden.id];
+                            if (!absFieldName || !burdenRows) return undefined;
+                            const yr = pair.year ?? fixedYear;
+                            const row = burdenRows.find((r) => r.state === name && r.year === yr);
+                            return isSmallCount(row?.[absFieldName] as number | null | undefined)
+                              ? SMALL_COUNT_CAUTION_TEXT
+                              : undefined;
+                          })()}
+                        />
                       </div>
                       {stats ? (
                         <p className="text-sm text-ink-secondary">

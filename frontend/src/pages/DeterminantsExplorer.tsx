@@ -17,6 +17,7 @@ import CorrelationCaveat, { CORRELATION_CAVEAT_TEXT } from "../components/Correl
 import EvidenceSnapshotButton from "../components/EvidenceSnapshotButton";
 import MetadataPanel from "../components/MetadataPanel";
 import ChartToolbar from "../components/ChartToolbar";
+import Term from "../components/Term";
 import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
 import { useData } from "../lib/useData";
 import { computeAverage, type Row, type TrendPoint } from "../lib/equity";
@@ -426,8 +427,9 @@ export default function DeterminantsExplorer() {
             indicator) — a weighted estimate from a sample of respondents in each state. 2015/2019 figures
             carry their own 95% confidence interval; 2023&apos;s dedicated by-state tables only publish a
             point estimate. States with fewer survey respondents have wider, less certain estimates, and a
-            2023 figure is age-standardised while 2015/2019 are not — treat cross-year comparisons and close
-            state rankings with caution. See the data source panel below for exact table/page citations.
+            2023 figure is <Term id="age-standardised">age-standardised</Term> while 2015/2019 are not — treat
+            cross-year comparisons and close state rankings with caution. See the data source panel below for exact
+            table/page citations.
           </div>
         )}
 

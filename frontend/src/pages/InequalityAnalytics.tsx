@@ -19,6 +19,7 @@ import DataTable, { type Column, toCSV } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
 import MetadataPanel from "../components/MetadataPanel";
 import ChartToolbar from "../components/ChartToolbar";
+import Term from "../components/Term";
 import { useData } from "../lib/useData";
 import { useChat, buildExplainPrompt } from "../lib/chatContext";
 import type { SOURCES } from "../lib/sources";
@@ -851,13 +852,14 @@ export default function InequalityAnalytics() {
             poverty) and 1 (least disadvantaged / lowest poverty), using its share of the national population from{" "}
             <code>population_state.json</code> (the standard Mackenbach–Kunst population-weighted midpoint-rank
             method). A population-weighted linear regression of the outcome on that rank is then fitted across all
-            16 states. <strong>SII</strong> is the regression slope: the modelled absolute gap in the outcome
-            between the least- and most-disadvantaged end of the poverty distribution. <strong>RII</strong> is the
-            ratio of the predicted outcome at the least-disadvantaged end to the most-disadvantaged end. This is a
-            genuine population-weighted regression, not a simplified/unweighted approximation — but it is still an
-            <em> ecological</em> measure built from 16 state-level aggregates, not individual-level microdata, so it
-            describes the between-state gradient, not within-state inequality, and should be read as indicative
-            given the small number of units.
+            16 states. <strong><Term id="sii">SII</Term></strong> is the regression slope: the modelled absolute gap
+            in the outcome between the least- and most-disadvantaged end of the poverty distribution.{" "}
+            <strong><Term id="rii">RII</Term></strong> is the ratio of the predicted outcome at the
+            least-disadvantaged end to the most-disadvantaged end. This is a genuine population-weighted regression,
+            not a simplified/unweighted approximation — but it is still an{" "}
+            <Term id="ecological"><em>ecological</em></Term> measure built from 16 state-level aggregates, not
+            individual-level microdata, so it describes the between-state gradient, not within-state inequality, and
+            should be read as indicative given the small number of units.
           </div>
 
           <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">

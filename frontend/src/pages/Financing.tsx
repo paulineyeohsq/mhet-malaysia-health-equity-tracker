@@ -5,7 +5,9 @@ import SourceNote from "../components/SourceNote";
 import LineChartCard, { type Series } from "../components/LineChartCard";
 import DataTable, { type Column } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
+import MetadataPanel from "../components/MetadataPanel";
 import { useData } from "../lib/useData";
+import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 interface MnhaRow {
   year: number;
@@ -99,6 +101,7 @@ export default function Financing() {
         subtitle="National health expenditure — total, current, public/private split and MOH's own spend — from Malaysia's National Health Accounts (MNHA). National level only; no state breakdown exists in the open catalogue."
       />
       <div className="space-y-8 p-6 lg:p-10">
+        <MetadataPanel datasetIds={INVENTORY_MAP["mnha_national.json"]} />
         {years.length > 0 && (
           <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
             <div>

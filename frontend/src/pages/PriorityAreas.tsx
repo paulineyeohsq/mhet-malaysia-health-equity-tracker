@@ -188,6 +188,21 @@ export default function PriorityAreas() {
           </p>
         </div>
 
+        {rankedScores.length > 0 && (
+          <div className="rounded-lg border border-line-axis bg-plane p-4">
+            <div className="text-xs font-semibold uppercase tracking-wide text-series-1">Key Equity Insight</div>
+            <p className="mt-1 text-sm text-ink-primary">
+              Under the current weights, <strong>{rankedScores[0].state}</strong> ranks as the top potential
+              priority area (score {(rankedScores[0].weightedTotal as number).toFixed(2)} of 1.00), based on{" "}
+              {burden.label.toLowerCase()}, poverty rate, {access.label.toLowerCase()} and deviation from the
+              national average.
+            </p>
+            <p className="mt-1 text-xs text-ink-muted">
+              Adjust the weights or indicators below and this updates — it is not a fixed ranking.
+            </p>
+          </div>
+        )}
+
         {/* Indicator + weight controls */}
         <section aria-labelledby="priority-controls">
           <h2 id="priority-controls" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">

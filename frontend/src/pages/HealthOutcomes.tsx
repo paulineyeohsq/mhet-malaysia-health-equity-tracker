@@ -8,9 +8,11 @@ import BarRankingCard from "../components/BarRankingCard";
 import DataTable, { type Column } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
 import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
+import MetadataPanel from "../components/MetadataPanel";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
 import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
+import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 interface StateOutcomeRow {
   state: string;
@@ -657,6 +659,20 @@ export default function HealthOutcomes() {
         subtitle="Mortality, maternal/infant/child health, STD incidence, immunisation coverage and child nutrition — across states and over time, exactly as published by MOH/DOSM."
       />
       <div className="space-y-8 p-6 lg:p-10">
+        <MetadataPanel
+          datasetIds={Array.from(
+            new Set([
+              ...INVENTORY_MAP["health_outcomes_state.json"],
+              ...INVENTORY_MAP["immunisation_national.json"],
+              ...INVENTORY_MAP["nutrition_national.json"],
+              ...INVENTORY_MAP["hiv_incidence_national.json"],
+              ...INVENTORY_MAP["deaths_ethnicity_state.json"],
+              ...INVENTORY_MAP["covid_state.json"],
+              ...INVENTORY_MAP["health_programmes_state.json"],
+              ...INVENTORY_MAP["pekab40_screenings_daily_state.json"],
+            ])
+          )}
+        />
         {/* Filters */}
         <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
           <div>

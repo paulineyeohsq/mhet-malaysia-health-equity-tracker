@@ -5,10 +5,12 @@ import ChoroplethMap, { type ChoroplethDatum, type TierConfig } from "../compone
 import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
 import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
+import MetadataPanel from "../components/MetadataPanel";
 import { useData } from "../lib/useData";
 import type { SOURCES } from "../lib/sources";
 import { computeTerciles, computeAverage, fmt } from "../lib/equity";
 import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
+import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 type Geography = "state" | "district";
 
@@ -150,6 +152,11 @@ export default function HealthEquityMap() {
         subtitle="Select an indicator, year and geography to explore how health and socioeconomic conditions vary across Malaysia."
       />
       <div className="p-6 lg:p-10">
+        <div className="mb-4">
+          <MetadataPanel
+            datasetIds={Array.from(new Set(INDICATORS.flatMap((i) => INVENTORY_MAP[i.file] ?? [])))}
+          />
+        </div>
         {/* Filters */}
         <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
           <div>
