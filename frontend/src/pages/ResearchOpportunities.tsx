@@ -5,10 +5,11 @@ import CorrelationCaveat from "../components/CorrelationCaveat";
 import ResearchOpportunityPanel from "../components/ResearchOpportunityPanel";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
-import { yearsWithCoverage, computeGroupGapStats, fmt, type GenericGapStats } from "../lib/equity";
+import { yearsWithCoverage, computeGroupGapStats, fmt } from "../lib/equity";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 import { buildStructuredQuestion } from "../lib/researchQuestionTemplates";
+import { useChat } from "../lib/chatContext";
 
 const POPULATION_SCOPES = ["General population", "Older adults (65+)", "Children under 5", "Adults of working age"];
 const EQUITY_DIMENSIONS = ["Income", "Poverty", "Healthcare access", "Geographic (state-level)"];
@@ -48,47 +49,52 @@ export default function ResearchOpportunities() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.state]);
 
-  // ---- Automated research question suggestion ----
-  // Deterministic, not AI-generated: scans every outcome indicator this
-  // dataset actually has, finds the one with the largest relative gap
-  // (worst state / best state ratio) between Malaysian states in its most
-  // recent year with coverage, and surfaces that as the suggestion. The
-  // justification is the gap itself — the most notable disparity found
-  // across everything this dashboard tracks, not a guess.
-  interface Suggestion {
-    outcomeId: string;
-    outcomeLabel: string;
-    state: string;
-    year: number;
-    stats: GenericGapStats;
-    unit: string;
-  }
-  const [suggestion, setSuggestion] = useState<Suggestion | null>(null);
+  // ---- Automated research question suggestion (AI agent) ----
+  // The gap computed for every outcome indicator below is 100% real —
+  // the exact same computeGroupGapStats() used everywhere else in this
+  // app, no invented numbers. What used to be hardcoded here was the
+  // DECISION (always pick the single largest ratio) and the JUSTIFICATION
+  // (a fixed sentence template). Both of those now come from the Gemini
+  // agent instead: it's handed the full real table below — every outcome,
+  // its worst/best state, and the gap between them — and asked to pick
+  // the most compelling starting point and explain why in its own words,
+  // the same way "Explain this" already grounds Gemini in real chart data
+  // rather than letting it invent anything. The agent's answer appears in
+  // the Ask MY-HEO panel, not a synchronous on-page card, since there's no
+  // longer a single deterministic winner to parse back out and auto-fill
+  // the selects with.
+  const { explain, loading: chatLoading } = useChat();
 
   function handleSuggest() {
-    let best: Suggestion | null = null;
+    const rows: string[] = ["Indicator | Unit | Year | Worst state | Worst value | Best state | Best value | Ratio (worst/best)"];
     for (const field of OUTCOME_FIELDS) {
-      let rows = rowsForField(OUTCOME_SOURCES[field.file], field);
+      let fieldRows = rowsForField(OUTCOME_SOURCES[field.file], field);
       // NHMS survey fields carry a per-indicator "<stem>_unreliable" flag
       // (small sample size / high relative standard error) — exclude those
-      // rows before ranking states, so a flagged outlier can never win the
-      // "largest gap" suggestion. Most fields have no such flag; only
-      // filter when one actually exists on this field.
+      // rows before ranking states, so a flagged outlier is never handed
+      // to the agent as if it were a reliable data point.
       const reliabilityKey = field.field.replace(/_prevalence_pct$/, "_unreliable");
-      if (reliabilityKey !== field.field && rows?.some((r) => reliabilityKey in r)) {
-        rows = rows.filter((r) => r[reliabilityKey] !== true);
+      if (reliabilityKey !== field.field && fieldRows?.some((r) => reliabilityKey in r)) {
+        fieldRows = fieldRows.filter((r) => r[reliabilityKey] !== true);
       }
-      const year = yearsWithCoverage(rows, field.field)[0] ?? null;
-      const stats = computeGroupGapStats(rows, year, field.field, field.higherIsWorse);
+      const year = yearsWithCoverage(fieldRows, field.field)[0] ?? null;
+      const stats = computeGroupGapStats(fieldRows, year, field.field, field.higherIsWorse);
       if (!stats || stats.ratio === null || year === null) continue;
-      if (!best || stats.ratio > best.stats.ratio!) {
-        best = { outcomeId: field.id, outcomeLabel: field.label, state: stats.worst.name, year, stats, unit: field.unit };
-      }
+      rows.push(
+        `${field.label} | ${field.unit} | ${year} | ${stats.worst.name} | ${fmt(stats.worst.value, 1)} | ${stats.best.name} | ${fmt(stats.best.value, 1)} | ${fmt(stats.ratio, 1)}×`
+      );
     }
-    if (!best) return;
-    setSuggestion(best);
-    setOutcomeId(best.outcomeId);
-    setSelectedState(best.state);
+    if (rows.length < 2) return;
+    explain(
+      `I'm using the Malaysia Health Equity Observatory dashboard's Research Opportunities page. Below is a real, ` +
+        `computed table — for every health/socioeconomic outcome indicator this dashboard tracks, the state reporting ` +
+        `the worst value, the state reporting the best value, and the ratio between them, all in the most recent year ` +
+        `each indicator has data for. Do not invent or estimate any number not shown here.\n\n${rows.join("\n")}\n\n` +
+        `Recommend ONE indicator and state from this table as the most compelling starting point for further ` +
+        `research — not necessarily the single largest ratio, but the one you judge most policy-relevant, actionable, ` +
+        `or under-explored for a health-equity researcher. Name the exact indicator and state from the table (so it's ` +
+        `unambiguous which row you mean) and explain your reasoning in 2-3 sentences.`
+    );
   }
 
   const outcome = OUTCOME_FIELDS.find((f) => f.id === outcomeId)!;
@@ -124,34 +130,20 @@ export default function ResearchOpportunities() {
           <div className="rounded-lg border border-line-axis bg-plane p-4">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="max-w-2xl text-sm text-ink-secondary">
-                Scans every outcome indicator in this dataset and surfaces the one with the largest real gap between
-                states — a deterministic scan of published data, not an AI guess — then fills in the selection below.
+                Computes the real state-to-state gap for every outcome indicator this dashboard tracks, then hands
+                that data to the MY-HEO Assistant (Gemini) and asks it to pick the most compelling starting point and
+                explain why — the numbers are always real and computed, never invented, but the pick and the
+                reasoning come from the AI agent, not a fixed rule. Its answer opens in the chat panel.
               </p>
               <button
                 type="button"
                 onClick={handleSuggest}
-                className="shrink-0 rounded-md bg-series-1 px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+                disabled={chatLoading}
+                className="shrink-0 rounded-md bg-series-1 px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-60"
               >
-                Suggest a research question
+                {chatLoading ? "Asking MY-HEO Assistant…" : "Suggest a research question"}
               </button>
             </div>
-            {suggestion && (
-              <div className="mt-4 rounded-lg border border-line-grid bg-surface p-4">
-                <p className="text-xs font-semibold uppercase tracking-wide text-series-1">Why this question matters</p>
-                <p className="mt-1.5 text-sm text-ink-primary">
-                  <strong>{suggestion.state}</strong> reports {fmt(suggestion.stats.worst.value, 1)} {suggestion.unit} for{" "}
-                  <strong>{suggestion.outcomeLabel.toLowerCase()}</strong> in {suggestion.year}, versus{" "}
-                  {fmt(suggestion.stats.best.value, 1)} {suggestion.unit} in {suggestion.stats.best.name} — a{" "}
-                  {fmt(suggestion.stats.ratio, 1)}× gap between the highest- and lowest-reporting state. Across every
-                  outcome indicator checked in this dataset, this was the largest relative gap found, which is why
-                  it's surfaced as a starting point for further investigation.
-                </p>
-                <p className="mt-2 text-xs text-ink-muted">
-                  Selection below has been set to {suggestion.state} / {suggestion.outcomeLabel} — pick a determinant
-                  and generate a structured question, or adjust any field to explore a different angle.
-                </p>
-              </div>
-            )}
           </div>
         </section>
 
