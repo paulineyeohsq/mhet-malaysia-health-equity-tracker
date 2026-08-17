@@ -85,7 +85,7 @@ const GHG_COLORS: Record<string, string> = {
   industrial_processes: "#4a3aa7",
   agriculture: "#1baf7a",
   waste: "#e87ba4",
-  lulucf: "#2a78d6",
+  lulucf: "#3a7173",
 };
 
 const BASIN_MEASURE_LABELS: Record<string, string> = {
@@ -211,7 +211,7 @@ export default function Environment() {
   }, [electricityConsumption, electricitySupply]);
   const electricitySeries: Series[] = [
     { key: "Total consumption (MKWh)", label: "Total consumption (MKWh)", color: "#eda100" },
-    { key: "Total supply (MKWh)", label: "Total supply (MKWh)", color: "#2a78d6" },
+    { key: "Total supply (MKWh)", label: "Total supply (MKWh)", color: "#3a7173" },
   ];
 
   const latestForestNational = forestNational ? [...forestNational].filter((r) => r.area_hectares !== null).sort((a, b) => b.year - a.year)[0] : null;
@@ -301,7 +301,7 @@ export default function Environment() {
           <div className="grid gap-4 lg:grid-cols-2">
             <div>
               {waterConsumptionDomesticData.length > 0 ? (
-                <BarRankingCard title={`Domestic water consumption — ${effectiveStateYear}`} data={waterConsumptionDomesticData} nameKey="state" valueKey="consumption_mld" unit="MLD" color="#2a78d6" />
+                <BarRankingCard title={`Domestic water consumption — ${effectiveStateYear}`} data={waterConsumptionDomesticData} nameKey="state" valueKey="consumption_mld" unit="MLD" color="#3a7173" />
               ) : (
                 <InsufficientData reason="No domestic water consumption data for the selected year." />
               )}

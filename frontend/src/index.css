@@ -25,15 +25,25 @@ body {
 }
 
 ::selection {
-  background: #cde2fb;
+  background: #e3f2f3;
 }
 
-a {
-  color: inherit;
+/* Layered (not a bare global rule) so Tailwind's utilities layer — e.g.
+   text-series-1 on nav links / "View source" links — can still win via
+   normal layer ordering (base < components < utilities). An unlayered
+   `a { color: inherit }` here would out-rank EVERY Tailwind color utility
+   on every link regardless of specificity, since CSS cascade layers give
+   any unlayered rule top priority over all layered rules — discovered via
+   a live contrast check during the 2026-08-17 logo/colour rebrand, where
+   every styled link was silently rendering as inherited black/grey. */
+@layer base {
+  a {
+    color: inherit;
+  }
 }
 
 /* Focus visibility for keyboard nav (accessibility requirement) */
 :focus-visible {
-  outline: 2px solid #2a78d6;
+  outline: 2px solid #3a7173;
   outline-offset: 2px;
 }

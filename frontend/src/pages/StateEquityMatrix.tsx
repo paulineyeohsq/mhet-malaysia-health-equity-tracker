@@ -411,7 +411,7 @@ export default function StateEquityMatrix() {
                       isAnimationActive={false}
                     />
                   )}
-                  {pairsForA.length > 0 && <Scatter name={stateA} data={pairsForA} fill="#2a78d6" shape="circle" legendType="circle" />}
+                  {pairsForA.length > 0 && <Scatter name={stateA} data={pairsForA} fill="#3a7173" shape="circle" legendType="circle" />}
                   {pairsForB.length > 0 && <Scatter name={stateB} data={pairsForB} fill="#eb6834" shape="circle" legendType="circle" />}
                 </ComposedChart>
               </ResponsiveContainer>
@@ -428,7 +428,7 @@ export default function StateEquityMatrix() {
 
             <div className="grid gap-4 lg:grid-cols-2">
               {[
-                { name: stateA, pair: pairA, color: "#2a78d6" },
+                { name: stateA, pair: pairA, color: "#3a7173" },
                 { name: stateB, pair: pairB, color: "#eb6834" },
               ].map(({ name, pair, color }) => (
                 <div key={name} className="rounded-lg border border-line-grid bg-surface p-4">

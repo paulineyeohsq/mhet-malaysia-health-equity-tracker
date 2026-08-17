@@ -104,7 +104,7 @@ type AmenityIndicatorId = "sanitation" | "water";
 
 const AMENITY_INDICATORS: { id: AmenityIndicatorId; label: string; unit: string; sourceKey: keyof typeof SOURCES; color: string }[] = [
   { id: "sanitation", label: "Basic sanitation access", unit: "%", sourceKey: "sanitation", color: "#1baf7a" },
-  { id: "water", label: "Basic water access (overall)", unit: "%", sourceKey: "water", color: "#2a78d6" },
+  { id: "water", label: "Basic water access (overall)", unit: "%", sourceKey: "water", color: "#3a7173" },
 ];
 
 interface HealthOutcomeRow {
@@ -125,7 +125,7 @@ type HealthIndicatorId =
   | "under5_mortality_rate";
 
 const SOCIO_INDICATORS: { id: SocioIndicatorId; label: string; unit: string; sourceKey: keyof typeof SOURCES; color: string }[] = [
-  { id: "income_median", label: "Median household income", unit: "RM", sourceKey: "income", color: "#2a78d6" },
+  { id: "income_median", label: "Median household income", unit: "RM", sourceKey: "income", color: "#3a7173" },
   { id: "poverty_absolute", label: "Absolute poverty rate", unit: "%", sourceKey: "poverty", color: "#eb6834" },
   { id: "gini", label: "Gini coefficient", unit: "", sourceKey: "gini", color: "#4a3aa7" },
 ];
@@ -409,7 +409,7 @@ export default function SocioeconomicInequality() {
                 xKey="year"
                 series={[
                   { key: "Mean income", label: "Mean income (RM)", color: "#4a3aa7" },
-                  { key: "Median income", label: "Median income (RM)", color: "#2a78d6" },
+                  { key: "Median income", label: "Median income (RM)", color: "#3a7173" },
                 ]}
               />
             )}
@@ -623,7 +623,7 @@ export default function SocioeconomicInequality() {
               data={percentileChartData}
               xKey="percentile"
               series={[
-                { key: "Mean income", label: "Mean income (RM)", color: "#2a78d6" },
+                { key: "Mean income", label: "Mean income (RM)", color: "#3a7173" },
                 { key: "Median income", label: "Median income (RM)", color: "#1baf7a" },
               ]}
               unit="RM"
@@ -724,7 +724,7 @@ export default function SocioeconomicInequality() {
                 data={waterStrataTrendData}
                 xKey="year"
                 series={[
-                  { key: "overall", label: "Overall", color: "#2a78d6" },
+                  { key: "overall", label: "Overall", color: "#3a7173" },
                   { key: "urban", label: "Urban", color: "#1baf7a" },
                   { key: "rural", label: "Rural", color: "#eb6834" },
                 ]}
@@ -884,7 +884,7 @@ export default function SocioeconomicInequality() {
                         formatter={(value, name) => [String(value), String(name)]}
                         labelFormatter={() => ""}
                       />
-                      <Scatter name="States" data={correlationInput.pairs} fill="#2a78d6" />
+                      <Scatter name="States" data={correlationInput.pairs} fill="#3a7173" />
                       <Line
                         name="Linear fit"
                         data={correlationStats.regressionLine}

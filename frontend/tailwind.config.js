@@ -22,12 +22,16 @@ export default {
         series: {
           // Note: chart marks (Recharts stroke/fill props) use their own
           // literal hex constants in each page, independent of this token,
-          // so this darkened value only affects Tailwind-class usage
-          // (links, active nav state, accents) — the dataviz-skill-
-          // validated chart palette itself is unchanged. Darkened from
-          // #2a78d6 (4.3:1, fails WCAG AA at small text sizes) to #1c66c2
-          // (5.5:1) after an axe-core accessibility scan flagged link text.
-          1: '#1c66c2', // blue
+          // so this value only affects Tailwind-class usage (links, active
+          // nav state, accents, buttons) — the dataviz-skill-validated
+          // 8-hue categorical chart palette itself is unchanged (series 2-8
+          // stay as-is; only the brand accent, series-1, is retheme'd).
+          // Sampled from the MY-HEO logo (frontend/public/logo.png, Pillow
+          // color-clustering: teal #86c0c2 was the dominant icon-fill hue)
+          // then darkened along the same hue (182°) from #86c0c2 (1.98:1,
+          // fails WCAG AA) to #3a7173 (5.40:1) — matches the previous
+          // accent blue's own 5.49:1 contrast, same legibility, new hue.
+          1: '#3a7173', // teal
           2: '#eb6834', // orange
           3: '#1baf7a', // aqua
           4: '#eda100', // yellow
@@ -42,11 +46,15 @@ export default {
           serious: '#ec835a',
           critical: '#d03b3b',
         },
+        // Sequential intensity ramp (choropleth map only) — light teal to
+        // navy, both sampled from the logo (icon teal #86c0c2, wordmark
+        // navy #1c3d60), linearly interpolated across the same 11 stops
+        // (100-700) the previous blue-only ramp used.
         seq: {
-          100: '#cde2fb', 150: '#b7d3f6', 200: '#9ec5f4', 250: '#86b6ef',
-          300: '#6da7ec', 350: '#5598e7', 400: '#3987e5', 450: '#2a78d6',
-          500: '#256abf', 550: '#1c5cab', 600: '#184f95', 650: '#104281',
-          700: '#0d366b',
+          100: '#e3f2f3', 150: '#d2e3e7', 200: '#c2d4da', 250: '#b1c5ce',
+          300: '#a1b6c2', 350: '#90a7b6', 400: '#8098aa', 450: '#6f889d',
+          500: '#5e7991', 550: '#4e6a85', 600: '#3d5b78', 650: '#2d4c6c',
+          700: '#1c3d60',
         },
       },
       fontFamily: {
