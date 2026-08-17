@@ -68,13 +68,11 @@ export default function Layout() {
       <header className="lg:w-64 lg:min-h-screen border-b lg:border-b-0 lg:border-r border-line-grid bg-surface">
         <div className="px-5 py-5 border-b border-line-grid">
           <NavLink to="/" className="block">
-            <div className="text-[13px] font-semibold tracking-wide text-series-1 uppercase">
-              Malaysia
-            </div>
-            <div className="text-lg font-semibold text-ink-primary leading-tight">
-              Health Equity Observatory
-            </div>
-            <div className="text-[11px] font-medium tracking-wide text-ink-muted">MY-HEO</div>
+            <img
+              src="/logo.png"
+              alt="Malaysia Health Equity Observatory (MY-HEO)"
+              className="h-auto w-full max-w-[180px]"
+            />
           </NavLink>
         </div>
         <nav aria-label="Primary" className="px-2 py-3">
