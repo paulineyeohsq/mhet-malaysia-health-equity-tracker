@@ -399,6 +399,99 @@ const DATASETS: DatasetDef[] = [
       { key: "birth_rate_per_1000", label: "Birth rate (per 1,000)", numeric: true },
     ],
   },
+  {
+    id: "forest_reserve_national",
+    label: "Forest Reserve Area — National",
+    file: "forest_reserve_national.json",
+    columns: [
+      { key: "year", label: "Year", numeric: true },
+      { key: "area_hectares", label: "Area (hectares)", numeric: true },
+    ],
+  },
+  {
+    id: "forest_reserve_state",
+    label: "Forest Reserve Area — State",
+    file: "forest_reserve_state.json",
+    columns: [
+      { key: "state", label: "State" },
+      { key: "year", label: "Year", numeric: true },
+      { key: "area_hectares", label: "Area (hectares)", numeric: true },
+    ],
+  },
+  {
+    id: "water_consumption_state",
+    label: "Water Consumption — State",
+    file: "water_consumption_state.json",
+    columns: [
+      { key: "state", label: "State" },
+      { key: "year", label: "Year", numeric: true },
+      { key: "sector", label: "Sector (domestic/nondomestic)" },
+      { key: "consumption_mld", label: "Consumption (MLD, annual mean)", numeric: true },
+    ],
+  },
+  {
+    id: "water_production_state",
+    label: "Water Production — State",
+    file: "water_production_state.json",
+    columns: [
+      { key: "state", label: "State" },
+      { key: "year", label: "Year", numeric: true },
+      { key: "production_mld", label: "Production (MLD, annual mean)", numeric: true },
+    ],
+  },
+  {
+    id: "air_pollution_national",
+    label: "Air Pollution — National",
+    file: "air_pollution_national.json",
+    columns: [
+      { key: "year", label: "Year", numeric: true },
+      { key: "pollutant", label: "Pollutant" },
+      { key: "concentration", label: "Concentration (annual mean)", numeric: true },
+    ],
+  },
+  {
+    id: "ghg_emissions_national",
+    label: "Greenhouse Gas Emissions — National",
+    file: "ghg_emissions_national.json",
+    columns: [
+      { key: "year", label: "Year", numeric: true },
+      { key: "source", label: "Source" },
+      { key: "emissions_gg_co2e", label: "Emissions (Gg CO2e)", numeric: true },
+    ],
+  },
+  {
+    id: "water_pollution_basin_national",
+    label: "River Basin Pollution — National",
+    file: "water_pollution_basin_national.json",
+    columns: [
+      { key: "year", label: "Year", numeric: true },
+      { key: "measure", label: "Measure (bod5/nh3n/ss)" },
+      { key: "status", label: "Status" },
+      { key: "n_basins", label: "Basins (count)", numeric: true },
+      { key: "proportion_pct", label: "Proportion (%)", numeric: true },
+      { key: "basins_monitored", label: "Basins monitored (total)", numeric: true },
+    ],
+  },
+  {
+    id: "electricity_consumption_national",
+    label: "Electricity Consumption — National",
+    file: "electricity_consumption_national.json",
+    columns: [
+      { key: "year", label: "Year", numeric: true },
+      { key: "sector", label: "Sector" },
+      { key: "consumption_mkwh", label: "Consumption (MKWh, annual sum)", numeric: true },
+    ],
+  },
+  {
+    id: "electricity_supply_national",
+    label: "Electricity Supply — National",
+    file: "electricity_supply_national.json",
+    columns: [
+      { key: "year", label: "Year", numeric: true },
+      { key: "sector", label: "Sector" },
+      { key: "supply_mkwh", label: "Supply (MKWh, annual sum)", numeric: true },
+    ],
+  },
 ];
 
 export default function DataExplorer() {

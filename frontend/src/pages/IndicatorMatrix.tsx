@@ -27,6 +27,9 @@ export default function IndicatorMatrix() {
   const { data: marriages } = useData<Row[]>("marriages_state.json");
   const { data: fertility } = useData<Row[]>("fertility_state.json");
   const { data: healthProgrammes } = useData<Row[]>("health_programmes_state.json");
+  const { data: forestReserve } = useData<Row[]>("forest_reserve_state.json");
+  const { data: waterConsumption } = useData<Row[]>("water_consumption_state.json");
+  const { data: waterProduction } = useData<Row[]>("water_production_state.json");
 
   const rowsByFile: Record<FieldDef["file"], Row[] | null> = useMemo(
     () => ({
@@ -40,8 +43,14 @@ export default function IndicatorMatrix() {
       "marriages_state.json": marriages,
       "fertility_state.json": fertility,
       "health_programmes_state.json": healthProgrammes,
+      "forest_reserve_state.json": forestReserve,
+      "water_consumption_state.json": waterConsumption,
+      "water_production_state.json": waterProduction,
     }),
-    [healthOutcomes, healthcareAccess, socioeconomic, nhmsNcd, nhmsAdolescentMentalHealth, sanitation, water, marriages, fertility, healthProgrammes]
+    [
+      healthOutcomes, healthcareAccess, socioeconomic, nhmsNcd, nhmsAdolescentMentalHealth, sanitation, water,
+      marriages, fertility, healthProgrammes, forestReserve, waterConsumption, waterProduction,
+    ]
   );
 
   const [determinantId, setDeterminantId] = useState(DETERMINANT_FIELDS[1].id);

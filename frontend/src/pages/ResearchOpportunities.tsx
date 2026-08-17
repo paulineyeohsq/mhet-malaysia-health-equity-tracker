@@ -31,6 +31,9 @@ export default function ResearchOpportunities() {
     "water_access_state.json": null,
     "marriages_state.json": null,
     "health_programmes_state.json": null,
+    "forest_reserve_state.json": null,
+    "water_consumption_state.json": null,
+    "water_production_state.json": null,
   };
 
   const [selectedState, setSelectedState] = useState<string>(MALAYSIA_STATES[0]);

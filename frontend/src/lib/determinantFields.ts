@@ -14,7 +14,10 @@ export interface FieldDef {
     | "water_access_state.json"
     | "marriages_state.json"
     | "fertility_state.json"
-    | "health_programmes_state.json";
+    | "health_programmes_state.json"
+    | "forest_reserve_state.json"
+    | "water_consumption_state.json"
+    | "water_production_state.json";
   field: string;
   unit: string;
   sourceKey: keyof typeof SOURCES;
@@ -109,4 +112,12 @@ export const DETERMINANT_FIELDS: FieldDef[] = [
   { id: "blood_donations_det", label: "Blood donations", file: "health_programmes_state.json", field: "blood_donations_abs", unit: "donations", sourceKey: "health_programmes", higherIsWorse: false },
   { id: "organ_pledges_det", label: "Organ pledges", file: "health_programmes_state.json", field: "organ_pledges_abs", unit: "pledges", sourceKey: "health_programmes", higherIsWorse: false },
   { id: "pekab40_det", label: "PeKa B40 screenings", file: "health_programmes_state.json", field: "pekab40_screenings_abs", unit: "screenings", sourceKey: "health_programmes", higherIsWorse: false },
+  // Environment (added 2026-08-17) — state-level only; air pollution, GHG
+  // emissions, river basin pollution and electricity flow are national-only
+  // in the source and so live as trend context on the Environment page
+  // instead of here (see build_environment_national() in transform_data.py).
+  { id: "forest_det", label: "Permanent forest reserve area", file: "forest_reserve_state.json", field: "area_hectares", unit: "hectares", sourceKey: "forest_reserve", higherIsWorse: false },
+  { id: "water_consumption_domestic_det", label: "Domestic water consumption", file: "water_consumption_state.json", field: "consumption_mld", unit: "MLD (annual mean of monthly rates)", sourceKey: "water_utilities", higherIsWorse: false, filter: (r) => r.sector === "domestic" },
+  { id: "water_consumption_nondomestic_det", label: "Non-domestic water consumption", file: "water_consumption_state.json", field: "consumption_mld", unit: "MLD (annual mean of monthly rates)", sourceKey: "water_utilities", higherIsWorse: false, filter: (r) => r.sector === "nondomestic" },
+  { id: "water_production_det", label: "Water production", file: "water_production_state.json", field: "production_mld", unit: "MLD (annual mean of monthly rates)", sourceKey: "water_utilities", higherIsWorse: false },
 ];

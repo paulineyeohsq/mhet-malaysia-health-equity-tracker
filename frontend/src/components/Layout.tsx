@@ -27,6 +27,7 @@ const NAV_SECTIONS: NavSection[] = [
       { to: "/health-outcomes", label: "Health Outcomes" },
       { to: "/healthcare-access", label: "Healthcare Access" },
       { to: "/financing", label: "Healthcare Financing" },
+      { to: "/environment", label: "Environment" },
     ],
   },
   {

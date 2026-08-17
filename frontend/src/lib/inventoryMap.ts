@@ -93,4 +93,13 @@ export const INVENTORY_MAP: Record<string, string[]> = {
   "water_access_national.json": ["water_access"],
   "electricity_access_region.json": ["electricity_access"],
   "nutrition_strata_national.json": ["nutrition_children_strata"],
+  "forest_reserve_national.json": ["forest_reserve"],
+  "forest_reserve_state.json": ["forest_reserve_state"],
+  "water_consumption_state.json": ["water_consumption"],
+  "water_production_state.json": ["water_production"],
+  "air_pollution_national.json": ["air_pollution"],
+  "ghg_emissions_national.json": ["ghg_emissions"],
+  "water_pollution_basin_national.json": ["water_pollution_basin"],
+  "electricity_consumption_national.json": ["electricity_consumption"],
+  "electricity_supply_national.json": ["electricity_supply"],
 };
