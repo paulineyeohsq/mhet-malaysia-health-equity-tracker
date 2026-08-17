@@ -5,7 +5,9 @@ import SourceNote from "../components/SourceNote";
 import BarRankingCard from "../components/BarRankingCard";
 import LineChartCard, { type Series } from "../components/LineChartCard";
 import InsufficientData from "../components/InsufficientData";
+import MetadataPanel from "../components/MetadataPanel";
 import { useData } from "../lib/useData";
+import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 interface ForestReserveNational {
   year: number;
@@ -232,6 +234,21 @@ export default function Environment() {
         subtitle="Land, water and air indicators from DOSM's environment catalogue — forest reserve area and water infrastructure are state-level; air pollution, greenhouse gas emissions, river basin water quality and electricity flows are published nationally only, with no state or station breakdown in the source."
       />
       <div className="space-y-8 p-6 lg:p-10">
+        <MetadataPanel
+          datasetIds={Array.from(
+            new Set([
+              ...INVENTORY_MAP["forest_reserve_national.json"],
+              ...INVENTORY_MAP["forest_reserve_state.json"],
+              ...INVENTORY_MAP["water_consumption_state.json"],
+              ...INVENTORY_MAP["water_production_state.json"],
+              ...INVENTORY_MAP["air_pollution_national.json"],
+              ...INVENTORY_MAP["ghg_emissions_national.json"],
+              ...INVENTORY_MAP["water_pollution_basin_national.json"],
+              ...INVENTORY_MAP["electricity_consumption_national.json"],
+              ...INVENTORY_MAP["electricity_supply_national.json"],
+            ])
+          )}
+        />
         <KPISummarySection
           title="National snapshot (latest available year per indicator)"
           headingId="env-kpis"

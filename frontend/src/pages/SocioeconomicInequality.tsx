@@ -26,7 +26,9 @@ import type { SOURCES } from "../lib/sources";
 import type { Row } from "../lib/equity";
 import { findBestYear, buildPairs, computeCorrelationStats, CORRELATION_MIN_PAIRS } from "../lib/correlation";
 import CorrelationCaveat from "../components/CorrelationCaveat";
+import MetadataPanel from "../components/MetadataPanel";
 import { useChat, buildExplainPrompt } from "../lib/chatContext";
+import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 interface NationalRow {
   year: number;
@@ -356,6 +358,20 @@ export default function SocioeconomicInequality() {
       />
 
       <div className="space-y-8 p-6 lg:p-10">
+        <MetadataPanel
+          datasetIds={Array.from(
+            new Set([
+              ...INVENTORY_MAP["socioeconomic_national.json"],
+              ...INVENTORY_MAP["socioeconomic_state.json"],
+              ...INVENTORY_MAP["socioeconomic_district.json"],
+              ...INVENTORY_MAP["health_outcomes_state.json"],
+              ...INVENTORY_MAP["hies_percentile_national.json"],
+              ...INVENTORY_MAP["sanitation_access_state.json"],
+              ...INVENTORY_MAP["water_access_state.json"],
+              ...INVENTORY_MAP["electricity_access_region.json"],
+            ])
+          )}
+        />
         {/* National snapshot */}
         <KPISummarySection
           title="National snapshot"

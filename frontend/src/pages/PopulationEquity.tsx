@@ -18,10 +18,12 @@ import BarRankingCard from "../components/BarRankingCard";
 import DataTable, { type Column, toCSV } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
 import ChartToolbar from "../components/ChartToolbar";
+import MetadataPanel from "../components/MetadataPanel";
 import { useData } from "../lib/useData";
 import { computeGroupMeanGap, fmt, type Row } from "../lib/equity";
 import { MALAYSIA_STATES, EAST_MALAYSIA_STATES, PENINSULAR_STATES } from "../lib/geoConstants";
 import { useChat, buildExplainPrompt } from "../lib/chatContext";
+import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 interface PopStateRow {
   state: string;
@@ -428,6 +430,19 @@ export default function PopulationEquity() {
       />
 
       <div className="space-y-8 p-6 lg:p-10">
+        <MetadataPanel
+          datasetIds={Array.from(
+            new Set([
+              ...INVENTORY_MAP["population_state.json"],
+              ...INVENTORY_MAP["population_district.json"],
+              ...INVENTORY_MAP["nutrition_national.json"],
+              ...INVENTORY_MAP["marriages_national.json"],
+              ...INVENTORY_MAP["fertility_state.json"],
+              ...INVENTORY_MAP["population_parlimen.json"],
+              ...INVENTORY_MAP["population_dun.json"],
+            ])
+          )}
+        />
         {/* Data availability note */}
         <div className="rounded-lg border border-line-axis bg-plane p-3 text-xs leading-relaxed text-ink-secondary">
           <strong className="text-ink-primary">Not available on this page:</strong> urban/rural comparisons (no such

@@ -8,8 +8,10 @@ import BarRankingCard from "../components/BarRankingCard";
 import DataTable, { type Column } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
 import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
+import MetadataPanel from "../components/MetadataPanel";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
+import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 interface NationalRow {
   year: number;
@@ -160,6 +162,15 @@ export default function HealthcareAccess() {
       />
 
       <div className="space-y-8 p-6 lg:p-10">
+        <MetadataPanel
+          datasetIds={Array.from(
+            new Set([
+              ...INVENTORY_MAP["healthcare_access_national.json"],
+              ...INVENTORY_MAP["healthcare_access_district_2022.json"],
+              ...INVENTORY_MAP["population_state.json"],
+            ])
+          )}
+        />
         {/* National KPI tiles */}
         <section>
           <KPISummarySection

@@ -10,6 +10,8 @@ import { MALAYSIA_STATES } from "../lib/geoConstants";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 import { buildStructuredQuestion } from "../lib/researchQuestionTemplates";
 import { useChat } from "../lib/chatContext";
+import MetadataPanel from "../components/MetadataPanel";
+import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 const POPULATION_SCOPES = ["General population", "Older adults (65+)", "Children under 5", "Adults of working age"];
 const EQUITY_DIMENSIONS = ["Income", "Poverty", "Healthcare access", "Geographic (state-level)"];
@@ -136,6 +138,11 @@ export default function ResearchOpportunities() {
       />
       <div className="space-y-8 p-6 lg:p-10">
         <CorrelationCaveat />
+        <MetadataPanel
+          datasetIds={Array.from(
+            new Set([...OUTCOME_FIELDS, ...DETERMINANT_FIELDS].flatMap((f) => INVENTORY_MAP[f.file] ?? []))
+          )}
+        />
 
         <section aria-labelledby="ro-suggest">
           <h2 id="ro-suggest" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">

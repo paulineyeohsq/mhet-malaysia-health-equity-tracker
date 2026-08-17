@@ -1,4 +1,5 @@
 import PageHeader from "../components/PageHeader";
+import { GLOSSARY } from "../lib/glossary";
 
 function H2({ id, children }: { id: string; children: React.ReactNode }) {
   return (
@@ -444,6 +445,23 @@ export default function Methodology() {
             </a>{" "}
             page.
           </P>
+        </section>
+
+        {/* 12. Glossary */}
+        <section aria-labelledby="m-glossary">
+          <H2 id="m-glossary">12. Glossary</H2>
+          <P>
+            Quick definitions for terms used across this dashboard's charts and KPI tiles. Hovering (or tapping, on
+            touch devices) a dotted-underlined term anywhere on the site links back to its entry here.
+          </P>
+          <dl className="space-y-3">
+            {Object.values(GLOSSARY).map((entry) => (
+              <div key={entry.id} id={`glossary-${entry.id}`} className="scroll-mt-6 border-b border-line-grid pb-3 last:border-b-0">
+                <dt className="text-sm font-medium text-ink-primary">{entry.term}</dt>
+                <dd className="mt-0.5 text-sm leading-relaxed text-ink-secondary">{entry.definition}</dd>
+              </div>
+            ))}
+          </dl>
         </section>
       </div>
     </div>

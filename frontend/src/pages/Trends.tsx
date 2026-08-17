@@ -24,6 +24,8 @@ import { useChat, buildExplainPrompt } from "../lib/chatContext";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, NATIONAL_FIELDS, rowsForField, type FieldDef, type NationalFieldDef } from "../lib/determinantFields";
 import { SOURCES } from "../lib/sources";
+import MetadataPanel from "../components/MetadataPanel";
+import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 const ALL_FIELDS: FieldDef[] = [...OUTCOME_FIELDS, ...DETERMINANT_FIELDS];
 
@@ -282,6 +284,15 @@ export default function Trends() {
         subtitle="WHY, over time: is a state's gap on an indicator widening or narrowing? Every real reported year for that state, plotted against the national average for the same year."
       />
       <div className="space-y-6 p-6 lg:p-10">
+        <MetadataPanel
+          datasetIds={Array.from(
+            new Set(
+              [...OUTCOME_FIELDS, ...DETERMINANT_FIELDS].flatMap((f) => INVENTORY_MAP[f.file] ?? []).concat(
+                NATIONAL_FIELDS.flatMap((f) => INVENTORY_MAP[f.file] ?? [])
+              )
+            )
+          )}
+        />
         <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
           <div>
             <label htmlFor="trend-state" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
