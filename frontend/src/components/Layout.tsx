@@ -69,7 +69,7 @@ export default function Layout() {
         <div className="px-5 py-5 border-b border-line-grid">
           <NavLink to="/" className="block">
             <img
-              src="/logo.png"
+              src={`${import.meta.env.BASE_URL}logo.png`}
               alt="Malaysia Health Equity Observatory (MY-HEO)"
               className="h-auto w-full max-w-[180px]"
             />
