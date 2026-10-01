@@ -2409,7 +2409,7 @@ date,state,screenings
 2025-11-16,Johor,43
 2025-11-17,Johor,113
 2025-11-18,Johor,97
-2025-11-19,Johor,200
+2025-11-19,Johor,201
 2025-11-20,Johor,115
 2025-11-21,Johor,79
 2025-11-22,Johor,39
@@ -2418,7 +2418,7 @@ date,state,screenings
 2025-11-25,Johor,95
 2025-11-26,Johor,100
 2025-11-27,Johor,115
-2025-11-28,Johor,78
+2025-11-28,Johor,79
 2025-11-29,Johor,40
 2025-11-30,Johor,27
 2025-12-01,Johor,90
@@ -2485,7 +2485,7 @@ date,state,screenings
 2026-01-31,Johor,24
 2026-02-01,Johor,21
 2026-02-02,Johor,22
-2026-02-03,Johor,137
+2026-02-03,Johor,138
 2026-02-04,Johor,222
 2026-02-05,Johor,151
 2026-02-06,Johor,140
@@ -2509,7 +2509,7 @@ date,state,screenings
 2026-02-24,Johor,110
 2026-02-25,Johor,155
 2026-02-26,Johor,132
-2026-02-27,Johor,99
+2026-02-27,Johor,100
 2026-02-28,Johor,33
 2026-03-01,Johor,16
 2026-03-02,Johor,141
@@ -2520,7 +2520,7 @@ date,state,screenings
 2026-03-07,Johor,27
 2026-03-08,Johor,18
 2026-03-09,Johor,161
-2026-03-10,Johor,144
+2026-03-10,Johor,145
 2026-03-11,Johor,169
 2026-03-12,Johor,172
 2026-03-13,Johor,127
@@ -2570,13 +2570,13 @@ date,state,screenings
 2026-04-26,Johor,27
 2026-04-27,Johor,191
 2026-04-28,Johor,154
-2026-04-29,Johor,196
+2026-04-29,Johor,199
 2026-04-30,Johor,148
 2026-05-01,Johor,14
 2026-05-02,Johor,34
 2026-05-03,Johor,24
 2026-05-04,Johor,169
-2026-05-05,Johor,204
+2026-05-05,Johor,205
 2026-05-06,Johor,249
 2026-05-07,Johor,171
 2026-05-08,Johor,180
@@ -2584,14 +2584,14 @@ date,state,screenings
 2026-05-10,Johor,60
 2026-05-11,Johor,194
 2026-05-12,Johor,216
-2026-05-13,Johor,193
+2026-05-13,Johor,194
 2026-05-14,Johor,168
 2026-05-15,Johor,161
 2026-05-16,Johor,40
 2026-05-17,Johor,58
-2026-05-18,Johor,224
-2026-05-19,Johor,168
-2026-05-20,Johor,257
+2026-05-18,Johor,225
+2026-05-19,Johor,170
+2026-05-20,Johor,258
 2026-05-21,Johor,211
 2026-05-22,Johor,167
 2026-05-23,Johor,79
@@ -2599,29 +2599,29 @@ date,state,screenings
 2026-05-25,Johor,74
 2026-05-26,Johor,101
 2026-05-27,Johor,16
-2026-05-28,Johor,65
+2026-05-28,Johor,66
 2026-05-29,Johor,70
 2026-05-30,Johor,18
 2026-05-31,Johor,10
 2026-06-01,Johor,21
 2026-06-02,Johor,22
-2026-06-03,Johor,130
+2026-06-03,Johor,131
 2026-06-04,Johor,150
-2026-06-05,Johor,138
+2026-06-05,Johor,139
 2026-06-06,Johor,28
 2026-06-07,Johor,23
-2026-06-08,Johor,179
+2026-06-08,Johor,180
 2026-06-09,Johor,209
 2026-06-10,Johor,192
 2026-06-11,Johor,180
 2026-06-12,Johor,140
 2026-06-13,Johor,79
 2026-06-14,Johor,68
-2026-06-15,Johor,195
+2026-06-15,Johor,198
 2026-06-16,Johor,174
 2026-06-17,Johor,19
-2026-06-18,Johor,190
-2026-06-19,Johor,109
+2026-06-18,Johor,198
+2026-06-19,Johor,110
 2026-06-20,Johor,29
 2026-06-21,Johor,25
 2026-06-22,Johor,178
@@ -2629,9 +2629,9 @@ date,state,screenings
 2026-06-24,Johor,253
 2026-06-25,Johor,191
 2026-06-26,Johor,152
-2026-06-27,Johor,19
+2026-06-27,Johor,20
 2026-06-28,Johor,43
-2026-06-29,Johor,196
+2026-06-29,Johor,197
 2026-06-30,Johor,139
 2026-07-01,Johor,226
 2026-07-02,Johor,230
@@ -2640,41 +2640,90 @@ date,state,screenings
 2026-07-05,Johor,64
 2026-07-06,Johor,176
 2026-07-07,Johor,139
-2026-07-08,Johor,287
+2026-07-08,Johor,288
 2026-07-09,Johor,180
 2026-07-10,Johor,193
 2026-07-11,Johor,14
 2026-07-12,Johor,36
 2026-07-13,Johor,46
-2026-07-14,Johor,184
-2026-07-15,Johor,258
-2026-07-16,Johor,146
-2026-07-17,Johor,147
+2026-07-14,Johor,185
+2026-07-15,Johor,260
+2026-07-16,Johor,147
+2026-07-17,Johor,149
 2026-07-18,Johor,58
-2026-07-19,Johor,27
+2026-07-19,Johor,28
 2026-07-20,Johor,144
 2026-07-21,Johor,45
 2026-07-22,Johor,196
 2026-07-23,Johor,164
-2026-07-24,Johor,158
+2026-07-24,Johor,159
 2026-07-25,Johor,26
 2026-07-26,Johor,48
-2026-07-27,Johor,199
-2026-07-28,Johor,186
-2026-07-29,Johor,142
-2026-07-30,Johor,207
-2026-07-31,Johor,151
+2026-07-27,Johor,203
+2026-07-28,Johor,190
+2026-07-29,Johor,144
+2026-07-30,Johor,213
+2026-07-31,Johor,153
 2026-08-01,Johor,52
-2026-08-02,Johor,24
-2026-08-03,Johor,166
-2026-08-04,Johor,144
-2026-08-05,Johor,200
-2026-08-06,Johor,150
-2026-08-07,Johor,159
+2026-08-02,Johor,22
+2026-08-03,Johor,197
+2026-08-04,Johor,188
+2026-08-05,Johor,236
+2026-08-06,Johor,212
+2026-08-07,Johor,176
 2026-08-08,Johor,34
-2026-08-09,Johor,23
-2026-08-10,Johor,57
-2026-08-11,Johor,29
+2026-08-09,Johor,38
+2026-08-10,Johor,189
+2026-08-11,Johor,171
+2026-08-12,Johor,188
+2026-08-13,Johor,142
+2026-08-14,Johor,144
+2026-08-15,Johor,50
+2026-08-16,Johor,30
+2026-08-17,Johor,173
+2026-08-18,Johor,198
+2026-08-19,Johor,181
+2026-08-20,Johor,184
+2026-08-21,Johor,130
+2026-08-22,Johor,80
+2026-08-23,Johor,38
+2026-08-24,Johor,108
+2026-08-25,Johor,18
+2026-08-26,Johor,137
+2026-08-27,Johor,141
+2026-08-28,Johor,143
+2026-08-29,Johor,28
+2026-08-30,Johor,28
+2026-08-31,Johor,3
+2026-09-01,Johor,133
+2026-09-02,Johor,158
+2026-09-03,Johor,157
+2026-09-04,Johor,147
+2026-09-05,Johor,126
+2026-09-06,Johor,198
+2026-09-07,Johor,178
+2026-09-08,Johor,187
+2026-09-09,Johor,158
+2026-09-10,Johor,156
+2026-09-11,Johor,116
+2026-09-12,Johor,60
+2026-09-13,Johor,23
+2026-09-14,Johor,178
+2026-09-15,Johor,139
+2026-09-16,Johor,12
+2026-09-17,Johor,130
+2026-09-18,Johor,107
+2026-09-19,Johor,61
+2026-09-20,Johor,31
+2026-09-21,Johor,159
+2026-09-22,Johor,182
+2026-09-23,Johor,166
+2026-09-24,Johor,147
+2026-09-25,Johor,132
+2026-09-26,Johor,36
+2026-09-27,Johor,55
+2026-09-28,Johor,74
+2026-09-29,Johor,20
 2019-04-15,Kedah,3
 2019-04-16,Kedah,6
 2019-04-17,Kedah,7
@@ -5261,19 +5310,19 @@ date,state,screenings
 2026-05-11,Kedah,100
 2026-05-12,Kedah,97
 2026-05-13,Kedah,95
-2026-05-14,Kedah,147
+2026-05-14,Kedah,148
 2026-05-15,Kedah,44
 2026-05-16,Kedah,23
 2026-05-17,Kedah,97
-2026-05-18,Kedah,69
+2026-05-18,Kedah,70
 2026-05-19,Kedah,101
 2026-05-20,Kedah,77
-2026-05-21,Kedah,121
+2026-05-21,Kedah,123
 2026-05-22,Kedah,30
 2026-05-23,Kedah,29
 2026-05-24,Kedah,57
 2026-05-25,Kedah,60
-2026-05-26,Kedah,30
+2026-05-26,Kedah,31
 2026-05-27,Kedah,12
 2026-05-28,Kedah,4
 2026-05-29,Kedah,21
@@ -5312,7 +5361,7 @@ date,state,screenings
 2026-07-01,Kedah,63
 2026-07-02,Kedah,125
 2026-07-03,Kedah,15
-2026-07-04,Kedah,7
+2026-07-04,Kedah,8
 2026-07-05,Kedah,6
 2026-07-06,Kedah,91
 2026-07-07,Kedah,149
@@ -5320,37 +5369,86 @@ date,state,screenings
 2026-07-09,Kedah,140
 2026-07-10,Kedah,39
 2026-07-11,Kedah,63
-2026-07-12,Kedah,67
-2026-07-13,Kedah,89
+2026-07-12,Kedah,68
+2026-07-13,Kedah,90
 2026-07-14,Kedah,100
-2026-07-15,Kedah,74
+2026-07-15,Kedah,75
 2026-07-16,Kedah,154
 2026-07-17,Kedah,36
 2026-07-18,Kedah,48
 2026-07-19,Kedah,72
 2026-07-20,Kedah,82
 2026-07-21,Kedah,104
-2026-07-22,Kedah,79
-2026-07-23,Kedah,147
+2026-07-22,Kedah,80
+2026-07-23,Kedah,148
 2026-07-24,Kedah,40
 2026-07-25,Kedah,69
 2026-07-26,Kedah,103
 2026-07-27,Kedah,76
-2026-07-28,Kedah,97
-2026-07-29,Kedah,70
-2026-07-30,Kedah,101
+2026-07-28,Kedah,102
+2026-07-29,Kedah,71
+2026-07-30,Kedah,124
 2026-07-31,Kedah,26
 2026-08-01,Kedah,30
 2026-08-02,Kedah,85
-2026-08-03,Kedah,89
-2026-08-04,Kedah,91
-2026-08-05,Kedah,74
-2026-08-06,Kedah,129
-2026-08-07,Kedah,18
-2026-08-08,Kedah,16
-2026-08-09,Kedah,52
-2026-08-10,Kedah,52
-2026-08-11,Kedah,10
+2026-08-03,Kedah,91
+2026-08-04,Kedah,94
+2026-08-05,Kedah,84
+2026-08-06,Kedah,141
+2026-08-07,Kedah,19
+2026-08-08,Kedah,37
+2026-08-09,Kedah,95
+2026-08-10,Kedah,101
+2026-08-11,Kedah,122
+2026-08-12,Kedah,104
+2026-08-13,Kedah,159
+2026-08-14,Kedah,23
+2026-08-15,Kedah,66
+2026-08-16,Kedah,71
+2026-08-17,Kedah,65
+2026-08-18,Kedah,134
+2026-08-19,Kedah,95
+2026-08-20,Kedah,123
+2026-08-21,Kedah,43
+2026-08-22,Kedah,90
+2026-08-23,Kedah,91
+2026-08-24,Kedah,130
+2026-08-25,Kedah,53
+2026-08-26,Kedah,73
+2026-08-27,Kedah,163
+2026-08-28,Kedah,42
+2026-08-29,Kedah,23
+2026-08-30,Kedah,45
+2026-08-31,Kedah,14
+2026-09-01,Kedah,100
+2026-09-02,Kedah,63
+2026-09-03,Kedah,127
+2026-09-04,Kedah,88
+2026-09-05,Kedah,164
+2026-09-06,Kedah,101
+2026-09-07,Kedah,202
+2026-09-08,Kedah,126
+2026-09-09,Kedah,76
+2026-09-10,Kedah,132
+2026-09-11,Kedah,75
+2026-09-12,Kedah,189
+2026-09-13,Kedah,128
+2026-09-14,Kedah,100
+2026-09-15,Kedah,83
+2026-09-16,Kedah,130
+2026-09-17,Kedah,171
+2026-09-18,Kedah,24
+2026-09-19,Kedah,29
+2026-09-20,Kedah,71
+2026-09-21,Kedah,87
+2026-09-22,Kedah,91
+2026-09-23,Kedah,87
+2026-09-24,Kedah,104
+2026-09-25,Kedah,20
+2026-09-26,Kedah,20
+2026-09-27,Kedah,68
+2026-09-28,Kedah,29
+2026-09-29,Kedah,21
 2019-04-15,Kelantan,0
 2019-04-16,Kelantan,2
 2019-04-17,Kelantan,1
@@ -7246,7 +7344,7 @@ date,state,screenings
 2024-06-19,Kelantan,109
 2024-06-20,Kelantan,66
 2024-06-21,Kelantan,0
-2024-06-22,Kelantan,98
+2024-06-22,Kelantan,97
 2024-06-23,Kelantan,136
 2024-06-24,Kelantan,192
 2024-06-25,Kelantan,132
@@ -7444,7 +7542,7 @@ date,state,screenings
 2025-01-03,Kelantan,16
 2025-01-04,Kelantan,25
 2025-01-05,Kelantan,175
-2025-01-06,Kelantan,166
+2025-01-06,Kelantan,167
 2025-01-07,Kelantan,156
 2025-01-08,Kelantan,131
 2025-01-09,Kelantan,68
@@ -7766,7 +7864,7 @@ date,state,screenings
 2025-11-21,Kelantan,21
 2025-11-22,Kelantan,13
 2025-11-23,Kelantan,61
-2025-11-24,Kelantan,57
+2025-11-24,Kelantan,58
 2025-11-25,Kelantan,66
 2025-11-26,Kelantan,54
 2025-11-27,Kelantan,39
@@ -7808,7 +7906,7 @@ date,state,screenings
 2026-01-02,Kelantan,2
 2026-01-03,Kelantan,10
 2026-01-04,Kelantan,70
-2026-01-05,Kelantan,58
+2026-01-05,Kelantan,59
 2026-01-06,Kelantan,63
 2026-01-07,Kelantan,61
 2026-01-08,Kelantan,63
@@ -7857,14 +7955,14 @@ date,state,screenings
 2026-02-20,Kelantan,3
 2026-02-21,Kelantan,10
 2026-02-22,Kelantan,67
-2026-02-23,Kelantan,64
+2026-02-23,Kelantan,65
 2026-02-24,Kelantan,58
-2026-02-25,Kelantan,41
+2026-02-25,Kelantan,42
 2026-02-26,Kelantan,38
 2026-02-27,Kelantan,0
 2026-02-28,Kelantan,7
 2026-03-01,Kelantan,54
-2026-03-02,Kelantan,52
+2026-03-02,Kelantan,53
 2026-03-03,Kelantan,41
 2026-03-04,Kelantan,26
 2026-03-05,Kelantan,25
@@ -7872,14 +7970,14 @@ date,state,screenings
 2026-03-07,Kelantan,8
 2026-03-08,Kelantan,6
 2026-03-09,Kelantan,45
-2026-03-10,Kelantan,50
+2026-03-10,Kelantan,51
 2026-03-11,Kelantan,72
 2026-03-12,Kelantan,43
 2026-03-13,Kelantan,0
 2026-03-14,Kelantan,26
 2026-03-15,Kelantan,47
 2026-03-16,Kelantan,43
-2026-03-17,Kelantan,36
+2026-03-17,Kelantan,37
 2026-03-18,Kelantan,19
 2026-03-19,Kelantan,2
 2026-03-20,Kelantan,2
@@ -7894,19 +7992,19 @@ date,state,screenings
 2026-03-29,Kelantan,76
 2026-03-30,Kelantan,81
 2026-03-31,Kelantan,61
-2026-04-01,Kelantan,77
+2026-04-01,Kelantan,78
 2026-04-02,Kelantan,43
 2026-04-03,Kelantan,6
 2026-04-04,Kelantan,11
-2026-04-05,Kelantan,75
+2026-04-05,Kelantan,76
 2026-04-06,Kelantan,73
-2026-04-07,Kelantan,79
+2026-04-07,Kelantan,80
 2026-04-08,Kelantan,88
 2026-04-09,Kelantan,49
 2026-04-10,Kelantan,10
 2026-04-11,Kelantan,14
 2026-04-12,Kelantan,72
-2026-04-13,Kelantan,61
+2026-04-13,Kelantan,62
 2026-04-14,Kelantan,107
 2026-04-15,Kelantan,53
 2026-04-16,Kelantan,51
@@ -7920,29 +8018,29 @@ date,state,screenings
 2026-04-24,Kelantan,7
 2026-04-25,Kelantan,18
 2026-04-26,Kelantan,93
-2026-04-27,Kelantan,94
+2026-04-27,Kelantan,95
 2026-04-28,Kelantan,91
 2026-04-29,Kelantan,79
 2026-04-30,Kelantan,40
 2026-05-01,Kelantan,5
 2026-05-02,Kelantan,19
 2026-05-03,Kelantan,73
-2026-05-04,Kelantan,81
+2026-05-04,Kelantan,82
 2026-05-05,Kelantan,105
-2026-05-06,Kelantan,105
+2026-05-06,Kelantan,109
 2026-05-07,Kelantan,59
 2026-05-08,Kelantan,2
 2026-05-09,Kelantan,43
 2026-05-10,Kelantan,81
 2026-05-11,Kelantan,76
-2026-05-12,Kelantan,92
-2026-05-13,Kelantan,93
-2026-05-14,Kelantan,70
+2026-05-12,Kelantan,93
+2026-05-13,Kelantan,94
+2026-05-14,Kelantan,72
 2026-05-15,Kelantan,16
 2026-05-16,Kelantan,82
 2026-05-17,Kelantan,100
 2026-05-18,Kelantan,103
-2026-05-19,Kelantan,100
+2026-05-19,Kelantan,102
 2026-05-20,Kelantan,111
 2026-05-21,Kelantan,78
 2026-05-22,Kelantan,5
@@ -7957,34 +8055,34 @@ date,state,screenings
 2026-05-31,Kelantan,24
 2026-06-01,Kelantan,20
 2026-06-02,Kelantan,70
-2026-06-03,Kelantan,85
-2026-06-04,Kelantan,63
+2026-06-03,Kelantan,87
+2026-06-04,Kelantan,64
 2026-06-05,Kelantan,30
 2026-06-06,Kelantan,28
-2026-06-07,Kelantan,82
+2026-06-07,Kelantan,83
 2026-06-08,Kelantan,86
-2026-06-09,Kelantan,74
-2026-06-10,Kelantan,81
+2026-06-09,Kelantan,76
+2026-06-10,Kelantan,82
 2026-06-11,Kelantan,51
 2026-06-12,Kelantan,11
-2026-06-13,Kelantan,81
-2026-06-14,Kelantan,87
-2026-06-15,Kelantan,84
-2026-06-16,Kelantan,70
+2026-06-13,Kelantan,82
+2026-06-14,Kelantan,88
+2026-06-15,Kelantan,85
+2026-06-16,Kelantan,71
 2026-06-17,Kelantan,33
 2026-06-18,Kelantan,73
 2026-06-19,Kelantan,16
-2026-06-20,Kelantan,82
-2026-06-21,Kelantan,133
-2026-06-22,Kelantan,87
+2026-06-20,Kelantan,83
+2026-06-21,Kelantan,135
+2026-06-22,Kelantan,88
 2026-06-23,Kelantan,101
-2026-06-24,Kelantan,109
+2026-06-24,Kelantan,110
 2026-06-25,Kelantan,69
 2026-06-26,Kelantan,8
 2026-06-27,Kelantan,71
 2026-06-28,Kelantan,68
-2026-06-29,Kelantan,79
-2026-06-30,Kelantan,73
+2026-06-29,Kelantan,81
+2026-06-30,Kelantan,74
 2026-07-01,Kelantan,80
 2026-07-02,Kelantan,58
 2026-07-03,Kelantan,32
@@ -7992,41 +8090,90 @@ date,state,screenings
 2026-07-05,Kelantan,85
 2026-07-06,Kelantan,79
 2026-07-07,Kelantan,93
-2026-07-08,Kelantan,68
-2026-07-09,Kelantan,54
+2026-07-08,Kelantan,69
+2026-07-09,Kelantan,55
 2026-07-10,Kelantan,30
 2026-07-11,Kelantan,65
 2026-07-12,Kelantan,73
 2026-07-13,Kelantan,79
-2026-07-14,Kelantan,91
-2026-07-15,Kelantan,71
+2026-07-14,Kelantan,92
+2026-07-15,Kelantan,73
 2026-07-16,Kelantan,79
 2026-07-17,Kelantan,12
 2026-07-18,Kelantan,57
-2026-07-19,Kelantan,87
-2026-07-20,Kelantan,90
-2026-07-21,Kelantan,72
-2026-07-22,Kelantan,99
-2026-07-23,Kelantan,68
+2026-07-19,Kelantan,89
+2026-07-20,Kelantan,91
+2026-07-21,Kelantan,73
+2026-07-22,Kelantan,101
+2026-07-23,Kelantan,69
 2026-07-24,Kelantan,72
 2026-07-25,Kelantan,25
-2026-07-26,Kelantan,96
+2026-07-26,Kelantan,97
 2026-07-27,Kelantan,75
 2026-07-28,Kelantan,97
 2026-07-29,Kelantan,75
-2026-07-30,Kelantan,58
+2026-07-30,Kelantan,59
 2026-07-31,Kelantan,4
 2026-08-01,Kelantan,36
-2026-08-02,Kelantan,77
-2026-08-03,Kelantan,79
-2026-08-04,Kelantan,69
-2026-08-05,Kelantan,52
-2026-08-06,Kelantan,62
+2026-08-02,Kelantan,79
+2026-08-03,Kelantan,80
+2026-08-04,Kelantan,74
+2026-08-05,Kelantan,61
+2026-08-06,Kelantan,63
 2026-08-07,Kelantan,43
-2026-08-08,Kelantan,111
-2026-08-09,Kelantan,63
-2026-08-10,Kelantan,39
-2026-08-11,Kelantan,13
+2026-08-08,Kelantan,112
+2026-08-09,Kelantan,71
+2026-08-10,Kelantan,71
+2026-08-11,Kelantan,81
+2026-08-12,Kelantan,82
+2026-08-13,Kelantan,54
+2026-08-14,Kelantan,7
+2026-08-15,Kelantan,70
+2026-08-16,Kelantan,102
+2026-08-17,Kelantan,59
+2026-08-18,Kelantan,84
+2026-08-19,Kelantan,116
+2026-08-20,Kelantan,55
+2026-08-21,Kelantan,20
+2026-08-22,Kelantan,89
+2026-08-23,Kelantan,97
+2026-08-24,Kelantan,76
+2026-08-25,Kelantan,28
+2026-08-26,Kelantan,72
+2026-08-27,Kelantan,64
+2026-08-28,Kelantan,32
+2026-08-29,Kelantan,33
+2026-08-30,Kelantan,52
+2026-08-31,Kelantan,28
+2026-09-01,Kelantan,82
+2026-09-02,Kelantan,75
+2026-09-03,Kelantan,43
+2026-09-04,Kelantan,77
+2026-09-05,Kelantan,172
+2026-09-06,Kelantan,166
+2026-09-07,Kelantan,84
+2026-09-08,Kelantan,93
+2026-09-09,Kelantan,61
+2026-09-10,Kelantan,38
+2026-09-11,Kelantan,14
+2026-09-12,Kelantan,45
+2026-09-13,Kelantan,87
+2026-09-14,Kelantan,66
+2026-09-15,Kelantan,68
+2026-09-16,Kelantan,105
+2026-09-17,Kelantan,48
+2026-09-18,Kelantan,8
+2026-09-19,Kelantan,84
+2026-09-20,Kelantan,88
+2026-09-21,Kelantan,77
+2026-09-22,Kelantan,71
+2026-09-23,Kelantan,62
+2026-09-24,Kelantan,49
+2026-09-25,Kelantan,10
+2026-09-26,Kelantan,83
+2026-09-27,Kelantan,85
+2026-09-28,Kelantan,42
+2026-09-29,Kelantan,0
 2019-04-15,Melaka,0
 2019-04-16,Melaka,3
 2019-04-17,Melaka,1
@@ -10369,7 +10516,7 @@ date,state,screenings
 2025-09-09,Melaka,54
 2025-09-10,Melaka,19
 2025-09-11,Melaka,51
-2025-09-12,Melaka,62
+2025-09-12,Melaka,63
 2025-09-13,Melaka,3
 2025-09-14,Melaka,13
 2025-09-15,Melaka,10
@@ -10404,12 +10551,12 @@ date,state,screenings
 2025-10-14,Melaka,23
 2025-10-15,Melaka,19
 2025-10-16,Melaka,14
-2025-10-17,Melaka,87
+2025-10-17,Melaka,91
 2025-10-18,Melaka,10
 2025-10-19,Melaka,3
 2025-10-20,Melaka,2
 2025-10-21,Melaka,16
-2025-10-22,Melaka,10
+2025-10-22,Melaka,11
 2025-10-23,Melaka,29
 2025-10-24,Melaka,55
 2025-10-25,Melaka,15
@@ -10438,7 +10585,7 @@ date,state,screenings
 2025-11-17,Melaka,41
 2025-11-18,Melaka,29
 2025-11-19,Melaka,61
-2025-11-20,Melaka,79
+2025-11-20,Melaka,81
 2025-11-21,Melaka,30
 2025-11-22,Melaka,8
 2025-11-23,Melaka,5
@@ -10500,13 +10647,13 @@ date,state,screenings
 2026-01-18,Melaka,8
 2026-01-19,Melaka,18
 2026-01-20,Melaka,53
-2026-01-21,Melaka,43
-2026-01-22,Melaka,13
-2026-01-23,Melaka,14
+2026-01-21,Melaka,44
+2026-01-22,Melaka,16
+2026-01-23,Melaka,56
 2026-01-24,Melaka,23
 2026-01-25,Melaka,6
-2026-01-26,Melaka,17
-2026-01-27,Melaka,12
+2026-01-26,Melaka,20
+2026-01-27,Melaka,22
 2026-01-28,Melaka,23
 2026-01-29,Melaka,61
 2026-01-30,Melaka,34
@@ -10551,7 +10698,7 @@ date,state,screenings
 2026-03-10,Melaka,35
 2026-03-11,Melaka,53
 2026-03-12,Melaka,10
-2026-03-13,Melaka,53
+2026-03-13,Melaka,54
 2026-03-14,Melaka,5
 2026-03-15,Melaka,1
 2026-03-16,Melaka,32
@@ -10614,12 +10761,12 @@ date,state,screenings
 2026-05-12,Melaka,36
 2026-05-13,Melaka,29
 2026-05-14,Melaka,109
-2026-05-15,Melaka,48
+2026-05-15,Melaka,49
 2026-05-16,Melaka,9
 2026-05-17,Melaka,1
 2026-05-18,Melaka,20
 2026-05-19,Melaka,26
-2026-05-20,Melaka,27
+2026-05-20,Melaka,28
 2026-05-21,Melaka,73
 2026-05-22,Melaka,28
 2026-05-23,Melaka,7
@@ -10674,35 +10821,84 @@ date,state,screenings
 2026-07-11,Melaka,6
 2026-07-12,Melaka,7
 2026-07-13,Melaka,25
-2026-07-14,Melaka,40
+2026-07-14,Melaka,41
 2026-07-15,Melaka,29
-2026-07-16,Melaka,23
+2026-07-16,Melaka,24
 2026-07-17,Melaka,51
 2026-07-18,Melaka,63
 2026-07-19,Melaka,41
-2026-07-20,Melaka,21
+2026-07-20,Melaka,24
 2026-07-21,Melaka,68
 2026-07-22,Melaka,73
-2026-07-23,Melaka,105
+2026-07-23,Melaka,119
 2026-07-24,Melaka,54
 2026-07-25,Melaka,34
 2026-07-26,Melaka,64
 2026-07-27,Melaka,24
 2026-07-28,Melaka,125
-2026-07-29,Melaka,74
+2026-07-29,Melaka,75
 2026-07-30,Melaka,17
 2026-07-31,Melaka,36
 2026-08-01,Melaka,34
 2026-08-02,Melaka,25
 2026-08-03,Melaka,27
 2026-08-04,Melaka,77
-2026-08-05,Melaka,82
+2026-08-05,Melaka,83
 2026-08-06,Melaka,64
-2026-08-07,Melaka,102
+2026-08-07,Melaka,103
 2026-08-08,Melaka,37
 2026-08-09,Melaka,64
-2026-08-10,Melaka,26
-2026-08-11,Melaka,0
+2026-08-10,Melaka,50
+2026-08-11,Melaka,63
+2026-08-12,Melaka,63
+2026-08-13,Melaka,44
+2026-08-14,Melaka,84
+2026-08-15,Melaka,56
+2026-08-16,Melaka,45
+2026-08-17,Melaka,35
+2026-08-18,Melaka,75
+2026-08-19,Melaka,94
+2026-08-20,Melaka,62
+2026-08-21,Melaka,102
+2026-08-22,Melaka,56
+2026-08-23,Melaka,62
+2026-08-24,Melaka,4
+2026-08-25,Melaka,54
+2026-08-26,Melaka,48
+2026-08-27,Melaka,51
+2026-08-28,Melaka,79
+2026-08-29,Melaka,79
+2026-08-30,Melaka,76
+2026-08-31,Melaka,12
+2026-09-01,Melaka,38
+2026-09-02,Melaka,96
+2026-09-03,Melaka,71
+2026-09-04,Melaka,53
+2026-09-05,Melaka,124
+2026-09-06,Melaka,109
+2026-09-07,Melaka,45
+2026-09-08,Melaka,93
+2026-09-09,Melaka,93
+2026-09-10,Melaka,73
+2026-09-11,Melaka,76
+2026-09-12,Melaka,32
+2026-09-13,Melaka,30
+2026-09-14,Melaka,41
+2026-09-15,Melaka,85
+2026-09-16,Melaka,24
+2026-09-17,Melaka,81
+2026-09-18,Melaka,100
+2026-09-19,Melaka,62
+2026-09-20,Melaka,81
+2026-09-21,Melaka,54
+2026-09-22,Melaka,28
+2026-09-23,Melaka,71
+2026-09-24,Melaka,53
+2026-09-25,Melaka,32
+2026-09-26,Melaka,14
+2026-09-27,Melaka,100
+2026-09-28,Melaka,62
+2026-09-29,Melaka,0
 2019-04-15,Negeri Sembilan,14
 2019-04-16,Negeri Sembilan,17
 2019-04-17,Negeri Sembilan,10
@@ -12985,7 +13181,7 @@ date,state,screenings
 2025-07-11,Negeri Sembilan,29
 2025-07-12,Negeri Sembilan,11
 2025-07-13,Negeri Sembilan,0
-2025-07-14,Negeri Sembilan,71
+2025-07-14,Negeri Sembilan,72
 2025-07-15,Negeri Sembilan,127
 2025-07-16,Negeri Sembilan,83
 2025-07-17,Negeri Sembilan,84
@@ -13113,7 +13309,7 @@ date,state,screenings
 2025-11-16,Negeri Sembilan,0
 2025-11-17,Negeri Sembilan,15
 2025-11-18,Negeri Sembilan,72
-2025-11-19,Negeri Sembilan,46
+2025-11-19,Negeri Sembilan,47
 2025-11-20,Negeri Sembilan,59
 2025-11-21,Negeri Sembilan,60
 2025-11-22,Negeri Sembilan,35
@@ -13134,7 +13330,7 @@ date,state,screenings
 2025-12-07,Negeri Sembilan,7
 2025-12-08,Negeri Sembilan,31
 2025-12-09,Negeri Sembilan,42
-2025-12-10,Negeri Sembilan,55
+2025-12-10,Negeri Sembilan,56
 2025-12-11,Negeri Sembilan,38
 2025-12-12,Negeri Sembilan,39
 2025-12-13,Negeri Sembilan,12
@@ -13206,7 +13402,7 @@ date,state,screenings
 2026-02-17,Negeri Sembilan,0
 2026-02-18,Negeri Sembilan,0
 2026-02-19,Negeri Sembilan,34
-2026-02-20,Negeri Sembilan,16
+2026-02-20,Negeri Sembilan,17
 2026-02-21,Negeri Sembilan,0
 2026-02-22,Negeri Sembilan,2
 2026-02-23,Negeri Sembilan,25
@@ -13253,7 +13449,7 @@ date,state,screenings
 2026-04-05,Negeri Sembilan,2
 2026-04-06,Negeri Sembilan,49
 2026-04-07,Negeri Sembilan,67
-2026-04-08,Negeri Sembilan,85
+2026-04-08,Negeri Sembilan,86
 2026-04-09,Negeri Sembilan,140
 2026-04-10,Negeri Sembilan,77
 2026-04-11,Negeri Sembilan,8
@@ -13281,16 +13477,16 @@ date,state,screenings
 2026-05-03,Negeri Sembilan,0
 2026-05-04,Negeri Sembilan,44
 2026-05-05,Negeri Sembilan,53
-2026-05-06,Negeri Sembilan,82
+2026-05-06,Negeri Sembilan,83
 2026-05-07,Negeri Sembilan,85
-2026-05-08,Negeri Sembilan,70
+2026-05-08,Negeri Sembilan,71
 2026-05-09,Negeri Sembilan,34
 2026-05-10,Negeri Sembilan,25
 2026-05-11,Negeri Sembilan,34
 2026-05-12,Negeri Sembilan,91
 2026-05-13,Negeri Sembilan,88
 2026-05-14,Negeri Sembilan,51
-2026-05-15,Negeri Sembilan,40
+2026-05-15,Negeri Sembilan,42
 2026-05-16,Negeri Sembilan,4
 2026-05-17,Negeri Sembilan,0
 2026-05-18,Negeri Sembilan,38
@@ -13309,9 +13505,9 @@ date,state,screenings
 2026-05-31,Negeri Sembilan,0
 2026-06-01,Negeri Sembilan,1
 2026-06-02,Negeri Sembilan,3
-2026-06-03,Negeri Sembilan,27
+2026-06-03,Negeri Sembilan,28
 2026-06-04,Negeri Sembilan,74
-2026-06-05,Negeri Sembilan,37
+2026-06-05,Negeri Sembilan,38
 2026-06-06,Negeri Sembilan,4
 2026-06-07,Negeri Sembilan,4
 2026-06-08,Negeri Sembilan,55
@@ -13329,56 +13525,105 @@ date,state,screenings
 2026-06-20,Negeri Sembilan,26
 2026-06-21,Negeri Sembilan,5
 2026-06-22,Negeri Sembilan,27
-2026-06-23,Negeri Sembilan,50
-2026-06-24,Negeri Sembilan,86
+2026-06-23,Negeri Sembilan,51
+2026-06-24,Negeri Sembilan,89
 2026-06-25,Negeri Sembilan,75
 2026-06-26,Negeri Sembilan,37
 2026-06-27,Negeri Sembilan,16
 2026-06-28,Negeri Sembilan,1
 2026-06-29,Negeri Sembilan,34
 2026-06-30,Negeri Sembilan,43
-2026-07-01,Negeri Sembilan,58
+2026-07-01,Negeri Sembilan,59
 2026-07-02,Negeri Sembilan,41
 2026-07-03,Negeri Sembilan,29
 2026-07-04,Negeri Sembilan,13
 2026-07-05,Negeri Sembilan,6
 2026-07-06,Negeri Sembilan,25
 2026-07-07,Negeri Sembilan,75
-2026-07-08,Negeri Sembilan,59
+2026-07-08,Negeri Sembilan,60
 2026-07-09,Negeri Sembilan,76
 2026-07-10,Negeri Sembilan,39
 2026-07-11,Negeri Sembilan,8
 2026-07-12,Negeri Sembilan,2
-2026-07-13,Negeri Sembilan,44
+2026-07-13,Negeri Sembilan,46
 2026-07-14,Negeri Sembilan,85
-2026-07-15,Negeri Sembilan,54
+2026-07-15,Negeri Sembilan,55
 2026-07-16,Negeri Sembilan,72
-2026-07-17,Negeri Sembilan,69
+2026-07-17,Negeri Sembilan,70
 2026-07-18,Negeri Sembilan,24
 2026-07-19,Negeri Sembilan,28
 2026-07-20,Negeri Sembilan,43
-2026-07-21,Negeri Sembilan,70
-2026-07-22,Negeri Sembilan,60
+2026-07-21,Negeri Sembilan,72
+2026-07-22,Negeri Sembilan,64
 2026-07-23,Negeri Sembilan,75
 2026-07-24,Negeri Sembilan,23
 2026-07-25,Negeri Sembilan,35
 2026-07-26,Negeri Sembilan,37
-2026-07-27,Negeri Sembilan,26
+2026-07-27,Negeri Sembilan,27
 2026-07-28,Negeri Sembilan,51
-2026-07-29,Negeri Sembilan,53
-2026-07-30,Negeri Sembilan,45
+2026-07-29,Negeri Sembilan,60
+2026-07-30,Negeri Sembilan,51
 2026-07-31,Negeri Sembilan,11
 2026-08-01,Negeri Sembilan,10
 2026-08-02,Negeri Sembilan,9
 2026-08-03,Negeri Sembilan,11
-2026-08-04,Negeri Sembilan,52
-2026-08-05,Negeri Sembilan,46
-2026-08-06,Negeri Sembilan,52
-2026-08-07,Negeri Sembilan,64
-2026-08-08,Negeri Sembilan,4
-2026-08-09,Negeri Sembilan,7
-2026-08-10,Negeri Sembilan,14
-2026-08-11,Negeri Sembilan,1
+2026-08-04,Negeri Sembilan,54
+2026-08-05,Negeri Sembilan,48
+2026-08-06,Negeri Sembilan,57
+2026-08-07,Negeri Sembilan,66
+2026-08-08,Negeri Sembilan,5
+2026-08-09,Negeri Sembilan,10
+2026-08-10,Negeri Sembilan,49
+2026-08-11,Negeri Sembilan,75
+2026-08-12,Negeri Sembilan,61
+2026-08-13,Negeri Sembilan,50
+2026-08-14,Negeri Sembilan,49
+2026-08-15,Negeri Sembilan,17
+2026-08-16,Negeri Sembilan,8
+2026-08-17,Negeri Sembilan,41
+2026-08-18,Negeri Sembilan,68
+2026-08-19,Negeri Sembilan,76
+2026-08-20,Negeri Sembilan,54
+2026-08-21,Negeri Sembilan,29
+2026-08-22,Negeri Sembilan,25
+2026-08-23,Negeri Sembilan,5
+2026-08-24,Negeri Sembilan,38
+2026-08-25,Negeri Sembilan,3
+2026-08-26,Negeri Sembilan,71
+2026-08-27,Negeri Sembilan,95
+2026-08-28,Negeri Sembilan,25
+2026-08-29,Negeri Sembilan,22
+2026-08-30,Negeri Sembilan,0
+2026-08-31,Negeri Sembilan,2
+2026-09-01,Negeri Sembilan,24
+2026-09-02,Negeri Sembilan,35
+2026-09-03,Negeri Sembilan,32
+2026-09-04,Negeri Sembilan,19
+2026-09-05,Negeri Sembilan,99
+2026-09-06,Negeri Sembilan,183
+2026-09-07,Negeri Sembilan,23
+2026-09-08,Negeri Sembilan,49
+2026-09-09,Negeri Sembilan,51
+2026-09-10,Negeri Sembilan,70
+2026-09-11,Negeri Sembilan,56
+2026-09-12,Negeri Sembilan,23
+2026-09-13,Negeri Sembilan,6
+2026-09-14,Negeri Sembilan,24
+2026-09-15,Negeri Sembilan,31
+2026-09-16,Negeri Sembilan,1
+2026-09-17,Negeri Sembilan,82
+2026-09-18,Negeri Sembilan,31
+2026-09-19,Negeri Sembilan,2
+2026-09-20,Negeri Sembilan,5
+2026-09-21,Negeri Sembilan,26
+2026-09-22,Negeri Sembilan,35
+2026-09-23,Negeri Sembilan,35
+2026-09-24,Negeri Sembilan,51
+2026-09-25,Negeri Sembilan,25
+2026-09-26,Negeri Sembilan,30
+2026-09-27,Negeri Sembilan,0
+2026-09-28,Negeri Sembilan,8
+2026-09-29,Negeri Sembilan,0
 2019-04-15,Pahang,6
 2019-04-16,Pahang,6
 2019-04-17,Pahang,11
@@ -15564,14 +15809,14 @@ date,state,screenings
 2025-04-05,Pahang,14
 2025-04-06,Pahang,15
 2025-04-07,Pahang,32
-2025-04-08,Pahang,55
+2025-04-08,Pahang,56
 2025-04-09,Pahang,44
 2025-04-10,Pahang,37
 2025-04-11,Pahang,26
 2025-04-12,Pahang,8
 2025-04-13,Pahang,9
 2025-04-14,Pahang,28
-2025-04-15,Pahang,56
+2025-04-15,Pahang,57
 2025-04-16,Pahang,50
 2025-04-17,Pahang,35
 2025-04-18,Pahang,29
@@ -15595,7 +15840,7 @@ date,state,screenings
 2025-05-06,Pahang,44
 2025-05-07,Pahang,59
 2025-05-08,Pahang,46
-2025-05-09,Pahang,19
+2025-05-09,Pahang,20
 2025-05-10,Pahang,67
 2025-05-11,Pahang,54
 2025-05-12,Pahang,4
@@ -15622,7 +15867,7 @@ date,state,screenings
 2025-06-02,Pahang,1
 2025-06-03,Pahang,48
 2025-06-04,Pahang,15
-2025-06-05,Pahang,47
+2025-06-05,Pahang,48
 2025-06-06,Pahang,21
 2025-06-07,Pahang,1
 2025-06-08,Pahang,2
@@ -15740,7 +15985,7 @@ date,state,screenings
 2025-09-28,Pahang,43
 2025-09-29,Pahang,45
 2025-09-30,Pahang,47
-2025-10-01,Pahang,73
+2025-10-01,Pahang,75
 2025-10-02,Pahang,58
 2025-10-03,Pahang,54
 2025-10-04,Pahang,61
@@ -15796,7 +16041,7 @@ date,state,screenings
 2025-11-23,Pahang,34
 2025-11-24,Pahang,26
 2025-11-25,Pahang,58
-2025-11-26,Pahang,66
+2025-11-26,Pahang,67
 2025-11-27,Pahang,38
 2025-11-28,Pahang,48
 2025-11-29,Pahang,52
@@ -15853,7 +16098,7 @@ date,state,screenings
 2026-01-19,Pahang,41
 2026-01-20,Pahang,28
 2026-01-21,Pahang,51
-2026-01-22,Pahang,35
+2026-01-22,Pahang,36
 2026-01-23,Pahang,19
 2026-01-24,Pahang,8
 2026-01-25,Pahang,22
@@ -15905,7 +16150,7 @@ date,state,screenings
 2026-03-12,Pahang,39
 2026-03-13,Pahang,26
 2026-03-14,Pahang,38
-2026-03-15,Pahang,42
+2026-03-15,Pahang,43
 2026-03-16,Pahang,53
 2026-03-17,Pahang,66
 2026-03-18,Pahang,93
@@ -15937,7 +16182,7 @@ date,state,screenings
 2026-04-13,Pahang,29
 2026-04-14,Pahang,30
 2026-04-15,Pahang,60
-2026-04-16,Pahang,31
+2026-04-16,Pahang,32
 2026-04-17,Pahang,45
 2026-04-18,Pahang,38
 2026-04-19,Pahang,27
@@ -15971,7 +16216,7 @@ date,state,screenings
 2026-05-17,Pahang,51
 2026-05-18,Pahang,49
 2026-05-19,Pahang,50
-2026-05-20,Pahang,73
+2026-05-20,Pahang,74
 2026-05-21,Pahang,33
 2026-05-22,Pahang,33
 2026-05-23,Pahang,6
@@ -15992,7 +16237,7 @@ date,state,screenings
 2026-06-07,Pahang,21
 2026-06-08,Pahang,47
 2026-06-09,Pahang,44
-2026-06-10,Pahang,72
+2026-06-10,Pahang,73
 2026-06-11,Pahang,53
 2026-06-12,Pahang,23
 2026-06-13,Pahang,40
@@ -16012,14 +16257,14 @@ date,state,screenings
 2026-06-27,Pahang,38
 2026-06-28,Pahang,115
 2026-06-29,Pahang,55
-2026-06-30,Pahang,45
+2026-06-30,Pahang,46
 2026-07-01,Pahang,78
 2026-07-02,Pahang,37
 2026-07-03,Pahang,49
 2026-07-04,Pahang,12
 2026-07-05,Pahang,68
 2026-07-06,Pahang,56
-2026-07-07,Pahang,60
+2026-07-07,Pahang,61
 2026-07-08,Pahang,76
 2026-07-09,Pahang,34
 2026-07-10,Pahang,29
@@ -16034,27 +16279,76 @@ date,state,screenings
 2026-07-19,Pahang,21
 2026-07-20,Pahang,30
 2026-07-21,Pahang,118
-2026-07-22,Pahang,74
-2026-07-23,Pahang,26
+2026-07-22,Pahang,75
+2026-07-23,Pahang,27
 2026-07-24,Pahang,13
 2026-07-25,Pahang,37
 2026-07-26,Pahang,25
 2026-07-27,Pahang,37
 2026-07-28,Pahang,55
 2026-07-29,Pahang,63
-2026-07-30,Pahang,45
-2026-07-31,Pahang,32
+2026-07-30,Pahang,46
+2026-07-31,Pahang,33
 2026-08-01,Pahang,8
 2026-08-02,Pahang,18
 2026-08-03,Pahang,15
-2026-08-04,Pahang,42
-2026-08-05,Pahang,90
+2026-08-04,Pahang,43
+2026-08-05,Pahang,91
 2026-08-06,Pahang,40
-2026-08-07,Pahang,37
-2026-08-08,Pahang,14
-2026-08-09,Pahang,9
-2026-08-10,Pahang,25
-2026-08-11,Pahang,3
+2026-08-07,Pahang,38
+2026-08-08,Pahang,17
+2026-08-09,Pahang,10
+2026-08-10,Pahang,37
+2026-08-11,Pahang,56
+2026-08-12,Pahang,71
+2026-08-13,Pahang,36
+2026-08-14,Pahang,45
+2026-08-15,Pahang,49
+2026-08-16,Pahang,43
+2026-08-17,Pahang,54
+2026-08-18,Pahang,72
+2026-08-19,Pahang,47
+2026-08-20,Pahang,31
+2026-08-21,Pahang,48
+2026-08-22,Pahang,23
+2026-08-23,Pahang,9
+2026-08-24,Pahang,41
+2026-08-25,Pahang,16
+2026-08-26,Pahang,61
+2026-08-27,Pahang,46
+2026-08-28,Pahang,39
+2026-08-29,Pahang,39
+2026-08-30,Pahang,9
+2026-08-31,Pahang,13
+2026-09-01,Pahang,31
+2026-09-02,Pahang,48
+2026-09-03,Pahang,33
+2026-09-04,Pahang,34
+2026-09-05,Pahang,133
+2026-09-06,Pahang,83
+2026-09-07,Pahang,46
+2026-09-08,Pahang,70
+2026-09-09,Pahang,80
+2026-09-10,Pahang,39
+2026-09-11,Pahang,24
+2026-09-12,Pahang,14
+2026-09-13,Pahang,18
+2026-09-14,Pahang,29
+2026-09-15,Pahang,34
+2026-09-16,Pahang,15
+2026-09-17,Pahang,32
+2026-09-18,Pahang,25
+2026-09-19,Pahang,25
+2026-09-20,Pahang,63
+2026-09-21,Pahang,53
+2026-09-22,Pahang,104
+2026-09-23,Pahang,56
+2026-09-24,Pahang,57
+2026-09-25,Pahang,14
+2026-09-26,Pahang,7
+2026-09-27,Pahang,37
+2026-09-28,Pahang,13
+2026-09-29,Pahang,11
 2019-04-15,Perak,1
 2019-04-16,Perak,17
 2019-04-17,Perak,21
@@ -17854,7 +18148,7 @@ date,state,screenings
 2024-03-15,Perak,213
 2024-03-16,Perak,30
 2024-03-17,Perak,12
-2024-03-18,Perak,71
+2024-03-18,Perak,72
 2024-03-19,Perak,86
 2024-03-20,Perak,129
 2024-03-21,Perak,113
@@ -18199,7 +18493,7 @@ date,state,screenings
 2025-02-23,Perak,74
 2025-02-24,Perak,102
 2025-02-25,Perak,104
-2025-02-26,Perak,227
+2025-02-26,Perak,228
 2025-02-27,Perak,126
 2025-02-28,Perak,278
 2025-03-01,Perak,50
@@ -18240,7 +18534,7 @@ date,state,screenings
 2025-04-05,Perak,13
 2025-04-06,Perak,17
 2025-04-07,Perak,86
-2025-04-08,Perak,95
+2025-04-08,Perak,96
 2025-04-09,Perak,144
 2025-04-10,Perak,148
 2025-04-11,Perak,273
@@ -18403,8 +18697,8 @@ date,state,screenings
 2025-09-15,Perak,18
 2025-09-16,Perak,9
 2025-09-17,Perak,89
-2025-09-18,Perak,110
-2025-09-19,Perak,195
+2025-09-18,Perak,111
+2025-09-19,Perak,196
 2025-09-20,Perak,56
 2025-09-21,Perak,6
 2025-09-22,Perak,63
@@ -18462,8 +18756,8 @@ date,state,screenings
 2025-11-13,Perak,103
 2025-11-14,Perak,247
 2025-11-15,Perak,40
-2025-11-16,Perak,36
-2025-11-17,Perak,48
+2025-11-16,Perak,38
+2025-11-17,Perak,49
 2025-11-18,Perak,64
 2025-11-19,Perak,131
 2025-11-20,Perak,134
@@ -18475,7 +18769,7 @@ date,state,screenings
 2025-11-26,Perak,100
 2025-11-27,Perak,88
 2025-11-28,Perak,213
-2025-11-29,Perak,57
+2025-11-29,Perak,58
 2025-11-30,Perak,10
 2025-12-01,Perak,67
 2025-12-02,Perak,99
@@ -18487,7 +18781,7 @@ date,state,screenings
 2025-12-08,Perak,84
 2025-12-09,Perak,109
 2025-12-10,Perak,106
-2025-12-11,Perak,118
+2025-12-11,Perak,119
 2025-12-12,Perak,191
 2025-12-13,Perak,63
 2025-12-14,Perak,15
@@ -18495,7 +18789,7 @@ date,state,screenings
 2025-12-16,Perak,133
 2025-12-17,Perak,104
 2025-12-18,Perak,138
-2025-12-19,Perak,210
+2025-12-19,Perak,211
 2025-12-20,Perak,50
 2025-12-21,Perak,19
 2025-12-22,Perak,91
@@ -18505,7 +18799,7 @@ date,state,screenings
 2025-12-26,Perak,103
 2025-12-27,Perak,34
 2025-12-28,Perak,30
-2025-12-29,Perak,93
+2025-12-29,Perak,95
 2025-12-30,Perak,97
 2025-12-31,Perak,74
 2026-01-01,Perak,6
@@ -18554,7 +18848,7 @@ date,state,screenings
 2026-02-13,Perak,191
 2026-02-14,Perak,24
 2026-02-15,Perak,5
-2026-02-16,Perak,43
+2026-02-16,Perak,44
 2026-02-17,Perak,5
 2026-02-18,Perak,4
 2026-02-19,Perak,56
@@ -18562,7 +18856,7 @@ date,state,screenings
 2026-02-21,Perak,7
 2026-02-22,Perak,2
 2026-02-23,Perak,66
-2026-02-24,Perak,87
+2026-02-24,Perak,89
 2026-02-25,Perak,74
 2026-02-26,Perak,100
 2026-02-27,Perak,197
@@ -18598,7 +18892,7 @@ date,state,screenings
 2026-03-29,Perak,13
 2026-03-30,Perak,81
 2026-03-31,Perak,115
-2026-04-01,Perak,167
+2026-04-01,Perak,168
 2026-04-02,Perak,159
 2026-04-03,Perak,234
 2026-04-04,Perak,14
@@ -18610,26 +18904,26 @@ date,state,screenings
 2026-04-10,Perak,232
 2026-04-11,Perak,25
 2026-04-12,Perak,18
-2026-04-13,Perak,121
+2026-04-13,Perak,123
 2026-04-14,Perak,107
-2026-04-15,Perak,129
+2026-04-15,Perak,130
 2026-04-16,Perak,150
-2026-04-17,Perak,227
+2026-04-17,Perak,228
 2026-04-18,Perak,39
 2026-04-19,Perak,12
-2026-04-20,Perak,128
+2026-04-20,Perak,129
 2026-04-21,Perak,148
 2026-04-22,Perak,178
 2026-04-23,Perak,173
 2026-04-24,Perak,225
 2026-04-25,Perak,65
-2026-04-26,Perak,72
+2026-04-26,Perak,73
 2026-04-27,Perak,109
 2026-04-28,Perak,136
 2026-04-29,Perak,218
 2026-04-30,Perak,211
 2026-05-01,Perak,75
-2026-05-02,Perak,62
+2026-05-02,Perak,65
 2026-05-03,Perak,122
 2026-05-04,Perak,137
 2026-05-05,Perak,171
@@ -18638,7 +18932,7 @@ date,state,screenings
 2026-05-08,Perak,285
 2026-05-09,Perak,93
 2026-05-10,Perak,13
-2026-05-11,Perak,157
+2026-05-11,Perak,158
 2026-05-12,Perak,154
 2026-05-13,Perak,157
 2026-05-14,Perak,154
@@ -18657,7 +18951,7 @@ date,state,screenings
 2026-05-27,Perak,9
 2026-05-28,Perak,89
 2026-05-29,Perak,104
-2026-05-30,Perak,59
+2026-05-30,Perak,60
 2026-05-31,Perak,47
 2026-06-01,Perak,11
 2026-06-02,Perak,28
@@ -18669,7 +18963,7 @@ date,state,screenings
 2026-06-08,Perak,64
 2026-06-09,Perak,112
 2026-06-10,Perak,203
-2026-06-11,Perak,193
+2026-06-11,Perak,196
 2026-06-12,Perak,302
 2026-06-13,Perak,83
 2026-06-14,Perak,59
@@ -18682,14 +18976,14 @@ date,state,screenings
 2026-06-21,Perak,55
 2026-06-22,Perak,96
 2026-06-23,Perak,145
-2026-06-24,Perak,228
+2026-06-24,Perak,230
 2026-06-25,Perak,197
-2026-06-26,Perak,314
+2026-06-26,Perak,315
 2026-06-27,Perak,123
 2026-06-28,Perak,87
-2026-06-29,Perak,83
+2026-06-29,Perak,84
 2026-06-30,Perak,178
-2026-07-01,Perak,162
+2026-07-01,Perak,164
 2026-07-02,Perak,223
 2026-07-03,Perak,275
 2026-07-04,Perak,149
@@ -18701,36 +18995,85 @@ date,state,screenings
 2026-07-10,Perak,217
 2026-07-11,Perak,23
 2026-07-12,Perak,16
-2026-07-13,Perak,89
+2026-07-13,Perak,90
 2026-07-14,Perak,117
-2026-07-15,Perak,133
+2026-07-15,Perak,135
 2026-07-16,Perak,129
 2026-07-17,Perak,300
 2026-07-18,Perak,118
-2026-07-19,Perak,55
-2026-07-20,Perak,136
+2026-07-19,Perak,56
+2026-07-20,Perak,137
 2026-07-21,Perak,162
 2026-07-22,Perak,224
-2026-07-23,Perak,221
-2026-07-24,Perak,203
+2026-07-23,Perak,222
+2026-07-24,Perak,205
 2026-07-25,Perak,114
 2026-07-26,Perak,70
-2026-07-27,Perak,105
-2026-07-28,Perak,127
-2026-07-29,Perak,161
-2026-07-30,Perak,207
+2026-07-27,Perak,108
+2026-07-28,Perak,128
+2026-07-29,Perak,166
+2026-07-30,Perak,208
 2026-07-31,Perak,210
-2026-08-01,Perak,98
+2026-08-01,Perak,103
 2026-08-02,Perak,80
-2026-08-03,Perak,63
-2026-08-04,Perak,169
-2026-08-05,Perak,156
-2026-08-06,Perak,193
-2026-08-07,Perak,210
-2026-08-08,Perak,95
-2026-08-09,Perak,12
-2026-08-10,Perak,22
-2026-08-11,Perak,0
+2026-08-03,Perak,73
+2026-08-04,Perak,184
+2026-08-05,Perak,179
+2026-08-06,Perak,257
+2026-08-07,Perak,231
+2026-08-08,Perak,108
+2026-08-09,Perak,59
+2026-08-10,Perak,97
+2026-08-11,Perak,138
+2026-08-12,Perak,196
+2026-08-13,Perak,249
+2026-08-14,Perak,268
+2026-08-15,Perak,115
+2026-08-16,Perak,104
+2026-08-17,Perak,53
+2026-08-18,Perak,175
+2026-08-19,Perak,225
+2026-08-20,Perak,229
+2026-08-21,Perak,221
+2026-08-22,Perak,106
+2026-08-23,Perak,116
+2026-08-24,Perak,83
+2026-08-25,Perak,55
+2026-08-26,Perak,153
+2026-08-27,Perak,147
+2026-08-28,Perak,218
+2026-08-29,Perak,55
+2026-08-30,Perak,45
+2026-08-31,Perak,92
+2026-09-01,Perak,95
+2026-09-02,Perak,143
+2026-09-03,Perak,151
+2026-09-04,Perak,177
+2026-09-05,Perak,171
+2026-09-06,Perak,140
+2026-09-07,Perak,101
+2026-09-08,Perak,178
+2026-09-09,Perak,175
+2026-09-10,Perak,180
+2026-09-11,Perak,232
+2026-09-12,Perak,87
+2026-09-13,Perak,70
+2026-09-14,Perak,95
+2026-09-15,Perak,142
+2026-09-16,Perak,13
+2026-09-17,Perak,168
+2026-09-18,Perak,201
+2026-09-19,Perak,65
+2026-09-20,Perak,100
+2026-09-21,Perak,92
+2026-09-22,Perak,143
+2026-09-23,Perak,181
+2026-09-24,Perak,160
+2026-09-25,Perak,241
+2026-09-26,Perak,60
+2026-09-27,Perak,58
+2026-09-28,Perak,22
+2026-09-29,Perak,4
 2019-04-15,Perlis,3
 2019-04-16,Perlis,5
 2019-04-17,Perlis,1
@@ -20384,7 +20727,7 @@ date,state,screenings
 2023-10-21,Perlis,7
 2023-10-22,Perlis,6
 2023-10-23,Perlis,35
-2023-10-24,Perlis,29
+2023-10-24,Perlis,28
 2023-10-25,Perlis,43
 2023-10-26,Perlis,27
 2023-10-27,Perlis,16
@@ -21185,7 +21528,7 @@ date,state,screenings
 2025-12-30,Perlis,5
 2025-12-31,Perlis,4
 2026-01-01,Perlis,2
-2026-01-02,Perlis,2
+2026-01-02,Perlis,3
 2026-01-03,Perlis,0
 2026-01-04,Perlis,3
 2026-01-05,Perlis,14
@@ -21388,7 +21731,7 @@ date,state,screenings
 2026-07-21,Perlis,14
 2026-07-22,Perlis,12
 2026-07-23,Perlis,12
-2026-07-24,Perlis,28
+2026-07-24,Perlis,27
 2026-07-25,Perlis,67
 2026-07-26,Perlis,32
 2026-07-27,Perlis,12
@@ -21400,13 +21743,62 @@ date,state,screenings
 2026-08-02,Perlis,4
 2026-08-03,Perlis,20
 2026-08-04,Perlis,12
-2026-08-05,Perlis,11
+2026-08-05,Perlis,12
 2026-08-06,Perlis,6
-2026-08-07,Perlis,11
-2026-08-08,Perlis,1
-2026-08-09,Perlis,2
-2026-08-10,Perlis,3
-2026-08-11,Perlis,0
+2026-08-07,Perlis,12
+2026-08-08,Perlis,5
+2026-08-09,Perlis,4
+2026-08-10,Perlis,7
+2026-08-11,Perlis,5
+2026-08-12,Perlis,17
+2026-08-13,Perlis,15
+2026-08-14,Perlis,30
+2026-08-15,Perlis,9
+2026-08-16,Perlis,0
+2026-08-17,Perlis,8
+2026-08-18,Perlis,15
+2026-08-19,Perlis,10
+2026-08-20,Perlis,27
+2026-08-21,Perlis,14
+2026-08-22,Perlis,18
+2026-08-23,Perlis,4
+2026-08-24,Perlis,30
+2026-08-25,Perlis,5
+2026-08-26,Perlis,7
+2026-08-27,Perlis,48
+2026-08-28,Perlis,3
+2026-08-29,Perlis,25
+2026-08-30,Perlis,14
+2026-08-31,Perlis,11
+2026-09-01,Perlis,5
+2026-09-02,Perlis,7
+2026-09-03,Perlis,8
+2026-09-04,Perlis,10
+2026-09-05,Perlis,3
+2026-09-06,Perlis,2
+2026-09-07,Perlis,5
+2026-09-08,Perlis,7
+2026-09-09,Perlis,7
+2026-09-10,Perlis,3
+2026-09-11,Perlis,1
+2026-09-12,Perlis,10
+2026-09-13,Perlis,3
+2026-09-14,Perlis,5
+2026-09-15,Perlis,14
+2026-09-16,Perlis,14
+2026-09-17,Perlis,14
+2026-09-18,Perlis,5
+2026-09-19,Perlis,4
+2026-09-20,Perlis,3
+2026-09-21,Perlis,7
+2026-09-22,Perlis,4
+2026-09-23,Perlis,8
+2026-09-24,Perlis,7
+2026-09-25,Perlis,2
+2026-09-26,Perlis,17
+2026-09-27,Perlis,1
+2026-09-28,Perlis,1
+2026-09-29,Perlis,0
 2019-04-15,Pulau Pinang,6
 2019-04-16,Pulau Pinang,5
 2019-04-17,Pulau Pinang,10
@@ -23875,7 +24267,7 @@ date,state,screenings
 2026-01-13,Pulau Pinang,49
 2026-01-14,Pulau Pinang,58
 2026-01-15,Pulau Pinang,39
-2026-01-16,Pulau Pinang,43
+2026-01-16,Pulau Pinang,44
 2026-01-17,Pulau Pinang,28
 2026-01-18,Pulau Pinang,9
 2026-01-19,Pulau Pinang,75
@@ -23950,7 +24342,7 @@ date,state,screenings
 2026-03-29,Pulau Pinang,10
 2026-03-30,Pulau Pinang,83
 2026-03-31,Pulau Pinang,86
-2026-04-01,Pulau Pinang,103
+2026-04-01,Pulau Pinang,104
 2026-04-02,Pulau Pinang,94
 2026-04-03,Pulau Pinang,57
 2026-04-04,Pulau Pinang,25
@@ -23990,8 +24382,8 @@ date,state,screenings
 2026-05-08,Pulau Pinang,48
 2026-05-09,Pulau Pinang,38
 2026-05-10,Pulau Pinang,5
-2026-05-11,Pulau Pinang,56
-2026-05-12,Pulau Pinang,61
+2026-05-11,Pulau Pinang,57
+2026-05-12,Pulau Pinang,62
 2026-05-13,Pulau Pinang,82
 2026-05-14,Pulau Pinang,52
 2026-05-15,Pulau Pinang,49
@@ -24008,12 +24400,12 @@ date,state,screenings
 2026-05-26,Pulau Pinang,35
 2026-05-27,Pulau Pinang,6
 2026-05-28,Pulau Pinang,33
-2026-05-29,Pulau Pinang,43
-2026-05-30,Pulau Pinang,21
+2026-05-29,Pulau Pinang,44
+2026-05-30,Pulau Pinang,22
 2026-05-31,Pulau Pinang,3
 2026-06-01,Pulau Pinang,2
 2026-06-02,Pulau Pinang,12
-2026-06-03,Pulau Pinang,68
+2026-06-03,Pulau Pinang,69
 2026-06-04,Pulau Pinang,55
 2026-06-05,Pulau Pinang,63
 2026-06-06,Pulau Pinang,63
@@ -24028,20 +24420,20 @@ date,state,screenings
 2026-06-15,Pulau Pinang,103
 2026-06-16,Pulau Pinang,76
 2026-06-17,Pulau Pinang,18
-2026-06-18,Pulau Pinang,58
+2026-06-18,Pulau Pinang,60
 2026-06-19,Pulau Pinang,74
 2026-06-20,Pulau Pinang,70
 2026-06-21,Pulau Pinang,19
 2026-06-22,Pulau Pinang,62
 2026-06-23,Pulau Pinang,50
 2026-06-24,Pulau Pinang,79
-2026-06-25,Pulau Pinang,58
+2026-06-25,Pulau Pinang,59
 2026-06-26,Pulau Pinang,71
 2026-06-27,Pulau Pinang,29
-2026-06-28,Pulau Pinang,130
-2026-06-29,Pulau Pinang,53
+2026-06-28,Pulau Pinang,131
+2026-06-29,Pulau Pinang,54
 2026-06-30,Pulau Pinang,84
-2026-07-01,Pulau Pinang,68
+2026-07-01,Pulau Pinang,69
 2026-07-02,Pulau Pinang,44
 2026-07-03,Pulau Pinang,66
 2026-07-04,Pulau Pinang,69
@@ -24070,19 +24462,68 @@ date,state,screenings
 2026-07-27,Pulau Pinang,68
 2026-07-28,Pulau Pinang,58
 2026-07-29,Pulau Pinang,92
-2026-07-30,Pulau Pinang,51
-2026-07-31,Pulau Pinang,55
-2026-08-01,Pulau Pinang,16
+2026-07-30,Pulau Pinang,53
+2026-07-31,Pulau Pinang,56
+2026-08-01,Pulau Pinang,17
 2026-08-02,Pulau Pinang,13
-2026-08-03,Pulau Pinang,81
-2026-08-04,Pulau Pinang,67
-2026-08-05,Pulau Pinang,55
-2026-08-06,Pulau Pinang,64
-2026-08-07,Pulau Pinang,51
-2026-08-08,Pulau Pinang,22
-2026-08-09,Pulau Pinang,2
-2026-08-10,Pulau Pinang,7
-2026-08-11,Pulau Pinang,0
+2026-08-03,Pulau Pinang,83
+2026-08-04,Pulau Pinang,77
+2026-08-05,Pulau Pinang,56
+2026-08-06,Pulau Pinang,68
+2026-08-07,Pulau Pinang,68
+2026-08-08,Pulau Pinang,28
+2026-08-09,Pulau Pinang,62
+2026-08-10,Pulau Pinang,60
+2026-08-11,Pulau Pinang,71
+2026-08-12,Pulau Pinang,74
+2026-08-13,Pulau Pinang,64
+2026-08-14,Pulau Pinang,59
+2026-08-15,Pulau Pinang,77
+2026-08-16,Pulau Pinang,55
+2026-08-17,Pulau Pinang,71
+2026-08-18,Pulau Pinang,86
+2026-08-19,Pulau Pinang,80
+2026-08-20,Pulau Pinang,78
+2026-08-21,Pulau Pinang,81
+2026-08-22,Pulau Pinang,32
+2026-08-23,Pulau Pinang,82
+2026-08-24,Pulau Pinang,48
+2026-08-25,Pulau Pinang,23
+2026-08-26,Pulau Pinang,76
+2026-08-27,Pulau Pinang,63
+2026-08-28,Pulau Pinang,56
+2026-08-29,Pulau Pinang,47
+2026-08-30,Pulau Pinang,74
+2026-08-31,Pulau Pinang,39
+2026-09-01,Pulau Pinang,67
+2026-09-02,Pulau Pinang,50
+2026-09-03,Pulau Pinang,70
+2026-09-04,Pulau Pinang,56
+2026-09-05,Pulau Pinang,173
+2026-09-06,Pulau Pinang,281
+2026-09-07,Pulau Pinang,56
+2026-09-08,Pulau Pinang,62
+2026-09-09,Pulau Pinang,71
+2026-09-10,Pulau Pinang,61
+2026-09-11,Pulau Pinang,55
+2026-09-12,Pulau Pinang,61
+2026-09-13,Pulau Pinang,27
+2026-09-14,Pulau Pinang,55
+2026-09-15,Pulau Pinang,73
+2026-09-16,Pulau Pinang,71
+2026-09-17,Pulau Pinang,174
+2026-09-18,Pulau Pinang,53
+2026-09-19,Pulau Pinang,85
+2026-09-20,Pulau Pinang,65
+2026-09-21,Pulau Pinang,76
+2026-09-22,Pulau Pinang,74
+2026-09-23,Pulau Pinang,66
+2026-09-24,Pulau Pinang,75
+2026-09-25,Pulau Pinang,60
+2026-09-26,Pulau Pinang,50
+2026-09-27,Pulau Pinang,34
+2026-09-28,Pulau Pinang,56
+2026-09-29,Pulau Pinang,0
 2019-04-15,Sabah,5
 2019-04-16,Sabah,34
 2019-04-17,Sabah,21
@@ -26494,7 +26935,7 @@ date,state,screenings
 2025-11-17,Sabah,64
 2025-11-18,Sabah,66
 2025-11-19,Sabah,154
-2025-11-20,Sabah,112
+2025-11-20,Sabah,113
 2025-11-21,Sabah,88
 2025-11-22,Sabah,29
 2025-11-23,Sabah,152
@@ -26521,7 +26962,7 @@ date,state,screenings
 2025-12-14,Sabah,64
 2025-12-15,Sabah,37
 2025-12-16,Sabah,45
-2025-12-17,Sabah,49
+2025-12-17,Sabah,50
 2025-12-18,Sabah,29
 2025-12-19,Sabah,60
 2025-12-20,Sabah,35
@@ -26571,13 +27012,13 @@ date,state,screenings
 2026-02-02,Sabah,130
 2026-02-03,Sabah,43
 2026-02-04,Sabah,63
-2026-02-05,Sabah,58
+2026-02-05,Sabah,59
 2026-02-06,Sabah,87
 2026-02-07,Sabah,65
 2026-02-08,Sabah,62
 2026-02-09,Sabah,73
-2026-02-10,Sabah,81
-2026-02-11,Sabah,124
+2026-02-10,Sabah,82
+2026-02-11,Sabah,125
 2026-02-12,Sabah,76
 2026-02-13,Sabah,67
 2026-02-14,Sabah,22
@@ -26612,7 +27053,7 @@ date,state,screenings
 2026-03-15,Sabah,66
 2026-03-16,Sabah,53
 2026-03-17,Sabah,54
-2026-03-18,Sabah,95
+2026-03-18,Sabah,96
 2026-03-19,Sabah,48
 2026-03-20,Sabah,15
 2026-03-21,Sabah,0
@@ -26663,7 +27104,7 @@ date,state,screenings
 2026-05-05,Sabah,81
 2026-05-06,Sabah,89
 2026-05-07,Sabah,69
-2026-05-08,Sabah,62
+2026-05-08,Sabah,63
 2026-05-09,Sabah,47
 2026-05-10,Sabah,46
 2026-05-11,Sabah,68
@@ -26673,29 +27114,29 @@ date,state,screenings
 2026-05-15,Sabah,61
 2026-05-16,Sabah,59
 2026-05-17,Sabah,25
-2026-05-18,Sabah,59
+2026-05-18,Sabah,60
 2026-05-19,Sabah,55
 2026-05-20,Sabah,94
 2026-05-21,Sabah,85
 2026-05-22,Sabah,69
 2026-05-23,Sabah,112
-2026-05-24,Sabah,77
+2026-05-24,Sabah,78
 2026-05-25,Sabah,70
 2026-05-26,Sabah,32
 2026-05-27,Sabah,5
-2026-05-28,Sabah,18
+2026-05-28,Sabah,19
 2026-05-29,Sabah,41
 2026-05-30,Sabah,15
 2026-05-31,Sabah,8
 2026-06-01,Sabah,4
-2026-06-02,Sabah,37
+2026-06-02,Sabah,38
 2026-06-03,Sabah,33
 2026-06-04,Sabah,31
 2026-06-05,Sabah,33
 2026-06-06,Sabah,35
 2026-06-07,Sabah,24
 2026-06-08,Sabah,57
-2026-06-09,Sabah,41
+2026-06-09,Sabah,42
 2026-06-10,Sabah,71
 2026-06-11,Sabah,44
 2026-06-12,Sabah,70
@@ -26718,7 +27159,7 @@ date,state,screenings
 2026-06-29,Sabah,68
 2026-06-30,Sabah,30
 2026-07-01,Sabah,42
-2026-07-02,Sabah,34
+2026-07-02,Sabah,35
 2026-07-03,Sabah,39
 2026-07-04,Sabah,36
 2026-07-05,Sabah,35
@@ -26728,37 +27169,86 @@ date,state,screenings
 2026-07-09,Sabah,47
 2026-07-10,Sabah,44
 2026-07-11,Sabah,20
-2026-07-12,Sabah,10
+2026-07-12,Sabah,11
 2026-07-13,Sabah,53
 2026-07-14,Sabah,54
 2026-07-15,Sabah,58
 2026-07-16,Sabah,45
-2026-07-17,Sabah,49
+2026-07-17,Sabah,50
 2026-07-18,Sabah,101
 2026-07-19,Sabah,20
 2026-07-20,Sabah,36
 2026-07-21,Sabah,42
-2026-07-22,Sabah,86
+2026-07-22,Sabah,88
 2026-07-23,Sabah,49
-2026-07-24,Sabah,59
+2026-07-24,Sabah,61
 2026-07-25,Sabah,57
 2026-07-26,Sabah,6
-2026-07-27,Sabah,88
+2026-07-27,Sabah,91
 2026-07-28,Sabah,55
-2026-07-29,Sabah,51
-2026-07-30,Sabah,77
-2026-07-31,Sabah,53
-2026-08-01,Sabah,105
-2026-08-02,Sabah,112
-2026-08-03,Sabah,50
-2026-08-04,Sabah,38
+2026-07-29,Sabah,53
+2026-07-30,Sabah,79
+2026-07-31,Sabah,54
+2026-08-01,Sabah,109
+2026-08-02,Sabah,115
+2026-08-03,Sabah,51
+2026-08-04,Sabah,39
 2026-08-05,Sabah,57
-2026-08-06,Sabah,59
-2026-08-07,Sabah,49
-2026-08-08,Sabah,36
-2026-08-09,Sabah,17
-2026-08-10,Sabah,15
-2026-08-11,Sabah,1
+2026-08-06,Sabah,83
+2026-08-07,Sabah,51
+2026-08-08,Sabah,52
+2026-08-09,Sabah,50
+2026-08-10,Sabah,70
+2026-08-11,Sabah,67
+2026-08-12,Sabah,72
+2026-08-13,Sabah,55
+2026-08-14,Sabah,53
+2026-08-15,Sabah,77
+2026-08-16,Sabah,44
+2026-08-17,Sabah,120
+2026-08-18,Sabah,55
+2026-08-19,Sabah,76
+2026-08-20,Sabah,76
+2026-08-21,Sabah,71
+2026-08-22,Sabah,102
+2026-08-23,Sabah,55
+2026-08-24,Sabah,62
+2026-08-25,Sabah,38
+2026-08-26,Sabah,86
+2026-08-27,Sabah,64
+2026-08-28,Sabah,56
+2026-08-29,Sabah,64
+2026-08-30,Sabah,127
+2026-08-31,Sabah,121
+2026-09-01,Sabah,59
+2026-09-02,Sabah,75
+2026-09-03,Sabah,61
+2026-09-04,Sabah,99
+2026-09-05,Sabah,123
+2026-09-06,Sabah,87
+2026-09-07,Sabah,76
+2026-09-08,Sabah,62
+2026-09-09,Sabah,87
+2026-09-10,Sabah,145
+2026-09-11,Sabah,76
+2026-09-12,Sabah,105
+2026-09-13,Sabah,101
+2026-09-14,Sabah,62
+2026-09-15,Sabah,57
+2026-09-16,Sabah,53
+2026-09-17,Sabah,69
+2026-09-18,Sabah,96
+2026-09-19,Sabah,78
+2026-09-20,Sabah,73
+2026-09-21,Sabah,59
+2026-09-22,Sabah,38
+2026-09-23,Sabah,91
+2026-09-24,Sabah,33
+2026-09-25,Sabah,32
+2026-09-26,Sabah,22
+2026-09-27,Sabah,22
+2026-09-28,Sabah,32
+2026-09-29,Sabah,1
 2019-04-15,Sarawak,4
 2019-04-16,Sarawak,21
 2019-04-17,Sarawak,37
@@ -29120,7 +29610,7 @@ date,state,screenings
 2025-09-28,Sarawak,12
 2025-09-29,Sarawak,99
 2025-09-30,Sarawak,78
-2025-10-01,Sarawak,85
+2025-10-01,Sarawak,86
 2025-10-02,Sarawak,86
 2025-10-03,Sarawak,123
 2025-10-04,Sarawak,20
@@ -29234,7 +29724,7 @@ date,state,screenings
 2026-01-20,Sarawak,56
 2026-01-21,Sarawak,46
 2026-01-22,Sarawak,47
-2026-01-23,Sarawak,72
+2026-01-23,Sarawak,73
 2026-01-24,Sarawak,36
 2026-01-25,Sarawak,6
 2026-01-26,Sarawak,50
@@ -29253,7 +29743,7 @@ date,state,screenings
 2026-02-08,Sarawak,9
 2026-02-09,Sarawak,38
 2026-02-10,Sarawak,80
-2026-02-11,Sarawak,77
+2026-02-11,Sarawak,78
 2026-02-12,Sarawak,60
 2026-02-13,Sarawak,111
 2026-02-14,Sarawak,12
@@ -29279,7 +29769,7 @@ date,state,screenings
 2026-03-06,Sarawak,69
 2026-03-07,Sarawak,29
 2026-03-08,Sarawak,8
-2026-03-09,Sarawak,58
+2026-03-09,Sarawak,59
 2026-03-10,Sarawak,81
 2026-03-11,Sarawak,57
 2026-03-12,Sarawak,62
@@ -29294,62 +29784,62 @@ date,state,screenings
 2026-03-21,Sarawak,0
 2026-03-22,Sarawak,3
 2026-03-23,Sarawak,15
-2026-03-24,Sarawak,40
-2026-03-25,Sarawak,44
-2026-03-26,Sarawak,32
+2026-03-24,Sarawak,41
+2026-03-25,Sarawak,45
+2026-03-26,Sarawak,34
 2026-03-27,Sarawak,85
 2026-03-28,Sarawak,5
 2026-03-29,Sarawak,13
-2026-03-30,Sarawak,48
-2026-03-31,Sarawak,76
-2026-04-01,Sarawak,131
+2026-03-30,Sarawak,49
+2026-03-31,Sarawak,78
+2026-04-01,Sarawak,132
 2026-04-02,Sarawak,57
 2026-04-03,Sarawak,9
 2026-04-04,Sarawak,17
 2026-04-05,Sarawak,5
 2026-04-06,Sarawak,50
 2026-04-07,Sarawak,78
-2026-04-08,Sarawak,50
+2026-04-08,Sarawak,51
 2026-04-09,Sarawak,58
-2026-04-10,Sarawak,105
+2026-04-10,Sarawak,106
 2026-04-11,Sarawak,19
 2026-04-12,Sarawak,8
-2026-04-13,Sarawak,49
-2026-04-14,Sarawak,60
-2026-04-15,Sarawak,76
-2026-04-16,Sarawak,91
+2026-04-13,Sarawak,51
+2026-04-14,Sarawak,61
+2026-04-15,Sarawak,77
+2026-04-16,Sarawak,92
 2026-04-17,Sarawak,150
 2026-04-18,Sarawak,26
 2026-04-19,Sarawak,7
 2026-04-20,Sarawak,38
-2026-04-21,Sarawak,70
+2026-04-21,Sarawak,71
 2026-04-22,Sarawak,74
-2026-04-23,Sarawak,139
-2026-04-24,Sarawak,257
+2026-04-23,Sarawak,140
+2026-04-24,Sarawak,258
 2026-04-25,Sarawak,19
 2026-04-26,Sarawak,5
 2026-04-27,Sarawak,53
-2026-04-28,Sarawak,115
+2026-04-28,Sarawak,116
 2026-04-29,Sarawak,62
 2026-04-30,Sarawak,53
 2026-05-01,Sarawak,9
 2026-05-02,Sarawak,22
 2026-05-03,Sarawak,15
 2026-05-04,Sarawak,46
-2026-05-05,Sarawak,74
+2026-05-05,Sarawak,76
 2026-05-06,Sarawak,71
 2026-05-07,Sarawak,59
 2026-05-08,Sarawak,158
 2026-05-09,Sarawak,37
 2026-05-10,Sarawak,9
-2026-05-11,Sarawak,53
-2026-05-12,Sarawak,57
+2026-05-11,Sarawak,55
+2026-05-12,Sarawak,60
 2026-05-13,Sarawak,51
 2026-05-14,Sarawak,53
 2026-05-15,Sarawak,154
 2026-05-16,Sarawak,16
 2026-05-17,Sarawak,22
-2026-05-18,Sarawak,42
+2026-05-18,Sarawak,43
 2026-05-19,Sarawak,121
 2026-05-20,Sarawak,57
 2026-05-21,Sarawak,31
@@ -29357,10 +29847,10 @@ date,state,screenings
 2026-05-23,Sarawak,10
 2026-05-24,Sarawak,6
 2026-05-25,Sarawak,47
-2026-05-26,Sarawak,28
+2026-05-26,Sarawak,29
 2026-05-27,Sarawak,9
-2026-05-28,Sarawak,48
-2026-05-29,Sarawak,46
+2026-05-28,Sarawak,49
+2026-05-29,Sarawak,47
 2026-05-30,Sarawak,13
 2026-05-31,Sarawak,5
 2026-06-01,Sarawak,5
@@ -29371,7 +29861,7 @@ date,state,screenings
 2026-06-06,Sarawak,15
 2026-06-07,Sarawak,8
 2026-06-08,Sarawak,48
-2026-06-09,Sarawak,65
+2026-06-09,Sarawak,66
 2026-06-10,Sarawak,65
 2026-06-11,Sarawak,74
 2026-06-12,Sarawak,138
@@ -29381,60 +29871,109 @@ date,state,screenings
 2026-06-16,Sarawak,67
 2026-06-17,Sarawak,9
 2026-06-18,Sarawak,49
-2026-06-19,Sarawak,162
+2026-06-19,Sarawak,164
 2026-06-20,Sarawak,15
 2026-06-21,Sarawak,13
 2026-06-22,Sarawak,45
-2026-06-23,Sarawak,75
-2026-06-24,Sarawak,87
+2026-06-23,Sarawak,76
+2026-06-24,Sarawak,89
 2026-06-25,Sarawak,132
 2026-06-26,Sarawak,52
 2026-06-27,Sarawak,26
 2026-06-28,Sarawak,10
 2026-06-29,Sarawak,56
-2026-06-30,Sarawak,100
+2026-06-30,Sarawak,101
 2026-07-01,Sarawak,52
-2026-07-02,Sarawak,50
+2026-07-02,Sarawak,51
 2026-07-03,Sarawak,81
 2026-07-04,Sarawak,36
 2026-07-05,Sarawak,9
 2026-07-06,Sarawak,43
 2026-07-07,Sarawak,68
-2026-07-08,Sarawak,70
+2026-07-08,Sarawak,71
 2026-07-09,Sarawak,125
-2026-07-10,Sarawak,67
+2026-07-10,Sarawak,69
 2026-07-11,Sarawak,27
 2026-07-12,Sarawak,7
 2026-07-13,Sarawak,62
 2026-07-14,Sarawak,90
 2026-07-15,Sarawak,63
 2026-07-16,Sarawak,60
-2026-07-17,Sarawak,161
+2026-07-17,Sarawak,162
 2026-07-18,Sarawak,39
 2026-07-19,Sarawak,18
 2026-07-20,Sarawak,47
-2026-07-21,Sarawak,56
+2026-07-21,Sarawak,57
 2026-07-22,Sarawak,23
 2026-07-23,Sarawak,48
-2026-07-24,Sarawak,102
+2026-07-24,Sarawak,103
 2026-07-25,Sarawak,17
 2026-07-26,Sarawak,19
-2026-07-27,Sarawak,68
-2026-07-28,Sarawak,97
-2026-07-29,Sarawak,51
+2026-07-27,Sarawak,71
+2026-07-28,Sarawak,98
+2026-07-29,Sarawak,53
 2026-07-30,Sarawak,97
-2026-07-31,Sarawak,81
+2026-07-31,Sarawak,82
 2026-08-01,Sarawak,42
 2026-08-02,Sarawak,3
-2026-08-03,Sarawak,42
-2026-08-04,Sarawak,96
-2026-08-05,Sarawak,58
-2026-08-06,Sarawak,53
-2026-08-07,Sarawak,72
-2026-08-08,Sarawak,30
-2026-08-09,Sarawak,16
-2026-08-10,Sarawak,20
-2026-08-11,Sarawak,3
+2026-08-03,Sarawak,43
+2026-08-04,Sarawak,99
+2026-08-05,Sarawak,66
+2026-08-06,Sarawak,56
+2026-08-07,Sarawak,80
+2026-08-08,Sarawak,31
+2026-08-09,Sarawak,17
+2026-08-10,Sarawak,57
+2026-08-11,Sarawak,91
+2026-08-12,Sarawak,89
+2026-08-13,Sarawak,52
+2026-08-14,Sarawak,130
+2026-08-15,Sarawak,55
+2026-08-16,Sarawak,4
+2026-08-17,Sarawak,78
+2026-08-18,Sarawak,67
+2026-08-19,Sarawak,89
+2026-08-20,Sarawak,57
+2026-08-21,Sarawak,133
+2026-08-22,Sarawak,45
+2026-08-23,Sarawak,32
+2026-08-24,Sarawak,66
+2026-08-25,Sarawak,21
+2026-08-26,Sarawak,84
+2026-08-27,Sarawak,96
+2026-08-28,Sarawak,71
+2026-08-29,Sarawak,20
+2026-08-30,Sarawak,10
+2026-08-31,Sarawak,11
+2026-09-01,Sarawak,80
+2026-09-02,Sarawak,56
+2026-09-03,Sarawak,56
+2026-09-04,Sarawak,59
+2026-09-05,Sarawak,30
+2026-09-06,Sarawak,10
+2026-09-07,Sarawak,87
+2026-09-08,Sarawak,135
+2026-09-09,Sarawak,112
+2026-09-10,Sarawak,77
+2026-09-11,Sarawak,262
+2026-09-12,Sarawak,58
+2026-09-13,Sarawak,35
+2026-09-14,Sarawak,68
+2026-09-15,Sarawak,111
+2026-09-16,Sarawak,38
+2026-09-17,Sarawak,92
+2026-09-18,Sarawak,71
+2026-09-19,Sarawak,49
+2026-09-20,Sarawak,25
+2026-09-21,Sarawak,103
+2026-09-22,Sarawak,136
+2026-09-23,Sarawak,108
+2026-09-24,Sarawak,103
+2026-09-25,Sarawak,82
+2026-09-26,Sarawak,36
+2026-09-27,Sarawak,32
+2026-09-28,Sarawak,30
+2026-09-29,Sarawak,18
 2019-04-15,Selangor,12
 2019-04-16,Selangor,18
 2019-04-17,Selangor,15
@@ -31779,7 +32318,7 @@ date,state,screenings
 2025-09-11,Selangor,139
 2025-09-12,Selangor,150
 2025-09-13,Selangor,121
-2025-09-14,Selangor,70
+2025-09-14,Selangor,71
 2025-09-15,Selangor,53
 2025-09-16,Selangor,98
 2025-09-17,Selangor,126
@@ -31861,7 +32400,7 @@ date,state,screenings
 2025-12-02,Selangor,126
 2025-12-03,Selangor,160
 2025-12-04,Selangor,157
-2025-12-05,Selangor,150
+2025-12-05,Selangor,151
 2025-12-06,Selangor,113
 2025-12-07,Selangor,48
 2025-12-08,Selangor,77
@@ -31909,7 +32448,7 @@ date,state,screenings
 2026-01-19,Selangor,102
 2026-01-20,Selangor,176
 2026-01-21,Selangor,185
-2026-01-22,Selangor,183
+2026-01-22,Selangor,184
 2026-01-23,Selangor,184
 2026-01-24,Selangor,267
 2026-01-25,Selangor,161
@@ -31922,7 +32461,7 @@ date,state,screenings
 2026-02-01,Selangor,114
 2026-02-02,Selangor,61
 2026-02-03,Selangor,180
-2026-02-04,Selangor,151
+2026-02-04,Selangor,152
 2026-02-05,Selangor,189
 2026-02-06,Selangor,216
 2026-02-07,Selangor,200
@@ -31962,9 +32501,9 @@ date,state,screenings
 2026-03-13,Selangor,274
 2026-03-14,Selangor,246
 2026-03-15,Selangor,200
-2026-03-16,Selangor,113
+2026-03-16,Selangor,114
 2026-03-17,Selangor,156
-2026-03-18,Selangor,114
+2026-03-18,Selangor,116
 2026-03-19,Selangor,83
 2026-03-20,Selangor,37
 2026-03-21,Selangor,0
@@ -31976,7 +32515,7 @@ date,state,screenings
 2026-03-27,Selangor,136
 2026-03-28,Selangor,163
 2026-03-29,Selangor,138
-2026-03-30,Selangor,93
+2026-03-30,Selangor,94
 2026-03-31,Selangor,109
 2026-04-01,Selangor,205
 2026-04-02,Selangor,209
@@ -31985,7 +32524,7 @@ date,state,screenings
 2026-04-05,Selangor,190
 2026-04-06,Selangor,134
 2026-04-07,Selangor,203
-2026-04-08,Selangor,238
+2026-04-08,Selangor,239
 2026-04-09,Selangor,181
 2026-04-10,Selangor,223
 2026-04-11,Selangor,222
@@ -31993,19 +32532,19 @@ date,state,screenings
 2026-04-13,Selangor,135
 2026-04-14,Selangor,250
 2026-04-15,Selangor,246
-2026-04-16,Selangor,217
+2026-04-16,Selangor,219
 2026-04-17,Selangor,320
 2026-04-18,Selangor,222
 2026-04-19,Selangor,158
-2026-04-20,Selangor,156
-2026-04-21,Selangor,184
+2026-04-20,Selangor,158
+2026-04-21,Selangor,186
 2026-04-22,Selangor,274
 2026-04-23,Selangor,179
 2026-04-24,Selangor,244
 2026-04-25,Selangor,162
 2026-04-26,Selangor,189
-2026-04-27,Selangor,145
-2026-04-28,Selangor,220
+2026-04-27,Selangor,146
+2026-04-28,Selangor,222
 2026-04-29,Selangor,235
 2026-04-30,Selangor,174
 2026-05-01,Selangor,152
@@ -32018,7 +32557,7 @@ date,state,screenings
 2026-05-08,Selangor,256
 2026-05-09,Selangor,286
 2026-05-10,Selangor,251
-2026-05-11,Selangor,189
+2026-05-11,Selangor,190
 2026-05-12,Selangor,186
 2026-05-13,Selangor,238
 2026-05-14,Selangor,208
@@ -32028,11 +32567,11 @@ date,state,screenings
 2026-05-18,Selangor,91
 2026-05-19,Selangor,169
 2026-05-20,Selangor,258
-2026-05-21,Selangor,215
+2026-05-21,Selangor,217
 2026-05-22,Selangor,226
 2026-05-23,Selangor,228
 2026-05-24,Selangor,222
-2026-05-25,Selangor,162
+2026-05-25,Selangor,164
 2026-05-26,Selangor,135
 2026-05-27,Selangor,52
 2026-05-28,Selangor,113
@@ -32058,59 +32597,108 @@ date,state,screenings
 2026-06-17,Selangor,110
 2026-06-18,Selangor,124
 2026-06-19,Selangor,145
-2026-06-20,Selangor,194
+2026-06-20,Selangor,195
 2026-06-21,Selangor,305
 2026-06-22,Selangor,109
 2026-06-23,Selangor,187
 2026-06-24,Selangor,179
 2026-06-25,Selangor,228
 2026-06-26,Selangor,195
-2026-06-27,Selangor,248
+2026-06-27,Selangor,249
 2026-06-28,Selangor,341
 2026-06-29,Selangor,108
 2026-06-30,Selangor,141
 2026-07-01,Selangor,143
 2026-07-02,Selangor,151
-2026-07-03,Selangor,207
+2026-07-03,Selangor,208
 2026-07-04,Selangor,249
-2026-07-05,Selangor,187
+2026-07-05,Selangor,188
 2026-07-06,Selangor,163
-2026-07-07,Selangor,172
+2026-07-07,Selangor,173
 2026-07-08,Selangor,215
 2026-07-09,Selangor,213
 2026-07-10,Selangor,179
 2026-07-11,Selangor,238
 2026-07-12,Selangor,156
-2026-07-13,Selangor,156
-2026-07-14,Selangor,219
+2026-07-13,Selangor,157
+2026-07-14,Selangor,220
 2026-07-15,Selangor,189
-2026-07-16,Selangor,228
-2026-07-17,Selangor,282
-2026-07-18,Selangor,278
-2026-07-19,Selangor,271
-2026-07-20,Selangor,139
+2026-07-16,Selangor,229
+2026-07-17,Selangor,284
+2026-07-18,Selangor,279
+2026-07-19,Selangor,272
+2026-07-20,Selangor,142
 2026-07-21,Selangor,236
 2026-07-22,Selangor,197
 2026-07-23,Selangor,203
 2026-07-24,Selangor,219
-2026-07-25,Selangor,251
-2026-07-26,Selangor,262
+2026-07-25,Selangor,252
+2026-07-26,Selangor,263
 2026-07-27,Selangor,211
-2026-07-28,Selangor,225
+2026-07-28,Selangor,226
 2026-07-29,Selangor,253
-2026-07-30,Selangor,200
-2026-07-31,Selangor,210
-2026-08-01,Selangor,213
-2026-08-02,Selangor,192
-2026-08-03,Selangor,154
-2026-08-04,Selangor,210
-2026-08-05,Selangor,211
-2026-08-06,Selangor,205
-2026-08-07,Selangor,223
-2026-08-08,Selangor,198
-2026-08-09,Selangor,163
-2026-08-10,Selangor,38
-2026-08-11,Selangor,0
+2026-07-30,Selangor,202
+2026-07-31,Selangor,228
+2026-08-01,Selangor,216
+2026-08-02,Selangor,194
+2026-08-03,Selangor,155
+2026-08-04,Selangor,213
+2026-08-05,Selangor,212
+2026-08-06,Selangor,218
+2026-08-07,Selangor,250
+2026-08-08,Selangor,296
+2026-08-09,Selangor,223
+2026-08-10,Selangor,173
+2026-08-11,Selangor,250
+2026-08-12,Selangor,267
+2026-08-13,Selangor,225
+2026-08-14,Selangor,239
+2026-08-15,Selangor,279
+2026-08-16,Selangor,247
+2026-08-17,Selangor,165
+2026-08-18,Selangor,349
+2026-08-19,Selangor,325
+2026-08-20,Selangor,337
+2026-08-21,Selangor,223
+2026-08-22,Selangor,332
+2026-08-23,Selangor,241
+2026-08-24,Selangor,254
+2026-08-25,Selangor,154
+2026-08-26,Selangor,163
+2026-08-27,Selangor,227
+2026-08-28,Selangor,317
+2026-08-29,Selangor,213
+2026-08-30,Selangor,190
+2026-08-31,Selangor,49
+2026-09-01,Selangor,58
+2026-09-02,Selangor,271
+2026-09-03,Selangor,211
+2026-09-04,Selangor,184
+2026-09-05,Selangor,229
+2026-09-06,Selangor,264
+2026-09-07,Selangor,164
+2026-09-08,Selangor,220
+2026-09-09,Selangor,250
+2026-09-10,Selangor,228
+2026-09-11,Selangor,170
+2026-09-12,Selangor,339
+2026-09-13,Selangor,299
+2026-09-14,Selangor,173
+2026-09-15,Selangor,182
+2026-09-16,Selangor,252
+2026-09-17,Selangor,165
+2026-09-18,Selangor,296
+2026-09-19,Selangor,266
+2026-09-20,Selangor,196
+2026-09-21,Selangor,304
+2026-09-22,Selangor,282
+2026-09-23,Selangor,260
+2026-09-24,Selangor,267
+2026-09-25,Selangor,202
+2026-09-26,Selangor,298
+2026-09-27,Selangor,243
+2026-09-28,Selangor,50
+2026-09-29,Selangor,5
 2019-04-15,Terengganu,0
 2019-04-16,Terengganu,1
 2019-04-17,Terengganu,0
@@ -34623,7 +35211,7 @@ date,state,screenings
 2026-02-26,Terengganu,8
 2026-02-27,Terengganu,4
 2026-02-28,Terengganu,15
-2026-03-01,Terengganu,38
+2026-03-01,Terengganu,39
 2026-03-02,Terengganu,28
 2026-03-03,Terengganu,28
 2026-03-04,Terengganu,8
@@ -34674,7 +35262,7 @@ date,state,screenings
 2026-04-18,Terengganu,12
 2026-04-19,Terengganu,25
 2026-04-20,Terengganu,42
-2026-04-21,Terengganu,30
+2026-04-21,Terengganu,31
 2026-04-22,Terengganu,57
 2026-04-23,Terengganu,31
 2026-04-24,Terengganu,5
@@ -34708,7 +35296,7 @@ date,state,screenings
 2026-05-22,Terengganu,2
 2026-05-23,Terengganu,40
 2026-05-24,Terengganu,31
-2026-05-25,Terengganu,26
+2026-05-25,Terengganu,27
 2026-05-26,Terengganu,1
 2026-05-27,Terengganu,0
 2026-05-28,Terengganu,0
@@ -34745,12 +35333,12 @@ date,state,screenings
 2026-06-28,Terengganu,40
 2026-06-29,Terengganu,45
 2026-06-30,Terengganu,54
-2026-07-01,Terengganu,51
+2026-07-01,Terengganu,53
 2026-07-02,Terengganu,37
 2026-07-03,Terengganu,14
 2026-07-04,Terengganu,22
 2026-07-05,Terengganu,37
-2026-07-06,Terengganu,54
+2026-07-06,Terengganu,55
 2026-07-07,Terengganu,41
 2026-07-08,Terengganu,64
 2026-07-09,Terengganu,29
@@ -34766,27 +35354,76 @@ date,state,screenings
 2026-07-19,Terengganu,39
 2026-07-20,Terengganu,79
 2026-07-21,Terengganu,45
-2026-07-22,Terengganu,91
+2026-07-22,Terengganu,92
 2026-07-23,Terengganu,36
 2026-07-24,Terengganu,14
 2026-07-25,Terengganu,73
-2026-07-26,Terengganu,38
+2026-07-26,Terengganu,39
 2026-07-27,Terengganu,47
 2026-07-28,Terengganu,47
 2026-07-29,Terengganu,46
 2026-07-30,Terengganu,28
 2026-07-31,Terengganu,25
 2026-08-01,Terengganu,18
-2026-08-02,Terengganu,38
-2026-08-03,Terengganu,62
-2026-08-04,Terengganu,44
-2026-08-05,Terengganu,44
+2026-08-02,Terengganu,39
+2026-08-03,Terengganu,63
+2026-08-04,Terengganu,46
+2026-08-05,Terengganu,46
 2026-08-06,Terengganu,28
-2026-08-07,Terengganu,6
+2026-08-07,Terengganu,8
 2026-08-08,Terengganu,25
 2026-08-09,Terengganu,32
-2026-08-10,Terengganu,33
-2026-08-11,Terengganu,1
+2026-08-10,Terengganu,41
+2026-08-11,Terengganu,55
+2026-08-12,Terengganu,37
+2026-08-13,Terengganu,41
+2026-08-14,Terengganu,21
+2026-08-15,Terengganu,32
+2026-08-16,Terengganu,63
+2026-08-17,Terengganu,71
+2026-08-18,Terengganu,32
+2026-08-19,Terengganu,40
+2026-08-20,Terengganu,18
+2026-08-21,Terengganu,2
+2026-08-22,Terengganu,64
+2026-08-23,Terengganu,41
+2026-08-24,Terengganu,45
+2026-08-25,Terengganu,12
+2026-08-26,Terengganu,34
+2026-08-27,Terengganu,21
+2026-08-28,Terengganu,29
+2026-08-29,Terengganu,20
+2026-08-30,Terengganu,25
+2026-08-31,Terengganu,2
+2026-09-01,Terengganu,42
+2026-09-02,Terengganu,28
+2026-09-03,Terengganu,22
+2026-09-04,Terengganu,6
+2026-09-05,Terengganu,169
+2026-09-06,Terengganu,217
+2026-09-07,Terengganu,40
+2026-09-08,Terengganu,42
+2026-09-09,Terengganu,47
+2026-09-10,Terengganu,18
+2026-09-11,Terengganu,29
+2026-09-12,Terengganu,32
+2026-09-13,Terengganu,44
+2026-09-14,Terengganu,27
+2026-09-15,Terengganu,32
+2026-09-16,Terengganu,23
+2026-09-17,Terengganu,44
+2026-09-18,Terengganu,40
+2026-09-19,Terengganu,31
+2026-09-20,Terengganu,50
+2026-09-21,Terengganu,85
+2026-09-22,Terengganu,38
+2026-09-23,Terengganu,45
+2026-09-24,Terengganu,24
+2026-09-25,Terengganu,7
+2026-09-26,Terengganu,25
+2026-09-27,Terengganu,21
+2026-09-28,Terengganu,43
+2026-09-29,Terengganu,0
 2019-04-15,W.P. Kuala Lumpur,3
 2019-04-16,W.P. Kuala Lumpur,6
 2019-04-17,W.P. Kuala Lumpur,2
@@ -36992,7 +37629,7 @@ date,state,screenings
 2025-04-25,W.P. Kuala Lumpur,14
 2025-04-26,W.P. Kuala Lumpur,13
 2025-04-27,W.P. Kuala Lumpur,32
-2025-04-28,W.P. Kuala Lumpur,11
+2025-04-28,W.P. Kuala Lumpur,12
 2025-04-29,W.P. Kuala Lumpur,15
 2025-04-30,W.P. Kuala Lumpur,15
 2025-05-01,W.P. Kuala Lumpur,5
@@ -37237,9 +37874,9 @@ date,state,screenings
 2025-12-26,W.P. Kuala Lumpur,28
 2025-12-27,W.P. Kuala Lumpur,31
 2025-12-28,W.P. Kuala Lumpur,16
-2025-12-29,W.P. Kuala Lumpur,30
+2025-12-29,W.P. Kuala Lumpur,31
 2025-12-30,W.P. Kuala Lumpur,45
-2025-12-31,W.P. Kuala Lumpur,25
+2025-12-31,W.P. Kuala Lumpur,26
 2026-01-01,W.P. Kuala Lumpur,11
 2026-01-02,W.P. Kuala Lumpur,7
 2026-01-03,W.P. Kuala Lumpur,5
@@ -37268,12 +37905,12 @@ date,state,screenings
 2026-01-26,W.P. Kuala Lumpur,28
 2026-01-27,W.P. Kuala Lumpur,33
 2026-01-28,W.P. Kuala Lumpur,30
-2026-01-29,W.P. Kuala Lumpur,36
+2026-01-29,W.P. Kuala Lumpur,37
 2026-01-30,W.P. Kuala Lumpur,19
 2026-01-31,W.P. Kuala Lumpur,9
 2026-02-01,W.P. Kuala Lumpur,4
 2026-02-02,W.P. Kuala Lumpur,8
-2026-02-03,W.P. Kuala Lumpur,22
+2026-02-03,W.P. Kuala Lumpur,23
 2026-02-04,W.P. Kuala Lumpur,35
 2026-02-05,W.P. Kuala Lumpur,32
 2026-02-06,W.P. Kuala Lumpur,41
@@ -37295,7 +37932,7 @@ date,state,screenings
 2026-02-22,W.P. Kuala Lumpur,7
 2026-02-23,W.P. Kuala Lumpur,17
 2026-02-24,W.P. Kuala Lumpur,25
-2026-02-25,W.P. Kuala Lumpur,62
+2026-02-25,W.P. Kuala Lumpur,63
 2026-02-26,W.P. Kuala Lumpur,55
 2026-02-27,W.P. Kuala Lumpur,23
 2026-02-28,W.P. Kuala Lumpur,6
@@ -37307,14 +37944,14 @@ date,state,screenings
 2026-03-06,W.P. Kuala Lumpur,31
 2026-03-07,W.P. Kuala Lumpur,9
 2026-03-08,W.P. Kuala Lumpur,16
-2026-03-09,W.P. Kuala Lumpur,22
-2026-03-10,W.P. Kuala Lumpur,62
+2026-03-09,W.P. Kuala Lumpur,23
+2026-03-10,W.P. Kuala Lumpur,63
 2026-03-11,W.P. Kuala Lumpur,69
 2026-03-12,W.P. Kuala Lumpur,51
 2026-03-13,W.P. Kuala Lumpur,34
 2026-03-14,W.P. Kuala Lumpur,13
 2026-03-15,W.P. Kuala Lumpur,17
-2026-03-16,W.P. Kuala Lumpur,37
+2026-03-16,W.P. Kuala Lumpur,38
 2026-03-17,W.P. Kuala Lumpur,26
 2026-03-18,W.P. Kuala Lumpur,17
 2026-03-19,W.P. Kuala Lumpur,21
@@ -37328,141 +37965,190 @@ date,state,screenings
 2026-03-27,W.P. Kuala Lumpur,25
 2026-03-28,W.P. Kuala Lumpur,10
 2026-03-29,W.P. Kuala Lumpur,21
-2026-03-30,W.P. Kuala Lumpur,35
+2026-03-30,W.P. Kuala Lumpur,37
 2026-03-31,W.P. Kuala Lumpur,51
-2026-04-01,W.P. Kuala Lumpur,54
+2026-04-01,W.P. Kuala Lumpur,55
 2026-04-02,W.P. Kuala Lumpur,65
-2026-04-03,W.P. Kuala Lumpur,28
+2026-04-03,W.P. Kuala Lumpur,29
 2026-04-04,W.P. Kuala Lumpur,10
 2026-04-05,W.P. Kuala Lumpur,23
 2026-04-06,W.P. Kuala Lumpur,45
-2026-04-07,W.P. Kuala Lumpur,52
-2026-04-08,W.P. Kuala Lumpur,43
-2026-04-09,W.P. Kuala Lumpur,54
-2026-04-10,W.P. Kuala Lumpur,25
+2026-04-07,W.P. Kuala Lumpur,56
+2026-04-08,W.P. Kuala Lumpur,45
+2026-04-09,W.P. Kuala Lumpur,55
+2026-04-10,W.P. Kuala Lumpur,26
 2026-04-11,W.P. Kuala Lumpur,13
 2026-04-12,W.P. Kuala Lumpur,12
-2026-04-13,W.P. Kuala Lumpur,23
-2026-04-14,W.P. Kuala Lumpur,56
-2026-04-15,W.P. Kuala Lumpur,38
-2026-04-16,W.P. Kuala Lumpur,46
-2026-04-17,W.P. Kuala Lumpur,27
+2026-04-13,W.P. Kuala Lumpur,26
+2026-04-14,W.P. Kuala Lumpur,57
+2026-04-15,W.P. Kuala Lumpur,40
+2026-04-16,W.P. Kuala Lumpur,49
+2026-04-17,W.P. Kuala Lumpur,31
 2026-04-18,W.P. Kuala Lumpur,12
 2026-04-19,W.P. Kuala Lumpur,16
-2026-04-20,W.P. Kuala Lumpur,44
-2026-04-21,W.P. Kuala Lumpur,60
-2026-04-22,W.P. Kuala Lumpur,63
-2026-04-23,W.P. Kuala Lumpur,64
-2026-04-24,W.P. Kuala Lumpur,32
+2026-04-20,W.P. Kuala Lumpur,45
+2026-04-21,W.P. Kuala Lumpur,61
+2026-04-22,W.P. Kuala Lumpur,65
+2026-04-23,W.P. Kuala Lumpur,65
+2026-04-24,W.P. Kuala Lumpur,33
 2026-04-25,W.P. Kuala Lumpur,45
 2026-04-26,W.P. Kuala Lumpur,20
-2026-04-27,W.P. Kuala Lumpur,28
-2026-04-28,W.P. Kuala Lumpur,45
-2026-04-29,W.P. Kuala Lumpur,50
-2026-04-30,W.P. Kuala Lumpur,30
+2026-04-27,W.P. Kuala Lumpur,31
+2026-04-28,W.P. Kuala Lumpur,46
+2026-04-29,W.P. Kuala Lumpur,52
+2026-04-30,W.P. Kuala Lumpur,31
 2026-05-01,W.P. Kuala Lumpur,9
 2026-05-02,W.P. Kuala Lumpur,16
 2026-05-03,W.P. Kuala Lumpur,25
-2026-05-04,W.P. Kuala Lumpur,27
-2026-05-05,W.P. Kuala Lumpur,34
-2026-05-06,W.P. Kuala Lumpur,64
-2026-05-07,W.P. Kuala Lumpur,45
+2026-05-04,W.P. Kuala Lumpur,29
+2026-05-05,W.P. Kuala Lumpur,40
+2026-05-06,W.P. Kuala Lumpur,68
+2026-05-07,W.P. Kuala Lumpur,49
 2026-05-08,W.P. Kuala Lumpur,39
 2026-05-09,W.P. Kuala Lumpur,45
 2026-05-10,W.P. Kuala Lumpur,10
-2026-05-11,W.P. Kuala Lumpur,24
-2026-05-12,W.P. Kuala Lumpur,42
-2026-05-13,W.P. Kuala Lumpur,50
-2026-05-14,W.P. Kuala Lumpur,32
+2026-05-11,W.P. Kuala Lumpur,26
+2026-05-12,W.P. Kuala Lumpur,46
+2026-05-13,W.P. Kuala Lumpur,54
+2026-05-14,W.P. Kuala Lumpur,34
 2026-05-15,W.P. Kuala Lumpur,23
 2026-05-16,W.P. Kuala Lumpur,44
 2026-05-17,W.P. Kuala Lumpur,24
 2026-05-18,W.P. Kuala Lumpur,19
-2026-05-19,W.P. Kuala Lumpur,46
-2026-05-20,W.P. Kuala Lumpur,34
-2026-05-21,W.P. Kuala Lumpur,34
-2026-05-22,W.P. Kuala Lumpur,33
+2026-05-19,W.P. Kuala Lumpur,49
+2026-05-20,W.P. Kuala Lumpur,37
+2026-05-21,W.P. Kuala Lumpur,41
+2026-05-22,W.P. Kuala Lumpur,36
 2026-05-23,W.P. Kuala Lumpur,35
 2026-05-24,W.P. Kuala Lumpur,19
-2026-05-25,W.P. Kuala Lumpur,21
-2026-05-26,W.P. Kuala Lumpur,25
+2026-05-25,W.P. Kuala Lumpur,24
+2026-05-26,W.P. Kuala Lumpur,30
 2026-05-27,W.P. Kuala Lumpur,9
-2026-05-28,W.P. Kuala Lumpur,27
+2026-05-28,W.P. Kuala Lumpur,30
 2026-05-29,W.P. Kuala Lumpur,20
 2026-05-30,W.P. Kuala Lumpur,11
 2026-05-31,W.P. Kuala Lumpur,7
 2026-06-01,W.P. Kuala Lumpur,8
 2026-06-02,W.P. Kuala Lumpur,20
 2026-06-03,W.P. Kuala Lumpur,23
-2026-06-04,W.P. Kuala Lumpur,14
-2026-06-05,W.P. Kuala Lumpur,27
+2026-06-04,W.P. Kuala Lumpur,17
+2026-06-05,W.P. Kuala Lumpur,28
 2026-06-06,W.P. Kuala Lumpur,10
 2026-06-07,W.P. Kuala Lumpur,44
-2026-06-08,W.P. Kuala Lumpur,31
-2026-06-09,W.P. Kuala Lumpur,36
-2026-06-10,W.P. Kuala Lumpur,35
-2026-06-11,W.P. Kuala Lumpur,27
-2026-06-12,W.P. Kuala Lumpur,26
+2026-06-08,W.P. Kuala Lumpur,34
+2026-06-09,W.P. Kuala Lumpur,39
+2026-06-10,W.P. Kuala Lumpur,36
+2026-06-11,W.P. Kuala Lumpur,28
+2026-06-12,W.P. Kuala Lumpur,29
 2026-06-13,W.P. Kuala Lumpur,23
 2026-06-14,W.P. Kuala Lumpur,13
-2026-06-15,W.P. Kuala Lumpur,43
-2026-06-16,W.P. Kuala Lumpur,29
+2026-06-15,W.P. Kuala Lumpur,46
+2026-06-16,W.P. Kuala Lumpur,33
 2026-06-17,W.P. Kuala Lumpur,14
-2026-06-18,W.P. Kuala Lumpur,44
-2026-06-19,W.P. Kuala Lumpur,48
+2026-06-18,W.P. Kuala Lumpur,45
+2026-06-19,W.P. Kuala Lumpur,49
 2026-06-20,W.P. Kuala Lumpur,21
 2026-06-21,W.P. Kuala Lumpur,7
-2026-06-22,W.P. Kuala Lumpur,43
-2026-06-23,W.P. Kuala Lumpur,56
-2026-06-24,W.P. Kuala Lumpur,26
-2026-06-25,W.P. Kuala Lumpur,18
-2026-06-26,W.P. Kuala Lumpur,29
+2026-06-22,W.P. Kuala Lumpur,45
+2026-06-23,W.P. Kuala Lumpur,63
+2026-06-24,W.P. Kuala Lumpur,30
+2026-06-25,W.P. Kuala Lumpur,19
+2026-06-26,W.P. Kuala Lumpur,34
 2026-06-27,W.P. Kuala Lumpur,57
 2026-06-28,W.P. Kuala Lumpur,12
 2026-06-29,W.P. Kuala Lumpur,21
-2026-06-30,W.P. Kuala Lumpur,19
-2026-07-01,W.P. Kuala Lumpur,27
-2026-07-02,W.P. Kuala Lumpur,24
-2026-07-03,W.P. Kuala Lumpur,14
+2026-06-30,W.P. Kuala Lumpur,21
+2026-07-01,W.P. Kuala Lumpur,30
+2026-07-02,W.P. Kuala Lumpur,27
+2026-07-03,W.P. Kuala Lumpur,15
 2026-07-04,W.P. Kuala Lumpur,35
-2026-07-05,W.P. Kuala Lumpur,13
-2026-07-06,W.P. Kuala Lumpur,39
+2026-07-05,W.P. Kuala Lumpur,16
+2026-07-06,W.P. Kuala Lumpur,41
 2026-07-07,W.P. Kuala Lumpur,31
 2026-07-08,W.P. Kuala Lumpur,30
-2026-07-09,W.P. Kuala Lumpur,19
+2026-07-09,W.P. Kuala Lumpur,20
 2026-07-10,W.P. Kuala Lumpur,18
 2026-07-11,W.P. Kuala Lumpur,15
 2026-07-12,W.P. Kuala Lumpur,20
-2026-07-13,W.P. Kuala Lumpur,38
-2026-07-14,W.P. Kuala Lumpur,36
-2026-07-15,W.P. Kuala Lumpur,33
-2026-07-16,W.P. Kuala Lumpur,28
+2026-07-13,W.P. Kuala Lumpur,40
+2026-07-14,W.P. Kuala Lumpur,37
+2026-07-15,W.P. Kuala Lumpur,34
+2026-07-16,W.P. Kuala Lumpur,29
 2026-07-17,W.P. Kuala Lumpur,35
 2026-07-18,W.P. Kuala Lumpur,12
 2026-07-19,W.P. Kuala Lumpur,24
-2026-07-20,W.P. Kuala Lumpur,29
-2026-07-21,W.P. Kuala Lumpur,38
+2026-07-20,W.P. Kuala Lumpur,30
+2026-07-21,W.P. Kuala Lumpur,39
 2026-07-22,W.P. Kuala Lumpur,26
-2026-07-23,W.P. Kuala Lumpur,23
-2026-07-24,W.P. Kuala Lumpur,24
+2026-07-23,W.P. Kuala Lumpur,24
+2026-07-24,W.P. Kuala Lumpur,26
 2026-07-25,W.P. Kuala Lumpur,31
 2026-07-26,W.P. Kuala Lumpur,41
-2026-07-27,W.P. Kuala Lumpur,30
+2026-07-27,W.P. Kuala Lumpur,31
 2026-07-28,W.P. Kuala Lumpur,51
-2026-07-29,W.P. Kuala Lumpur,36
+2026-07-29,W.P. Kuala Lumpur,37
 2026-07-30,W.P. Kuala Lumpur,40
-2026-07-31,W.P. Kuala Lumpur,11
+2026-07-31,W.P. Kuala Lumpur,15
 2026-08-01,W.P. Kuala Lumpur,57
 2026-08-02,W.P. Kuala Lumpur,52
 2026-08-03,W.P. Kuala Lumpur,26
-2026-08-04,W.P. Kuala Lumpur,76
-2026-08-05,W.P. Kuala Lumpur,52
-2026-08-06,W.P. Kuala Lumpur,30
-2026-08-07,W.P. Kuala Lumpur,42
-2026-08-08,W.P. Kuala Lumpur,49
+2026-08-04,W.P. Kuala Lumpur,80
+2026-08-05,W.P. Kuala Lumpur,54
+2026-08-06,W.P. Kuala Lumpur,34
+2026-08-07,W.P. Kuala Lumpur,45
+2026-08-08,W.P. Kuala Lumpur,56
 2026-08-09,W.P. Kuala Lumpur,20
-2026-08-10,W.P. Kuala Lumpur,11
-2026-08-11,W.P. Kuala Lumpur,1
+2026-08-10,W.P. Kuala Lumpur,59
+2026-08-11,W.P. Kuala Lumpur,54
+2026-08-12,W.P. Kuala Lumpur,47
+2026-08-13,W.P. Kuala Lumpur,36
+2026-08-14,W.P. Kuala Lumpur,50
+2026-08-15,W.P. Kuala Lumpur,65
+2026-08-16,W.P. Kuala Lumpur,52
+2026-08-17,W.P. Kuala Lumpur,28
+2026-08-18,W.P. Kuala Lumpur,53
+2026-08-19,W.P. Kuala Lumpur,41
+2026-08-20,W.P. Kuala Lumpur,37
+2026-08-21,W.P. Kuala Lumpur,24
+2026-08-22,W.P. Kuala Lumpur,33
+2026-08-23,W.P. Kuala Lumpur,18
+2026-08-24,W.P. Kuala Lumpur,34
+2026-08-25,W.P. Kuala Lumpur,43
+2026-08-26,W.P. Kuala Lumpur,36
+2026-08-27,W.P. Kuala Lumpur,75
+2026-08-28,W.P. Kuala Lumpur,28
+2026-08-29,W.P. Kuala Lumpur,18
+2026-08-30,W.P. Kuala Lumpur,31
+2026-08-31,W.P. Kuala Lumpur,29
+2026-09-01,W.P. Kuala Lumpur,24
+2026-09-02,W.P. Kuala Lumpur,22
+2026-09-03,W.P. Kuala Lumpur,34
+2026-09-04,W.P. Kuala Lumpur,18
+2026-09-05,W.P. Kuala Lumpur,84
+2026-09-06,W.P. Kuala Lumpur,53
+2026-09-07,W.P. Kuala Lumpur,26
+2026-09-08,W.P. Kuala Lumpur,38
+2026-09-09,W.P. Kuala Lumpur,31
+2026-09-10,W.P. Kuala Lumpur,35
+2026-09-11,W.P. Kuala Lumpur,29
+2026-09-12,W.P. Kuala Lumpur,39
+2026-09-13,W.P. Kuala Lumpur,50
+2026-09-14,W.P. Kuala Lumpur,20
+2026-09-15,W.P. Kuala Lumpur,42
+2026-09-16,W.P. Kuala Lumpur,60
+2026-09-17,W.P. Kuala Lumpur,89
+2026-09-18,W.P. Kuala Lumpur,15
+2026-09-19,W.P. Kuala Lumpur,30
+2026-09-20,W.P. Kuala Lumpur,34
+2026-09-21,W.P. Kuala Lumpur,113
+2026-09-22,W.P. Kuala Lumpur,38
+2026-09-23,W.P. Kuala Lumpur,26
+2026-09-24,W.P. Kuala Lumpur,25
+2026-09-25,W.P. Kuala Lumpur,71
+2026-09-26,W.P. Kuala Lumpur,19
+2026-09-27,W.P. Kuala Lumpur,22
+2026-09-28,W.P. Kuala Lumpur,18
+2026-09-29,W.P. Kuala Lumpur,2
 2019-04-15,W.P. Labuan,0
 2019-04-16,W.P. Labuan,0
 2019-04-17,W.P. Labuan,0
@@ -40137,8 +40823,57 @@ date,state,screenings
 2026-08-07,W.P. Labuan,0
 2026-08-08,W.P. Labuan,0
 2026-08-09,W.P. Labuan,0
-2026-08-10,W.P. Labuan,0
-2026-08-11,W.P. Labuan,0
+2026-08-10,W.P. Labuan,1
+2026-08-11,W.P. Labuan,1
+2026-08-12,W.P. Labuan,0
+2026-08-13,W.P. Labuan,0
+2026-08-14,W.P. Labuan,0
+2026-08-15,W.P. Labuan,0
+2026-08-16,W.P. Labuan,0
+2026-08-17,W.P. Labuan,9
+2026-08-18,W.P. Labuan,8
+2026-08-19,W.P. Labuan,15
+2026-08-20,W.P. Labuan,7
+2026-08-21,W.P. Labuan,9
+2026-08-22,W.P. Labuan,0
+2026-08-23,W.P. Labuan,0
+2026-08-24,W.P. Labuan,4
+2026-08-25,W.P. Labuan,0
+2026-08-26,W.P. Labuan,1
+2026-08-27,W.P. Labuan,2
+2026-08-28,W.P. Labuan,0
+2026-08-29,W.P. Labuan,0
+2026-08-30,W.P. Labuan,0
+2026-08-31,W.P. Labuan,0
+2026-09-01,W.P. Labuan,14
+2026-09-02,W.P. Labuan,12
+2026-09-03,W.P. Labuan,9
+2026-09-04,W.P. Labuan,3
+2026-09-05,W.P. Labuan,0
+2026-09-06,W.P. Labuan,0
+2026-09-07,W.P. Labuan,1
+2026-09-08,W.P. Labuan,0
+2026-09-09,W.P. Labuan,0
+2026-09-10,W.P. Labuan,0
+2026-09-11,W.P. Labuan,1
+2026-09-12,W.P. Labuan,0
+2026-09-13,W.P. Labuan,0
+2026-09-14,W.P. Labuan,1
+2026-09-15,W.P. Labuan,0
+2026-09-16,W.P. Labuan,0
+2026-09-17,W.P. Labuan,2
+2026-09-18,W.P. Labuan,0
+2026-09-19,W.P. Labuan,0
+2026-09-20,W.P. Labuan,0
+2026-09-21,W.P. Labuan,9
+2026-09-22,W.P. Labuan,1
+2026-09-23,W.P. Labuan,0
+2026-09-24,W.P. Labuan,0
+2026-09-25,W.P. Labuan,2
+2026-09-26,W.P. Labuan,0
+2026-09-27,W.P. Labuan,0
+2026-09-28,W.P. Labuan,0
+2026-09-29,W.P. Labuan,0
 2019-04-15,W.P. Putrajaya,1
 2019-04-16,W.P. Putrajaya,1
 2019-04-17,W.P. Putrajaya,0
@@ -42809,9 +43544,58 @@ date,state,screenings
 2026-08-03,W.P. Putrajaya,6
 2026-08-04,W.P. Putrajaya,5
 2026-08-05,W.P. Putrajaya,1
-2026-08-06,W.P. Putrajaya,4
+2026-08-06,W.P. Putrajaya,5
 2026-08-07,W.P. Putrajaya,4
-2026-08-08,W.P. Putrajaya,0
+2026-08-08,W.P. Putrajaya,2
 2026-08-09,W.P. Putrajaya,0
-2026-08-10,W.P. Putrajaya,0
-2026-08-11,W.P. Putrajaya,0
+2026-08-10,W.P. Putrajaya,3
+2026-08-11,W.P. Putrajaya,6
+2026-08-12,W.P. Putrajaya,11
+2026-08-13,W.P. Putrajaya,2
+2026-08-14,W.P. Putrajaya,4
+2026-08-15,W.P. Putrajaya,4
+2026-08-16,W.P. Putrajaya,0
+2026-08-17,W.P. Putrajaya,8
+2026-08-18,W.P. Putrajaya,6
+2026-08-19,W.P. Putrajaya,2
+2026-08-20,W.P. Putrajaya,6
+2026-08-21,W.P. Putrajaya,9
+2026-08-22,W.P. Putrajaya,0
+2026-08-23,W.P. Putrajaya,0
+2026-08-24,W.P. Putrajaya,3
+2026-08-25,W.P. Putrajaya,4
+2026-08-26,W.P. Putrajaya,4
+2026-08-27,W.P. Putrajaya,9
+2026-08-28,W.P. Putrajaya,6
+2026-08-29,W.P. Putrajaya,4
+2026-08-30,W.P. Putrajaya,0
+2026-08-31,W.P. Putrajaya,0
+2026-09-01,W.P. Putrajaya,0
+2026-09-02,W.P. Putrajaya,3
+2026-09-03,W.P. Putrajaya,2
+2026-09-04,W.P. Putrajaya,0
+2026-09-05,W.P. Putrajaya,1
+2026-09-06,W.P. Putrajaya,0
+2026-09-07,W.P. Putrajaya,0
+2026-09-08,W.P. Putrajaya,4
+2026-09-09,W.P. Putrajaya,5
+2026-09-10,W.P. Putrajaya,7
+2026-09-11,W.P. Putrajaya,8
+2026-09-12,W.P. Putrajaya,6
+2026-09-13,W.P. Putrajaya,0
+2026-09-14,W.P. Putrajaya,2
+2026-09-15,W.P. Putrajaya,2
+2026-09-16,W.P. Putrajaya,0
+2026-09-17,W.P. Putrajaya,3
+2026-09-18,W.P. Putrajaya,4
+2026-09-19,W.P. Putrajaya,1
+2026-09-20,W.P. Putrajaya,0
+2026-09-21,W.P. Putrajaya,2
+2026-09-22,W.P. Putrajaya,6
+2026-09-23,W.P. Putrajaya,2
+2026-09-24,W.P. Putrajaya,8
+2026-09-25,W.P. Putrajaya,8
+2026-09-26,W.P. Putrajaya,2
+2026-09-27,W.P. Putrajaya,0
+2026-09-28,W.P. Putrajaya,3
+2026-09-29,W.P. Putrajaya,0
