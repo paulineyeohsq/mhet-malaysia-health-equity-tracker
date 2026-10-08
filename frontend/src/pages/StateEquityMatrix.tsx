@@ -16,13 +16,14 @@ import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
 import CorrelationCaveat from "../components/CorrelationCaveat";
 import ChartToolbar from "../components/ChartToolbar";
-import { toCSV, type Column } from "../components/DataTable";
+import { type Column } from "../components/DataTable";
+import { toCSV } from "../lib/csv";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
 import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, CORRELATION_MIN_PAIRS, type CorrelationPair } from "../lib/correlation";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
-import { useChat, buildExplainPrompt } from "../lib/chatContext";
+import { useChat, buildExplainPrompt } from "../lib/chatCore";
 import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
 
 /** Which OUTCOME_FIELDS ids are built from small administrative event counts

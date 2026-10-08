@@ -16,17 +16,19 @@ import KPISummarySection from "../components/KPISummarySection";
 import SourceNote from "../components/SourceNote";
 import LineChartCard from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
-import DataTable, { type Column, toCSV } from "../components/DataTable";
+import DataTable, { type Column } from "../components/DataTable";
+import { toCSV } from "../lib/csv";
 import ChoroplethMap, { type ChoroplethDatum } from "../components/ChoroplethMap";
 import InsufficientData from "../components/InsufficientData";
-import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
+import EquityInsightCard from "../components/EquityInsightCard";
+import { buildEquityInsight } from "../lib/equityInsight";
 import ChartToolbar from "../components/ChartToolbar";
 import { useData } from "../lib/useData";
 import type { SOURCES } from "../lib/sources";
 import type { Row } from "../lib/equity";
 import { findBestYear, buildPairs, computeCorrelationStats, CORRELATION_MIN_PAIRS } from "../lib/correlation";
 import CorrelationCaveat from "../components/CorrelationCaveat";
-import { useChat, buildExplainPrompt } from "../lib/chatContext";
+import { useChat, buildExplainPrompt } from "../lib/chatCore";
 
 interface NationalRow {
   year: number;
@@ -167,7 +169,7 @@ export default function SocioeconomicInequality() {
   const [rankIndicatorId, setRankIndicatorId] = useState<SocioIndicatorId>("poverty_absolute");
   const rankIndicator = SOCIO_INDICATORS.find((i) => i.id === rankIndicatorId)!;
 
-  // Ask MHET: pre-apply a filter passed via router location state, once on mount.
+  // Ask MY-HEO: pre-apply a filter passed via router location state, once on mount.
   const location = useLocation();
   useEffect(() => {
     const s = location.state as { rankIndicatorId?: SocioIndicatorId } | null;

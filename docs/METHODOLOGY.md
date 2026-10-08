@@ -9,7 +9,7 @@ should be corrected together.
 
 ## 1. Purpose and research question
 
-The Malaysia Health Equity Tracker was built to answer one guiding
+The Malaysia Health Equity Observatory (MY-HEO) was built to answer one guiding
 question: **where are health inequalities greatest in Malaysia, who is
 affected, and how do socioeconomic conditions relate to health outcomes?**
 Every figure on the dashboard traces back to a specific, citable dataset

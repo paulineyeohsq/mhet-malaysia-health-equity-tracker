@@ -10,9 +10,10 @@ import {
   Legend,
 } from "recharts";
 import ChartToolbar from "./ChartToolbar";
-import DataTable, { toCSV, downloadCSV, type Column } from "./DataTable";
+import DataTable, { type Column } from "./DataTable";
+import { toCSV, downloadCSV } from "../lib/csv";
 import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
-import { useChat, buildExplainPrompt } from "../lib/chatContext";
+import { useChat, buildExplainPrompt } from "../lib/chatCore";
 
 export interface Series {
   key: string;

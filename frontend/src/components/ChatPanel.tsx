@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useChat } from "../lib/chatContext";
+import { useChat } from "../lib/chatCore";
 import MarkdownLite from "./MarkdownLite";
 import { AiError, AiPrivacyNote, AiProgress } from "./AiStatus";
 

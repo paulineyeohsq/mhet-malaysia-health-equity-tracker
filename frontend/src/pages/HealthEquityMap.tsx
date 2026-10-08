@@ -4,7 +4,8 @@ import PageHeader from "../components/PageHeader";
 import ChoroplethMap, { type ChoroplethDatum, type TierConfig } from "../components/ChoroplethMap";
 import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
-import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
+import EquityInsightCard from "../components/EquityInsightCard";
+import { buildEquityInsight } from "../lib/equityInsight";
 import { useData } from "../lib/useData";
 import type { SOURCES } from "../lib/sources";
 import { computeTerciles, computeAverage, fmt } from "../lib/equity";
@@ -66,7 +67,7 @@ export default function HealthEquityMap() {
   const [selectedName, setSelectedName] = useState<string | null>(null);
   const [showTiers, setShowTiers] = useState(false);
 
-  // Ask MHET: pre-apply a filter passed via router location state, once on mount.
+  // Ask MY-HEO: pre-apply a filter passed via router location state, once on mount.
   const location = useLocation();
   useEffect(() => {
     const s = location.state as { indicatorId?: string; geography?: Geography } | null;

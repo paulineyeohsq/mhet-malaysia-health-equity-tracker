@@ -15,13 +15,14 @@ import KPISummarySection from "../components/KPISummarySection";
 import SourceNote from "../components/SourceNote";
 import LineChartCard, { type Series } from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
-import DataTable, { type Column, toCSV } from "../components/DataTable";
+import DataTable, { type Column } from "../components/DataTable";
+import { toCSV } from "../lib/csv";
 import InsufficientData from "../components/InsufficientData";
 import ChartToolbar from "../components/ChartToolbar";
 import { useData } from "../lib/useData";
 import { computeGroupMeanGap, fmt, type Row } from "../lib/equity";
 import { MALAYSIA_STATES, EAST_MALAYSIA_STATES, PENINSULAR_STATES } from "../lib/geoConstants";
-import { useChat, buildExplainPrompt } from "../lib/chatContext";
+import { useChat, buildExplainPrompt } from "../lib/chatCore";
 
 interface PopStateRow {
   state: string;

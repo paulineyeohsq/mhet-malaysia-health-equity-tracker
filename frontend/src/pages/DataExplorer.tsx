@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import PageHeader from "../components/PageHeader";
-import DataTable, { type Column, toCSV, downloadCSV } from "../components/DataTable";
+import DataTable, { type Column } from "../components/DataTable";
+import { toCSV, downloadCSV } from "../lib/csv";
 import InsufficientData from "../components/InsufficientData";
 import ProvenanceCard from "../components/ProvenanceCard";
 import DataGapsList from "../components/DataGapsList";

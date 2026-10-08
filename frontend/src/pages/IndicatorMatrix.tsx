@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import PageHeader from "../components/PageHeader";
 import CorrelationCaveat from "../components/CorrelationCaveat";
-import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
+import DataTable, { type Column } from "../components/DataTable";
+import { toCSV, downloadCSV } from "../lib/csv";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
 import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, interpretCorrelation, CORRELATION_MIN_PAIRS, type CorrelationPair } from "../lib/correlation";
@@ -61,7 +62,7 @@ export default function IndicatorMatrix() {
   // "pooled" = every state×year pair across all years, per outcome.
   // A specific year forces every outcome onto that same one year, so rows
   // are directly comparable to each other, unlike "auto".
-  const [yearMode, setYearMode] = useState<string>("auto");
+  const [chosenYearMode, setYearMode] = useState<string>("auto");
 
   const availableYears = useMemo(() => {
     if (!determinantRows) return [];
@@ -76,10 +77,11 @@ export default function IndicatorMatrix() {
     return Array.from(years).sort((a, b) => b - a);
   }, [determinantRows, rowsByFile, determinant]);
 
-  useEffect(() => {
-    if (yearMode === "auto" || yearMode === "pooled") return;
-    if (!availableYears.includes(Number(yearMode))) setYearMode("auto");
-  }, [availableYears, yearMode]);
+  // A year chosen earlier that no longer has data (after changing the determinant) falls back to "auto".
+  const yearMode =
+    chosenYearMode === "auto" || chosenYearMode === "pooled" || availableYears.includes(Number(chosenYearMode))
+      ? chosenYearMode
+      : "auto";
 
   const [selectedOutcomeIds, setSelectedOutcomeIds] = useState<Set<string>>(() => new Set(OUTCOME_FIELDS.map((f) => f.id)));
 

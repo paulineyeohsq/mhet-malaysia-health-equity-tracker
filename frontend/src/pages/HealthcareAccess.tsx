@@ -7,7 +7,8 @@ import LineChartCard from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
 import DataTable, { type Column } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
-import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
+import EquityInsightCard from "../components/EquityInsightCard";
+import { buildEquityInsight } from "../lib/equityInsight";
 import { useData } from "../lib/useData";
 import { collapsePooledRows, type Row } from "../lib/equity";
 

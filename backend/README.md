@@ -4,7 +4,7 @@ This directory is intentionally minimal in the current build.
 
 ## Why there's no live backend
 
-The Malaysia Health Equity Tracker was built as a **self-contained static
+The Malaysia Health Equity Observatory (MY-HEO) was built as a **self-contained static
 application**: a Python ETL pipeline (`/scripts`) produces versioned static
 JSON files (`/data/processed`, mirrored into `/frontend/public/data`), and
 the React frontend (`/frontend`) reads those files directly at runtime via
@@ -30,7 +30,7 @@ to end in that environment, the project instead:
 
 ## Update: chat proxy function (one narrow exception)
 
-The chat feature (the "MHET Assistant" panel in the UI) is the one
+The chat feature (the "MY-HEO Assistant" panel in the UI) is the one
 deliberate exception to "no server-side component" above. It's a small
 Netlify Edge Function (`/netlify-chat`) that does exactly one thing: relay chat
 messages to Google Gemini with a server-held API key, after fetching the

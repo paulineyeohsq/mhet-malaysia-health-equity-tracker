@@ -1,4 +1,4 @@
-# `/netlify-chat` — MHET chat proxy (Netlify Edge Function, active deployment)
+# `/netlify-chat` — MY-HEO chat proxy (Netlify Edge Function, active deployment)
 
 Relays "Ask MY-HEO" chat and "Explain this chart" requests to Google Gemini
 with a server-held API key, grounded in the same public static JSON everyone

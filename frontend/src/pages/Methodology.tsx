@@ -462,9 +462,39 @@ export default function Methodology() {
           </P>
         </section>
 
-        {/* 11. Contact */}
+        {/* 11. Privacy */}
+        <section aria-labelledby="m-privacy">
+          <H2 id="m-privacy">11. Privacy</H2>
+          <P>
+            The charts, maps and tables show aggregated public statistics only. This site has no accounts or logins,
+            does not ask for personal information, and does not use advertising or analytics cookies.
+          </P>
+          <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink-secondary">
+            <li>
+              <span className="font-medium text-ink-primary">AI features.</span> If you use the MY-HEO Assistant, an
+              "Explain this" button or a Research Opportunities card, the text of your question or the chart data
+              involved, plus the page's published data as context, is sent to a Netlify function and on to Google
+              Gemini, which generates the answer. Please do not enter personal or patient information. The function
+              itself keeps only counters used for rate limiting (your IP address or, if unavailable, a hash of basic browser
+              headers, plus a global daily total) and does not store your questions. Netlify and Google may keep their
+              own standard logs; Google's handling of API requests is governed by its own terms.
+            </li>
+            <li>
+              <span className="font-medium text-ink-primary">Browser storage.</span> Answers you have already
+              generated are kept in your browser's session storage for the current tab so they are not requested twice;
+              closing the tab clears them.
+            </li>
+            <li>
+              <span className="font-medium text-ink-primary">Third-party requests.</span> Pages are served by GitHub
+              Pages, and any map background tiles are fetched from the provider named in the map's attribution, which
+              can see your IP address as for any web request.
+            </li>
+          </ul>
+        </section>
+
+        {/* 12. Contact */}
         <section aria-labelledby="m-contact">
-          <H2 id="m-contact">11. Contact and feedback</H2>
+          <H2 id="m-contact">12. Contact and feedback</H2>
           <P>
             This is a research and public-interest prototype built entirely from public open government data
             published by DOSM, the Ministry of Health Malaysia, and the National Registration Department. For
@@ -476,9 +506,9 @@ export default function Methodology() {
           </P>
         </section>
 
-        {/* 12. Glossary */}
+        {/* 13. Glossary */}
         <section aria-labelledby="m-glossary">
-          <H2 id="m-glossary">12. Glossary</H2>
+          <H2 id="m-glossary">13. Glossary</H2>
           <P>
             Quick definitions for terms used across this dashboard's charts and KPI tiles. Hovering (or tapping, on
             touch devices) a dotted-underlined term anywhere on the site links back to its entry here.

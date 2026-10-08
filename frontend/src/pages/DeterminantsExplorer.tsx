@@ -17,12 +17,13 @@ import CorrelationCaveat, { CORRELATION_CAVEAT_TEXT } from "../components/Correl
 import EvidenceSnapshotButton from "../components/EvidenceSnapshotButton";
 import ChartToolbar from "../components/ChartToolbar";
 import Term from "../components/Term";
-import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
+import DataTable, { type Column } from "../components/DataTable";
+import { toCSV, downloadCSV } from "../lib/csv";
 import { useData } from "../lib/useData";
 import { computeAverage, isPooledField, type Row, type TrendPoint } from "../lib/equity";
 import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, interpretCorrelation, CORRELATION_MIN_PAIRS, CORRELATION_RELIABLE_MIN, type CorrelationPair } from "../lib/correlation";
 import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
-import { useChat, buildExplainPrompt } from "../lib/chatContext";
+import { useChat, buildExplainPrompt } from "../lib/chatCore";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, NATIONAL_FIELDS, rowsForField, type FieldDef, type NationalFieldDef } from "../lib/determinantFields";
 
 type AnalysisMode = "cross-section" | "over-time";

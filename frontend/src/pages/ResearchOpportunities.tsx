@@ -11,7 +11,7 @@ import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from 
 import { buildStructuredQuestion } from "../lib/researchQuestionTemplates";
 import { aiCacheKey, readAiCache, writeAiCache } from "../lib/aiCache";
 import { findBestYear, buildPairs, computeCorrelationStats, interpretCorrelation } from "../lib/correlation";
-import { aiErrorMessage, useChat } from "../lib/chatContext";
+import { aiErrorMessage, useChat } from "../lib/chatCore";
 import { AiError, AiPrivacyNote, AiProgress } from "../components/AiStatus";
 import MarkdownLite from "../components/MarkdownLite";
 
