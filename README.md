@@ -142,6 +142,24 @@ npm run build
 npm run preview   # serve the production build locally
 ```
 
+**Run the tests** (from `frontend/`):
+
+```bash
+npm run lint        # oxlint - must report 0 warnings
+npm test            # Vitest: unit tests for src/lib (equity, correlation, priority score, data age, colour contrast)
+                    #         and consistency checks against public/data
+npm run build
+npx playwright install chromium   # once
+npm run test:e2e    # Playwright against the production build, at 1440 px and 390 px:
+                    #   every route loads with no console errors, failed/third-party requests or horizontal
+                    #   overflow; 404 and error-boundary fallbacks; mobile menu; AI error handling;
+                    #   axe-core WCAG 2.1 A/AA on every page; chart and map text alternatives
+node e2e/page-weights.mjs http://localhost:4173/   # cold-load page weight per route (needs `npx vite preview`)
+```
+
+[`deploy-pages.yml`](.github/workflows/deploy-pages.yml) runs lint, the unit tests, the build and the browser
+tests before publishing; [`ci.yml`](.github/workflows/ci.yml) runs the same on every pull request.
+
 **Re-run the data pipeline:**
 
 ```bash
