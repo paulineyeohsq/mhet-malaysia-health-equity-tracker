@@ -3,11 +3,11 @@
 This is the human-readable companion to the machine-readable catalogue at
 [`data/inventory/dataset_inventory.json`](../data/inventory/dataset_inventory.json).
 That file documents every dataset examined during the Phase 1/2 audit of
-[data.gov.my](https://data.gov.my/data-catalogue): **24 datasets with
+[data.gov.my](https://data.gov.my/data-catalogue): **52 datasets with
 `status: ingested`** have raw files under `data/raw/` and processed outputs
 under `data/processed/` (produced by `scripts/transform_data.py`), plus
 **1 dataset ingested for cross-validation only** (`hies_2019_snapshot`, not
-loaded into the dashboard), and **9 datasets identified and schema-verified
+loaded into the dashboard), and **7 datasets identified and schema-verified
 but not yet ingested** into this build.
 
 `scripts/ingest_data.py` can fetch every ingested dataset (and could be

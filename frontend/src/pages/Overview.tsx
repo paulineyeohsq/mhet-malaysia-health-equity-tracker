@@ -8,7 +8,7 @@ import EquityGapBanner from "../components/EquityGapBanner";
 import EntryPointCards from "../components/EntryPointCards";
 import MetadataPanel from "../components/MetadataPanel";
 import { useData } from "../lib/useData";
-import { INVENTORY_MAP } from "../lib/inventoryMap";
+import { INVENTORY_MAP, type InventoryFile } from "../lib/inventoryMap";
 
 interface NationalRow {
   year: number;
@@ -42,6 +42,8 @@ export default function Overview() {
   const { data: stateData } = useData<StateRow[]>("socioeconomic_state.json");
   const { data: hcNational } = useData<HealthcareNational[]>("healthcare_access_national.json");
   const { data: popState } = useData<PopState[]>("population_state.json");
+  const { data: inventory } = useData<InventoryFile>("dataset_inventory.json");
+  const ingestedCount = inventory ? inventory.datasets.filter((d) => d.status === "ingested").length : null;
 
   const latestNational = useMemo(() => {
     if (!national) return null;
@@ -284,7 +286,7 @@ export default function Overview() {
           </h2>
           <p className="max-w-3xl text-sm text-ink-secondary">
             This dashboard integrates {" "}
-            <a href="#/explorer" className="text-series-1 underline underline-offset-2">24 datasets</a> from data.gov.my,
+            <a href="#/explorer" className="text-series-1 underline underline-offset-2">{ingestedCount ?? "dozens of"} datasets</a> from data.gov.my,
             DOSM and the Ministry of Health, spanning population, income, poverty, inequality, basic amenities,
             healthcare workforce and infrastructure, and mortality/morbidity outcomes. Geographic resolution ranges from
             national to state to district depending on the indicator — the Health Equity Map and Data Explorer clearly
