@@ -11,7 +11,11 @@ const GH_PAGES_BASE = "https://paulineyeohsq.github.io/mhet-malaysia-health-equi
 const ALLOWED_ORIGINS = new Set(["https://paulineyeohsq.github.io", "http://localhost:5173"]);
 const MAX_BODY_BYTES = 20_000;
 const MAX_TURNS = 8;
-const MAX_MESSAGE_CHARS = 2000;
+// 6000 (was 2000): the Research Opportunities prompts embed a ~26-row indicator table
+// plus rules and a required response format, ~3-4k chars. At 2000 the slice below
+// silently cut off the rules/format at the END of the prompt, so the model
+// ignored the requested structure. Total body is still capped by MAX_BODY_BYTES.
+const MAX_MESSAGE_CHARS = 6000;
 const RATE_LIMIT_PER_MINUTE = 10;
 
 function corsHeaders(origin: string | null): Record<string, string> {

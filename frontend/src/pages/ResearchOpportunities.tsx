@@ -15,6 +15,7 @@ import MetadataPanel from "../components/MetadataPanel";
 import MarkdownLite from "../components/MarkdownLite";
 import { INVENTORY_MAP } from "../lib/inventoryMap";
 
+const SUGGESTION_CACHE_KEY = "mhet.researchOpportunities.suggestion";
 const POPULATION_SCOPES = ["General population", "Older adults (65+)", "Children under 5", "Adults of working age"];
 const EQUITY_DIMENSIONS = ["Income", "Poverty", "Healthcare access", "Geographic (state-level)"];
 
@@ -282,25 +283,35 @@ export default function ResearchOpportunities() {
       const exclusionRule = excludeIndicators.length
         ? `- Do not pick these indicators again — they were already suggested in this session: ${excludeIndicators.join(", ")}. Choose a different one this time.\n`
         : "";
+      // Instructions come FIRST and the (long) data table LAST: if a prompt
+      // ever exceeds the backend's per-message cap, what gets cut is the tail
+      // of the table, never the rules or required response format.
       const reply = await askDirect(
-        `I'm using the Malaysia Health Equity Observatory dashboard's Research Opportunities page. The table below is ` +
-          `the ONLY data you may use for this task — a real, computed table for every outcome indicator this dashboard ` +
-          `tracks: the state reporting the worst value, the state reporting the best value, and the ratio between them, ` +
-          `all in the most recent year each indicator has data for.\n\n${rows.join("\n")}\n\n` +
+        `You are helping a user of the Malaysia Health Equity Observatory dashboard's Research Opportunities page.\n\n` +
           `Rules:\n` +
-          `- Use ONLY the numbers in this table. Do not use outside knowledge about Malaysian health statistics, and ` +
-          `do not recalculate, round differently, or restate any number other than exactly as it appears above.\n` +
+          `- The table at the end of this message is the ONLY data you may use — a real, computed table for every ` +
+          `outcome indicator this dashboard tracks: the state with the worst value, the state with the best value, ` +
+          `and the ratio between them, in the most recent year each indicator has data for. Use ONLY its numbers. ` +
+          `Do not use outside knowledge about Malaysian health statistics, and do not recalculate, round ` +
+          `differently, or restate any number other than exactly as it appears in the table.\n` +
           `- Pick exactly ONE row as the most compelling starting point for further research — not necessarily the ` +
           `largest ratio, but the one you judge most policy-relevant, actionable, or under-explored.\n` +
           exclusionRule +
-          `\nRespond in exactly this format:\n` +
+          `\nRespond in exactly this format and nothing else:\n` +
           `INDICATOR: <exact indicator name, copied from the table>\n` +
-          `ROW: <the exact matching row, copied verbatim from the table above, unchanged>\n` +
-          `WHY THIS ONE: <2-3 sentences of your own reasoning>`
+          `ROW: <the exact matching row, copied verbatim from the table, unchanged>\n` +
+          `WHY THIS ONE: <2-3 sentences of your own reasoning>\n\n` +
+          `DATA TABLE:\n${rows.join("\n")}`
       );
       setSuggestion(reply);
       const match = /INDICATOR:\s*(.+)/.exec(reply);
-      if (match) setExcludeIndicators((prev) => Array.from(new Set([...prev, match[1].trim()])));
+      const nextExcluded = match ? Array.from(new Set([...excludeIndicators, match[1].trim()])) : excludeIndicators;
+      setExcludeIndicators(nextExcluded);
+      try {
+        sessionStorage.setItem(SUGGESTION_CACHE_KEY, JSON.stringify({ text: reply, excluded: nextExcluded }));
+      } catch {
+        /* sessionStorage unavailable (private mode etc.) — caching is optional */
+      }
     } catch (e) {
       setSuggestError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -308,15 +319,31 @@ export default function ResearchOpportunities() {
     }
   }
 
-  // Auto-generate one suggestion as soon as the real indicator data has
+  // Auto-generate a suggestion as soon as the real indicator data has
   // loaded, so the card never sits empty waiting for a click — "Refresh"
   // (same button, relabelled once a suggestion exists) is how a user asks
   // for another. Guarded by hasAutoSuggested so this only ever fires once
-  // per page visit, not on every re-render as more datasets stream in.
+  // per page visit, and the last suggestion is cached in sessionStorage so
+  // revisiting the page (or navigating away and back) in the same browser
+  // session re-uses it instead of spending another Gemini call — the free
+  // tier's quota was being exhausted by one call per visit.
   useEffect(() => {
     if (hasAutoSuggested) return;
     if (buildGapTable().length < 3) return;
     setHasAutoSuggested(true);
+    try {
+      const cached = sessionStorage.getItem(SUGGESTION_CACHE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached) as { text?: string; excluded?: string[] };
+        if (parsed.text) {
+          setSuggestion(parsed.text);
+          setExcludeIndicators(parsed.excluded ?? []);
+          return;
+        }
+      }
+    } catch {
+      /* unreadable cache — fall through to a fresh request */
+    }
     void handleSuggest();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [healthOutcomes, healthcareAccess, nhmsNcd, nhmsAdolescentMentalHealth, fertility, hasAutoSuggested]);
@@ -358,45 +385,42 @@ export default function ResearchOpportunities() {
     setInterestLoading(true);
     setInterestError(null);
     try {
+      // Instructions first, data last — see the note in handleSuggest.
       const reply = await askDirect(
-        `I'm using the Malaysia Health Equity Observatory dashboard's Research Opportunities page. The table below is ` +
-          `the ONLY data you may use for this task — a real, computed table for every outcome indicator this dashboard ` +
-          `tracks: the state reporting the worst value, the state reporting the best value, and the ratio between them, ` +
-          `all in the most recent year each indicator has data for.\n\n${rows.join("\n")}\n\n` +
-          (correlationLines.length > 0
-            ? `Real, already-computed correlations (Pearson r, single most-complete shared year per pair) between each ` +
-              `indicator above and this dashboard's core determinants (median household income, absolute poverty ` +
-              `rate, Gini coefficient, healthcare staff availability, hospital bed availability):\n\n` +
-              `${correlationLines.join("\n")}\n\n` +
-              `These are cross-sectional statistical associations only, computed directly from the data — not proof ` +
-              `of cause and effect. Never state or imply that one causes the other.\n\n`
-            : "") +
-          `A user of this dashboard has typed the following research interest, in their own words: "${trimmed}"\n\n` +
+        `You are helping a user of the Malaysia Health Equity Observatory dashboard's Research Opportunities page. ` +
+          `The user typed this research interest, in their own words: "${trimmed}"\n\n` +
           (scopedFields.length > 0
-            ? `The indicator table above has ALREADY been filtered by keyword match to only the indicators relevant ` +
-              `to that stated interest — every row is relevant, none are extra. Discuss the row(s) above only; do ` +
-              `not describe or summarise any indicator not shown in that table.\n\n`
-            : `No indicator this dashboard tracks matched that stated interest by keyword, so the FULL indicator table ` +
-              `is shown above only so you can check for yourself. State plainly that nothing in this dashboard's ` +
+            ? `The DATA TABLE at the end has ALREADY been filtered by keyword match to only the indicators relevant ` +
+              `to that interest — every row is relevant, none are extra. Discuss only those rows; do not describe or ` +
+              `summarise any indicator not shown in it.\n\n`
+            : `No indicator this dashboard tracks matched that interest by keyword, so the FULL indicator table is ` +
+              `shown at the end only so you can check for yourself. State plainly that nothing in this dashboard's ` +
               `tracked indicators directly covers their interest. Only if one row is genuinely closely related may ` +
               `you mention it as the nearest available proxy — do not force an unrelated match, and do not describe ` +
               `the rest of the table.\n\n`) +
           `Rules:\n` +
-          `- Use ONLY the numbers, indicators and correlation figures given above. Do not use outside knowledge ` +
-          `about Malaysian health statistics, and do not recalculate, round differently, or restate any number ` +
-          `other than exactly as it appears above.\n` +
-          `- If no correlation line was given for a row, say plainly that no correlation was computed for it — never ` +
-          `invent, guess, or describe a correlation number that wasn't provided.\n` +
-          `- For each relevant row, give: one sentence summarising the real gap (DATA SUMMARY), one sentence ` +
-          `summarising what the correlation figures show for that indicator — strength, direction, and that it is ` +
-          `an association only, not a cause (CORRELATION SUMMARY), and one specific research question tied to the ` +
-          `user's stated interest and this row's real numbers (SUGGESTED QUESTION).\n\n` +
-          `For each row, respond in this format:\n` +
+          `- Use ONLY the numbers, indicators and correlation figures given in this message. Do not use outside ` +
+          `knowledge about Malaysian health statistics, and do not recalculate, round differently, or restate any ` +
+          `number other than exactly as it appears here.\n` +
+          `- If no correlation line is given for a row, say plainly that no correlation was computed for it — never ` +
+          `invent, guess, or describe a correlation number that wasn't provided. Correlations are cross-sectional ` +
+          `associations only, never proof of cause: never state or imply that one causes the other.\n` +
+          `- For each relevant row give: one sentence summarising the real gap (DATA SUMMARY), one sentence ` +
+          `summarising what the correlation figures show — strength, direction, and that it is an association only ` +
+          `(CORRELATION SUMMARY), and one specific research question tied to the user's interest and this row's real ` +
+          `numbers (SUGGESTED QUESTION).\n\n` +
+          `For each row, respond in exactly this format:\n` +
           `INDICATOR: <exact indicator name, copied from the table>\n` +
-          `ROW: <the exact matching row, copied verbatim from the table above, unchanged>\n` +
+          `ROW: <the exact matching row, copied verbatim from the table, unchanged>\n` +
           `DATA SUMMARY: <one sentence>\n` +
           `CORRELATION SUMMARY: <one sentence>\n` +
-          `SUGGESTED QUESTION: <one research question tied to this row and the user's interest>`
+          `SUGGESTED QUESTION: <one research question tied to this row and the user's interest>\n\n` +
+          (correlationLines.length > 0
+            ? `CORRELATIONS (already computed, Pearson r, single most-complete shared year per pair, between each ` +
+              `indicator and median household income, absolute poverty rate, Gini coefficient, healthcare staff ` +
+              `availability, hospital bed availability):\n${correlationLines.join("\n")}\n\n`
+            : "") +
+          `DATA TABLE:\n${rows.join("\n")}`
       );
       setInterestResult(reply);
     } catch (e) {
