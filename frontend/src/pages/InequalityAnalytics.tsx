@@ -15,12 +15,13 @@ import PageHeader from "../components/PageHeader";
 import StatTile from "../components/StatTile";
 import SourceNote from "../components/SourceNote";
 import BarRankingCard from "../components/BarRankingCard";
-import DataTable, { type Column, toCSV } from "../components/DataTable";
+import DataTable, { type Column } from "../components/DataTable";
+import { toCSV } from "../lib/csv";
 import InsufficientData from "../components/InsufficientData";
 import ChartToolbar from "../components/ChartToolbar";
 import Term from "../components/Term";
 import { useData } from "../lib/useData";
-import { useChat, buildExplainPrompt } from "../lib/chatContext";
+import { useChat, buildExplainPrompt } from "../lib/chatCore";
 import type { SOURCES } from "../lib/sources";
 import { computeGapStats, computeAverage, yearsWithCoverage, fmt, type Row } from "../lib/equity";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
@@ -95,9 +96,9 @@ const OUTCOME_INDICATORS: OutcomeIndicator[] = [
   },
   {
     id: "staff",
-    label: "Healthcare workforce availability",
+    label: "Healthcare workforce availability (Klang Valley pooled)",
     file: "healthcare_access_state.json",
-    valueField: "staff_per_100k",
+    valueField: "staff_per_100k_pooled",
     countField: "staff_all",
     countLabel: "healthcare staff headcount (absolute count)",
     unit: "per 100,000 population",
@@ -107,9 +108,9 @@ const OUTCOME_INDICATORS: OutcomeIndicator[] = [
   },
   {
     id: "beds",
-    label: "Hospital bed availability",
+    label: "Hospital bed availability (Klang Valley pooled)",
     file: "healthcare_access_state.json",
-    valueField: "beds_per_100k",
+    valueField: "beds_per_100k_pooled",
     countField: "hospital_beds",
     countLabel: "hospital beds (absolute count)",
     unit: "per 100,000 population",
@@ -274,7 +275,7 @@ export default function InequalityAnalytics() {
   const [primaryId, setPrimaryId] = useState("mmr");
   const [primaryYear, setPrimaryYear] = useState<number | null>(null);
 
-  // Ask MHET: pre-apply a filter passed via router location state, once on mount.
+  // Ask MY-HEO: pre-apply a filter passed via router location state, once on mount.
   const location = useLocation();
   useEffect(() => {
     const s = location.state as { primaryId?: string } | null;

@@ -92,8 +92,8 @@ export const OUTCOME_FIELDS: FieldDef[] = [
   { id: "u5mr", label: "Under-5 mortality rate", file: "health_outcomes_state.json", field: "under5_mortality_rate", unit: "per 1,000 live births", sourceKey: "early_childhood_deaths", higherIsWorse: true },
   { id: "cbr", label: "Crude birth rate", file: "health_outcomes_state.json", field: "crude_birth_rate_per_1000", unit: "per 1,000 population", sourceKey: "births", higherIsWorse: false },
   { id: "hiv", label: "HIV incidence", file: "health_outcomes_state.json", field: "std_hiv_incidence_per_100k", unit: "per 100,000 population", sourceKey: "std", higherIsWorse: true },
-  { id: "staff_out", label: "Healthcare staff availability", file: "healthcare_access_state.json", field: "staff_per_100k", unit: "per 100,000 population", sourceKey: "healthcare_staff", higherIsWorse: false },
-  { id: "beds_out", label: "Hospital bed availability", file: "healthcare_access_state.json", field: "beds_per_100k", unit: "per 100,000 population", sourceKey: "hospital_beds", higherIsWorse: false },
+  { id: "staff_out", label: "Healthcare staff availability (Klang Valley pooled)", file: "healthcare_access_state.json", field: "staff_per_100k_pooled", unit: "per 100,000 population", sourceKey: "healthcare_staff", higherIsWorse: false },
+  { id: "beds_out", label: "Hospital bed availability (Klang Valley pooled)", file: "healthcare_access_state.json", field: "beds_per_100k_pooled", unit: "per 100,000 population", sourceKey: "hospital_beds", higherIsWorse: false },
   { id: "diabetes", label: "Known diabetes prevalence (NHMS)", file: "nhms_ncd_state.json", field: "known_diabetes_prevalence_pct", unit: "% (survey estimate, adults 18+; 2015, 2019 or 2023)", sourceKey: "nhms_ncd", higherIsWorse: true },
   { id: "hypertension", label: "Known hypertension prevalence (NHMS)", file: "nhms_ncd_state.json", field: "known_hypertension_prevalence_pct", unit: "% (survey estimate, adults 18+; 2015, 2019 or 2023)", sourceKey: "nhms_ncd", higherIsWorse: true },
   { id: "raised_glucose", label: "Raised blood glucose (undiagnosed + known, NHMS)", file: "nhms_ncd_state.json", field: "raised_blood_glucose_prevalence_pct", unit: "% (survey estimate, adults 18+; 2015, 2019 or 2023)", sourceKey: "nhms_ncd", higherIsWorse: true },
@@ -127,8 +127,8 @@ export const DETERMINANT_FIELDS: FieldDef[] = [
   { id: "income", label: "Median household income", file: "socioeconomic_state.json", field: "income_median", unit: "RM/month", sourceKey: "income", higherIsWorse: false },
   { id: "poverty", label: "Absolute poverty rate", file: "socioeconomic_state.json", field: "poverty_absolute", unit: "%", sourceKey: "poverty", higherIsWorse: true },
   { id: "gini", label: "Gini coefficient", file: "socioeconomic_state.json", field: "gini", unit: "index (0-1)", sourceKey: "gini", higherIsWorse: true },
-  { id: "staff_det", label: "Healthcare staff availability", file: "healthcare_access_state.json", field: "staff_per_100k", unit: "per 100,000 population", sourceKey: "healthcare_staff", higherIsWorse: false },
-  { id: "beds_det", label: "Hospital bed availability", file: "healthcare_access_state.json", field: "beds_per_100k", unit: "per 100,000 population", sourceKey: "hospital_beds", higherIsWorse: false },
+  { id: "staff_det", label: "Healthcare staff availability (Klang Valley pooled)", file: "healthcare_access_state.json", field: "staff_per_100k_pooled", unit: "per 100,000 population", sourceKey: "healthcare_staff", higherIsWorse: false },
+  { id: "beds_det", label: "Hospital bed availability (Klang Valley pooled)", file: "healthcare_access_state.json", field: "beds_per_100k_pooled", unit: "per 100,000 population", sourceKey: "hospital_beds", higherIsWorse: false },
   // The following are neutral demographic/civic-participation determinants —
   // higherIsWorse is set to false as a non-judgemental default (there is no
   // "more disadvantaged" direction for e.g. marriage rate), not an equity claim.

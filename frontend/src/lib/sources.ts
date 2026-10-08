@@ -12,6 +12,8 @@ export interface SourceInfo {
   geography: string;
   unit: string;
   lastUpdated: string;
+  /** Optional extra caution shown with this source wherever its SourceNote appears. */
+  caveat?: string;
 }
 
 export const SOURCES: Record<string, SourceInfo> = {
@@ -54,6 +56,7 @@ export const SOURCES: Record<string, SourceInfo> = {
     geography: "National / State / District",
     unit: "count",
     lastUpdated: "2024-09-01",
+    caveat: "Per-100,000 comparisons treat Selangor, W.P. Kuala Lumpur and W.P. Putrajaya as one pooled Klang Valley unit: its national referral hospitals and federal institutions serve residents of all three, so each territory's own rate (e.g. W.P. Putrajaya's) is not a like-for-like measure of how well its residents are served.",
   },
   healthcare_staff: {
     label: "Healthcare Staff",
@@ -62,6 +65,7 @@ export const SOURCES: Record<string, SourceInfo> = {
     geography: "National / State",
     unit: "count",
     lastUpdated: "2024-09-01",
+    caveat: "Per-100,000 comparisons treat Selangor, W.P. Kuala Lumpur and W.P. Putrajaya as one pooled Klang Valley unit: its national referral hospitals and federal institutions serve residents of all three, so each territory's own rate (e.g. W.P. Putrajaya's) is not a like-for-like measure of how well its residents are served. Counts are public-sector (MOH) staff only.",
   },
   deaths: {
     label: "Deaths",

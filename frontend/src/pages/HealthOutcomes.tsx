@@ -7,7 +7,8 @@ import LineChartCard, { type Series } from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
 import DataTable, { type Column } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
-import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
+import EquityInsightCard from "../components/EquityInsightCard";
+import { buildEquityInsight } from "../lib/equityInsight";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
 import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
@@ -216,7 +217,7 @@ export default function HealthOutcomes() {
   const [programmeMetricId, setProgrammeMetricId] = useState(PROGRAMME_METRICS[0].id);
   const [sex, setSex] = useState<string>("both");
 
-  // Ask MHET: pre-apply a filter passed via router location state, once on mount.
+  // Ask MY-HEO: pre-apply a filter passed via router location state, once on mount.
   const location = useLocation();
   useEffect(() => {
     const s = location.state as { category?: Category; mortalityMetricId?: string } | null;

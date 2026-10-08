@@ -1,6 +1,6 @@
 name: Update data
 
-# Scheduled automated refresh for the Malaysia Health Equity Tracker.
+# Scheduled automated refresh for the Malaysia Health Equity Observatory (MY-HEO).
 #
 # Runs the full pipeline (ingest -> validate -> transform -> sync into
 # frontend/public/data) via scripts/update_database.py, then opens a pull

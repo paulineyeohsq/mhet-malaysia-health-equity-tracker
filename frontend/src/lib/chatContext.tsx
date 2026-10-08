@@ -1,64 +1,13 @@
-import { createContext, useCallback, useContext, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
+import { useCallback, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
-import { CHAT_URL } from "./chatConfig";
-
-export interface ChatMessage {
-  role: "user" | "assistant";
-  content: string;
-}
-
-interface ChatContextValue {
-  open: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-  messages: ChatMessage[];
-  loading: boolean;
-  error: string | null;
-  clearError: () => void;
-  /** Sends `text` as a user turn through the existing /chat endpoint. */
-  send: (text: string) => Promise<void>;
-  /** Opens the panel and sends a pre-built prompt — used by chart "Explain this" buttons. */
-  explain: (prompt: string) => void;
-  /**
-   * One-off call to the same /chat endpoint that returns the reply text
-   * directly to the caller instead of opening the panel or touching the
-   * shared `messages`/`open` state — for callers that want to render the
-   * AI's answer inline in their own card (e.g. Research Opportunities'
-   * suggestion cards) rather than in the global chat panel. Throws on
-   * failure; callers own their own loading/error state.
-   *
-   * The backend attaches the current page's data files to ordinary chat turns. askDirect
-   * callers (the Research Opportunities cards) put all the data they need in the prompt
-   * itself, so by default this opts out of that ("context: none") — it saves a large
-   * share of the Gemini quota. Pass { pageContext: true } to keep the page data attached.
-   */
-  askDirect: (prompt: string, options?: { pageContext?: boolean }) => Promise<string>;
-}
-
-const EXPLAIN_ROW_CAP = 60;
-
-/**
- * Builds the "Explain this" prompt from a chart's own title + CSV export
- * data (the exact string each chart already builds for its Export CSV
- * button — pass it in rather than re-deriving here, so this stays
- * decoupled from DataTable's Column/toCSV types). Caps to the first 60
- * rows so the request stays a reasonable size; discloses the cap rather
- * than silently truncating, matching this project's data-integrity
- * convention elsewhere (small-count flags, "showing first N of M" notes).
- */
-export function buildExplainPrompt(title: string, csv: string, totalRows: number): string {
-  const lines = csv.split("\n");
-  const capped = lines.length > EXPLAIN_ROW_CAP + 1 ? [...lines.slice(0, EXPLAIN_ROW_CAP + 1)].join("\n") : csv;
-  const truncationNote = totalRows > EXPLAIN_ROW_CAP ? `\n(showing the first ${EXPLAIN_ROW_CAP} of ${totalRows} rows)` : "";
-  return `Explain this chart in plain, simple language for someone without a statistics background: "${title}".\n\nHere is the data behind it (CSV):\n${capped}${truncationNote}\n\nCover: what it shows, whether the pattern is meaningful given this dataset's known caveats, and one plain-language takeaway.`;
-}
-
-const ChatContext = createContext<ChatContextValue | null>(null);
-
-export function useChat(): ChatContextValue {
-  const ctx = useContext(ChatContext);
-  if (!ctx) throw new Error("useChat must be used within a ChatProvider");
-  return ctx;
-}
+import {
+  aiErrorMessage,
+  ChatContext,
+  postChat,
+  ChatError,
+  type ChatContextValue,
+  type ChatMessage,
+} from "./chatCore";
 
 /**
  * Owns the "Ask MY-HEO" chat state so both the chat panel itself and any
@@ -74,33 +23,37 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const run = useCallback(
+    async (next: ChatMessage[]) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const { reply } = await postChat({ messages: next, path: location.pathname });
+        setMessages([...next, { role: "assistant", content: reply }]);
+      } catch (e) {
+        setError(aiErrorMessage(e));
+      } finally {
+        setLoading(false);
+      }
+    },
+    [location.pathname]
+  );
+
   const send = useCallback(
     async (text: string) => {
       const trimmed = text.trim();
       if (!trimmed || loading) return;
       const next: ChatMessage[] = [...messages, { role: "user", content: trimmed }];
       setMessages(next);
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch(`${CHAT_URL}/chat`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: next, path: location.pathname }),
-        });
-        const data = (await res.json()) as { reply?: string; error?: string };
-        if (!res.ok || !data.reply) {
-          throw new Error(data.error ?? `HTTP ${res.status}`);
-        }
-        setMessages([...next, { role: "assistant", content: data.reply }]);
-      } catch (e) {
-        setError(e instanceof Error ? e.message : String(e));
-      } finally {
-        setLoading(false);
-      }
+      await run(next);
     },
-    [messages, loading, location.pathname]
+    [messages, loading, run]
   );
+
+  const retry = useCallback(async () => {
+    if (loading || messages.length === 0 || messages[messages.length - 1].role !== "user") return;
+    await run(messages);
+  }, [messages, loading, run]);
 
   const explain = useCallback(
     (prompt: string) => {
@@ -116,25 +69,23 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       // the service is rate-limited: 503 (the backend's translation of
       // Gemini's 429 "busy") or 429 (the backend's own per-IP limit). These
       // are mostly per-minute limits that clear quickly, so patient retries
-      // hide most of them from the user. Anything else fails immediately.
+      // hide most of them from the user. The daily cap (code "daily_cap") will
+      // not clear in seconds, so it fails immediately, as does anything else.
       const MAX_RETRIES = 3;
       for (let attempt = 0; ; attempt++) {
-        const res = await fetch(`${CHAT_URL}/chat`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+        try {
+          const { reply } = await postChat({
             messages: [{ role: "user", content: prompt }],
             path: location.pathname,
             ...(options?.pageContext ? {} : { context: "none" }),
-          }),
-        });
-        const data = (await res.json()) as { reply?: string; error?: string };
-        if (res.ok && data.reply) return data.reply;
-        if ((res.status === 503 || res.status === 429) && attempt < MAX_RETRIES) {
+          });
+          return reply;
+        } catch (e) {
+          const retryable =
+            e instanceof ChatError && (e.status === 503 || e.status === 429) && e.code !== "daily_cap";
+          if (!retryable || attempt >= MAX_RETRIES) throw e;
           await new Promise((r) => setTimeout(r, 3000 * 2 ** attempt));
-          continue;
         }
-        throw new Error(data.error ?? `HTTP ${res.status}`);
       }
     },
     [location.pathname]
@@ -148,6 +99,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     error,
     clearError: () => setError(null),
     send,
+    retry,
     explain,
     askDirect,
   };

@@ -4,7 +4,8 @@ import PageHeader from "../components/PageHeader";
 import ChoroplethMap, { type ChoroplethDatum, type TierConfig } from "../components/ChoroplethMap";
 import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
-import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
+import EquityInsightCard from "../components/EquityInsightCard";
+import { buildEquityInsight } from "../lib/equityInsight";
 import { useData } from "../lib/useData";
 import type { SOURCES } from "../lib/sources";
 import { computeTerciles, computeAverage, fmt } from "../lib/equity";
@@ -33,8 +34,8 @@ const INDICATORS: IndicatorDef[] = [
   { id: "income", label: "Median household income", sourceKey: "income", unit: "RM", file: "socioeconomic_state.json", valueField: "income_median", geographies: ["state", "district"], higherIsWorse: false },
   { id: "gini", label: "Gini coefficient", sourceKey: "gini", unit: "", file: "socioeconomic_state.json", valueField: "gini", geographies: ["state", "district"], higherIsWorse: true },
   { id: "hospital_beds", label: "Hospital beds (absolute)", sourceKey: "hospital_beds", unit: "beds", file: "healthcare_access_state.json", valueField: "hospital_beds", geographies: ["state", "district"], higherIsWorse: false },
-  { id: "beds_per_100k", label: "Hospital beds per 100,000", sourceKey: "hospital_beds", unit: "per 100k", file: "healthcare_access_state.json", valueField: "beds_per_100k", geographies: ["state"], higherIsWorse: false },
-  { id: "staff_per_100k", label: "Healthcare staff per 100,000", sourceKey: "healthcare_staff", unit: "per 100k", file: "healthcare_access_state.json", valueField: "staff_per_100k", geographies: ["state"], higherIsWorse: false },
+  { id: "beds_per_100k", label: "Hospital beds per 100,000 (Klang Valley pooled)", sourceKey: "hospital_beds", unit: "per 100k", file: "healthcare_access_state.json", valueField: "beds_per_100k_pooled", geographies: ["state"], higherIsWorse: false },
+  { id: "staff_per_100k", label: "Healthcare staff per 100,000 (Klang Valley pooled)", sourceKey: "healthcare_staff", unit: "per 100k", file: "healthcare_access_state.json", valueField: "staff_per_100k_pooled", geographies: ["state"], higherIsWorse: false },
   { id: "crude_death_rate", label: "Crude death rate", sourceKey: "deaths", unit: "per 1,000", file: "health_outcomes_state.json", valueField: "crude_death_rate_per_1000", geographies: ["state"], higherIsWorse: true, absField: "deaths_abs" },
   { id: "maternal_mortality", label: "Maternal mortality rate", sourceKey: "maternal_deaths", unit: "per 100k births", file: "health_outcomes_state.json", valueField: "maternal_mortality_rate_per_100k_births", geographies: ["state"], higherIsWorse: true, absField: "maternal_deaths_abs" },
   { id: "infant_mortality", label: "Infant mortality rate", sourceKey: "early_childhood_deaths", unit: "per 1,000 births", file: "health_outcomes_state.json", valueField: "infant_mortality_rate", geographies: ["state"], higherIsWorse: true, absField: "infant_deaths_abs" },
@@ -66,7 +67,7 @@ export default function HealthEquityMap() {
   const [selectedName, setSelectedName] = useState<string | null>(null);
   const [showTiers, setShowTiers] = useState(false);
 
-  // Ask MHET: pre-apply a filter passed via router location state, once on mount.
+  // Ask MY-HEO: pre-apply a filter passed via router location state, once on mount.
   const location = useLocation();
   useEffect(() => {
     const s = location.state as { indicatorId?: string; geography?: Geography } | null;

@@ -1,11 +1,12 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MapContainer, TileLayer, GeoJSON, AttributionControl, useMap } from "react-leaflet";
 import L from "leaflet";
 import type { Layer, StyleFunction, LeafletMouseEvent, Path } from "leaflet";
 import type { Feature, Geometry } from "geojson";
 import ChartToolbar from "./ChartToolbar";
-import DataTable, { toCSV, downloadCSV, type Column } from "./DataTable";
-import { useChat, buildExplainPrompt } from "../lib/chatContext";
+import DataTable, { type Column } from "./DataTable";
+import { toCSV, downloadCSV } from "../lib/csv";
+import { useChat, buildExplainPrompt } from "../lib/chatCore";
 
 export interface ChoroplethDatum {
   name: string; // state or district name, must match geojson `state`/`district` property
@@ -152,9 +153,6 @@ export default function ChoroplethMap({
       },
     });
   };
-
-  const keyRef = useRef(0);
-  keyRef.current += 1;
 
   // Table toggle + CSV export. PNG export is deliberately not offered here
   // (unlike BarRankingCard/LineChartCard): the map mixes in cross-origin

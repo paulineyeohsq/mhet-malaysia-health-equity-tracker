@@ -27,6 +27,13 @@ const MAX_TURNS = 8;
 // ignored the requested structure. Total body is still capped by MAX_BODY_BYTES.
 const MAX_MESSAGE_CHARS = 6000;
 const RATE_LIMIT_PER_MINUTE = 10;
+// Requests whose client IP could not be determined get a much smaller per-minute allowance, keyed by a
+// hash of their headers (user-agent + language) instead of one shared "unknown" bucket that every such
+// caller would drain together.
+const RATE_LIMIT_UNKNOWN_IP_PER_MINUTE = 3;
+// Global cap on AI calls per UTC day across all callers, to bound Gemini quota/cost. Override with the
+// DAILY_REQUEST_CAP environment variable (a positive integer; 0 or invalid falls back to the default).
+const DEFAULT_DAILY_REQUEST_CAP = 1000;
 
 function corsHeaders(origin: string | null): Record<string, string> {
   const allow = origin && ALLOWED_ORIGINS.has(origin) ? origin : "";
@@ -45,13 +52,49 @@ function json(body: unknown, status: number, origin: string | null): Response {
   });
 }
 
-async function checkRateLimit(ip: string): Promise<boolean> {
+async function sha256Hex(text: string): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(digest))
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("")
+    .slice(0, 16);
+}
+
+/** Per-client, per-minute limit. Known IPs get RATE_LIMIT_PER_MINUTE; unknown ones a header-fingerprint bucket
+ * with a smaller allowance. Read-then-write on Netlify Blobs is not atomic, so under heavy concurrency a few
+ * extra requests can slip through — the limit is a soft guard, the daily cap below is the backstop. */
+async function checkRateLimit(request: Request, ip: string | undefined): Promise<boolean> {
   const store = getStore("rate-limit");
   const bucket = Math.floor(Date.now() / 60000);
-  const key = `rl:${ip}:${bucket}`;
+  let id: string;
+  let limit: number;
+  if (ip) {
+    id = ip;
+    limit = RATE_LIMIT_PER_MINUTE;
+  } else {
+    id = `fp-${await sha256Hex(`${request.headers.get("user-agent") ?? ""}|${request.headers.get("accept-language") ?? ""}`)}`;
+    limit = RATE_LIMIT_UNKNOWN_IP_PER_MINUTE;
+  }
+  const key = `rl:${id}:${bucket}`;
   const current = parseInt((await store.get(key)) ?? "0", 10);
-  if (current >= RATE_LIMIT_PER_MINUTE) return false;
+  if (current >= limit) return false;
   await store.set(key, String(current + 1));
+  return true;
+}
+
+function dailyCap(): number {
+  const n = parseInt(Netlify.env.get("DAILY_REQUEST_CAP") ?? "", 10);
+  return Number.isFinite(n) && n > 0 ? n : DEFAULT_DAILY_REQUEST_CAP;
+}
+
+/** Counts this request against today's (UTC) global total; false once the cap has been reached. Same
+ * non-atomic caveat as above: the cap can be overshot slightly under concurrency. */
+async function takeDailyBudget(): Promise<boolean> {
+  const store = getStore("rate-limit");
+  const key = `daily:${new Date().toISOString().slice(0, 10)}`;
+  const used = parseInt((await store.get(key)) ?? "0", 10);
+  if (used >= dailyCap()) return false;
+  await store.set(key, String(used + 1));
   return true;
 }
 
@@ -72,8 +115,7 @@ async function handleChat(request: Request, context: Context, origin: string | n
     return json({ error: "Chat is not configured yet." }, 500, origin);
   }
 
-  const ip = context.ip || "unknown";
-  const withinLimit = await checkRateLimit(ip);
+  const withinLimit = await checkRateLimit(request, context.ip);
   if (!withinLimit) {
     return json({ error: "Too many requests — please slow down." }, 429, origin);
   }
@@ -137,6 +179,19 @@ async function handleChat(request: Request, context: Context, origin: string | n
       );
     }
     contextBlock = buildCompactContext(files, missing);
+  }
+
+  // Counted only once the request is valid and about to cost a Gemini call.
+  if (!(await takeDailyBudget())) {
+    return json(
+      {
+        error:
+          "The AI assistant has reached its daily limit and is paused until tomorrow (resets at 8:00 am Malaysia time). The charts, maps and tables all still work.",
+        code: "daily_cap",
+      },
+      429,
+      origin
+    );
   }
 
   try {

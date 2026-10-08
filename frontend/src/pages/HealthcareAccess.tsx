@@ -7,9 +7,10 @@ import LineChartCard from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
 import DataTable, { type Column } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
-import EquityInsightCard, { buildEquityInsight } from "../components/EquityInsightCard";
+import EquityInsightCard from "../components/EquityInsightCard";
+import { buildEquityInsight } from "../lib/equityInsight";
 import { useData } from "../lib/useData";
-import type { Row } from "../lib/equity";
+import { collapsePooledRows, type Row } from "../lib/equity";
 
 interface NationalRow {
   year: number;
@@ -33,6 +34,9 @@ interface StateRow {
   staff_nurse_community: number | null;
   population_used_for_rate: number | null;
   staff_per_100k: number | null;
+  staff_per_100k_pooled: number | null;
+  beds_per_100k_pooled: number | null;
+  pool_label: string | null;
   hospital_beds: number | null;
   beds_per_100k: number | null;
   [key: string]: unknown;
@@ -107,8 +111,8 @@ export default function HealthcareAccess() {
     return stateData.filter((r) => r.year === effectiveStateYear);
   }, [stateData, effectiveStateYear]);
 
-  const staffRateAvailable = stateSnapshot.some((r) => r.staff_per_100k !== null);
-  const bedsRateAvailable = stateSnapshot.some((r) => r.beds_per_100k !== null);
+  const staffRateAvailable = stateSnapshot.some((r) => r.staff_per_100k_pooled !== null);
+  const bedsRateAvailable = stateSnapshot.some((r) => r.beds_per_100k_pooled !== null);
 
   const districtRows = useMemo(() => {
     if (!districtData) return [];
@@ -141,9 +145,11 @@ export default function HealthcareAccess() {
     { key: "staff_nurse", label: "Nurses", numeric: true },
     { key: "staff_nurse_community", label: "Community nurses", numeric: true },
     { key: "population_used_for_rate", label: "Population (rate denominator)", numeric: true },
-    { key: "staff_per_100k", label: "Staff per 100,000", numeric: true },
+    { key: "staff_per_100k", label: "Staff per 100,000 (own state)", numeric: true },
+    { key: "staff_per_100k_pooled", label: "Staff per 100,000 (Klang Valley pooled)", numeric: true },
     { key: "hospital_beds", label: "Hospital beds", numeric: true },
-    { key: "beds_per_100k", label: "Beds per 100,000", numeric: true },
+    { key: "beds_per_100k", label: "Beds per 100,000 (own state)", numeric: true },
+    { key: "beds_per_100k_pooled", label: "Beds per 100,000 (Klang Valley pooled)", numeric: true },
   ];
 
   const districtColumns: Column[] = [
@@ -298,8 +304,8 @@ export default function HealthcareAccess() {
             insight={buildEquityInsight({
               rows: stateData as unknown as Row[] | null,
               year: effectiveStateYear,
-              valueField: "staff_per_100k",
-              metricLabel: "healthcare staff per 100,000 population",
+              valueField: "staff_per_100k_pooled",
+              metricLabel: "public-sector healthcare staff per 100,000 population (Klang Valley pooled)",
               unit: "per 100k",
               higherIsWorse: false,
             })}
@@ -309,10 +315,10 @@ export default function HealthcareAccess() {
           <div className="grid gap-4 lg:grid-cols-2">
             {staffRateAvailable ? (
               <BarRankingCard
-                title={`Healthcare staff per 100,000 population by state — ${effectiveStateYear}`}
-                data={stateSnapshot.filter((r) => r.staff_per_100k !== null)}
+                title={`Healthcare staff per 100,000 population by state — ${effectiveStateYear} (Klang Valley pooled)`}
+                data={collapsePooledRows(stateSnapshot as unknown as Row[], "staff_per_100k_pooled").filter((r) => r.staff_per_100k_pooled !== null)}
                 nameKey="state"
-                valueKey="staff_per_100k"
+                valueKey="staff_per_100k_pooled"
                 unit="per 100k"
                 color="#3a7173"
               />
@@ -327,10 +333,10 @@ export default function HealthcareAccess() {
 
             {bedsRateAvailable ? (
               <BarRankingCard
-                title={`Hospital beds per 100,000 population by state — ${effectiveStateYear}`}
-                data={stateSnapshot.filter((r) => r.beds_per_100k !== null)}
+                title={`Hospital beds per 100,000 population by state — ${effectiveStateYear} (Klang Valley pooled)`}
+                data={collapsePooledRows(stateSnapshot as unknown as Row[], "beds_per_100k_pooled").filter((r) => r.beds_per_100k_pooled !== null)}
                 nameKey="state"
-                valueKey="beds_per_100k"
+                valueKey="beds_per_100k_pooled"
                 unit="per 100k"
                 color="#eb6834"
               />
@@ -351,6 +357,15 @@ export default function HealthcareAccess() {
               Malaysia. Denominator: DOSM state population estimate for the exact same state and year (shown per-row
               in the table below as "Population (rate denominator)"). Staff rates exist only for 2020–2022, the
               years for which a matching state population estimate is available.
+            </p>
+            <p className="mt-2">
+              <span className="font-medium text-ink-primary">Klang Valley pooling:</span> in the charts and ranking
+              above, Selangor, W.P. Kuala Lumpur and W.P. Putrajaya are combined into one unit (their staff or bed counts
+              summed ÷ their populations summed × 100,000), because the same referral hospitals, teaching hospital and
+              federal institutions serve residents of all three. Each territory's own rate is still shown in the table
+              below ("own state"), but is not comparable like-for-like — for example W.P. Putrajaya's counts include
+              federal-level facilities against a resident population of only about 117,000. The source catalogue does
+              not say whether staff are counted by place of work or place of residence.
             </p>
             <p className="mt-2">
               <span className="font-medium text-ink-primary">Rate formula (beds):</span> hospital_beds ÷

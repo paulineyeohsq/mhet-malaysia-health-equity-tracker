@@ -408,6 +408,20 @@ export default function Methodology() {
               healthcare workforce density should be read as public-sector capacity, not total capacity.
             </li>
             <li>
+              <span className="font-medium text-ink-primary">Klang Valley pooling for staff and bed rates.</span>{" "}
+              Selangor, W.P. Kuala Lumpur and W.P. Putrajaya share national referral hospitals, a teaching hospital
+              and federal institutions, so a per-resident rate for each on its own is not a like-for-like measure of
+              how well its residents are served (W.P. Putrajaya's own staff rate, about 3,036 per 100,000 in 2022, is
+              roughly nine times Selangor's 341, largely because its staff count sits against only about 117,000
+              residents). For comparisons between areas — rankings, gap ratios, maps, the Priority Areas score,
+              correlations and the AI assistant — the pipeline publishes a pooled rate in which those three units' counts
+              and populations are each summed and divided once (about 509 staff and 144 beds per 100,000 in 2022), and
+              every other state keeps its own rate. Each territory's own rate is still shown in the Healthcare Access and
+              Data Explorer tables. In correlations the three units are left out, since a pooled rate cannot be paired
+              with any one of them. The source catalogue does not say whether staff are counted by place of work or by
+              place of residence; the pooling is a comparison convention, not a correction of the source.
+            </li>
+            <li>
               <span className="font-medium text-ink-primary">Poverty-line methodology changes over time.</span>{" "}
               DOSM revised its Poverty Line Income methodology around 2019; pre- and post-2019 absolute poverty
               rates are not fully comparable, and this dashboard does not adjust for that break when showing the
@@ -448,9 +462,39 @@ export default function Methodology() {
           </P>
         </section>
 
-        {/* 11. Contact */}
+        {/* 11. Privacy */}
+        <section aria-labelledby="m-privacy">
+          <H2 id="m-privacy">11. Privacy</H2>
+          <P>
+            The charts, maps and tables show aggregated public statistics only. This site has no accounts or logins,
+            does not ask for personal information, and does not use advertising or analytics cookies.
+          </P>
+          <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink-secondary">
+            <li>
+              <span className="font-medium text-ink-primary">AI features.</span> If you use the MY-HEO Assistant, an
+              "Explain this" button or a Research Opportunities card, the text of your question or the chart data
+              involved, plus the page's published data as context, is sent to a Netlify function and on to Google
+              Gemini, which generates the answer. Please do not enter personal or patient information. The function
+              itself keeps only counters used for rate limiting (your IP address or, if unavailable, a hash of basic browser
+              headers, plus a global daily total) and does not store your questions. Netlify and Google may keep their
+              own standard logs; Google's handling of API requests is governed by its own terms.
+            </li>
+            <li>
+              <span className="font-medium text-ink-primary">Browser storage.</span> Answers you have already
+              generated are kept in your browser's session storage for the current tab so they are not requested twice;
+              closing the tab clears them.
+            </li>
+            <li>
+              <span className="font-medium text-ink-primary">Third-party requests.</span> Pages are served by GitHub
+              Pages, and any map background tiles are fetched from the provider named in the map's attribution, which
+              can see your IP address as for any web request.
+            </li>
+          </ul>
+        </section>
+
+        {/* 12. Contact */}
         <section aria-labelledby="m-contact">
-          <H2 id="m-contact">11. Contact and feedback</H2>
+          <H2 id="m-contact">12. Contact and feedback</H2>
           <P>
             This is a research and public-interest prototype built entirely from public open government data
             published by DOSM, the Ministry of Health Malaysia, and the National Registration Department. For
@@ -462,9 +506,9 @@ export default function Methodology() {
           </P>
         </section>
 
-        {/* 12. Glossary */}
+        {/* 13. Glossary */}
         <section aria-labelledby="m-glossary">
-          <H2 id="m-glossary">12. Glossary</H2>
+          <H2 id="m-glossary">13. Glossary</H2>
           <P>
             Quick definitions for terms used across this dashboard's charts and KPI tiles. Hovering (or tapping, on
             touch devices) a dotted-underlined term anywhere on the site links back to its entry here.

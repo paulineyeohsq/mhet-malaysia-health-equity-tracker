@@ -246,6 +246,50 @@ def build_population_district():
 # ---------------------------------------------------------------------------
 # 6. Healthcare access — state panel (staff, beds) + per-100,000 rates
 # ---------------------------------------------------------------------------
+# Staff and hospital-bed counts are public-sector (MOH) figures tabulated by state, but the denominator is the
+# state's resident population. Selangor, W.P. Kuala Lumpur and W.P. Putrajaya form one contiguous urban area (the
+# Klang Valley): its national referral hospitals, teaching hospital and federal institutions serve residents of all
+# three, so a per-resident rate for each territory on its own is not a like-for-like measure of how well its residents
+# are served (e.g. W.P. Putrajaya: 3,552 staff on ~117,000 residents = 3,036 per 100,000, vs Selangor 341). For
+# comparisons between areas the pipeline therefore also publishes `*_per_100k_pooled`: the three units' counts and
+# populations are summed and divided once, and every other state keeps its own rate. The unpooled `staff_per_100k` /
+# `beds_per_100k` are unchanged. The catalogue does not state whether counts are by place of work or residence; the
+# pooling is a comparison convention, not a correction of the source.
+KLANG_VALLEY_LABEL = "Klang Valley (Selangor + W.P. Kuala Lumpur + W.P. Putrajaya)"
+KLANG_VALLEY_UNITS = ("Selangor", "W.P. Kuala Lumpur", "W.P. Putrajaya")
+
+
+def _add_klang_valley_pool(out):
+    """Adds pool_label / *_pooled fields (and the underlying sums) to every healthcare_access_state row, in place."""
+    by_year = defaultdict(dict)
+    for row in out:
+        by_year[row["year"]][row["state"]] = row
+    for year, rows in by_year.items():
+        members = [rows.get(s) for s in KLANG_VALLEY_UNITS]
+        complete = all(m is not None for m in members)
+        pop = [m.get("population_used_for_rate") for m in members] if complete else []
+        staff = [m.get("staff_all") for m in members] if complete else []
+        beds = [m.get("hospital_beds") for m in members] if complete else []
+        pool_pop = sum(pop) if complete and all(v is not None for v in pop) else None
+        pool_staff = sum(staff) if complete and all(v is not None for v in staff) else None
+        pool_beds = sum(beds) if complete and all(v is not None for v in beds) else None
+        for state, row in rows.items():
+            in_pool = state in KLANG_VALLEY_UNITS
+            row["pool_label"] = KLANG_VALLEY_LABEL if in_pool else None
+            if in_pool:
+                row["pool_population"] = pool_pop
+                row["pool_staff_all"] = pool_staff
+                row["pool_hospital_beds"] = pool_beds
+                row["staff_per_100k_pooled"] = round(pool_staff / pool_pop * 100000, 1) if pool_pop and pool_staff is not None else None
+                row["beds_per_100k_pooled"] = round(pool_beds / pool_pop * 100000, 1) if pool_pop and pool_beds is not None else None
+            else:
+                row["pool_population"] = None
+                row["pool_staff_all"] = None
+                row["pool_hospital_beds"] = None
+                row["staff_per_100k_pooled"] = row.get("staff_per_100k")
+                row["beds_per_100k_pooled"] = row.get("beds_per_100k")
+
+
 def build_healthcare_access_state(pop_lookup):
     staff = read_csv(RAW / "healthcare" / "healthcare_staff.csv")
     beds_national = read_csv(RAW / "healthcare" / "hospital_beds_national.csv")
@@ -297,6 +341,7 @@ def build_healthcare_access_state(pop_lookup):
             row["hospital_beds"] = None
             row["beds_per_100k"] = None
         out.append(row)
+    _add_klang_valley_pool(out)
     write_json("healthcare_access_state.json", out)
 
     # National series (beds by type + total staff), Malaysia only

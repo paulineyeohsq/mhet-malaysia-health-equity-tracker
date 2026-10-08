@@ -1,4 +1,4 @@
-# `/netlify-chat` — MHET chat proxy (Netlify Edge Function, active deployment)
+# `/netlify-chat` — MY-HEO chat proxy (Netlify Edge Function, active deployment)
 
 Relays "Ask MY-HEO" chat and "Explain this chart" requests to Google Gemini
 with a server-held API key, grounded in the same public static JSON everyone
@@ -48,6 +48,20 @@ dependency isn't declared, even though nothing here runs `npm install`
 against it directly otherwise. Don't add a `scripts` field — an
 auto-detected build script that doesn't apply to this site is a separate
 way to break the same build stage.
+
+## Tests
+
+`test/chat.test.ts` checks the function's behaviour (per-IP limit, the no-IP fingerprint bucket, the daily
+cap and its message, CORS, input validation, that rejected requests never reach Gemini) under
+[Deno](https://deno.com) with in-memory stand-ins for Netlify Blobs and the outbound calls, so it needs no
+network, API key or Netlify account:
+
+```bash
+cd netlify-chat
+deno run -A --no-check --import-map=test/import_map.json test/chat.test.ts
+```
+
+It does not exercise Netlify's own runtime, so the deploy preview is still the final check.
 
 ## Deploy
 

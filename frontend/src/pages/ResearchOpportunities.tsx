@@ -11,7 +11,8 @@ import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from 
 import { buildStructuredQuestion } from "../lib/researchQuestionTemplates";
 import { aiCacheKey, readAiCache, writeAiCache } from "../lib/aiCache";
 import { findBestYear, buildPairs, computeCorrelationStats, interpretCorrelation } from "../lib/correlation";
-import { useChat } from "../lib/chatContext";
+import { aiErrorMessage, useChat } from "../lib/chatCore";
+import { AiError, AiPrivacyNote, AiProgress } from "../components/AiStatus";
 import MarkdownLite from "../components/MarkdownLite";
 
 const POPULATION_SCOPES = ["General population", "Older adults (65+)", "Children under 5", "Adults of working age"];
@@ -266,11 +267,14 @@ export default function ResearchOpportunities() {
     });
   }
 
-  const [suggestion, setSuggestion] = useState<string | null>(null);
+  // A suggestion generated earlier in this browser session is restored from sessionStorage (no AI call);
+  // otherwise nothing is requested until the user clicks the button.
+  const suggestKey = aiCacheKey(location.pathname, "suggest");
+  const [cachedSuggest] = useState(() => readAiCache<{ text?: string; excluded?: string[] }>(suggestKey));
+  const [suggestion, setSuggestion] = useState<string | null>(cachedSuggest?.text ?? null);
   const [suggestLoading, setSuggestLoading] = useState(false);
   const [suggestError, setSuggestError] = useState<string | null>(null);
-  const [excludeIndicators, setExcludeIndicators] = useState<string[]>([]);
-  const [hasAutoSuggested, setHasAutoSuggested] = useState(false);
+  const [excludeIndicators, setExcludeIndicators] = useState<string[]>(cachedSuggest?.excluded ?? []);
 
   async function handleSuggest() {
     const rows = buildGapTable();
@@ -305,35 +309,13 @@ export default function ResearchOpportunities() {
       const match = /INDICATOR:\s*(.+)/.exec(reply);
       const nextExcluded = match ? Array.from(new Set([...excludeIndicators, match[1].trim()])) : excludeIndicators;
       setExcludeIndicators(nextExcluded);
-      writeAiCache(aiCacheKey(location.pathname, "suggest"), { text: reply, excluded: nextExcluded });
+      writeAiCache(suggestKey, { text: reply, excluded: nextExcluded });
     } catch (e) {
-      setSuggestError(e instanceof Error ? e.message : String(e));
+      setSuggestError(aiErrorMessage(e));
     } finally {
       setSuggestLoading(false);
     }
   }
-
-  // Auto-generate a suggestion as soon as the real indicator data has
-  // loaded, so the card never sits empty waiting for a click — "Refresh"
-  // (same button, relabelled once a suggestion exists) is how a user asks
-  // for another. Guarded by hasAutoSuggested so this only ever fires once
-  // per page visit, and the last suggestion is cached in sessionStorage so
-  // revisiting the page (or navigating away and back) in the same browser
-  // session re-uses it instead of spending another Gemini call — the free
-  // tier's quota was being exhausted by one call per visit.
-  useEffect(() => {
-    if (hasAutoSuggested) return;
-    if (buildGapTable().length < 3) return;
-    setHasAutoSuggested(true);
-    const cached = readAiCache<{ text?: string; excluded?: string[] }>(aiCacheKey(location.pathname, "suggest"));
-    if (cached?.text) {
-      setSuggestion(cached.text);
-      setExcludeIndicators(cached.excluded ?? []);
-      return;
-    }
-    void handleSuggest();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [healthOutcomes, healthcareAccess, nhmsNcd, nhmsAdolescentMentalHealth, fertility, hasAutoSuggested]);
 
   // ---- Explore by research interest ----
   // Relevance is decided deterministically (matchOutcomeFields, a keyword
@@ -419,7 +401,7 @@ export default function ResearchOpportunities() {
       setInterestResult(reply);
       writeAiCache(interestKey, { text: reply });
     } catch (e) {
-      setInterestError(e instanceof Error ? e.message : String(e));
+      setInterestError(aiErrorMessage(e));
     } finally {
       setInterestLoading(false);
     }
@@ -528,7 +510,7 @@ export default function ResearchOpportunities() {
       setCtxResults((prev) => ({ ...prev, [key]: reply }));
       writeAiCache(key, { text: reply });
     } catch (e) {
-      setCtxError({ key, message: e instanceof Error ? e.message : String(e) });
+      setCtxError({ key, message: aiErrorMessage(e) });
     } finally {
       setCtxLoadingKey(null);
     }
@@ -575,14 +557,17 @@ export default function ResearchOpportunities() {
                 {suggestLoading ? "Thinking…" : suggestion ? "Refresh — suggest another" : "Suggest a research question"}
               </button>
             </div>
-            <div className="mt-4 rounded-md border border-line-grid bg-surface p-4">
-              {suggestError ? (
-                <p className="text-sm text-status-critical">Couldn't get a suggestion: {suggestError}</p>
+            <AiPrivacyNote className="mt-2" />
+            <div className="mt-4 rounded-md border border-line-grid bg-surface p-4" aria-live="polite">
+              {suggestLoading ? (
+                <AiProgress label="Asking the MY-HEO Assistant" />
+              ) : suggestError ? (
+                <AiError message={suggestError} onRetry={() => void handleSuggest()} />
               ) : suggestion ? (
                 <MarkdownLite text={suggestion} />
               ) : (
                 <p className="text-sm text-ink-muted">
-                  {suggestLoading ? "Asking the MY-HEO Assistant…" : "Loading real indicator gaps…"}
+                  Nothing requested yet. Choose "Suggest a research question" to have the assistant pick a starting point.
                 </p>
               )}
             </div>
@@ -626,10 +611,13 @@ export default function ResearchOpportunities() {
                 {interestLoading ? "Searching…" : "Find relevant questions"}
               </button>
             </form>
-            {(interestResult || interestError) && (
-              <div className="mt-4 rounded-md border border-line-grid bg-surface p-4">
-                {interestError ? (
-                  <p className="text-sm text-status-critical">Couldn't search: {interestError}</p>
+            <AiPrivacyNote className="mt-2" />
+            {(interestLoading || interestResult || interestError) && (
+              <div className="mt-4 rounded-md border border-line-grid bg-surface p-4" aria-live="polite">
+                {interestLoading ? (
+                  <AiProgress label="Searching" />
+                ) : interestError ? (
+                  <AiError message={interestError} onRetry={() => void handleInterestSubmit()} />
                 ) : (
                   <>
                     <p className="mb-2 text-xs text-ink-muted">
@@ -738,12 +726,15 @@ export default function ResearchOpportunities() {
                 {ctxLoadingKey !== null ? "Thinking…" : ctxText ? "Regenerate" : "Generate AI research angle"}
               </button>
             </div>
+            <AiPrivacyNote className="mt-2" />
             <p className="mt-3 text-xs text-ink-muted">
               Selection: {selectedState} · {outcome.label} · {determinant?.label ?? "no determinant"}
             </p>
             <div className="mt-2 rounded-md border border-line-grid bg-surface p-4">
-              {ctxError && ctxError.key === ctxKey ? (
-                <p className="text-sm text-status-critical">Couldn't generate an angle: {ctxError.message}</p>
+              {ctxLoadingKey === ctxKey ? (
+                <AiProgress label="Generating a research angle" />
+              ) : ctxError && ctxError.key === ctxKey ? (
+                <AiError message={ctxError.message} onRetry={() => void handleSelectionAngle(true)} />
               ) : ctxText ? (
                 <MarkdownLite text={ctxText} />
               ) : (

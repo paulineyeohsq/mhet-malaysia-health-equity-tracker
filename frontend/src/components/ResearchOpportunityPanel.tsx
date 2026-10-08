@@ -1,4 +1,5 @@
-import EquityInsightCard, { buildEquityInsight } from "./EquityInsightCard";
+import EquityInsightCard from "./EquityInsightCard";
+import { buildEquityInsight } from "../lib/equityInsight";
 import InsufficientData from "./InsufficientData";
 import { generateResearchQuestions } from "../lib/researchQuestionTemplates";
 import { matchTechOpportunities } from "../lib/techOpportunityMap";

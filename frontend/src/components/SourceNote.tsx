@@ -30,6 +30,13 @@ export default function SourceNote({
       >
         View source
       </a>
+      {s.caveat && (
+        <span className="mt-1 block text-ink-secondary">
+          <span aria-hidden="true">⚠ </span>
+          <span className="font-medium">Note: </span>
+          {s.caveat}
+        </span>
+      )}
     </p>
   );
 }

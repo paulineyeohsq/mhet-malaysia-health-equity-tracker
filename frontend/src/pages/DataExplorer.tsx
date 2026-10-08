@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import PageHeader from "../components/PageHeader";
-import DataTable, { type Column, toCSV, downloadCSV } from "../components/DataTable";
+import DataTable, { type Column } from "../components/DataTable";
+import { toCSV, downloadCSV } from "../lib/csv";
 import InsufficientData from "../components/InsufficientData";
 import ProvenanceCard from "../components/ProvenanceCard";
 import DataGapsList from "../components/DataGapsList";
@@ -144,9 +145,11 @@ const DATASETS: DatasetDef[] = [
       { key: "staff_nurse", label: "Nurses", numeric: true },
       { key: "staff_nurse_community", label: "Community nurses", numeric: true },
       { key: "population_used_for_rate", label: "Population used for rate", numeric: true },
-      { key: "staff_per_100k", label: "Staff per 100,000", numeric: true },
+      { key: "staff_per_100k", label: "Staff per 100,000 (own state)", numeric: true },
+      { key: "staff_per_100k_pooled", label: "Staff per 100,000 (Klang Valley pooled)", numeric: true },
       { key: "hospital_beds", label: "Hospital beds", numeric: true },
-      { key: "beds_per_100k", label: "Beds per 100,000", numeric: true },
+      { key: "beds_per_100k", label: "Beds per 100,000 (own state)", numeric: true },
+      { key: "beds_per_100k_pooled", label: "Beds per 100,000 (Klang Valley pooled)", numeric: true },
     ],
   },
   {
