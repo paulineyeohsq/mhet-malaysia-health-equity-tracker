@@ -73,7 +73,9 @@ function FitBounds({ geojson }: { geojson: GeoJSON.FeatureCollection }) {
         // reset:true forces a full re-projection. Without it, when the container grows but the
         // fitted view happens to be unchanged, Leaflet's SVG layer keeps the size it had for the
         // tiny container (every state drawn as an empty path).
-        map.fitBounds(bounds, { padding: [12, 12], animate: false, reset: true });
+        // `reset` is honoured by Leaflet's setView (which fitBounds forwards its options to) and is in
+        // ZoomPanOptions, but is missing from the FitBoundsOptions typings - hence the assertion.
+        map.fitBounds(bounds, { padding: [12, 12], animate: false, reset: true } as L.FitBoundsOptions);
       } catch {
         /* ignore */
       }
