@@ -38,8 +38,8 @@ mhet/
 │   │   └── geo/               DOSM administrative boundary GeoJSON + open-data licence
 │   ├── processed/        Master analytical JSON/CSV files built by scripts/transform_data.py
 │   │   └── geo/               Copy-through state/district boundary GeoJSON for the choropleth map
-│   ├── inventory/         dataset_inventory.json — machine-readable catalogue of all 52 ingested
-│   │                       + 7 identified-but-not-ingested datasets
+│   ├── inventory/         dataset_inventory.json — machine-readable catalogue of every ingested
+│   │                       and identified-but-not-ingested dataset
 │   └── validation_reports/  One Markdown data-quality report per raw CSV, plus an index
 ├── scripts/              Python ETL pipeline: ingest -> validate -> geo lookup -> transform -> sync
 ├── backend/               Intentionally minimal — explains why there is no live backend (see below)
@@ -170,7 +170,8 @@ static site rather than with a live API/database.
 - [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) — field-by-field
   reference for every processed JSON/CSV file the frontend reads.
 - [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md) — the full catalogue of all
-  52 ingested and 7 identified-but-not-ingested source datasets.
+  <!--count:ingested-->52<!--/count--> ingested and <!--count:notingested-->8<!--/count--> identified-but-not-ingested
+  source datasets (counts kept current automatically by `scripts/update_database.py`).
 - [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md) — the technical pipeline
   methodology: architecture, geographic harmonisation, missing-data policy,
   inequality-measure statistics, and known limitations.

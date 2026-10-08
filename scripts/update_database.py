@@ -35,12 +35,24 @@ existing contents to frontend/public/data/.backup/ (last known good). If any
 stage above fails, the sync step is skipped entirely and the previous
 frontend/public/data/ contents are left exactly as they were — the live site
 never ships a partial/broken update. Every run is logged to
-data/processed/update_log.txt with a timestamp and pass/fail per stage.
+data/processed/update_log.txt with a timestamp and pass/fail per stage. That
+file is committed (not git-ignored) on purpose: the monthly workflow's pull
+request then shows exactly what its run did, which is what the PR text asks
+reviewers to read.
+
+After a successful transform, two small bookkeeping steps keep metadata from
+going stale (both before the sync, so the published copy is current):
+  - stamp_inventory_refresh(): writes today's date to `last_refreshed` in
+    data/inventory/dataset_inventory.json (shown on the Overview/Methodology)
+  - sync_doc_counts(): rewrites the dataset counts in README.md and
+    docs/DATA_SOURCES.md from that same inventory
 
 Run: python3 scripts/update_database.py [--skip-ingest]
 """
 from __future__ import annotations
 import argparse
+import json
+import re
 import shutil
 import subprocess
 import sys
@@ -53,6 +65,8 @@ PROCESSED = ROOT / "data" / "processed"
 FRONTEND_DATA = ROOT / "frontend" / "public" / "data"
 FRONTEND_DATA_BACKUP = FRONTEND_DATA / ".backup"
 LOG_PATH = PROCESSED / "update_log.txt"
+INVENTORY_PATH = ROOT / "data" / "inventory" / "dataset_inventory.json"
+DOC_COUNT_FILES = [ROOT / "README.md", ROOT / "docs" / "DATA_SOURCES.md"]
 
 # Files that live in data/processed/ and data/inventory/ and must be mirrored
 # into frontend/public/data/ for the static site to serve them. Kept as an
@@ -108,7 +122,7 @@ def log(msg: str):
     line = f"[{ts}] {msg}"
     print(line)
     PROCESSED.mkdir(parents=True, exist_ok=True)
-    with open(LOG_PATH, "a") as f:
+    with open(LOG_PATH, "a", encoding="utf-8") as f:
         f.write(line + "\n")
 
 
@@ -148,6 +162,70 @@ def restore_frontend_data():
             dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(backup, dest)
     log("Restored frontend/public/data/ from backup — previous valid version retained.")
+
+
+def _read_exact(path: Path) -> str:
+    """Read text WITHOUT newline translation, so a later write puts back the
+    file's own line endings (Path.read_text/write_text would convert LF files
+    to CRLF on Windows and turn a one-line edit into a whole-file diff)."""
+    with open(path, encoding="utf-8", newline="") as f:
+        return f.read()
+
+
+def _write_exact(path: Path, text: str) -> None:
+    with open(path, "w", encoding="utf-8", newline="") as f:
+        f.write(text)
+
+
+def inventory_counts(inventory_path: Path = INVENTORY_PATH) -> dict[str, int]:
+    """Dataset counts, computed the same way the frontend does (lib/inventoryMap.ts
+    inventoryCounts): ingested = status "ingested"; reference-only = status
+    "ingested_reference_only"; not ingested = everything in the separate
+    identified_but_not_yet_ingested list PLUS any dataset entry whose own status
+    is "identified_not_ingested" (e.g. population_district)."""
+    inv = json.loads(_read_exact(inventory_path))
+    datasets = inv["datasets"]
+    return {
+        "ingested": sum(1 for d in datasets if d.get("status") == "ingested"),
+        "reference": sum(1 for d in datasets if d.get("status") == "ingested_reference_only"),
+        "notingested": len(inv.get("identified_but_not_yet_ingested", []))
+        + sum(1 for d in datasets if d.get("status") == "identified_not_ingested"),
+    }
+
+
+def stamp_inventory_refresh(today: str | None = None, inventory_path: Path = INVENTORY_PATH) -> str:
+    """Set `last_refreshed` (a date) in the inventory, right after `generated`.
+
+    `generated` is when the catalogue itself was authored; `last_refreshed` is
+    when the pipeline last successfully rebuilt the data from source, which is
+    the date users actually care about. Done with a targeted text edit rather
+    than load/dump so the rest of the file's formatting (and the git diff) is
+    untouched."""
+    today = today or datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    text = _read_exact(inventory_path)
+    nl = "\r\n" if "\r\n" in text else "\n"
+    if re.search(r'"last_refreshed":\s*"[^"]*"', text):
+        text = re.sub(r'("last_refreshed":\s*")[^"]*(")', rf"\g<1>{today}\g<2>", text, count=1)
+    else:
+        text, n = re.subn(r'("generated":\s*"[^"]*",?)', rf'\1{nl}  "last_refreshed": "{today}",', text, count=1)
+        assert n == 1, "could not find the `generated` field to stamp after"
+    json.loads(text)  # refuse to write anything that is not valid JSON
+    _write_exact(inventory_path, text)
+    return today
+
+
+COUNT_MARKER = re.compile(r"(<!--count:(ingested|reference|notingested)-->)[^<]*(<!--/count-->)")
+
+
+def sync_doc_counts(files: list[Path] = DOC_COUNT_FILES, inventory_path: Path = INVENTORY_PATH) -> dict[str, int]:
+    """Rewrite every `<!--count:KEY-->N<!--/count-->` span in the docs from the inventory."""
+    counts = inventory_counts(inventory_path)
+    for f in files:
+        text = _read_exact(f)
+        new = COUNT_MARKER.sub(lambda m: f"{m.group(1)}{counts[m.group(2)]}{m.group(3)}", text)
+        if new != text:
+            _write_exact(f, new)
+    return counts
 
 
 def sync_to_frontend() -> bool:
@@ -192,6 +270,12 @@ def main():
     if not run_stage("transform_data.py", [sys.executable, str(SCRIPTS / "transform_data.py")]):
         log("ABORTED after transform failure. frontend/public/data/ left unchanged (previous valid version retained).")
         sys.exit(1)
+
+    try:
+        log(f"Stamped dataset_inventory.json last_refreshed = {stamp_inventory_refresh()}")
+        log(f"Synced dataset counts into README/docs: {sync_doc_counts()}")
+    except Exception as e:  # bookkeeping must never block publishing refreshed data
+        log(f"WARNING: metadata bookkeeping failed ({e!r}) - continuing without it.")
 
     if not sync_to_frontend():
         log("ABORTED after sync failure. Restoring previous valid frontend/public/data/ contents.")

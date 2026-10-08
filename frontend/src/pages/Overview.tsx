@@ -8,7 +8,7 @@ import EquityGapBanner from "../components/EquityGapBanner";
 import EntryPointCards from "../components/EntryPointCards";
 import MetadataPanel from "../components/MetadataPanel";
 import { useData } from "../lib/useData";
-import { INVENTORY_MAP, type InventoryFile } from "../lib/inventoryMap";
+import { INVENTORY_MAP, inventoryCounts, type InventoryFile } from "../lib/inventoryMap";
 
 interface NationalRow {
   year: number;
@@ -43,7 +43,7 @@ export default function Overview() {
   const { data: hcNational } = useData<HealthcareNational[]>("healthcare_access_national.json");
   const { data: popState } = useData<PopState[]>("population_state.json");
   const { data: inventory } = useData<InventoryFile>("dataset_inventory.json");
-  const ingestedCount = inventory ? inventory.datasets.filter((d) => d.status === "ingested").length : null;
+  const ingestedCount = inventory ? inventoryCounts(inventory).ingested : null;
 
   const latestNational = useMemo(() => {
     if (!national) return null;
@@ -293,6 +293,12 @@ export default function Overview() {
             label which resolution each indicator supports. See the{" "}
             <a href="#/methodology" className="text-series-1 underline underline-offset-2">Methodology</a> page for full
             provenance, limitations and update cadence.
+            {inventory?.last_refreshed && (
+              <>
+                {" "}
+                Data last refreshed from source: <span className="font-medium text-ink-primary">{inventory.last_refreshed}</span>.
+              </>
+            )}
           </p>
         </section>
       </div>
