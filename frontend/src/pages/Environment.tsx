@@ -83,8 +83,8 @@ const GHG_COLORS: Record<string, string> = {
   net: "#898781",
   energy: "#eb6834",
   industrial_processes: "#4a3aa7",
-  agriculture: "#1baf7a",
-  waste: "#e87ba4",
+  agriculture: "#19a472",
+  waste: "#e46595",
   lulucf: "#3a7173",
 };
 
@@ -94,8 +94,8 @@ const BASIN_MEASURE_LABELS: Record<string, string> = {
   ss: "Suspended Solids",
 };
 const BASIN_STATUS_COLORS: Record<string, string> = {
-  clean: "#1baf7a",
-  slightly_polluted: "#eda100",
+  clean: "#19a472",
+  slightly_polluted: "#c28400",
   polluted: "#d03b3b",
 };
 
@@ -146,7 +146,7 @@ export default function Environment() {
     () => (forestNational ?? []).slice().sort((a, b) => a.year - b.year).map((r) => ({ year: r.year, "Forest reserve area (ha)": r.area_hectares })),
     [forestNational]
   );
-  const forestTrendSeries: Series[] = [{ key: "Forest reserve area (ha)", label: "Forest reserve area (ha)", color: "#1baf7a" }];
+  const forestTrendSeries: Series[] = [{ key: "Forest reserve area (ha)", label: "Forest reserve area (ha)", color: "#19a472" }];
 
   // -- Air pollution: one pollutant at a time (mixed ppm/µg/m³ units can't share an axis).
   const pollutants = useMemo(() => Array.from(new Set((airPollution ?? []).map((r) => r.pollutant))).sort(), [airPollution]);
@@ -210,7 +210,7 @@ export default function Environment() {
     }));
   }, [electricityConsumption, electricitySupply]);
   const electricitySeries: Series[] = [
-    { key: "Total consumption (MKWh)", label: "Total consumption (MKWh)", color: "#eda100" },
+    { key: "Total consumption (MKWh)", label: "Total consumption (MKWh)", color: "#c28400" },
     { key: "Total supply (MKWh)", label: "Total supply (MKWh)", color: "#3a7173" },
   ];
 
@@ -272,7 +272,7 @@ export default function Environment() {
             Forest reserve area by state
           </h2>
           {forestStateData.length > 0 ? (
-            <BarRankingCard title={`Permanent forest reserve area — ${effectiveStateYear}`} data={forestStateData} nameKey="state" valueKey="area_hectares" unit="ha" color="#1baf7a" />
+            <BarRankingCard title={`Permanent forest reserve area — ${effectiveStateYear}`} data={forestStateData} nameKey="state" valueKey="area_hectares" unit="ha" color="#19a472" />
           ) : (
             <InsufficientData reason="No state-level forest reserve data for the selected year." />
           )}

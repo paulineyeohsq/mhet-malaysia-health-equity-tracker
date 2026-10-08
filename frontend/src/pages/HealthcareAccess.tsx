@@ -244,7 +244,7 @@ export default function HealthcareAccess() {
                 series={[
                   { key: "MOH beds", label: "MOH beds", color: "#3a7173" },
                   { key: "Non-MOH beds", label: "Non-MOH beds", color: "#eb6834" },
-                  { key: "Special institution beds", label: "Special institution beds", color: "#1baf7a" },
+                  { key: "Special institution beds", label: "Special institution beds", color: "#19a472" },
                 ]}
               />
             )}
@@ -261,7 +261,7 @@ export default function HealthcareAccess() {
                 series={[
                   { key: "Doctors", label: "Doctors", color: "#3a7173" },
                   { key: "Dentists", label: "Dentists", color: "#eb6834" },
-                  { key: "Nurses", label: "Nurses", color: "#1baf7a" },
+                  { key: "Nurses", label: "Nurses", color: "#19a472" },
                 ]}
               />
             )}
@@ -412,7 +412,7 @@ export default function HealthcareAccess() {
                 nameKey="district"
                 valueKey="hospital_beds"
                 unit="beds"
-                color="#1baf7a"
+                color="#19a472"
               />
               <BarRankingCard
                 title="Bottom 15 districts by hospital beds (absolute count) — 2022"
@@ -420,7 +420,7 @@ export default function HealthcareAccess() {
                 nameKey="district"
                 valueKey="hospital_beds"
                 unit="beds"
-                color="#eda100"
+                color="#c28400"
               />
             </div>
           ) : (

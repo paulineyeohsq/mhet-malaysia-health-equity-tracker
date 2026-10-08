@@ -267,6 +267,7 @@ export default function HealthEquityMap() {
                   onSelect={setSelectedName}
                   selectedName={selectedName}
                   unitLabel={indicator.unit}
+                  label={indicator.label}
                   tiers={povertyTierConfig}
                 />
               ) : (

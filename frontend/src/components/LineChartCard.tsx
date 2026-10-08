@@ -10,6 +10,7 @@ import {
   Legend,
 } from "recharts";
 import ChartToolbar from "./ChartToolbar";
+import ChartFigure from "./ChartFigure";
 import DataTable, { type Column } from "./DataTable";
 import { toCSV, downloadCSV } from "../lib/csv";
 import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
@@ -37,6 +38,19 @@ export default function LineChartCard({
   unit?: string;
   height?: number;
 }) {
+  // One sentence per series: first and last real point, plus the low and high - read aloud in place of the drawing.
+  const seriesSummary = series
+    .map((s) => {
+      const pts = data.filter((d) => typeof d[s.key] === "number");
+      if (pts.length === 0) return `${s.label}: no data.`;
+      const vals = pts.map((d) => d[s.key] as number);
+      const first = pts[0];
+      const last = pts[pts.length - 1];
+      return `${s.label}: ${pts.length} points, from ${first[s.key]} (${first[xKey]}) to ${last[s.key]} (${last[xKey]}), low ${Math.min(...vals)}, high ${Math.max(...vals)}.`;
+    })
+    .join(" ");
+  const summary = `Line chart${unit ? ` in ${unit}` : ""}. ${seriesSummary} Use View as table for every value.`;
+
   const [showTable, setShowTable] = useState(false);
   const [pngPending, setPngPending] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
@@ -87,6 +101,7 @@ export default function LineChartCard({
         <DataTable columns={tableColumns} rows={data as Record<string, unknown>[]} searchable={false} pageSize={data.length || 1} />
       ) : (
         <div ref={chartRef}>
+          <ChartFigure label={title ?? "Line chart"} summary={summary}>
           <ResponsiveContainer width="100%" height={height}>
             <LineChart data={data} margin={{ top: 8, right: 12, bottom: 4, left: 0 }}>
               <CartesianGrid stroke="#e1e0d9" vertical={false} />
@@ -118,6 +133,7 @@ export default function LineChartCard({
               ))}
             </LineChart>
           </ResponsiveContainer>
+          </ChartFigure>
         </div>
       )}
     </div>

@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "recharts";
 import PageHeader from "../components/PageHeader";
+import ChartFigure from "../components/ChartFigure";
 import LineChartCard, { type Series } from "../components/LineChartCard";
 import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
@@ -28,7 +29,7 @@ import { SOURCES } from "../lib/sources";
 
 const ALL_FIELDS: FieldDef[] = [...OUTCOME_FIELDS, ...DETERMINANT_FIELDS];
 
-const OVERLAY_COLORS = ["#3a7173", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7"];
+const OVERLAY_COLORS = ["#3a7173", "#eb6834", "#19a472", "#c28400", "#e46595", "#008300", "#4a3aa7"];
 const MAX_OVERLAY_SERIES = 6;
 
 type OverlayMode = "indicators-average" | "indicators-state" | "states-indicator";
@@ -638,6 +639,10 @@ export default function Trends() {
                     <DataTable columns={corrTableColumns} rows={corrPairs as unknown as Record<string, unknown>[]} searchable={false} pageSize={corrPairs.length || 1} />
                   ) : (
                     <div ref={corrChartRef}>
+                      <ChartFigure
+                        label={`${corrX.label} against ${corrY.label} over time`}
+                        summary={`Scatter plot of ${corrPairs.length} years. Pearson r ${corrStats ? corrStats.pearson.toFixed(2) : "not computed"}. Use View as table for every point.`}
+                      >
                       <ResponsiveContainer width="100%" height={320}>
                         <ComposedChart margin={{ top: 8, right: 20, bottom: 24, left: 8 }}>
                           <CartesianGrid stroke="#e1e0d9" />
@@ -694,6 +699,7 @@ export default function Trends() {
                           />
                         </ComposedChart>
                       </ResponsiveContainer>
+                      </ChartFigure>
                     </div>
                   )}
                   <p className="mt-2 text-xs text-ink-muted">

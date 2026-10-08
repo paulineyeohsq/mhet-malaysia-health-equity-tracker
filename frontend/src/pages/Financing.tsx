@@ -69,7 +69,7 @@ export default function Financing() {
   }, [mnha, years]);
   const trendSeries: Series[] = [
     { key: "Total health expenditure (TEH)", label: "Total health expenditure (TEH)", color: "#3a7173" },
-    { key: "Current health expenditure (CEH)", label: "Current health expenditure (CEH)", color: "#1baf7a" },
+    { key: "Current health expenditure (CEH)", label: "Current health expenditure (CEH)", color: "#19a472" },
     { key: "MOH expenditure", label: "MOH expenditure", color: "#eb6834" },
   ];
 

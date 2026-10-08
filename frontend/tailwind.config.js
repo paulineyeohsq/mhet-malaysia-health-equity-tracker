@@ -33,9 +33,9 @@ export default {
           // accent blue's own 5.49:1 contrast, same legibility, new hue.
           1: '#3a7173', // teal
           2: '#eb6834', // orange
-          3: '#1baf7a', // aqua
-          4: '#eda100', // yellow
-          5: '#e87ba4', // magenta
+          3: '#19a472', // aqua
+          4: '#c28400', // yellow
+          5: '#e46595', // magenta
           6: '#008300', // green
           7: '#4a3aa7', // violet
           8: '#e34948', // red

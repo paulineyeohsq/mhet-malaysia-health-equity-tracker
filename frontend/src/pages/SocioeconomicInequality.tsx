@@ -11,6 +11,7 @@ import {
   Tooltip,
 } from "recharts";
 import PageHeader from "../components/PageHeader";
+import ChartFigure from "../components/ChartFigure";
 import StatTile from "../components/StatTile";
 import KPISummarySection from "../components/KPISummarySection";
 import SourceNote from "../components/SourceNote";
@@ -105,7 +106,7 @@ interface ElectricityRegionRow {
 type AmenityIndicatorId = "sanitation" | "water";
 
 const AMENITY_INDICATORS: { id: AmenityIndicatorId; label: string; unit: string; sourceKey: keyof typeof SOURCES; color: string }[] = [
-  { id: "sanitation", label: "Basic sanitation access", unit: "%", sourceKey: "sanitation", color: "#1baf7a" },
+  { id: "sanitation", label: "Basic sanitation access", unit: "%", sourceKey: "sanitation", color: "#19a472" },
   { id: "water", label: "Basic water access (overall)", unit: "%", sourceKey: "water", color: "#3a7173" },
 ];
 
@@ -427,7 +428,7 @@ export default function SocioeconomicInequality() {
                 xKey="year"
                 series={[
                   { key: "Absolute poverty", label: "Absolute poverty (%)", color: "#eb6834" },
-                  { key: "Relative poverty", label: "Relative poverty (%)", color: "#eda100" },
+                  { key: "Relative poverty", label: "Relative poverty (%)", color: "#c28400" },
                   { key: "Hardcore poverty", label: "Hardcore poverty (%)", color: "#e34948" },
                 ]}
               />
@@ -626,7 +627,7 @@ export default function SocioeconomicInequality() {
               xKey="percentile"
               series={[
                 { key: "Mean income", label: "Mean income (RM)", color: "#3a7173" },
-                { key: "Median income", label: "Median income (RM)", color: "#1baf7a" },
+                { key: "Median income", label: "Median income (RM)", color: "#19a472" },
               ]}
               unit="RM"
             />
@@ -714,7 +715,7 @@ export default function SocioeconomicInequality() {
                   title="Sanitation access, national trend (%)"
                   data={sanitationNationalTrendData}
                   xKey="year"
-                  series={[{ key: "Sanitation access", label: "Sanitation access", color: "#1baf7a" }]}
+                  series={[{ key: "Sanitation access", label: "Sanitation access", color: "#19a472" }]}
                   unit="%"
                 />
               ) : (
@@ -727,7 +728,7 @@ export default function SocioeconomicInequality() {
                 xKey="year"
                 series={[
                   { key: "overall", label: "Overall", color: "#3a7173" },
-                  { key: "urban", label: "Urban", color: "#1baf7a" },
+                  { key: "urban", label: "Urban", color: "#19a472" },
                   { key: "rural", label: "Rural", color: "#eb6834" },
                 ]}
                 unit="%"
@@ -857,6 +858,10 @@ export default function SocioeconomicInequality() {
                       );
                     }}
                   />
+                  <ChartFigure
+                    label={`${socioIndicator.label} against ${healthIndicator.label}, ${correlationInput?.year ?? ""}`}
+                    summary={`Scatter plot of ${correlationInput?.pairs.length ?? 0} states. Pearson r ${correlationStats ? correlationStats.pearson.toFixed(2) : "not computed"}. Use View as table or Export CSV for every point.`}
+                  >
                   <ResponsiveContainer width="100%" height={320}>
                     <ComposedChart margin={{ top: 8, right: 20, bottom: 24, left: 8 }}>
                       <CartesianGrid stroke="#e1e0d9" />
@@ -900,6 +905,7 @@ export default function SocioeconomicInequality() {
                       />
                     </ComposedChart>
                   </ResponsiveContainer>
+                  </ChartFigure>
                   <p className="mt-2 text-xs text-ink-muted">
                     Each point is one Malaysian state in {correlationInput.year}. The orange line is a simple linear
                     regression fit (y = {correlationStats.slope.toFixed(3)}x + {correlationStats.intercept.toFixed(2)}), shown to summarise the
