@@ -19,6 +19,7 @@ const PriorityAreas = lazy(() => import("./pages/PriorityAreas"));
 const ResearchOpportunities = lazy(() => import("./pages/ResearchOpportunities"));
 const Financing = lazy(() => import("./pages/Financing"));
 const Environment = lazy(() => import("./pages/Environment"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 export default function App() {
   return (
@@ -43,6 +44,7 @@ export default function App() {
           <Route path="explorer" element={<DataExplorer />} />
           <Route path="data-gaps" element={<DataGaps />} />
           <Route path="methodology" element={<Methodology />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </HashRouter>
