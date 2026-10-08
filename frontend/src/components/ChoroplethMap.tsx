@@ -201,16 +201,26 @@ export default function ChoroplethMap({
             style={{ background: "#fcfcfb" }}
             attributionControl={false}
           >
+            {/* Basemap: OpenStreetMap's standard tile server (no API key). This used to be CARTO's free
+                light_nolabels tiles, but CARTO now answers EVERY tile request on that endpoint with a
+                placeholder image reading "API KEY REQUIRED" (same image for every zoom/location, HTTP 200,
+                so it looked healthy). OSM's tile policy allows light use with visible attribution and a
+                valid Referer (browsers send one); revisit if traffic grows — see
+                https://operations.osmfoundation.org/policies/tiles/ . The "basemap-muted" class greys the
+                tiles (index.css) so they don't compete with the choropleth colours. */}
             <TileLayer
-              url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank" rel="noreferrer">CARTO</a>'
+              url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+              maxZoom={19}
+              className="basemap-muted"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors'
             />
-            {/* The basemap's licence (OSM data under ODbL, CARTO tiles) requires visible credit. This was
-                previously switched off, so the attribution prop above was never displayed. */}
+            {/* Visible credit is part of OSM's licence (ODbL). The control was previously switched off, so
+                the attribution prop on the tile layer was never displayed. */}
             <AttributionControl prefix={false} position="bottomright" />
             <GeoJSON
               key={`geo-${data.length}-${min}-${max}-${tiers ? tiers.breaks.join(",") : "ramp"}`}
               data={geojson}
+              attribution="Boundaries: DOSM open data"
               style={style}
               onEachFeature={onEachFeature}
             />
