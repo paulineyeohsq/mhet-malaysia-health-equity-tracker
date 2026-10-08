@@ -107,11 +107,12 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 
   const askDirect = useCallback(
     async (prompt: string): Promise<string> => {
-      // Up to two automatic retries (after 4s, then 9s) when the backend
-      // reports the upstream AI service as busy (503, i.e. Gemini rate-limited
-      // the key) — these are mostly per-minute limits that clear quickly, so
-      // patient retries hide most of them from the user. A single retry at 4s
-      // was not enough in live testing.
+      // Exponential backoff — up to 3 retries after 3s, 6s, then 12s — when
+      // the service is rate-limited: 503 (the backend's translation of
+      // Gemini's 429 "busy") or 429 (the backend's own per-IP limit). These
+      // are mostly per-minute limits that clear quickly, so patient retries
+      // hide most of them from the user. Anything else fails immediately.
+      const MAX_RETRIES = 3;
       for (let attempt = 0; ; attempt++) {
         const res = await fetch(`${CHAT_WORKER_URL}/chat`, {
           method: "POST",
@@ -120,8 +121,8 @@ export function ChatProvider({ children }: { children: ReactNode }) {
         });
         const data = (await res.json()) as { reply?: string; error?: string };
         if (res.ok && data.reply) return data.reply;
-        if (res.status === 503 && attempt < 2) {
-          await new Promise((r) => setTimeout(r, attempt === 0 ? 4000 : 9000));
+        if ((res.status === 503 || res.status === 429) && attempt < MAX_RETRIES) {
+          await new Promise((r) => setTimeout(r, 3000 * 2 ** attempt));
           continue;
         }
         throw new Error(data.error ?? `HTTP ${res.status}`);
