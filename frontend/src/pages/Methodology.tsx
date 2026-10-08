@@ -1,5 +1,7 @@
 import PageHeader from "../components/PageHeader";
 import { GLOSSARY } from "../lib/glossary";
+import { useData } from "../lib/useData";
+import type { InventoryFile } from "../lib/inventoryMap";
 
 function H2({ id, children }: { id: string; children: React.ReactNode }) {
   return (
@@ -35,6 +37,11 @@ function ExtLink({ href, children }: { href: string; children: React.ReactNode }
 }
 
 export default function Methodology() {
+  // Counts come straight from the machine-readable inventory so this page can't drift from it.
+  const { data: inventory } = useData<InventoryFile>("dataset_inventory.json");
+  const ingestedCount = inventory ? inventory.datasets.filter((d) => d.status === "ingested").length : null;
+  const notIngestedCount = inventory ? inventory.identified_but_not_yet_ingested.length : null;
+
   return (
     <div>
       <PageHeader
@@ -97,11 +104,11 @@ export default function Methodology() {
           <P>
             As of this build, the project's{" "}
             <ExtLink href="https://data.gov.my/data-catalogue">dataset inventory</ExtLink> documents{" "}
-            <span className="font-medium text-ink-primary">44 datasets that have been fully ingested</span> — with
+            <span className="font-medium text-ink-primary">{ingestedCount ?? "…"} datasets that have been fully ingested</span> — with
             raw files under <Code>data/raw/</Code> and processed outputs under <Code>data/processed/</Code>,
             produced by the pipeline described below — and{" "}
             <span className="font-medium text-ink-primary">
-              7 additional datasets that were identified and schema-verified but not yet ingested
+              {notIngestedCount ?? "…"} additional datasets that were identified and schema-verified but not yet ingested
             </span>{" "}
             into this build (for example, income-percentile microdata that would be needed for a concentration-index
             calculation, and the live 2020–2024 district population series, whose raw file exceeded the sandboxed
