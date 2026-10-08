@@ -5,6 +5,33 @@ html, body, #root {
   height: 100%;
 }
 
+/* Grid items default to min-width:auto, so a Recharts chart (or any wide child) can hold its grid
+   track open at the width it was first measured at and push the whole page wider than a phone
+   screen. Letting grid items shrink fixes it. Layered so Tailwind utilities can still override. */
+@layer base {
+  select,
+  input {
+    max-width: 100%;
+  }
+
+  /* Filter rows are `flex flex-wrap` of label+select wrappers whose width is set by the longest
+     <option>; cap each wrapper at the row width so the select can then shrink to fit. */
+  .flex-wrap > * {
+    max-width: 100%;
+  }
+
+  /* Long unbroken strings (IDs, URLs) in prose should wrap rather than widen the page. */
+  li,
+  p,
+  dd {
+    overflow-wrap: anywhere;
+  }
+
+  .grid > * {
+    min-width: 0;
+  }
+}
+
 body {
   background-color: #f9f9f7;
   color: #0b0b0b;

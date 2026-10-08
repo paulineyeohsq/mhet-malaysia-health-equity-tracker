@@ -21,7 +21,7 @@ export default function AskMhet() {
           if (q) navigate(q.path, { state: q.state });
           e.target.value = "";
         }}
-        className="max-w-md flex-1 rounded-md border border-line-axis px-2 py-1.5 text-sm sm:max-w-sm"
+        className="min-w-0 max-w-md flex-1 rounded-md border border-line-axis px-2 py-1.5 text-sm sm:max-w-sm"
       >
         <option value="" disabled>
           Choose a question to jump to the relevant view…
