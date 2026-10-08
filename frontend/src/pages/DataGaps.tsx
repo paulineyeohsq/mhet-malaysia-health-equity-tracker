@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import PageHeader from "../components/PageHeader";
 import DataTable, { type Column } from "../components/DataTable";
 import DataGapsList from "../components/DataGapsList";
-import { ProvenanceCard } from "../components/MetadataPanel";
+import ProvenanceCard from "../components/ProvenanceCard";
 import InsufficientData from "../components/InsufficientData";
 import { useData } from "../lib/useData";
 import type { InventoryFile } from "../lib/inventoryMap";
@@ -17,7 +17,7 @@ function truncate(text: string, max = 140): string {
  * research-efficiency gap identified directly from this session's own NHMS
  * sourcing work: re-discovering what doesn't exist wasted real time. All
  * content here is read from dataset_inventory.json, the same file
- * DataExplorer.tsx and MetadataPanel.tsx already surface — nothing new is
+ * DataExplorer.tsx already surfaces — nothing new is
  * invented on this page, it is purely a more direct view of it.
  */
 export default function DataGaps() {

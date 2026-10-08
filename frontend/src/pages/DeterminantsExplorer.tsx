@@ -15,7 +15,6 @@ import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
 import CorrelationCaveat, { CORRELATION_CAVEAT_TEXT } from "../components/CorrelationCaveat";
 import EvidenceSnapshotButton from "../components/EvidenceSnapshotButton";
-import MetadataPanel from "../components/MetadataPanel";
 import ChartToolbar from "../components/ChartToolbar";
 import Term from "../components/Term";
 import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
@@ -25,7 +24,6 @@ import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, compute
 import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
 import { useChat, buildExplainPrompt } from "../lib/chatContext";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, NATIONAL_FIELDS, rowsForField, type FieldDef, type NationalFieldDef } from "../lib/determinantFields";
-import { INVENTORY_MAP } from "../lib/inventoryMap";
 
 type AnalysisMode = "cross-section" | "over-time";
 
@@ -772,13 +770,6 @@ export default function DeterminantsExplorer() {
           </>
         )}
 
-        <MetadataPanel
-          datasetIds={
-            analysisMode === "cross-section"
-              ? Array.from(new Set([...(INVENTORY_MAP[outcome.file] ?? []), ...(INVENTORY_MAP[determinant.file] ?? [])]))
-              : Array.from(new Set([...(INVENTORY_MAP[timeOutcome.file] ?? []), ...(INVENTORY_MAP[timeDeterminant.file] ?? [])]))
-          }
-        />
       </div>
     </div>
   );

@@ -6,9 +6,8 @@ import LineChartCard from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
 import EquityGapBanner from "../components/EquityGapBanner";
 import EntryPointCards from "../components/EntryPointCards";
-import MetadataPanel from "../components/MetadataPanel";
 import { useData } from "../lib/useData";
-import { INVENTORY_MAP, inventoryCounts, type InventoryFile } from "../lib/inventoryMap";
+import { inventoryCounts, type InventoryFile } from "../lib/inventoryMap";
 
 interface NationalRow {
   year: number;
@@ -107,16 +106,6 @@ export default function Overview() {
 
         {/* Equity gap snapshot */}
         <EquityGapBanner />
-        <MetadataPanel
-          datasetIds={Array.from(
-            new Set([
-              ...INVENTORY_MAP["socioeconomic_national.json"],
-              ...INVENTORY_MAP["socioeconomic_state.json"],
-              ...INVENTORY_MAP["healthcare_access_national.json"],
-              ...INVENTORY_MAP["population_state.json"],
-            ])
-          )}
-        />
 
         {/* Key indicators */}
         <KPISummarySection
