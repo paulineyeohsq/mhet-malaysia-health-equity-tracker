@@ -10,6 +10,7 @@ import {
   Legend,
 } from "recharts";
 import PageHeader from "../components/PageHeader";
+import ChartFigure from "../components/ChartFigure";
 import StatTile from "../components/StatTile";
 import KPISummarySection from "../components/KPISummarySection";
 import SourceNote from "../components/SourceNote";
@@ -92,9 +93,9 @@ const FERTILITY_AGE_BANDS = ["15-19", "20-24", "25-29", "30-34", "35-39", "40-44
 const SERIES_COLORS = [
   "#3a7173", // series-1
   "#eb6834", // series-2
-  "#1baf7a", // series-3
-  "#eda100", // series-4
-  "#e87ba4", // series-5
+  "#19a472", // series-3
+  "#c28400", // series-4
+  "#e46595", // series-5
   "#008300", // series-6
   "#4a3aa7", // series-7
 ];
@@ -605,6 +606,10 @@ export default function PopulationEquity() {
                     explain(buildExplainPrompt(`Male vs. female population by state — ${latestStateYear}`, csv, sexByState.length));
                   }}
                 />
+                <ChartFigure
+                  label={`Male and female population by state, ${latestStateYear}`}
+                  summary={`Horizontal bars for ${sexByState.length} states, in thousands of people. Use Export CSV for every value.`}
+                >
                 <ResponsiveContainer width="100%" height={Math.max(260, sexByState.length * 26)}>
                   <BarChart data={sexByState} layout="vertical" margin={{ top: 4, right: 24, bottom: 4, left: 4 }}>
                     <CartesianGrid stroke="#e1e0d9" horizontal={false} />
@@ -627,6 +632,7 @@ export default function PopulationEquity() {
                     <Bar dataKey="Female" fill={SERIES_COLORS[1]} maxBarSize={12} />
                   </BarChart>
                 </ResponsiveContainer>
+                </ChartFigure>
               </div>
             ) : (
               <InsufficientData reason="No sex-disaggregated state population data available." />
@@ -727,6 +733,10 @@ export default function PopulationEquity() {
                 explain(buildExplainPrompt(`Age-specific fertility rate — ${asfrState}, ${effectiveFertilityYear ?? "the selected year"}`, csv, asfrData.length));
               }}
             />
+            <ChartFigure
+              label={`Age-specific fertility rate, ${asfrState}`}
+              summary={`Fertility rate per 1,000 women across ${asfrData.length} age groups, ${effectiveFertilityYear ?? "selected year"}. Use Export CSV for every value.`}
+            >
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={asfrData} margin={{ top: 8, right: 24, bottom: 4, left: 0 }}>
                 <CartesianGrid stroke="#e1e0d9" vertical={false} />
@@ -739,6 +749,7 @@ export default function PopulationEquity() {
                 <Bar dataKey="Fertility rate" fill={SERIES_COLORS[3]} radius={[4, 4, 0, 0]} maxBarSize={60} />
               </BarChart>
             </ResponsiveContainer>
+            </ChartFigure>
             <p className="mt-2 text-xs text-ink-muted">
               Births per 1,000 women in each 5-year age band — a different scale from the total fertility rate (TFR,
               births per woman) shown in the ranking above; the two are never plotted together.
@@ -816,6 +827,10 @@ export default function PopulationEquity() {
                   );
                 }}
               />
+              <ChartFigure
+                label={`Age group shares, ${ageGeo === "__all__" ? "All Malaysia" : ageGeo}, ${effectiveAgeYear}`}
+                summary={`Share of the population in each of ${ageBreakdown.data.length} age groups. Use Export CSV for every value.`}
+              >
               <ResponsiveContainer width="100%" height={220}>
                 <BarChart data={ageBreakdown.data} margin={{ top: 8, right: 24, bottom: 4, left: 0 }}>
                   <CartesianGrid stroke="#e1e0d9" vertical={false} />
@@ -835,6 +850,7 @@ export default function PopulationEquity() {
                   <Bar dataKey="Share" name="Share of population (%)" fill={SERIES_COLORS[2]} radius={[4, 4, 0, 0]} maxBarSize={80} />
                 </BarChart>
               </ResponsiveContainer>
+              </ChartFigure>
             </div>
           ) : ageBreakdown?.unavailable ? (
             <InsufficientData reason="Age breakdown was not published for this census round (typically the 1970 round)." />
@@ -967,6 +983,10 @@ export default function PopulationEquity() {
                   );
                 }}
               />
+              <ChartFigure
+                label={`Ethnicity share of population, ${ethnicityLabel}, ${effectiveEthnicityYear}`}
+                summary={"One stacked horizontal bar showing the percentage of the population in each ethnic group. Use Export CSV for every value."}
+              >
               <ResponsiveContainer width="100%" height={140}>
                 <BarChart
                   data={ethnicityChart.data}
@@ -988,6 +1008,7 @@ export default function PopulationEquity() {
                   <Bar dataKey="Other" stackId="eth" fill={SERIES_COLORS[3]} radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
+              </ChartFigure>
               <dl className="mt-3 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">
                 <div className="rounded border border-line-grid p-2">
                   <dt className="text-xs text-ink-muted">Bumiputera</dt>

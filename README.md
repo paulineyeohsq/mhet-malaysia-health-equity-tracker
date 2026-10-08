@@ -142,6 +142,24 @@ npm run build
 npm run preview   # serve the production build locally
 ```
 
+**Run the tests** (from `frontend/`):
+
+```bash
+npm run lint        # oxlint - must report 0 warnings
+npm test            # Vitest: unit tests for src/lib (equity, correlation, priority score, data age, colour contrast)
+                    #         and consistency checks against public/data
+npm run build
+npx playwright install chromium   # once
+npm run test:e2e    # Playwright against the production build, at 1440 px and 390 px:
+                    #   every route loads with no console errors, failed/third-party requests or horizontal
+                    #   overflow; 404 and error-boundary fallbacks; mobile menu; AI error handling;
+                    #   axe-core WCAG 2.1 A/AA on every page; chart and map text alternatives
+node e2e/page-weights.mjs http://localhost:4173/   # cold-load page weight per route (needs `npx vite preview`)
+```
+
+[`deploy-pages.yml`](.github/workflows/deploy-pages.yml) runs lint, the unit tests, the build and the browser
+tests before publishing; [`ci.yml`](.github/workflows/ci.yml) runs the same on every pull request.
+
 **Re-run the data pipeline:**
 
 ```bash
@@ -180,9 +198,8 @@ The dashboard shows aggregated public statistics only; it has no accounts and
 stores no personal data. If you use an AI feature, the question you type (and
 the page's published data, as context) is sent to a Netlify function and on to
 Google Gemini to generate the answer — so please **do not enter personal or
-patient information**. Map background tiles are requested from OpenStreetMap, so
-your browser's IP address is visible to that service. See the Privacy section of
-the Methodology page.
+patient information**. The maps draw DOSM boundary polygons only, with no third-party
+map tiles. See the Privacy section of the Methodology page.
 
 ## Documentation
 

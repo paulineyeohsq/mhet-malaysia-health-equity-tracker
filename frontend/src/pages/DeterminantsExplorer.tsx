@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "recharts";
 import PageHeader from "../components/PageHeader";
+import ChartFigure from "../components/ChartFigure";
 import StatTile from "../components/StatTile";
 import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
@@ -520,6 +521,10 @@ export default function DeterminantsExplorer() {
                   />
                 ) : (
                   <div ref={chartRef}>
+                    <ChartFigure
+                      label={`Scatter plot of ${outcome.label} against ${determinant.label}`}
+                      summary={`${stats?.n ?? 0} ${isPooled ? "state-year points" : "states"}, ${yearLabel}. Pearson r ${stats ? stats.pearson.toFixed(2) : "not computed"}, Spearman rho ${stats ? stats.spearman.toFixed(2) : "not computed"}. Use View as table for every point.`}
+                    >
                     <ResponsiveContainer width="100%" height={320}>
                       <ComposedChart margin={{ top: 8, right: 20, bottom: 24, left: 8 }}>
                         <CartesianGrid stroke="#e1e0d9" />
@@ -584,6 +589,7 @@ export default function DeterminantsExplorer() {
                         />
                       </ComposedChart>
                     </ResponsiveContainer>
+                    </ChartFigure>
                   </div>
                 )}
                 <p className="mt-2 text-xs text-ink-muted">
@@ -707,6 +713,10 @@ export default function DeterminantsExplorer() {
                       <DataTable columns={timeTableColumns} rows={timePairs as unknown as Record<string, unknown>[]} searchable={false} pageSize={timePairs.length || 1} />
                     ) : (
                       <div ref={timeChartRef}>
+                        <ChartFigure
+                          label={`Scatter plot of ${timeDeterminant.label} against ${timeOutcome.label} over time`}
+                          summary={`${timePairs.length} years. Pearson r ${timeStats ? timeStats.pearson.toFixed(2) : "not computed"}. Use View as table for every point.`}
+                        >
                         <ResponsiveContainer width="100%" height={320}>
                           <ComposedChart margin={{ top: 8, right: 20, bottom: 24, left: 8 }}>
                             <CartesianGrid stroke="#e1e0d9" />
@@ -763,6 +773,7 @@ export default function DeterminantsExplorer() {
                             />
                           </ComposedChart>
                         </ResponsiveContainer>
+                        </ChartFigure>
                       </div>
                     )}
                     <p className="mt-2 text-xs text-ink-muted">

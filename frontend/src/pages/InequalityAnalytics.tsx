@@ -12,6 +12,7 @@ import {
   Legend,
 } from "recharts";
 import PageHeader from "../components/PageHeader";
+import ChartFigure from "../components/ChartFigure";
 import StatTile from "../components/StatTile";
 import SourceNote from "../components/SourceNote";
 import BarRankingCard from "../components/BarRankingCard";
@@ -640,6 +641,7 @@ export default function InequalityAnalytics() {
                   <StatTile
                     label="Best-performing state"
                     value={gapStats.bestState}
+                    year={effectivePrimaryYear}
                     sublabel={`${fmt(gapStats.bestValue, primary.decimals)} ${primary.unit}`}
                     caution={
                       primary.countField &&
@@ -656,6 +658,7 @@ export default function InequalityAnalytics() {
                   <StatTile
                     label="Worst-performing state"
                     value={gapStats.worstState}
+                    year={effectivePrimaryYear}
                     sublabel={`${fmt(gapStats.worstValue, primary.decimals)} ${primary.unit}`}
                     caution={
                       primary.countField &&
@@ -981,6 +984,10 @@ export default function InequalityAnalytics() {
                     explain(buildExplainPrompt(`Concentration curve — ${sesIndicator.label}, ${sesYear}`, csv, ciResult.curve.length));
                   }}
                 />
+                <ChartFigure
+                  label={`Concentration curve: ${sesIndicator.label}, ${sesYear}`}
+                  summary={`Cumulative share of ${sesIndicator.label} against cumulative population share, with states ranked from most to least disadvantaged, and the line of equality. Concentration index ${fmt(ciResult.index, 3)} from ${ciResult.n} states. Use Export CSV for every point.`}
+                >
                 <ResponsiveContainer width="100%" height={300}>
                   <LineChart data={ciResult.curve} margin={{ top: 8, right: 12, bottom: 20, left: 0 }}>
                     <CartesianGrid stroke="#e1e0d9" vertical={false} />
@@ -1026,6 +1033,7 @@ export default function InequalityAnalytics() {
                     />
                   </LineChart>
                 </ResponsiveContainer>
+                </ChartFigure>
                 <SourceNote sourceKey={sesIndicator.sourceKey} year={sesYear} />
               </div>
               <div className="space-y-3">

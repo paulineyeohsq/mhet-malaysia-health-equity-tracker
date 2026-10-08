@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useChat } from "../lib/chatCore";
 import MarkdownLite from "./MarkdownLite";
 import { AiError, AiPrivacyNote, AiProgress } from "./AiStatus";
@@ -12,6 +12,19 @@ import { AiError, AiPrivacyNote, AiProgress } from "./AiStatus";
 export default function ChatPanel() {
   const { open, setOpen, messages, loading, error, clearError, send, retry } = useChat();
   const [input, setInput] = useState("");
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const wasOpen = useRef(false);
+
+  // Move focus into the drawer when it opens and back to the toggle when it closes; Escape closes it.
+  useEffect(() => {
+    if (open) {
+      inputRef.current?.focus();
+    } else if (wasOpen.current) {
+      toggleRef.current?.focus();
+    }
+    wasOpen.current = open;
+  }, [open]);
 
   function handleSend() {
     if (!input.trim() || loading) return;
@@ -22,8 +35,10 @@ export default function ChatPanel() {
   return (
     <>
       <button
+        ref={toggleRef}
         type="button"
         aria-label={open ? "Close MY-HEO Assistant" : "Open MY-HEO Assistant"}
+        aria-expanded={open}
         onClick={() => setOpen((v) => !v)}
         className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-series-1 text-white shadow-lg transition-transform hover:scale-105"
       >
@@ -43,7 +58,14 @@ export default function ChatPanel() {
       </button>
 
       <aside
+        aria-label="MY-HEO Assistant"
         aria-hidden={!open}
+        // inert takes the closed drawer out of the tab order and the accessibility tree; aria-hidden alone left
+        // its buttons and input focusable while invisible.
+        inert={!open}
+        onKeyDown={(e) => {
+          if (e.key === "Escape") setOpen(false);
+        }}
         className={`fixed top-0 right-0 z-50 flex h-full w-[400px] max-w-[90vw] flex-col border-l border-line-grid bg-surface shadow-xl transition-transform duration-200 ${
           open ? "translate-x-0" : "translate-x-full"
         }`}
@@ -104,7 +126,9 @@ export default function ChatPanel() {
         <div className="border-t border-line-grid p-3">
           <div className="flex gap-2">
             <input
+              ref={inputRef}
               type="text"
+              aria-label="Your question"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => {

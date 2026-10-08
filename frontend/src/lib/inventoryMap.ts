@@ -32,6 +32,8 @@ export interface InventoryFile {
   generated: string;
   /** Date the data pipeline last successfully rebuilt the data from source (set by scripts/update_database.py). */
   last_refreshed?: string;
+  /** Latest data year in each published JSON file, computed by scripts/update_database.py (stamp_data_years). */
+  data_files?: Record<string, number>;
   source_catalogue: string;
   note: string;
   datasets: InventoryDataset[];
@@ -101,6 +103,7 @@ export const INVENTORY_MAP: Record<string, string[]> = {
   "fertility_state.json": ["fertility_state"],
   "health_programmes_state.json": ["health_programmes_state"],
   "pekab40_screenings_daily_state.json": ["pekab40_screenings_daily"],
+  "pekab40_screenings_weekly_state.json": ["pekab40_screenings_daily"],
   "covid_state.json": ["covid_cases"],
   "covid_national.json": ["covid_cases"],
   "mnha_national.json": ["mnha"],

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { MapContainer, TileLayer, GeoJSON, AttributionControl, useMap } from "react-leaflet";
+import { MapContainer, GeoJSON, AttributionControl, useMap } from "react-leaflet";
 import L from "leaflet";
 import type { Layer, StyleFunction, LeafletMouseEvent, Path } from "leaflet";
 import type { Feature, Geometry } from "geojson";
@@ -7,6 +7,7 @@ import ChartToolbar from "./ChartToolbar";
 import DataTable, { type Column } from "./DataTable";
 import { toCSV, downloadCSV } from "../lib/csv";
 import { useChat, buildExplainPrompt } from "../lib/chatCore";
+import { SEQ_RAMP, NO_DATA, MAP_BACKGROUND, outlineFor } from "../lib/mapColors";
 
 export interface ChoroplethDatum {
   name: string; // state or district name, must match geojson `state`/`district` property
@@ -33,9 +34,6 @@ export interface TierConfig {
  * null/no-data areas render in a flat neutral grey with a hatch-free "no
  * data" fill rather than being silently omitted.
  */
-const SEQ_RAMP = ["#e3f2f3", "#c2d4da", "#a1b6c2", "#8098aa", "#6f889d", "#4e6a85", "#1c3d60"];
-const NO_DATA = "#e1e0d9";
-
 function colorFor(value: number | null, min: number, max: number) {
   if (value === null || Number.isNaN(value)) return NO_DATA;
   if (max === min) return SEQ_RAMP[3];
@@ -104,6 +102,7 @@ export default function ChoroplethMap({
   selectedName,
   unitLabel,
   tiers,
+  label,
 }: {
   geojson: GeoJSON.FeatureCollection;
   data: ChoroplethDatum[];
@@ -112,6 +111,8 @@ export default function ChoroplethMap({
   selectedName?: string | null;
   unitLabel?: string;
   tiers?: TierConfig;
+  /** What the map shows, for its accessible name (e.g. "Absolute poverty rate"). */
+  label?: string;
 }) {
   const byName = useMemo(() => {
     const m = new Map<string, number | null>();
@@ -130,11 +131,13 @@ export default function ChoroplethMap({
     const value = byName.has(name) ? byName.get(name)! : null;
     const isSelected = selectedName && name === selectedName;
     const tierIdx = tiers ? tierIndexFor(value, tiers.breaks) : null;
+    const fillColor = tiers ? (tierIdx !== null ? tiers.colors[tierIdx] : NO_DATA) : colorFor(value, min, max);
     return {
-      fillColor: tiers ? (tierIdx !== null ? tiers.colors[tierIdx] : NO_DATA) : colorFor(value, min, max),
+      fillColor,
       fillOpacity: value === null ? 0.35 : 0.85,
-      color: isSelected ? "#0b0b0b" : "#ffffff",
-      weight: isSelected ? 2 : 0.8,
+      // Outline is chosen per region so its edge contrasts with its own fill (white on dark steps, near-black on pale).
+      color: isSelected ? "#0b0b0b" : outlineFor(fillColor),
+      weight: isSelected ? 3 : 1,
     };
   };
 
@@ -149,19 +152,33 @@ export default function ChoroplethMap({
       click: () => onSelect?.(name),
       mouseover: (e: LeafletMouseEvent) => (e.target as Path).setStyle({ weight: 2, color: "#0b0b0b" }),
       mouseout: (e: LeafletMouseEvent) => {
-        if (name !== selectedName) (e.target as Path).setStyle({ weight: 0.8, color: "#ffffff" });
+        if (name !== selectedName) (e.target as Path).setStyle(style(feature as unknown as Parameters<typeof style>[0]) as L.PathOptions);
       },
     });
   };
 
-  // Table toggle + CSV export. PNG export is deliberately not offered here
-  // (unlike BarRankingCard/LineChartCard): the map mixes in cross-origin
-  // raster tiles from an external CDN, which taints a <canvas> on export
-  // without a dedicated screenshot library — rather than ship a button that
-  // silently fails, this component sticks to what a zero-dependency
-  // approach can actually deliver (table + CSV).
+  // Table toggle + CSV export. PNG export is deliberately not offered for the
+  // map: Leaflet draws it as live SVG/DOM layers rather than a canvas, so a
+  // faithful image would need a dedicated screenshot library - rather than ship
+  // a button that silently fails, this component sticks to what a
+  // zero-dependency approach can actually deliver (table + CSV).
   const [showTable, setShowTable] = useState(false);
   const { explain } = useChat();
+
+  // Text alternative for the drawing: how many areas have a value, the extremes, and how many are blank.
+  const mapSummary = useMemo(() => {
+    const withValue = data.filter((d): d is ChoroplethDatum & { value: number } => d.value !== null && !Number.isNaN(d.value));
+    if (withValue.length === 0) return "No area has a value for this selection.";
+    const sorted = [...withValue].sort((a, b) => a.value - b.value);
+    const fmtV = (v: number) => `${v}${unitLabel ? " " + unitLabel : ""}`;
+    const blank = data.length - withValue.length;
+    return (
+      `${withValue.length} ${nameProperty}s have a value. Highest: ${sorted[sorted.length - 1].name}, ${fmtV(sorted[sorted.length - 1].value)}. ` +
+      `Lowest: ${sorted[0].name}, ${fmtV(sorted[0].value)}.` +
+      (blank > 0 ? ` ${blank} have no data.` : "") +
+      " Use View as table for every value."
+    );
+  }, [data, nameProperty, unitLabel]);
   const tableColumns: Column[] = [
     { key: "name", label: nameProperty === "district" ? "District" : "State" },
     { key: "value", label: unitLabel ? `Value (${unitLabel})` : "Value", numeric: true },
@@ -190,30 +207,29 @@ export default function ChoroplethMap({
       {showTable ? (
         <DataTable columns={tableColumns} rows={data as unknown as Record<string, unknown>[]} searchable pageSize={20} />
       ) : (
-        <div className="h-[480px] w-full overflow-hidden rounded-lg border border-line-grid">
+        <div
+          role="region"
+          aria-label={`Map of ${label ?? "values"} by ${nameProperty}`}
+          aria-describedby="choropleth-summary"
+          className="h-[480px] w-full overflow-hidden rounded-lg border border-line-grid"
+        >
+          <p id="choropleth-summary" className="sr-only">
+            {mapSummary}
+          </p>
           <MapContainer
             center={[4.2, 108.5]}
             zoom={5.5}
             scrollWheelZoom={false}
             zoomSnap={0.25}
-            style={{ background: "#fcfcfb" }}
+            style={{ background: MAP_BACKGROUND }}
             attributionControl={false}
           >
-            {/* Basemap: OpenStreetMap's standard tile server (no API key). This used to be CARTO's free
-                light_nolabels tiles, but CARTO now answers EVERY tile request on that endpoint with a
-                placeholder image reading "API KEY REQUIRED" (same image for every zoom/location, HTTP 200,
-                so it looked healthy). OSM's tile policy allows light use with visible attribution and a
-                valid Referer (browsers send one); revisit if traffic grows — see
-                https://operations.osmfoundation.org/policies/tiles/ . The "basemap-muted" class greys the
-                tiles (index.css) so they don't compete with the choropleth colours. */}
-            <TileLayer
-              url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-              maxZoom={19}
-              className="basemap-muted"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors'
-            />
-            {/* Visible credit is part of OSM's licence (ODbL). The control was previously switched off, so
-                the attribution prop on the tile layer was never displayed. */}
+            {/* No basemap on purpose. This map used to draw raster tiles from a third-party server (CARTO, then
+                OpenStreetMap). Public tile servers are not meant for production traffic - CARTO started answering
+                every request with an "API KEY REQUIRED" placeholder image, and OSM's tile policy limits heavy use -
+                and each tile request also exposed the visitor's IP address to that server. The DOSM boundary
+                polygons alone already show where each state/district is, so the map now depends on nothing outside
+                this site. Attribution for the boundary data stays visible via the control below. */}
             <AttributionControl prefix={false} position="bottomright" />
             <GeoJSON
               key={`geo-${data.length}-${min}-${max}-${tiers ? tiers.breaks.join(",") : "ramp"}`}

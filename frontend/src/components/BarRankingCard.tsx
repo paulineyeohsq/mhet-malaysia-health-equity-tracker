@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Cell } from "recharts";
 import ChartToolbar from "./ChartToolbar";
+import ChartFigure from "./ChartFigure";
 import DataTable, { type Column } from "./DataTable";
 import { toCSV, downloadCSV } from "../lib/csv";
 import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
@@ -31,6 +32,13 @@ export default function BarRankingCard({
   );
   const h = height ?? Math.max(180, sorted.length * 26);
   const max = Math.max(...sorted.map((d) => Number(d[valueKey]) || 0), 1);
+
+  const summary =
+    sorted.length === 0
+      ? "No data to show."
+      : `Ranked horizontal bar chart of ${sorted.length} ${sorted.length === 1 ? "entry" : "entries"}${unit ? ` (${unit})` : ""}. ` +
+        `Highest: ${sorted[0][nameKey]}, ${sorted[0][valueKey]}. Lowest: ${sorted[sorted.length - 1][nameKey]}, ${sorted[sorted.length - 1][valueKey]}. ` +
+        "Use View as table for every value.";
 
   const [showTable, setShowTable] = useState(false);
   const [pngPending, setPngPending] = useState(false);
@@ -82,6 +90,7 @@ export default function BarRankingCard({
         <DataTable columns={tableColumns} rows={sorted as Record<string, unknown>[]} searchable={false} pageSize={sorted.length || 1} />
       ) : (
         <div ref={chartRef}>
+          <ChartFigure label={title ?? "Ranked bar chart"} summary={summary}>
           <ResponsiveContainer width="100%" height={h}>
             <BarChart data={sorted} layout="vertical" margin={{ top: 4, right: 24, bottom: 4, left: 4 }}>
               <CartesianGrid stroke="#e1e0d9" horizontal={false} />
@@ -111,6 +120,7 @@ export default function BarRankingCard({
               </Bar>
             </BarChart>
           </ResponsiveContainer>
+          </ChartFigure>
         </div>
       )}
     </div>

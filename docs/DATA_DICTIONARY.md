@@ -157,6 +157,15 @@ from file 4.
 | `staff_per_100k` | number | staff per 100,000 population | null for 96 of 144 rows — computed as `staff_all / population_used_for_rate * 100000`, so it is null wherever the denominator is (2014–2019) | `306.6` |
 | `hospital_beds` | number | count | null for 128 of 144 rows — populated **only for `year == 2022`**, because `hospital_beds_2022.csv` is a single-year snapshot (per `dataset_inventory.json`'s `hospital_beds` entry: "District-level series only ingested for 2022") | `5433` |
 | `beds_per_100k` | number | beds per 100,000 population | null for 128 of 144 rows, same 2022-only reason as `hospital_beds` | `134.9` |
+| `pool_label` | string | — | null except for Selangor, W.P. Kuala Lumpur and W.P. Putrajaya, where it is the Klang Valley label | `"Klang Valley (Selangor + W.P. Kuala Lumpur + W.P. Putrajaya)"` |
+| `pool_staff_all`, `pool_hospital_beds`, `pool_population` | number | count / persons | the three pooled units' summed staff, beds and population for that year; null for every other state (and for beds outside 2022) | `46502` |
+| `staff_per_100k_pooled` | number | staff per 100,000 population | the comparison rate: for the three Klang Valley units, `pool_staff_all / pool_population * 100000` (identical on all three rows); for every other state, equal to `staff_per_100k`. Null wherever `staff_per_100k` is | `509.4` |
+| `beds_per_100k_pooled` | number | beds per 100,000 population | same construction for beds (2022 only) | `144.1` |
+
+The unpooled `staff_per_100k` / `beds_per_100k` are unchanged. The pooled fields exist because the three units
+share national referral hospitals and federal institutions, so their individual rates are not like-for-like
+(see the Methodology page, "Klang Valley pooling"). The catalogue does not say whether staff are counted by place
+of work or residence.
 
 ---
 

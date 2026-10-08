@@ -11,6 +11,7 @@ import {
   Legend,
 } from "recharts";
 import PageHeader from "../components/PageHeader";
+import ChartFigure from "../components/ChartFigure";
 import StatTile from "../components/StatTile";
 import SourceNote from "../components/SourceNote";
 import InsufficientData from "../components/InsufficientData";
@@ -377,6 +378,10 @@ export default function StateEquityMatrix() {
                   explain(buildExplainPrompt(`${resource.label} vs. ${burden.label} — ${yearLabel}`, csv, pairs.length));
                 }}
               />
+              <ChartFigure
+                label={`${resource.label} against ${burden.label}, ${yearLabel}`}
+                summary={`Scatter plot of ${pairs.length} states with quadrant lines at the averages. Pearson r ${stats ? stats.pearson.toFixed(2) : "not computed"}. Use Export CSV for every point.`}
+              >
               <ResponsiveContainer width="100%" height={380}>
                 <ComposedChart margin={{ top: 8, right: 24, bottom: 28, left: 8 }}>
                   <CartesianGrid stroke="#e1e0d9" />
@@ -410,7 +415,7 @@ export default function StateEquityMatrix() {
                     }}
                   />
                   <Legend wrapperStyle={{ fontSize: 12 }} verticalAlign="top" />
-                  <Scatter name="Other states" data={otherPairs} fill="#c9c7bf" />
+                  <Scatter name="Other states" data={otherPairs} fill="#938f7f" />
                   {stats && (
                     <Line
                       name="Linear trend"
@@ -429,6 +434,7 @@ export default function StateEquityMatrix() {
                   {pairsForB.length > 0 && <Scatter name={stateB} data={pairsForB} fill="#eb6834" shape="circle" legendType="circle" />}
                 </ComposedChart>
               </ResponsiveContainer>
+              </ChartFigure>
               <p className="mt-2 text-xs text-ink-muted">
                 {isPooled
                   ? `Each grey point is one of the other Malaysian states in one year; ${stateA} is highlighted blue, ${stateB} orange — each may appear more than once (one point per year it has data).`
@@ -446,7 +452,8 @@ export default function StateEquityMatrix() {
                 { name: stateB, pair: pairB, color: "#eb6834" },
               ].map(({ name, pair, color }) => (
                 <div key={name} className="rounded-lg border border-line-grid bg-surface p-4">
-                  <h3 className="mb-2 text-sm font-medium" style={{ color }}>
+                  <h3 className="mb-2 flex items-center gap-2 text-sm font-medium text-ink-primary">
+                    <span aria-hidden="true" className="inline-block h-3 w-3 shrink-0 rounded-sm" style={{ backgroundColor: color }} />
                     {name}
                     {isPooled && pair?.year !== undefined ? ` — ${pair.year} (most recent available)` : ""}
                   </h3>

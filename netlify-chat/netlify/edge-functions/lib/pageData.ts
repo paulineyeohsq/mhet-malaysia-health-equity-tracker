@@ -15,6 +15,7 @@ export const PAGE_DATA_FILES: Record<string, string[]> = {
     "socioeconomic_state.json",
     "healthcare_access_national.json",
     "population_state.json",
+    "healthcare_access_state.json",
   ],
   "/map": [
     "socioeconomic_state.json",
@@ -37,6 +38,7 @@ export const PAGE_DATA_FILES: Record<string, string[]> = {
     "water_access_state.json",
     "water_access_national.json",
     "electricity_access_region.json",
+    "sanitation_access_national.json",
   ],
   "/health-outcomes": [
     "health_outcomes_state.json",
@@ -47,6 +49,7 @@ export const PAGE_DATA_FILES: Record<string, string[]> = {
     "pekab40_screenings_daily_state.json",
     "hiv_incidence_national.json",
     "deaths_ethnicity_state.json",
+    "covid_national.json",
   ],
   "/healthcare-access": [
     "healthcare_access_national.json",
@@ -89,6 +92,11 @@ export const PAGE_DATA_FILES: Record<string, string[]> = {
     "forest_reserve_state.json",
     "water_consumption_state.json",
     "water_production_state.json",
+    "air_pollution_national.json",
+    "electricity_consumption_national.json",
+    "electricity_supply_national.json",
+    "ghg_emissions_national.json",
+    "water_pollution_basin_national.json",
   ],
   "/matrix": [
     "health_outcomes_state.json",
@@ -146,8 +154,23 @@ export const PAGE_DATA_FILES: Record<string, string[]> = {
     "water_consumption_state.json",
     "water_production_state.json",
   ],
-  "/priority-areas": ["health_outcomes_state.json", "healthcare_access_state.json", "socioeconomic_state.json"],
-  "/research-opportunities": ["health_outcomes_state.json", "healthcare_access_state.json"],
+  "/priority-areas": [
+    "health_outcomes_state.json",
+    "healthcare_access_state.json",
+    "socioeconomic_state.json",
+    "health_programmes_state.json",
+    "nhms_ncd_state.json",
+    "sanitation_access_state.json",
+    "water_access_state.json",
+  ],
+  "/research-opportunities": [
+    "health_outcomes_state.json",
+    "healthcare_access_state.json",
+    "fertility_state.json",
+    "nhms_adolescent_mental_health_state.json",
+    "nhms_ncd_state.json",
+    "socioeconomic_state.json",
+  ],
 };
 
 /** /explorer, /data-gaps, /methodology, and any unrecognized path fall
