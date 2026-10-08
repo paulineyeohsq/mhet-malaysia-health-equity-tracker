@@ -25,8 +25,13 @@ interface ChatContextValue {
    * AI's answer inline in their own card (e.g. Research Opportunities'
    * suggestion cards) rather than in the global chat panel. Throws on
    * failure; callers own their own loading/error state.
+   *
+   * The backend attaches the current page's data files to ordinary chat turns. askDirect
+   * callers (the Research Opportunities cards) put all the data they need in the prompt
+   * itself, so by default this opts out of that ("context: none") — it saves a large
+   * share of the Gemini quota. Pass { pageContext: true } to keep the page data attached.
    */
-  askDirect: (prompt: string) => Promise<string>;
+  askDirect: (prompt: string, options?: { pageContext?: boolean }) => Promise<string>;
 }
 
 const EXPLAIN_ROW_CAP = 60;
@@ -106,7 +111,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   );
 
   const askDirect = useCallback(
-    async (prompt: string): Promise<string> => {
+    async (prompt: string, options?: { pageContext?: boolean }): Promise<string> => {
       // Exponential backoff — up to 3 retries after 3s, 6s, then 12s — when
       // the service is rate-limited: 503 (the backend's translation of
       // Gemini's 429 "busy") or 429 (the backend's own per-IP limit). These
@@ -117,7 +122,11 @@ export function ChatProvider({ children }: { children: ReactNode }) {
         const res = await fetch(`${CHAT_WORKER_URL}/chat`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: [{ role: "user", content: prompt }], path: location.pathname }),
+          body: JSON.stringify({
+            messages: [{ role: "user", content: prompt }],
+            path: location.pathname,
+            ...(options?.pageContext ? {} : { context: "none" }),
+          }),
         });
         const data = (await res.json()) as { reply?: string; error?: string };
         if (res.ok && data.reply) return data.reply;

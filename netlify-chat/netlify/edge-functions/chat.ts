@@ -3,6 +3,7 @@ import type { Config, Context } from "@netlify/edge-functions";
 import { bundleFor } from "./lib/pageData.ts";
 import { SYSTEM_PROMPT } from "./lib/systemPrompt.ts";
 import { callGemini, GeminiError, type ChatMessage } from "./lib/gemini.ts";
+import { buildCompactContext, NO_PAGE_CONTEXT } from "./lib/compactContext.ts";
 
 /**
  * Netlify Edge Function port of worker/src/index.ts (the Cloudflare
@@ -75,14 +76,6 @@ async function fetchDataFile(name: string): Promise<{ name: string; body: string
   }
 }
 
-function buildContextBlock(files: { name: string; body: string }[], missing: string[]): string {
-  const parts = files.map((f) => `### ${f.name}\n${f.body}`);
-  if (missing.length > 0) {
-    parts.push(`### NOTE: the following files failed to load this turn and are unavailable: ${missing.join(", ")}`);
-  }
-  return `Here is the real data currently relevant to the page the user is on, plus the dataset catalogue:\n\n${parts.join("\n\n")}`;
-}
-
 async function handleChat(request: Request, context: Context, origin: string | null): Promise<Response> {
   const apiKey = Netlify.env.get("GEMINI_API_KEY");
   if (!apiKey) {
@@ -100,7 +93,7 @@ async function handleChat(request: Request, context: Context, origin: string | n
     return json({ error: "Request too large." }, 413, origin);
   }
 
-  let parsed: { messages?: unknown; path?: unknown };
+  let parsed: { messages?: unknown; path?: unknown; context?: unknown };
   try {
     parsed = JSON.parse(rawBody);
   } catch {
@@ -125,39 +118,46 @@ async function handleChat(request: Request, context: Context, origin: string | n
     return json({ error: "No valid messages provided." }, 400, origin);
   }
 
-  const path = typeof parsed.path === "string" ? parsed.path : "";
-  const fileNames = Array.from(new Set(["dataset_inventory.json", ...bundleFor(path)]));
+  // Callers whose message already carries all the data they need (the Research Opportunities cards) send
+  // context: "none", so no page data is attached. Otherwise the page's data files are attached in a compacted
+  // form (see lib/compactContext.ts) — verbatim they ran to 28k-1.5M tokens per request.
+  let contextBlock: string;
+  if (parsed.context === "none") {
+    contextBlock = NO_PAGE_CONTEXT;
+  } else {
+    const path = typeof parsed.path === "string" ? parsed.path : "";
+    const fileNames = Array.from(new Set(["dataset_inventory.json", ...bundleFor(path)]));
 
-  const results = await Promise.allSettled(fileNames.map(fetchDataFile));
-  const files: { name: string; body: string }[] = [];
-  const missing: string[] = [];
-  results.forEach((r, i) => {
-    if (r.status === "fulfilled" && r.value) {
-      files.push(r.value);
-    } else {
-      missing.push(fileNames[i]);
+    const results = await Promise.allSettled(fileNames.map(fetchDataFile));
+    const files: { name: string; body: string }[] = [];
+    const missing: string[] = [];
+    results.forEach((r, i) => {
+      if (r.status === "fulfilled" && r.value) {
+        files.push(r.value);
+      } else {
+        missing.push(fileNames[i]);
+      }
+    });
+
+    if (files.length === 0) {
+      return json(
+        { error: "Couldn't load current dashboard data right now — please try again shortly." },
+        502,
+        origin
+      );
     }
-  });
-
-  if (files.length === 0) {
-    return json(
-      { error: "Couldn't load current dashboard data right now — please try again shortly." },
-      502,
-      origin
-    );
+    contextBlock = buildCompactContext(files, missing);
   }
 
-  const contextBlock = buildContextBlock(files, missing);
-
   try {
-    const reply = await callGemini(apiKey, SYSTEM_PROMPT, contextBlock, messages);
-    return json({ reply }, 200, origin);
+    const { text: reply, model } = await callGemini(apiKey, SYSTEM_PROMPT, contextBlock, messages);
+    return json({ reply, model }, 200, origin);
   } catch (e) {
     if (e instanceof GeminiError) {
       if (e.status === 401 || e.status === 403) {
         return json({ error: "Chat service auth error — the API key may be invalid." }, 502, origin);
       }
-      if (e.status === 429) {
+      if (e.status === 429 || e.status === 503) {
         return json({ error: "The AI service is temporarily busy — try again in a moment." }, 503, origin);
       }
       return json({ error: "Couldn't reach the AI service — try again shortly." }, 502, origin);
