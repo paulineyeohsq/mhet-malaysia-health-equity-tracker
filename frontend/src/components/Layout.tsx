@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import AskMhet from "./AskMhet";
 import ChatPanel from "./ChatPanel";
@@ -116,7 +117,10 @@ export default function Layout() {
       <main id="main-content" className="flex-1 min-w-0">
         <ChatProvider>
           <AskMhet />
-          <Outlet />
+          {/* Pages are code-split (React.lazy in App.tsx); the sidebar stays put while one loads. */}
+          <Suspense fallback={<div className="p-10 text-sm text-ink-muted">Loading…</div>}>
+            <Outlet />
+          </Suspense>
           <ChatPanel />
         </ChatProvider>
       </main>

@@ -145,7 +145,7 @@ export default function ResearchOpportunities() {
   };
 
   const [selectedState, setSelectedState] = useState<string>(MALAYSIA_STATES[0]);
-  const [outcomeId, setOutcomeId] = useState(OUTCOME_FIELDS[1].id); // mmr by default
+  const [outcomeId, setOutcomeId] = useState("cdr"); // crude death rate: always has a defined state-to-state ratio (maternal mortality opens on "ratio undefined" when a state reports 0)
   const [determinantId, setDeterminantId] = useState<string>("poverty");
 
   useEffect(() => {

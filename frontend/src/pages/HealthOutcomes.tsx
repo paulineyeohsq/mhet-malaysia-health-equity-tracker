@@ -205,9 +205,12 @@ export default function HealthOutcomes() {
   const { data: covid } = useData<CovidRow[]>("covid_state.json");
   const { data: covidNational } = useData<CovidRow[]>("covid_national.json");
   const { data: programmes } = useData<ProgrammeRow[]>("health_programmes_state.json");
-  const { data: pekaDaily } = useData<PekaDailyRow[]>("pekab40_screenings_daily_state.json");
 
   const [category, setCategory] = useState<Category>("mortality");
+  // 2.4 MB daily file — only fetched once the Health Programme Participation view is opened.
+  const { data: pekaDaily } = useData<PekaDailyRow[]>(
+    category === "programmes" ? "pekab40_screenings_daily_state.json" : null
+  );
   const [state, setState] = useState<string>("Johor");
   const [year, setYear] = useState<number | null>(null);
   const [mortalityMetricId, setMortalityMetricId] = useState(MORTALITY_METRICS[0].id);
