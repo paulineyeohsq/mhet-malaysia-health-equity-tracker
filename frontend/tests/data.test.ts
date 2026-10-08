@@ -1,0 +1,135 @@
+// Consistency checks between the published data files (public/data, produced by scripts/transform_data.py) and the
+// code that reads them. Runs under Node, so it lives outside src/ (which is type-checked for the browser only).
+import { existsSync, readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { describe, expect, it } from "vitest";
+import { PAGE_DATA_FILES } from "../src/lib/pageDataFiles";
+import { INVENTORY_MAP, type InventoryFile } from "../src/lib/inventoryMap";
+
+const DATA = join(dirname(fileURLToPath(import.meta.url)), "..", "public", "data");
+const readJson = <T,>(name: string): T => JSON.parse(readFileSync(join(DATA, name), "utf-8")) as T;
+
+describe("route -> data file map (drives the per-page 'data as of' line)", () => {
+  const names = Array.from(new Set(Object.values(PAGE_DATA_FILES).flat()));
+
+  it.each(names)("%s exists in public/data", (name) => {
+    expect(existsSync(join(DATA, name))).toBe(true);
+  });
+
+  it.each(names)("%s is mapped to inventory datasets", (name) => {
+    expect(INVENTORY_MAP[name]?.length).toBeGreaterThan(0);
+  });
+
+  it("every file has a latest data year stamped in the inventory", () => {
+    const inv = readJson<InventoryFile>("dataset_inventory.json");
+    const missing = names.filter((n) => typeof inv.data_files?.[n] !== "number");
+    expect(missing).toEqual([]);
+  });
+
+  it("every inventory id the map points at exists", () => {
+    const inv = readJson<InventoryFile>("dataset_inventory.json");
+    const ids = new Set(inv.datasets.map((d) => d.id));
+    const bad = Object.entries(INVENTORY_MAP).flatMap(([file, list]) => list.filter((id) => !ids.has(id)).map((id) => `${file} -> ${id}`));
+    expect(bad).toEqual([]);
+  });
+});
+
+interface AccessRow {
+  state: string;
+  year: number;
+  staff_all: number | null;
+  hospital_beds: number | null;
+  population_used_for_rate: number | null;
+  staff_per_100k: number | null;
+  beds_per_100k: number | null;
+  staff_per_100k_pooled: number | null;
+  beds_per_100k_pooled: number | null;
+  pool_label: string | null;
+}
+
+describe("Klang Valley pooled staff and bed rates", () => {
+  const rows = readJson<AccessRow[]>("healthcare_access_state.json");
+  const KV = ["Selangor", "W.P. Kuala Lumpur", "W.P. Putrajaya"];
+  const round1 = (x: number) => Math.round(x * 10) / 10;
+
+  it("leaves every state's own rate unchanged and outside the pool the pooled rate equals it", () => {
+    for (const r of rows.filter((r) => !KV.includes(r.state))) {
+      expect(r.pool_label).toBeNull();
+      expect(r.staff_per_100k_pooled).toBe(r.staff_per_100k);
+      expect(r.beds_per_100k_pooled).toBe(r.beds_per_100k);
+    }
+  });
+
+  it("pools the three units as (sum of staff) / (sum of population) x 100,000, identical on all three rows", () => {
+    const years = Array.from(new Set(rows.map((r) => r.year)));
+    for (const year of years) {
+      const members = KV.map((s) => rows.find((r) => r.state === s && r.year === year)!);
+      const staff = members.map((m) => m.staff_all);
+      const pop = members.map((m) => m.population_used_for_rate);
+      const complete = staff.every((v) => v !== null) && pop.every((v) => v !== null);
+      const pooled = new Set(members.map((m) => m.staff_per_100k_pooled));
+      expect(pooled.size).toBe(1); // same value on all three
+      const value = [...pooled][0];
+      if (complete) {
+        const expected = round1(((staff as number[]).reduce((a, b) => a + b, 0) / (pop as number[]).reduce((a, b) => a + b, 0)) * 100000);
+        expect(value).toBe(expected);
+      } else {
+        expect(value).toBeNull(); // no population denominator -> no rate, never a guess
+      }
+    }
+  });
+
+  it("does the same for beds (2022 only)", () => {
+    const members = KV.map((s) => rows.find((r) => r.state === s && r.year === 2022)!);
+    const beds = members.map((m) => m.hospital_beds as number);
+    const pop = members.map((m) => m.population_used_for_rate as number);
+    const expected = round1((beds.reduce((a, b) => a + b, 0) / pop.reduce((a, b) => a + b, 0)) * 100000);
+    expect(members.every((m) => m.beds_per_100k_pooled === expected)).toBe(true);
+  });
+
+  it("removes the artefact that made one territory look nine times better staffed than Selangor", () => {
+    const y = 2022;
+    const own = rows.filter((r) => r.year === y && r.staff_per_100k !== null).map((r) => r.staff_per_100k as number);
+    const pooledUnique = new Map<string, number>();
+    for (const r of rows.filter((r) => r.year === y && r.staff_per_100k_pooled !== null)) {
+      pooledUnique.set(r.pool_label ?? r.state, r.staff_per_100k_pooled as number);
+    }
+    const ratio = (vals: number[]) => Math.max(...vals) / Math.min(...vals);
+    expect(ratio(own)).toBeGreaterThan(8);
+    expect(ratio([...pooledUnique.values()])).toBeLessThan(2.5);
+  });
+});
+
+describe("PeKa B40 files", () => {
+  interface Daily { state: string; date: string; screenings: number | null }
+  interface Weekly { state: string; week_start: string; days: number; screenings: number | null }
+  const daily = readJson<Daily[]>("pekab40_screenings_daily_state.json");
+  const weekly = readJson<Weekly[]>("pekab40_screenings_weekly_state.json");
+
+  it("the daily file holds a rolling 366-day window per state", () => {
+    const dates = Array.from(new Set(daily.map((r) => r.date))).sort();
+    expect(dates).toHaveLength(366);
+  });
+
+  it("weekly sums add up to the daily counts for the weeks the daily window fully covers", () => {
+    const start = Array.from(new Set(daily.map((r) => r.date))).sort()[0];
+    const weeklySum = weekly.filter((w) => w.week_start >= start && w.days === 7).reduce((s, w) => s + (w.screenings ?? 0), 0);
+    const dailySumForThoseWeeks = daily
+      .filter((d) => weekly.some((w) => w.state === d.state && w.days === 7 && w.week_start >= start && d.date >= w.week_start && d.date < addDays(w.week_start, 7)))
+      .reduce((s, d) => s + (d.screenings ?? 0), 0);
+    expect(weeklySum).toBe(dailySumForThoseWeeks);
+  });
+
+  it("only the first/last week of a state's history can be partial", () => {
+    const partial = weekly.filter((w) => w.days < 7);
+    const lastWeek = weekly.reduce((m, w) => (w.week_start > m ? w.week_start : m), "");
+    expect(partial.every((w) => w.week_start === lastWeek)).toBe(true);
+  });
+});
+
+function addDays(iso: string, n: number): string {
+  const d = new Date(`${iso}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0, 10);
+}

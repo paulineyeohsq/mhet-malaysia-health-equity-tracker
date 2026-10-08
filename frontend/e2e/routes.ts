@@ -1,0 +1,21 @@
+/** Every routed page (see src/App.tsx and src/components/Layout.tsx). "" is the home page. */
+export const ROUTES = [
+  "",
+  "population",
+  "map",
+  "determinants",
+  "matrix",
+  "trends",
+  "socioeconomic",
+  "health-outcomes",
+  "healthcare-access",
+  "financing",
+  "environment",
+  "analytics",
+  "state-matrix",
+  "priority-areas",
+  "research-opportunities",
+  "explorer",
+  "data-gaps",
+  "methodology",
+] as const;
