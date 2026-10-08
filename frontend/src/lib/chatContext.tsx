@@ -107,16 +107,25 @@ export function ChatProvider({ children }: { children: ReactNode }) {
 
   const askDirect = useCallback(
     async (prompt: string): Promise<string> => {
-      const res = await fetch(`${CHAT_WORKER_URL}/chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: [{ role: "user", content: prompt }], path: location.pathname }),
-      });
-      const data = (await res.json()) as { reply?: string; error?: string };
-      if (!res.ok || !data.reply) {
+      // Up to two automatic retries (after 4s, then 9s) when the backend
+      // reports the upstream AI service as busy (503, i.e. Gemini rate-limited
+      // the key) — these are mostly per-minute limits that clear quickly, so
+      // patient retries hide most of them from the user. A single retry at 4s
+      // was not enough in live testing.
+      for (let attempt = 0; ; attempt++) {
+        const res = await fetch(`${CHAT_WORKER_URL}/chat`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ messages: [{ role: "user", content: prompt }], path: location.pathname }),
+        });
+        const data = (await res.json()) as { reply?: string; error?: string };
+        if (res.ok && data.reply) return data.reply;
+        if (res.status === 503 && attempt < 2) {
+          await new Promise((r) => setTimeout(r, attempt === 0 ? 4000 : 9000));
+          continue;
+        }
         throw new Error(data.error ?? `HTTP ${res.status}`);
       }
-      return data.reply;
     },
     [location.pathname]
   );
