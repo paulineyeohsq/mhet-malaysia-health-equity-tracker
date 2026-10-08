@@ -6,13 +6,20 @@ const cache = new Map<string, unknown>();
  * Fetch a static JSON file from /data/<name> (served from public/data at
  * build time — see scripts/transform_data.py for how these are produced).
  * Simple in-memory cache so navigating between pages doesn't re-fetch.
+ * Pass null to skip loading (data stays null) until a file is actually needed.
  */
-export function useData<T = unknown>(name: string): { data: T | null; loading: boolean; error: string | null } {
-  const [data, setData] = useState<T | null>((cache.get(name) as T) ?? null);
-  const [loading, setLoading] = useState(!cache.has(name));
+export function useData<T = unknown>(name: string | null): { data: T | null; loading: boolean; error: string | null } {
+  const [data, setData] = useState<T | null>(name ? ((cache.get(name) as T) ?? null) : null);
+  const [loading, setLoading] = useState(name !== null && !cache.has(name));
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // name === null means "don't load yet" — lets a page defer a large file until it is needed.
+    if (name === null) {
+      setData(null);
+      setLoading(false);
+      return;
+    }
     if (cache.has(name)) {
       setData(cache.get(name) as T);
       setLoading(false);
@@ -44,11 +51,3 @@ export function useData<T = unknown>(name: string): { data: T | null; loading: b
   return { data, loading, error };
 }
 
-export function useMultiData(names: string[]) {
-  const results = names.map((n) => useData(n));
-  return {
-    data: results.map((r) => r.data),
-    loading: results.some((r) => r.loading),
-    error: results.map((r) => r.error).find(Boolean) ?? null,
-  };
-}
