@@ -49,6 +49,20 @@ against it directly otherwise. Don't add a `scripts` field — an
 auto-detected build script that doesn't apply to this site is a separate
 way to break the same build stage.
 
+## Tests
+
+`test/chat.test.ts` checks the function's behaviour (per-IP limit, the no-IP fingerprint bucket, the daily
+cap and its message, CORS, input validation, that rejected requests never reach Gemini) under
+[Deno](https://deno.com) with in-memory stand-ins for Netlify Blobs and the outbound calls, so it needs no
+network, API key or Netlify account:
+
+```bash
+cd netlify-chat
+deno run -A --no-check --import-map=test/import_map.json test/chat.test.ts
+```
+
+It does not exercise Netlify's own runtime, so the deploy preview is still the final check.
+
 ## Deploy
 
 Deployed via the Netlify REST API (`https://api.netlify.com/api/v1/`),
