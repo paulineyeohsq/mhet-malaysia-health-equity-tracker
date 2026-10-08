@@ -15,8 +15,7 @@
  *      narrows (6 -> 3 -> 1 years), then the largest files are left out. Anything
  *      cut is disclosed to the model so it says so instead of guessing.
  *
- * Pure functions, no platform APIs — kept verbatim in sync with
- * worker/src/compactContext.ts (the Cloudflare version of this backend).
+ * Pure functions, no platform APIs.
  */
 
 export interface ContextFile {

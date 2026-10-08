@@ -8,9 +8,6 @@
  * on that page (it still gets dataset_inventory.json, but nothing else).
  * geo/*.geojson files are intentionally excluded — not useful text
  * context for a chat model.
- *
- * Kept in sync verbatim with worker/src/pageData.ts (the Cloudflare
- * version of this same backend) — update both if either changes.
  */
 export const PAGE_DATA_FILES: Record<string, string[]> = {
   "/": [

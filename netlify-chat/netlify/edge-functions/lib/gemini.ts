@@ -11,9 +11,6 @@
 // exhausted gives real extra capacity. Order = preference. gemini-3.1-flash-lite is
 // generally available (not a preview), so it also covers the preview model being retired.
 // All three accept the generationConfig below (verified live).
-//
-// Kept in sync verbatim with worker/src/gemini.ts (the Cloudflare version of this same
-// backend) — update both if either changes.
 const MODELS = ["gemini-3-flash-preview", "gemini-3.1-flash-lite", "gemini-3.5-flash"];
 
 const geminiUrl = (model: string) =>

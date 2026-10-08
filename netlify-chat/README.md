@@ -1,19 +1,14 @@
 # `/netlify-chat` — MHET chat proxy (Netlify Edge Function, active deployment)
 
-Same job as `/worker`'s Cloudflare Worker (see its README for the full
-rationale) — relays "Ask MY-HEO" chat and "Explain this chart" requests to
-Google Gemini with a server-held API key, grounded in the same public static
-JSON everyone else reads from `frontend/public/data/*.json`. Ported here
-because the maintainer has a Netlify account, not a Cloudflare one; the two
-implementations are logically identical (same constants, same rules, same
-`gemini-3-flash-preview` model) except where the platforms genuinely differ:
+Relays "Ask MY-HEO" chat and "Explain this chart" requests to Google Gemini
+with a server-held API key, grounded in the same public static JSON everyone
+else reads from `frontend/public/data/*.json`. (An equivalent Cloudflare Worker
+used to live in `/worker`; it was never deployed and has been removed.)
 
-| | Cloudflare (`/worker`) | Netlify (`/netlify-chat`) |
-|---|---|---|
-| Env vars | `env.GEMINI_API_KEY` binding | `Netlify.env.get("GEMINI_API_KEY")` |
-| Client IP | `CF-Connecting-IP` header | `context.ip` |
-| Rate-limit store | Workers KV (`expirationTtl`) | Netlify Blobs (no built-in TTL — old per-minute buckets aren't cleaned up; negligible at this project's traffic scale, disclosed not silently dropped) |
-| Response caching | Cloudflare Cache API | none — GH Pages JSON fetched fresh each request (GH Pages sets its own cache headers; a latency cost, not a correctness one) |
+Rate limiting uses Netlify Blobs, which has no built-in TTL — old per-minute
+buckets aren't cleaned up; negligible at this project's traffic scale. GH Pages
+JSON is fetched fresh on each request (no edge cache) — a latency cost, not a
+correctness one.
 
 This directory is its own self-contained Netlify site — it does **not**
 serve the dashboard itself (that stays on GitHub Pages); `public/index.html`
@@ -33,18 +28,17 @@ netlify-chat/
                                       # edge-functions/, since Netlify's bundler treats every
                                       # top-level .ts file there as its own function and errors
                                       # on ones with no `export default` handler
-      pageData.ts                    # route → data-file map (keep in sync with worker/src/pageData.ts)
-      systemPrompt.ts                # guardrail prompt (keep in sync with worker/src/systemPrompt.ts)
-      gemini.ts                      # Gemini API client (keep in sync with worker/src/gemini.ts)
+      pageData.ts                    # route → data-file map 
+      systemPrompt.ts                # guardrail prompt 
+      gemini.ts                      # Gemini API client 
 ```
 
 ## Local development
 
 Netlify Edge Functions run on Deno, not Node — there's no local
-`npm install`/typecheck step for this directory the way `/worker` has one.
-`netlify-cli`'s `netlify dev` requires Node >=22.13.0 to run at all (same
-version floor Cloudflare's `wrangler` has); if your machine is on an older
-Node, you can't run it locally and must rely on the deployed environment,
+`npm install`/typecheck step for this directory.
+`netlify-cli`'s `netlify dev` requires Node >=22.13.0 to run at all; if your
+machine is on an older Node, you can't run it locally and must rely on the deployed environment,
 or the Netlify REST API directly, to verify changes.
 
 `package.json` here exists solely so Netlify's build step can resolve the

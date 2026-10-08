@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 import { useLocation } from "react-router-dom";
-import { CHAT_WORKER_URL } from "./chatConfig";
+import { CHAT_URL } from "./chatConfig";
 
 export interface ChatMessage {
   role: "user" | "assistant";
@@ -64,7 +64,7 @@ export function useChat(): ChatContextValue {
  * Owns the "Ask MY-HEO" chat state so both the chat panel itself and any
  * chart's "Explain this" button can drive the same conversation. Grounding
  * (which real data files the assistant sees) is decided server-side in
- * worker/src/pageData.ts, keyed by location.pathname — unchanged from the
+ * netlify-chat/netlify/edge-functions/lib/pageData.ts, keyed by location.pathname — unchanged from the
  * original ChatPanel-local implementation this was extracted from.
  */
 export function ChatProvider({ children }: { children: ReactNode }) {
@@ -83,7 +83,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`${CHAT_WORKER_URL}/chat`, {
+        const res = await fetch(`${CHAT_URL}/chat`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ messages: next, path: location.pathname }),
@@ -119,7 +119,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       // hide most of them from the user. Anything else fails immediately.
       const MAX_RETRIES = 3;
       for (let attempt = 0; ; attempt++) {
-        const res = await fetch(`${CHAT_WORKER_URL}/chat`, {
+        const res = await fetch(`${CHAT_URL}/chat`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
