@@ -5,9 +5,7 @@ import DataTable, { type Column } from "../components/DataTable";
 import BarRankingCard from "../components/BarRankingCard";
 import InsufficientData from "../components/InsufficientData";
 import SourceNote from "../components/SourceNote";
-import MetadataPanel from "../components/MetadataPanel";
 import { useData } from "../lib/useData";
-import { INVENTORY_MAP } from "../lib/inventoryMap";
 import type { Row } from "../lib/equity";
 import { yearsWithCoverage, computeAverage } from "../lib/equity";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
@@ -320,17 +318,6 @@ export default function PriorityAreas() {
                 <SourceNote sourceKey={burden.sourceKey} year={burdenYear ?? undefined} />
                 <SourceNote sourceKey="poverty" year={povertyYear ?? undefined} />
                 <SourceNote sourceKey={access.sourceKey} year={accessYear ?? undefined} />
-              </div>
-              <div className="mt-4">
-                <MetadataPanel
-                  datasetIds={Array.from(
-                    new Set([
-                      ...(INVENTORY_MAP["health_outcomes_state.json"] ?? []),
-                      ...(INVENTORY_MAP["socioeconomic_state.json"] ?? []),
-                      ...(INVENTORY_MAP["healthcare_access_state.json"] ?? []),
-                    ])
-                  )}
-                />
               </div>
             </>
           )}

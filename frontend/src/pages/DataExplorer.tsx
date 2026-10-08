@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import PageHeader from "../components/PageHeader";
 import DataTable, { type Column, toCSV, downloadCSV } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
-import { ProvenanceCard } from "../components/MetadataPanel";
+import ProvenanceCard from "../components/ProvenanceCard";
 import DataGapsList from "../components/DataGapsList";
 import { useData } from "../lib/useData";
 import { INVENTORY_MAP, type InventoryDataset, type InventoryFile } from "../lib/inventoryMap";

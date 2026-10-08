@@ -23,8 +23,6 @@ import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, compute
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
 import { useChat, buildExplainPrompt } from "../lib/chatContext";
-import MetadataPanel from "../components/MetadataPanel";
-import { INVENTORY_MAP } from "../lib/inventoryMap";
 import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
 
 /** Which OUTCOME_FIELDS ids are built from small administrative event counts
@@ -215,13 +213,6 @@ export default function StateEquityMatrix() {
       />
       <div className="space-y-6 p-6 lg:p-10">
         <CorrelationCaveat />
-        <MetadataPanel
-          datasetIds={Array.from(
-            new Set(
-              [...ALL_RESOURCE_CANDIDATE_FIELDS, ...OUTCOME_FIELDS].flatMap((f) => INVENTORY_MAP[f.file] ?? [])
-            )
-          )}
-        />
 
         <div className="flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
           <div>

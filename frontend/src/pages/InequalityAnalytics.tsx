@@ -17,7 +17,6 @@ import SourceNote from "../components/SourceNote";
 import BarRankingCard from "../components/BarRankingCard";
 import DataTable, { type Column, toCSV } from "../components/DataTable";
 import InsufficientData from "../components/InsufficientData";
-import MetadataPanel from "../components/MetadataPanel";
 import ChartToolbar from "../components/ChartToolbar";
 import Term from "../components/Term";
 import { useData } from "../lib/useData";
@@ -25,7 +24,6 @@ import { useChat, buildExplainPrompt } from "../lib/chatContext";
 import type { SOURCES } from "../lib/sources";
 import { computeGapStats, computeAverage, yearsWithCoverage, fmt, type Row } from "../lib/equity";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
-import { INVENTORY_MAP } from "../lib/inventoryMap";
 import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
 
 interface SocioeconomicRow {
@@ -504,16 +502,6 @@ export default function InequalityAnalytics() {
             )}
           </div>
           <DataTable columns={gapSummaryColumns} rows={gapSummaryTableRows} searchable={false} pageSize={10} />
-          <div className="mt-4">
-            <MetadataPanel
-              datasetIds={Array.from(
-                new Set([
-                  ...(INVENTORY_MAP["health_outcomes_state.json"] ?? []),
-                  ...(INVENTORY_MAP["healthcare_access_state.json"] ?? []),
-                ])
-              )}
-            />
-          </div>
         </section>
 
         {/* Absolute & relative gap */}

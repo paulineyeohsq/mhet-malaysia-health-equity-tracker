@@ -1,5 +1,5 @@
 // dataset_inventory.json shape + the processed-file -> inventory-id mapping.
-// Shared by DataExplorer.tsx and MetadataPanel.tsx so this isn't duplicated.
+// Shared by DataExplorer.tsx and ProvenanceCard.tsx so this isn't duplicated.
 
 export interface InventoryDataset {
   id: string;
