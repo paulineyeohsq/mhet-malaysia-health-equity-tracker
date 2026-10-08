@@ -1,0 +1,5 @@
+# MY-HEO data refresh log. scripts/update_database.py appends to this file on every run,
+# including the monthly CI run, so each automated refresh PR shows exactly what its run did.
+# Earlier history was not kept: this file used to be git-ignored, so CI runs discarded it.
+
+[2026-10-01T10:01:39Z] baseline: most recent automated refresh (commit b7b89e9, merged as PR #29); PeKa B40 daily data runs to 2026-09-29. No stage-level detail was retained for this run.

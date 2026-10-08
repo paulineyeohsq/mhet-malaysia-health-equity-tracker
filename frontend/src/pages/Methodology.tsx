@@ -1,7 +1,7 @@
 import PageHeader from "../components/PageHeader";
 import { GLOSSARY } from "../lib/glossary";
 import { useData } from "../lib/useData";
-import type { InventoryFile } from "../lib/inventoryMap";
+import { inventoryCounts, type InventoryFile } from "../lib/inventoryMap";
 
 function H2({ id, children }: { id: string; children: React.ReactNode }) {
   return (
@@ -39,8 +39,9 @@ function ExtLink({ href, children }: { href: string; children: React.ReactNode }
 export default function Methodology() {
   // Counts come straight from the machine-readable inventory so this page can't drift from it.
   const { data: inventory } = useData<InventoryFile>("dataset_inventory.json");
-  const ingestedCount = inventory ? inventory.datasets.filter((d) => d.status === "ingested").length : null;
-  const notIngestedCount = inventory ? inventory.identified_but_not_yet_ingested.length : null;
+  const counts = inventory ? inventoryCounts(inventory) : null;
+  const ingestedCount = counts?.ingested ?? null;
+  const notIngestedCount = counts?.notIngested ?? null;
 
   return (
     <div>
@@ -102,6 +103,13 @@ export default function Methodology() {
             </li>
           </ul>
           <P>
+            {inventory?.last_refreshed && (
+              <>
+                The data was last rebuilt from source on{" "}
+                <span className="font-medium text-ink-primary">{inventory.last_refreshed}</span> (refreshed monthly by an
+                automated workflow, each refresh reviewed before it is published).{" "}
+              </>
+            )}
             As of this build, the project's{" "}
             <ExtLink href="https://data.gov.my/data-catalogue">dataset inventory</ExtLink> documents{" "}
             <span className="font-medium text-ink-primary">{ingestedCount ?? "…"} datasets that have been fully ingested</span> — with
