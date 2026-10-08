@@ -244,7 +244,7 @@ export const SOURCES: Record<string, SourceInfo> = {
     lastUpdated: "2021",
   },
   pekab40_daily: {
-    label: "PeKa B40 Health Screenings (daily)",
+    label: "PeKa B40 Health Screenings (daily; weekly totals for the full history)",
     org: "Ministry of Health Malaysia",
     url: "https://data.gov.my/data-catalogue/pekab40_screenings_state",
     geography: "State",

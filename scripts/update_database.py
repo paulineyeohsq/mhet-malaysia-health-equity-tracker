@@ -103,6 +103,7 @@ PUBLISHED_FILES = [
     ("data/processed/fertility_state.json", "fertility_state.json"),
     ("data/processed/health_programmes_state.json", "health_programmes_state.json"),
     ("data/processed/pekab40_screenings_daily_state.json", "pekab40_screenings_daily_state.json"),
+    ("data/processed/pekab40_screenings_weekly_state.json", "pekab40_screenings_weekly_state.json"),
     ("data/processed/covid_state.json", "covid_state.json"),
     ("data/processed/covid_national.json", "covid_national.json"),
     ("data/processed/mnha_national.json", "mnha_national.json"),

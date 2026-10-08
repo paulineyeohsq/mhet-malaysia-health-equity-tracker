@@ -94,11 +94,20 @@ interface PekaDailyRow {
   screenings: number | null;
 }
 
+/** One Monday-start week of PeKa B40 screenings (see build_pekab40_daily_state in scripts/transform_data.py). */
+interface PekaWeeklyRow {
+  state: string;
+  week_start: string;
+  /** Days of the week present in the source - fewer than 7 marks a partial first/last week. */
+  days: number;
+  screenings: number | null;
+}
+
 const PEKA_RANGE_OPTIONS = [
   { id: "30", label: "Last 30 days", days: 30 },
   { id: "90", label: "Last 90 days", days: 90 },
   { id: "365", label: "Last 365 days", days: 365 },
-  { id: "all", label: "All time (since 2019-04-15)", days: null as number | null },
+  { id: "all", label: "All time, weekly totals (since 2019-04-15)", days: null as number | null },
 ];
 
 type Category = "mortality" | "std" | "immunisation" | "nutrition" | "covid" | "programmes" | "ethnicity";
@@ -206,9 +215,14 @@ export default function HealthOutcomes() {
   const { data: programmes } = useData<ProgrammeRow[]>("health_programmes_state.json");
 
   const [category, setCategory] = useState<Category>("mortality");
-  // 2.4 MB daily file — only fetched once the Health Programme Participation view is opened.
+  const [pekaRangeId, setPekaRangeId] = useState("90");
+  // The daily file holds only the most recent 366 days (~340 KB); the weekly file covers the whole history and is
+  // fetched only for the "all time" range. Neither is fetched until the Health Programme Participation view opens.
   const { data: pekaDaily } = useData<PekaDailyRow[]>(
     category === "programmes" ? "pekab40_screenings_daily_state.json" : null
+  );
+  const { data: pekaWeekly } = useData<PekaWeeklyRow[]>(
+    category === "programmes" && pekaRangeId === "all" ? "pekab40_screenings_weekly_state.json" : null
   );
   const [state, setState] = useState<string>("Johor");
   const [year, setYear] = useState<number | null>(null);
@@ -424,8 +438,8 @@ export default function HealthOutcomes() {
   }, [programmes, state, effectiveYear]);
 
   // ---- PeKa B40 daily screenings — day-level trend, distinct from the annual sum above ----
-  const [pekaRangeId, setPekaRangeId] = useState("90");
   const pekaRange = PEKA_RANGE_OPTIONS.find((r) => r.id === pekaRangeId)!;
+  const pekaWeeklyMode = pekaRange.days === null;
 
   const pekaDailyLatestDate = useMemo(() => {
     if (!pekaDaily || pekaDaily.length === 0) return null;
@@ -434,23 +448,33 @@ export default function HealthOutcomes() {
 
   const pekaDailyFiltered = useMemo(() => {
     if (!pekaDaily || !pekaDailyLatestDate) return [];
+    if (pekaRange.days === null) {
+      return (pekaWeekly ?? [])
+        .filter((r) => r.state === state)
+        .map((r) => ({ state: r.state, date: r.week_start, screenings: r.screenings, days: r.days }));
+    }
     const rows = pekaDaily.filter((r) => r.state === state);
-    if (pekaRange.days === null) return rows;
     const cutoff = new Date(pekaDailyLatestDate);
     cutoff.setDate(cutoff.getDate() - pekaRange.days);
     const cutoffStr = cutoff.toISOString().slice(0, 10);
     return rows.filter((r) => r.date >= cutoffStr);
-  }, [pekaDaily, pekaDailyLatestDate, state, pekaRange]);
+  }, [pekaDaily, pekaWeekly, pekaDailyLatestDate, state, pekaRange]);
 
   const pekaDailyTotal = useMemo(
     () => pekaDailyFiltered.reduce((sum, r) => sum + (r.screenings ?? 0), 0),
     [pekaDailyFiltered]
   );
 
-  const pekaDailyTableColumns: Column[] = [
-    { key: "date", label: "Date" },
-    { key: "screenings", label: "Screenings", numeric: true },
-  ];
+  const pekaDailyTableColumns: Column[] = pekaWeeklyMode
+    ? [
+        { key: "date", label: "Week starting (Monday)" },
+        { key: "days", label: "Days with data", numeric: true },
+        { key: "screenings", label: "Screenings", numeric: true },
+      ]
+    : [
+        { key: "date", label: "Date" },
+        { key: "screenings", label: "Screenings", numeric: true },
+      ];
 
   // Insight card content follows whichever category is currently selected —
   // Immunisation/Nutrition are genuinely national-only in this dataset (no
@@ -1112,11 +1136,13 @@ export default function HealthOutcomes() {
             {programmeMetricId === "pekab40" && (
               <section aria-labelledby="peka-daily">
                 <h2 id="peka-daily" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-                  PeKa B40 screenings — daily trend, {state}
+                  PeKa B40 screenings — {pekaWeeklyMode ? "weekly" : "daily"} trend, {state}
                 </h2>
                 <p className="mb-3 max-w-3xl text-sm text-ink-secondary">
                   Day-level screening counts, published daily by MOH — distinct from the annual totals above, and
-                  useful for spotting recent uptake or campaign response rather than year-over-year change.
+                  useful for spotting recent uptake or campaign response rather than year-over-year change. The last
+                  30, 90 and 365 days are shown day by day; the all-time view adds each week's days together (exact
+                  sums, nothing estimated), because thousands of daily points per state are unreadable.
                 </p>
                 <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
                   <div>
@@ -1137,20 +1163,22 @@ export default function HealthOutcomes() {
                     </select>
                   </div>
                   <p className="text-xs text-ink-muted">
-                    {pekaDailyFiltered.length} day{pekaDailyFiltered.length === 1 ? "" : "s"}, {pekaDailyTotal.toLocaleString()} total
-                    screenings — latest data point: {pekaDailyLatestDate ?? "—"}
+                    {pekaDailyFiltered.length} {pekaWeeklyMode ? "week" : "day"}
+                    {pekaDailyFiltered.length === 1 ? "" : "s"}, {pekaDailyTotal.toLocaleString()} total screenings —
+                    latest data point: {pekaDailyLatestDate ?? "—"}
+                    {pekaWeeklyMode ? " (the latest week is partial)" : ""}
                   </p>
                 </div>
                 {pekaDailyFiltered.length > 0 ? (
                   <LineChartCard
-                    title={`Daily PeKa B40 screenings — ${state}`}
+                    title={`${pekaWeeklyMode ? "Weekly" : "Daily"} PeKa B40 screenings — ${state}`}
                     data={pekaDailyFiltered.map((r) => ({ date: r.date, Screenings: r.screenings }))}
                     xKey="date"
                     series={[{ key: "Screenings", label: "Screenings", color: "#1baf7a" }]}
                     height={280}
                   />
                 ) : (
-                  <InsufficientData reason={`No daily PeKa B40 screening records for ${state} in this range.`} />
+                  <InsufficientData reason={`No PeKa B40 screening records for ${state} in this range${pekaWeeklyMode && !pekaWeekly ? " (loading)" : ""}.`} />
                 )}
                 <div className="mt-4">
                   <DataTable columns={pekaDailyTableColumns} rows={pekaDailyFiltered as unknown as Record<string, unknown>[]} pageSize={15} />

@@ -25,6 +25,7 @@ Run: python3 scripts/transform_data.py
 """
 from __future__ import annotations
 import csv
+from datetime import date, timedelta
 import json
 import sys
 from pathlib import Path
@@ -954,22 +955,48 @@ def build_health_programmes_state():
 
 
 # ---------------------------------------------------------------------------
-# 16b. PeKa B40 screenings by state, DAILY grain (source: MOH via
-# data.gov.my/data.moh.gov.my). health_programmes_state.json above already
-# sums this to annual totals for cross-programme comparison; this output
-# keeps the original per-day counts, since day-level participation trend is
-# a genuinely different use case (recent uptake / campaign response) from
-# a year-over-year comparison.
+# 16b. PeKa B40 screenings by state (source: MOH via data.gov.my/data.moh.gov.my).
+# health_programmes_state.json above sums this to annual totals for cross-programme
+# comparison. Day-level participation trend (recent uptake / campaign response) is a
+# different use case, so two derived files serve it, sized to what the page shows:
+#   * pekab40_screenings_daily_state.json  - original per-day counts for the most recent
+#     PEKA_DAILY_WINDOW_DAYS days only (the page's 30/90/365-day ranges);
+#   * pekab40_screenings_weekly_state.json - weekly (Monday-start) sums for the whole
+#     history, used for the "all time" range, where ~2,700 daily points per state are
+#     unreadable anyway. Sums are exact (week total = sum of its days); `days` counts the
+#     days present in the week, so the first/last week can be seen to be partial.
+# The full-grain raw file stays in data/raw/ and nothing is estimated or filled.
 # ---------------------------------------------------------------------------
+PEKA_DAILY_WINDOW_DAYS = 366  # latest date minus 365 days, inclusive - the page's longest daily range
+
+
 def build_pekab40_daily_state():
     rows = read_csv(RAW / "health_outcomes" / "pekab40_screenings_state.csv")
-    out = [
+    full = [
         {"state": canonical_state(r["state"]), "date": r["date"], "screenings": num(r.get("screenings"))}
         for r in rows
     ]
-    out.sort(key=lambda r: (r["state"], r["date"]))
-    write_json("pekab40_screenings_daily_state.json", out)
-    return out
+    full.sort(key=lambda r: (r["state"], r["date"]))
+
+    latest = max(date.fromisoformat(r["date"]) for r in full)
+    cutoff = (latest - timedelta(days=PEKA_DAILY_WINDOW_DAYS - 1)).isoformat()
+    recent = [r for r in full if r["date"] >= cutoff]
+    write_json("pekab40_screenings_daily_state.json", recent)
+
+    weekly = {}
+    for r in full:
+        d = date.fromisoformat(r["date"])
+        key = (r["state"], (d - timedelta(days=d.weekday())).isoformat())
+        slot = weekly.setdefault(key, {"screenings": None, "days": 0})
+        slot["days"] += 1
+        if r["screenings"] is not None:
+            slot["screenings"] = (slot["screenings"] or 0) + r["screenings"]
+    weekly_out = [
+        {"state": st, "week_start": wk, "days": v["days"], "screenings": v["screenings"]}
+        for (st, wk), v in sorted(weekly.items())
+    ]
+    write_json("pekab40_screenings_weekly_state.json", weekly_out)
+    return recent
 
 
 # ---------------------------------------------------------------------------
