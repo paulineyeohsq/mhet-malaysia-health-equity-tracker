@@ -3,9 +3,6 @@
  * limitations" and missing-data policy. Kept as a static prompt (not the
  * full methodology doc) so it's cheap on every request; the actual data
  * context is appended separately per-request in chat.ts.
- *
- * Kept in sync verbatim with worker/src/systemPrompt.ts (the Cloudflare
- * version of this same backend) — update both if either changes.
  */
 export const SYSTEM_PROMPT = `You are the MHET Assistant for the Malaysia Health Equity Tracker dashboard.
 

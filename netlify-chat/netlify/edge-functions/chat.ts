@@ -6,25 +6,15 @@ import { callGemini, GeminiError, type ChatMessage } from "./lib/gemini.ts";
 import { buildCompactContext, NO_PAGE_CONTEXT } from "./lib/compactContext.ts";
 
 /**
- * Netlify Edge Function port of worker/src/index.ts (the Cloudflare
- * version of this same backend) — same CORS/rate-limit/size logic, same
- * grounding strategy. CORS headers are kept deliberately (Netlify's
- * general guidance is to skip them unless the architecture genuinely
- * needs cross-origin access) — this API is called from a different
- * origin (the GitHub Pages frontend) than it's deployed on, so without
+ * Netlify Edge Function: chat proxy for the dashboard's AI features — CORS,
+ * per-IP rate limit (Netlify Blobs), data grounding, Gemini call. CORS headers
+ * are kept deliberately: this API is called from a different origin (the
+ * GitHub Pages frontend) than it's deployed on, so without
  * Access-Control-Allow-Origin the browser would block every response.
  *
- * Differences from the Cloudflare version, all forced by the platform:
- *   - env var access: Netlify.env.get() instead of an `env` binding
- *   - client IP: context.ip instead of a CF-Connecting-IP header
- *   - rate-limit store: Netlify Blobs instead of Workers KV — Blobs has no
- *     built-in TTL (Workers KV's expirationTtl doesn't have an equivalent
- *     here), so old per-minute buckets are never cleaned up. Disclosed
- *     simplification: at this project's traffic scale the extra unused
- *     keys are negligible, not a silent shortcut.
- *   - no Cloudflare Cache API — GH Pages JSON is fetched directly each
- *     request rather than edge-cached; GH Pages itself sets its own
- *     caching headers, so this is a minor latency cost, not a correctness one.
+ * Netlify Blobs has no built-in TTL, so old per-minute rate-limit buckets are
+ * never cleaned up — a disclosed simplification; at this project's traffic
+ * scale the extra unused keys are negligible.
  */
 
 const GH_PAGES_BASE = "https://paulineyeohsq.github.io/mhet-malaysia-health-equity-tracker/data/";

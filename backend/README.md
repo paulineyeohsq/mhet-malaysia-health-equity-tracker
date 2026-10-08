@@ -28,11 +28,11 @@ to end in that environment, the project instead:
   government CSV, with no server-side transformation happening "live" that
   could silently diverge from the audited pipeline.
 
-## Update: chat proxy Worker (one narrow exception)
+## Update: chat proxy function (one narrow exception)
 
 The chat feature (the "MHET Assistant" panel in the UI) is the one
 deliberate exception to "no server-side component" above. It's a small
-Cloudflare Worker (`/worker`) that does exactly one thing: relay chat
+Netlify Edge Function (`/netlify-chat`) that does exactly one thing: relay chat
 messages to Google Gemini with a server-held API key, after fetching the
 *same public static JSON* everyone else reads from
 `frontend/public/data/*.json` (via the live GitHub Pages URL) as grounding
@@ -40,8 +40,8 @@ context. It doesn't transform, store, or serve the dashboard's actual data
 — it has no database, no data pipeline of its own, and every number it can
 reference is traceable to the same audited static JSON described above.
 The only thing it adds that a fully static site can't do is hide a
-third-party API key from the browser. See `worker/README.md` for the
-Worker's own architecture notes.
+third-party API key from the browser. See `netlify-chat/README.md` for the
+function's own architecture notes.
 
 ## If this project grows a real backend later
 
