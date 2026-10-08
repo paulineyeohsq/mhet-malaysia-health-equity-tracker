@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MapContainer, TileLayer, GeoJSON, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, GeoJSON, AttributionControl, useMap } from "react-leaflet";
 import L from "leaflet";
 import type { Layer, StyleFunction, LeafletMouseEvent, Path } from "leaflet";
 import type { Feature, Geometry } from "geojson";
@@ -50,16 +50,45 @@ function tierIndexFor(value: number | null, breaks: [number, number]): number | 
   return 2;
 }
 
+/**
+ * Fits the map to the boundary data, and keeps it fitted when its container changes size.
+ * Fitting only once left the map stuck at world-zoom (a Malaysia a few pixels wide in a
+ * large box) whenever it was created while its container was tiny or hidden — a collapsed
+ * layout, a hidden pane or tab, a window opened narrow and then widened — because
+ * fitBounds computed its zoom for the tiny size and nothing ever re-ran it. Containers
+ * under MIN_FIT_PX are skipped (no meaningful fit exists); the observer fires again once
+ * the container has a real size.
+ */
+const MIN_FIT_PX = 80;
 function FitBounds({ geojson }: { geojson: GeoJSON.FeatureCollection }) {
   const map = useMap();
   useEffect(() => {
     if (!geojson.features.length) return;
-    const layer = L.geoJSON(geojson);
-    try {
-      map.fitBounds(layer.getBounds(), { padding: [12, 12] });
-    } catch {
-      /* ignore */
-    }
+    const bounds = L.geoJSON(geojson).getBounds();
+    const fit = () => {
+      map.invalidateSize();
+      const size = map.getSize();
+      if (size.x < MIN_FIT_PX || size.y < MIN_FIT_PX) return;
+      try {
+        // reset:true forces a full re-projection. Without it, when the container grows but the
+        // fitted view happens to be unchanged, Leaflet's SVG layer keeps the size it had for the
+        // tiny container (every state drawn as an empty path).
+        map.fitBounds(bounds, { padding: [12, 12], animate: false, reset: true });
+      } catch {
+        /* ignore */
+      }
+    };
+    fit();
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const observer = new ResizeObserver(() => {
+      clearTimeout(timer);
+      timer = setTimeout(fit, 120);
+    });
+    observer.observe(map.getContainer());
+    return () => {
+      observer.disconnect();
+      clearTimeout(timer);
+    };
   }, [geojson, map]);
   return null;
 }
@@ -166,13 +195,17 @@ export default function ChoroplethMap({
             center={[4.2, 108.5]}
             zoom={5.5}
             scrollWheelZoom={false}
+            zoomSnap={0.25}
             style={{ background: "#fcfcfb" }}
             attributionControl={false}
           >
             <TileLayer
               url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
-              attribution="&copy; OpenStreetMap contributors &copy; CARTO"
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions" target="_blank" rel="noreferrer">CARTO</a>'
             />
+            {/* The basemap's licence (OSM data under ODbL, CARTO tiles) requires visible credit. This was
+                previously switched off, so the attribution prop above was never displayed. */}
+            <AttributionControl prefix={false} position="bottomright" />
             <GeoJSON
               key={`geo-${data.length}-${min}-${max}-${tiers ? tiers.breaks.join(",") : "ramp"}`}
               data={geojson}
