@@ -16,6 +16,8 @@ interface ChatContextValue {
   clearError: () => void;
   /** Sends `text` as a user turn through the existing /chat endpoint. */
   send: (text: string) => Promise<void>;
+  /** Re-sends the conversation as it stands (after a failed send) without adding a duplicate user turn. */
+  retry: () => Promise<void>;
   /** Opens the panel and sends a pre-built prompt — used by chart "Explain this" buttons. */
   explain: (prompt: string) => void;
   /**
@@ -35,6 +37,50 @@ interface ChatContextValue {
 }
 
 const EXPLAIN_ROW_CAP = 60;
+
+/** An AI-request failure whose `message` is already written for end users (no "Failed to fetch"/"HTTP 500"). */
+export class ChatError extends Error {
+  code?: string;
+  status?: number;
+  constructor(message: string, code?: string, status?: number) {
+    super(message);
+    this.code = code;
+    this.status = status;
+  }
+}
+
+function friendlyStatusMessage(status: number): string {
+  if (status === 429 || status === 503) return "The AI service is busy right now. Please try again in a moment.";
+  if (status >= 500) return "The AI service had a problem. Please try again in a moment.";
+  return "The AI service couldn't process that request. Please try again.";
+}
+
+/** Turns anything thrown by an AI call into a sentence safe to show users. */
+export function aiErrorMessage(e: unknown): string {
+  if (e instanceof ChatError) return e.message;
+  return "Something went wrong while contacting the AI service. Please try again.";
+}
+
+async function postChat(body: unknown): Promise<{ reply: string }> {
+  let res: Response;
+  try {
+    res = await fetch(`${CHAT_URL}/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+  } catch {
+    throw new ChatError("Couldn't reach the AI service. Check your internet connection and try again.", "network");
+  }
+  let data: { reply?: string; error?: string; code?: string } = {};
+  try {
+    data = await res.json();
+  } catch {
+    /* non-JSON error page — handled below */
+  }
+  if (res.ok && data.reply) return { reply: data.reply };
+  throw new ChatError(data.error ?? friendlyStatusMessage(res.status), data.code, res.status);
+}
 
 /**
  * Builds the "Explain this" prompt from a chart's own title + CSV export
@@ -74,33 +120,37 @@ export function ChatProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const run = useCallback(
+    async (next: ChatMessage[]) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const { reply } = await postChat({ messages: next, path: location.pathname });
+        setMessages([...next, { role: "assistant", content: reply }]);
+      } catch (e) {
+        setError(aiErrorMessage(e));
+      } finally {
+        setLoading(false);
+      }
+    },
+    [location.pathname]
+  );
+
   const send = useCallback(
     async (text: string) => {
       const trimmed = text.trim();
       if (!trimmed || loading) return;
       const next: ChatMessage[] = [...messages, { role: "user", content: trimmed }];
       setMessages(next);
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch(`${CHAT_URL}/chat`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: next, path: location.pathname }),
-        });
-        const data = (await res.json()) as { reply?: string; error?: string };
-        if (!res.ok || !data.reply) {
-          throw new Error(data.error ?? `HTTP ${res.status}`);
-        }
-        setMessages([...next, { role: "assistant", content: data.reply }]);
-      } catch (e) {
-        setError(e instanceof Error ? e.message : String(e));
-      } finally {
-        setLoading(false);
-      }
+      await run(next);
     },
-    [messages, loading, location.pathname]
+    [messages, loading, run]
   );
+
+  const retry = useCallback(async () => {
+    if (loading || messages.length === 0 || messages[messages.length - 1].role !== "user") return;
+    await run(messages);
+  }, [messages, loading, run]);
 
   const explain = useCallback(
     (prompt: string) => {
@@ -116,25 +166,23 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       // the service is rate-limited: 503 (the backend's translation of
       // Gemini's 429 "busy") or 429 (the backend's own per-IP limit). These
       // are mostly per-minute limits that clear quickly, so patient retries
-      // hide most of them from the user. Anything else fails immediately.
+      // hide most of them from the user. The daily cap (code "daily_cap") will
+      // not clear in seconds, so it fails immediately, as does anything else.
       const MAX_RETRIES = 3;
       for (let attempt = 0; ; attempt++) {
-        const res = await fetch(`${CHAT_URL}/chat`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
+        try {
+          const { reply } = await postChat({
             messages: [{ role: "user", content: prompt }],
             path: location.pathname,
             ...(options?.pageContext ? {} : { context: "none" }),
-          }),
-        });
-        const data = (await res.json()) as { reply?: string; error?: string };
-        if (res.ok && data.reply) return data.reply;
-        if ((res.status === 503 || res.status === 429) && attempt < MAX_RETRIES) {
+          });
+          return reply;
+        } catch (e) {
+          const retryable =
+            e instanceof ChatError && (e.status === 503 || e.status === 429) && e.code !== "daily_cap";
+          if (!retryable || attempt >= MAX_RETRIES) throw e;
           await new Promise((r) => setTimeout(r, 3000 * 2 ** attempt));
-          continue;
         }
-        throw new Error(data.error ?? `HTTP ${res.status}`);
       }
     },
     [location.pathname]
@@ -148,6 +196,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
     error,
     clearError: () => setError(null),
     send,
+    retry,
     explain,
     askDirect,
   };

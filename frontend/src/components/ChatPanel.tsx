@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useChat } from "../lib/chatContext";
 import MarkdownLite from "./MarkdownLite";
+import { AiError, AiPrivacyNote, AiProgress } from "./AiStatus";
 
 /**
  * Floating chat toggle + right-side drawer. State/networking lives in
@@ -9,7 +10,7 @@ import MarkdownLite from "./MarkdownLite";
  * component is presentation only.
  */
 export default function ChatPanel() {
-  const { open, setOpen, messages, loading, error, clearError, send } = useChat();
+  const { open, setOpen, messages, loading, error, clearError, send, retry } = useChat();
   const [input, setInput] = useState("");
 
   function handleSend() {
@@ -63,6 +64,7 @@ export default function ChatPanel() {
             AI-generated answers grounded in this dashboard's published DOSM/MOH data. Always verify against the
             cited source — not for clinical or individual-level decisions.
           </p>
+          <AiPrivacyNote className="mt-1.5" />
         </div>
 
         <div className="flex-1 space-y-3 overflow-y-auto p-4">
@@ -84,15 +86,15 @@ export default function ChatPanel() {
           ))}
           {loading && (
             <div className="flex justify-start">
-              <div className="max-w-[85%] rounded-lg border border-line-grid bg-plane px-3 py-2 text-sm text-ink-muted">
-                Thinking…
+              <div className="max-w-[85%] rounded-lg border border-line-grid bg-plane px-3 py-2">
+                <AiProgress label="Thinking" />
               </div>
             </div>
           )}
           {error && (
-            <div className="rounded-lg border border-status-critical bg-status-critical/10 px-3 py-2 text-sm text-status-critical">
-              {error}
-              <button type="button" onClick={clearError} className="ml-2 underline">
+            <div className="rounded-lg border border-status-critical bg-status-critical/10 px-3 py-2">
+              <AiError message={error} onRetry={() => void retry()} />
+              <button type="button" onClick={clearError} className="mt-1 text-xs text-status-critical underline">
                 Dismiss
               </button>
             </div>
