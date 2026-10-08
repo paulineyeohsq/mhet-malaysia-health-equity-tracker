@@ -32,6 +32,8 @@ export interface InventoryFile {
   generated: string;
   /** Date the data pipeline last successfully rebuilt the data from source (set by scripts/update_database.py). */
   last_refreshed?: string;
+  /** Latest data year in each published JSON file, computed by scripts/update_database.py (stamp_data_years). */
+  data_files?: Record<string, number>;
   source_catalogue: string;
   note: string;
   datasets: InventoryDataset[];

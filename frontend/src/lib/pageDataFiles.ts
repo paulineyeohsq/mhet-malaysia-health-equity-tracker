@@ -1,14 +1,7 @@
-/**
- * Maps a dashboard route path to the processed JSON files that page
- * actually fetches (mirrors each page's own useData() calls in
- * frontend/src/pages/*.tsx), so the chat is grounded in "the data on the
- * page" the user is currently looking at. Re-derive this list directly
- * from each page's useData() calls whenever a page's data dependencies
- * change — a stale entry here silently starves the assistant of context
- * on that page (it still gets dataset_inventory.json, but nothing else).
- * geo/*.geojson files are intentionally excluded — not useful text
- * context for a chat model.
- */
+// Route -> processed data files the page reads. Used for the per-page "data as of" line.
+// Kept identical to netlify-chat/netlify/edge-functions/lib/pageData.ts (which grounds the AI assistant in the
+// same files); a unit test checks every name here exists in public/data and in INVENTORY_MAP, so a rename can't
+// silently break the line. /explorer, /data-gaps and /methodology are inventory pages and have no entry.
 export const PAGE_DATA_FILES: Record<string, string[]> = {
   "/": [
     "socioeconomic_national.json",
@@ -172,10 +165,3 @@ export const PAGE_DATA_FILES: Record<string, string[]> = {
     "socioeconomic_state.json",
   ],
 };
-
-/** /explorer, /data-gaps, /methodology, and any unrecognized path fall
- * through to [] — they still get dataset_inventory.json context (see
- * chat.ts), which is the relevant "data" for those pages anyway. */
-export function bundleFor(path: string): string[] {
-  return PAGE_DATA_FILES[path] ?? [];
-}

@@ -44,6 +44,8 @@ After a successful transform, two small bookkeeping steps keep metadata from
 going stale (both before the sync, so the published copy is current):
   - stamp_inventory_refresh(): writes today's date to `last_refreshed` in
     data/inventory/dataset_inventory.json (shown on the Overview/Methodology)
+  - stamp_data_years(): writes the latest year of data in each published JSON file
+    to `data_files` in the inventory, which the app shows as "data as of" per page.
   - sync_doc_counts(): rewrites the dataset counts in README.md and
     docs/DATA_SOURCES.md from that same inventory
 
@@ -110,6 +112,15 @@ PUBLISHED_FILES = [
     ("data/processed/water_access_national.json", "water_access_national.json"),
     ("data/processed/electricity_access_region.json", "electricity_access_region.json"),
     ("data/processed/nutrition_strata_national.json", "nutrition_strata_national.json"),
+    ("data/processed/air_pollution_national.json", "air_pollution_national.json"),
+    ("data/processed/electricity_consumption_national.json", "electricity_consumption_national.json"),
+    ("data/processed/electricity_supply_national.json", "electricity_supply_national.json"),
+    ("data/processed/forest_reserve_national.json", "forest_reserve_national.json"),
+    ("data/processed/forest_reserve_state.json", "forest_reserve_state.json"),
+    ("data/processed/ghg_emissions_national.json", "ghg_emissions_national.json"),
+    ("data/processed/water_consumption_state.json", "water_consumption_state.json"),
+    ("data/processed/water_pollution_basin_national.json", "water_pollution_basin_national.json"),
+    ("data/processed/water_production_state.json", "water_production_state.json"),
     ("data/processed/hiv_incidence_national.json", "hiv_incidence_national.json"),
     ("data/processed/deaths_ethnicity_state.json", "deaths_ethnicity_state.json"),
     ("data/processed/deaths_district_sex.json", "deaths_district_sex.json"),
@@ -214,6 +225,67 @@ def stamp_inventory_refresh(today: str | None = None, inventory_path: Path = INV
     return today
 
 
+def latest_data_year(path: Path) -> int | None:
+    """Latest year that has at least one real numeric value in a processed JSON file (None if undeterminable).
+
+    Rows are keyed by `year`, or by a `date` string starting with the year (daily/monthly files). A row whose
+    only content is the year (no number at all) does not count, so an empty future-year placeholder never
+    advances "data as of"."""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(data, list):
+        return None
+    best: int | None = None
+    for row in data:
+        if not isinstance(row, dict):
+            continue
+        year = row.get("year")
+        if year is None and row.get("date"):
+            m = re.match(r"(\d{4})", str(row["date"]))
+            year = int(m.group(1)) if m else None
+        try:
+            year = int(year)
+        except (TypeError, ValueError):
+            continue
+        if any(isinstance(v, (int, float)) and not isinstance(v, bool) for k, v in row.items() if k != "year"):
+            best = year if best is None else max(best, year)
+    return best
+
+
+def stamp_data_years(
+    processed_dir: Path = PROCESSED, inventory_path: Path = INVENTORY_PATH, published=None
+) -> dict[str, int]:
+    """Write `data_files` ({published file name: latest data year}) into the inventory, after `last_refreshed`.
+
+    The free-text `date_range` fields in the inventory are hand-written and can lag the data (death_state says
+    2000-2022 while the file runs to 2024), so the app's "data as of" line uses these computed years instead.
+    Targeted text edit, like stamp_inventory_refresh, so the rest of the file's formatting is untouched."""
+    published = PUBLISHED_FILES if published is None else published
+    years: dict[str, int] = {}
+    for src_rel, dest_rel in published:
+        if not dest_rel.endswith(".json") or dest_rel.startswith("geo/") or dest_rel == "dataset_inventory.json":
+            continue
+        src = ROOT / src_rel
+        if processed_dir != PROCESSED:
+            src = processed_dir / Path(src_rel).name
+        if not src.exists():
+            continue
+        y = latest_data_year(src)
+        if y is not None:
+            years[dest_rel] = y
+    years = dict(sorted(years.items()))
+    text = _read_exact(inventory_path)
+    nl = "\r\n" if "\r\n" in text else "\n"
+    block = '"data_files": {' + nl + ",".join(f'{nl}    "{k}": {v}' for k, v in years.items()) + nl + "  },"
+    if re.search(r'"data_files":\s*\{[^{}]*\},?', text):
+        text = re.sub(r'"data_files":\s*\{[^{}]*\},?', lambda m: block, text, count=1)
+    else:
+        text, n = re.subn(r'("last_refreshed":\s*"[^"]*",?)', lambda m: m.group(1) + nl + "  " + block, text, count=1)
+        assert n == 1, "could not find the `last_refreshed` field to stamp after"
+    json.loads(text)  # refuse to write anything that is not valid JSON
+    _write_exact(inventory_path, text)
+    return years
+
+
 COUNT_MARKER = re.compile(r"(<!--count:(ingested|reference|notingested)-->)[^<]*(<!--/count-->)")
 
 
@@ -273,6 +345,7 @@ def main():
 
     try:
         log(f"Stamped dataset_inventory.json last_refreshed = {stamp_inventory_refresh()}")
+        log(f"Stamped dataset_inventory.json data_files for {len(stamp_data_years())} files")
         log(f"Synced dataset counts into README/docs: {sync_doc_counts()}")
     except Exception as e:  # bookkeeping must never block publishing refreshed data
         log(f"WARNING: metadata bookkeeping failed ({e!r}) - continuing without it.")

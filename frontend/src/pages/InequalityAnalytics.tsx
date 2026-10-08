@@ -640,6 +640,7 @@ export default function InequalityAnalytics() {
                   <StatTile
                     label="Best-performing state"
                     value={gapStats.bestState}
+                    year={effectivePrimaryYear}
                     sublabel={`${fmt(gapStats.bestValue, primary.decimals)} ${primary.unit}`}
                     caution={
                       primary.countField &&
@@ -656,6 +657,7 @@ export default function InequalityAnalytics() {
                   <StatTile
                     label="Worst-performing state"
                     value={gapStats.worstState}
+                    year={effectivePrimaryYear}
                     sublabel={`${fmt(gapStats.worstValue, primary.decimals)} ${primary.unit}`}
                     caution={
                       primary.countField &&
