@@ -47,7 +47,7 @@ export default function EquityGapBanner() {
       computeGroupMeanGap(
         staffRows,
         staffYear,
-        "staff_per_100k",
+        "staff_per_100k_pooled",
         EAST_MALAYSIA_STATES,
         "East Malaysia",
         PENINSULAR_STATES,
@@ -62,7 +62,7 @@ export default function EquityGapBanner() {
   );
 
   const widestStaffRatio = useMemo(
-    () => computeGroupGapStats(staffRows, staffYear, "staff_per_100k", false),
+    () => computeGroupGapStats(staffRows, staffYear, "staff_per_100k_pooled", false),
     [staffRows, staffYear]
   );
 
@@ -81,7 +81,7 @@ export default function EquityGapBanner() {
               : "Not enough state data for the latest year",
           },
           {
-            label: "Regional healthcare-staff gap",
+            label: "Regional healthcare-staff gap (public sector)",
             value: regionalStaffGap ? `${fmt(regionalStaffGap.diff, 0)} per 100k` : "—",
             sublabel: regionalStaffGap
               ? `East Malaysia ${fmt(regionalStaffGap.meanA, 0)} vs Peninsular ${fmt(regionalStaffGap.meanB, 0)}, ${staffYear}`
@@ -95,10 +95,10 @@ export default function EquityGapBanner() {
               : "Not enough state data for the latest year",
           },
           {
-            label: "Widest healthcare-staff ratio",
+            label: "Widest healthcare-staff ratio (public sector)",
             value: widestStaffRatio?.ratio !== null && widestStaffRatio !== null ? `${fmt(widestStaffRatio.ratio, 1)}×` : "—",
             sublabel: widestStaffRatio
-              ? `${widestStaffRatio.best.name} vs ${widestStaffRatio.worst.name}, ${staffYear}`
+              ? `${widestStaffRatio.best.name} vs ${widestStaffRatio.worst.name}, ${staffYear}. Klang Valley (Selangor, W.P. KL, W.P. Putrajaya) pooled`
               : "Not enough state data for the latest year",
           },
         ]}

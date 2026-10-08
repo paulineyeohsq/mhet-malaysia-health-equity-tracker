@@ -1,5 +1,41 @@
 export type Row = Record<string, unknown>;
 
+/**
+ * Fields published as "pooled" comparison rates (staff / beds per 100k in healthcare_access_state.json — see the
+ * Klang Valley note in scripts/transform_data.py). Selangor, W.P. Kuala Lumpur and W.P. Putrajaya carry one shared
+ * value and a shared `pool_label`; every other state keeps its own.
+ */
+export function isPooledField(field: string): boolean {
+  return field.endsWith("_pooled");
+}
+
+/** For a pooled field, keeps only the first member of each pool per year so the pooled unit counts once in
+ * rankings, gaps and means (the first member's own `state` is kept, so group membership such as "Peninsular"
+ * still resolves). Any other field: rows are returned untouched. */
+export function dedupePooled(rows: Row[], field: string): Row[] {
+  if (!isPooledField(field)) return rows;
+  const seen = new Set<string>();
+  return rows.filter((r) => {
+    if (typeof r.pool_label !== "string") return true;
+    const key = `${r.year}|${r.pool_label}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+/** Rows ready for a one-bar-per-unit chart: pooled units appear once, named by their pool label (any other
+ * field: rows are returned untouched). */
+export function collapsePooledRows(rows: Row[], field: string): Row[] {
+  if (!isPooledField(field)) return rows;
+  return dedupePooled(rows, field).map((r) => (typeof r.pool_label === "string" ? { ...r, state: r.pool_label } : r));
+}
+
+/** Display name of a row's comparison unit: the pool's label for a pooled field, else the group name. */
+export function unitName(row: Row, field: string, groupField = "state"): string {
+  return isPooledField(field) && typeof row.pool_label === "string" ? row.pool_label : (row[groupField] as string);
+}
+
 export interface GapEntry {
   name: string;
   value: number;
@@ -28,9 +64,11 @@ export function computeGroupGapStats(
   groupField: string = "state"
 ): GenericGapStats | null {
   if (!rows || year === null) return null;
-  const snapshot = rows
-    .filter((r) => r.year === year)
-    .map((r) => ({ name: r[groupField] as string, value: r[valueField] }))
+  const snapshot = dedupePooled(
+    rows.filter((r) => r.year === year),
+    valueField
+  )
+    .map((r) => ({ name: unitName(r, valueField, groupField), value: r[valueField] }))
     .filter((r): r is GapEntry => typeof r.value === "number")
     .sort((a, b) => a.value - b.value);
   if (snapshot.length < 2) return null;
@@ -132,7 +170,10 @@ export function computeGroupMeanGap(
   groupField: string = "state"
 ): GroupMeanGap | null {
   if (!rows || year === null) return null;
-  const snapshot = rows.filter((r) => r.year === year);
+  const snapshot = dedupePooled(
+    rows.filter((r) => r.year === year),
+    valueField
+  );
   const valuesFor = (names: string[]) =>
     snapshot
       .filter((r) => names.includes(r[groupField] as string))
@@ -169,8 +210,10 @@ export interface AverageResult {
  */
 export function computeAverage(rows: Row[] | null, year: number | null, valueField: string): AverageResult | null {
   if (!rows || year === null) return null;
-  const values = rows
-    .filter((r) => r.year === year)
+  const values = dedupePooled(
+    rows.filter((r) => r.year === year),
+    valueField
+  )
     .map((r) => r[valueField])
     .filter((v): v is number => typeof v === "number");
   if (values.length === 0) return null;

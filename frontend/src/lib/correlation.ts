@@ -1,5 +1,5 @@
 import * as ss from "simple-statistics";
-import type { Row } from "./equity";
+import { isPooledField, type Row } from "./equity";
 
 /** Rank-transform an array with average ranks for ties (required for Spearman). */
 export function rankTransform(values: number[]): number[] {
@@ -40,13 +40,7 @@ export function findBestYear(
 
   let best: { year: number | null; n: number } = { year: null, n: 0 };
   for (const y of commonYears) {
-    const xByState = new Map(xRows.filter((r) => r.year === y).map((r) => [r.state as string, r[xField]]));
-    const yByState = new Map(yRows.filter((r) => r.year === y).map((r) => [r.state as string, r[yField]]));
-    let n = 0;
-    for (const [state, xv] of xByState) {
-      const yv = yByState.get(state);
-      if (typeof xv === "number" && typeof yv === "number") n++;
-    }
+    const n = buildPairs(xRows, yRows, y, xField, yField).length;
     if (n > best.n) best = { year: y, n };
   }
   return best;
@@ -59,12 +53,18 @@ export interface CorrelationPair {
 }
 
 export function buildPairs(xRows: Row[], yRows: Row[], year: number, xField: string, yField: string): CorrelationPair[] {
-  const yByState = new Map(yRows.filter((r) => r.year === year).map((r) => [r.state as string, r[yField]]));
+  const yByState = new Map(yRows.filter((r) => r.year === year).map((r) => [r.state as string, r]));
   const pairs: CorrelationPair[] = [];
   for (const row of xRows) {
     if (row.year !== year) continue;
+    const yRow = yByState.get(row.state as string);
+    // A pooled rate (Klang Valley) describes the whole pooled area, so it cannot be paired with one member
+    // state's own value of the other variable - those states are left out of the pairing rather than counted
+    // three times against three different partners.
+    if (isPooledField(xField) && typeof row.pool_label === "string") continue;
+    if (isPooledField(yField) && typeof yRow?.pool_label === "string") continue;
     const x = row[xField];
-    const y = yByState.get(row.state as string);
+    const y = yRow?.[yField];
     if (typeof x === "number" && typeof y === "number") {
       pairs.push({ state: row.state as string, x, y });
     }
@@ -107,12 +107,16 @@ export function buildPooledPairs(xRows: Row[], yRows: Row[], xField: string, yFi
   const yByStateYear = new Map<string, unknown>();
   for (const row of yRows) {
     const v = row[yField];
-    if (typeof v === "number") yByStateYear.set(`${row.state as string}|${row.year as number}`, v);
+    // Pooled-rate units (Klang Valley) are left out - see buildPairs.
+    if (typeof v === "number" && !(isPooledField(yField) && typeof row.pool_label === "string")) {
+      yByStateYear.set(`${row.state as string}|${row.year as number}`, v);
+    }
   }
   const pairs: PooledPair[] = [];
   for (const row of xRows) {
     const x = row[xField];
     if (typeof x !== "number") continue;
+    if (isPooledField(xField) && typeof row.pool_label === "string") continue;
     const key = `${row.state as string}|${row.year as number}`;
     const y = yByStateYear.get(key);
     if (typeof y === "number") {

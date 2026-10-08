@@ -19,7 +19,7 @@ import ChartToolbar from "../components/ChartToolbar";
 import Term from "../components/Term";
 import DataTable, { toCSV, downloadCSV, type Column } from "../components/DataTable";
 import { useData } from "../lib/useData";
-import { computeAverage, type Row, type TrendPoint } from "../lib/equity";
+import { computeAverage, isPooledField, type Row, type TrendPoint } from "../lib/equity";
 import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, interpretCorrelation, CORRELATION_MIN_PAIRS, CORRELATION_RELIABLE_MIN, type CorrelationPair } from "../lib/correlation";
 import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
 import { useChat, buildExplainPrompt } from "../lib/chatContext";
@@ -593,6 +593,13 @@ export default function DeterminantsExplorer() {
                   is descriptive, not predictive or causal.
                 </p>
               </div>
+              {(isPooledField(determinant.field) || isPooledField(outcome.field)) && (
+                <p className="mt-2 text-xs text-ink-secondary">
+                  Selangor, W.P. Kuala Lumpur and W.P. Putrajaya are left out of this correlation: the staff / bed rate
+                  describes the pooled Klang Valley area as a whole, so it cannot be paired with any one of those
+                  states' own value of the other measure.
+                </p>
+              )}
               <SourceNote sourceKey={determinant.sourceKey} year={yearLabel} />
               <SourceNote sourceKey={outcome.sourceKey} year={yearLabel} />
             </div>

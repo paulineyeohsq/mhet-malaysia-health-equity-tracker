@@ -408,6 +408,19 @@ than obscuring it behind a composite.
 - **Public-sector-only healthcare workforce.** Healthcare staff counts
   exclude private-sector doctors and nurses, a significant share of
   capacity in urban areas.
+- **Klang Valley pooling for staff and bed rates.** Selangor, W.P. Kuala
+  Lumpur and W.P. Putrajaya share national referral hospitals and federal
+  institutions, so each one's own per-100,000 rate is not like-for-like (2022:
+  W.P. Putrajaya 3,036 staff per 100,000 vs Selangor 341, a 8.9x "gap" that is
+  mostly a denominator effect). `transform_data.py` therefore also publishes
+  `staff_per_100k_pooled` / `beds_per_100k_pooled` in
+  `healthcare_access_state.json`: the three units' counts and populations are
+  summed and divided once (2022: 509 staff, 144 beds per 100,000); other states
+  keep their own rate. The unpooled `staff_per_100k` / `beds_per_100k` are
+  unchanged and still shown in tables. Rankings, gap ratios, maps, the Priority
+  Areas score and the AI assistant use the pooled fields; correlations leave the
+  three units out. The source does not say whether staff are counted by place of
+  work or residence, so this is a comparison convention, not a correction.
 - **Poverty-line methodology changes over time.** DOSM revised its Poverty
   Line Income methodology around 2019; pre- and post-2019 absolute poverty
   rates are not fully comparable, and the dashboard does not adjust for

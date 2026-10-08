@@ -408,6 +408,20 @@ export default function Methodology() {
               healthcare workforce density should be read as public-sector capacity, not total capacity.
             </li>
             <li>
+              <span className="font-medium text-ink-primary">Klang Valley pooling for staff and bed rates.</span>{" "}
+              Selangor, W.P. Kuala Lumpur and W.P. Putrajaya share national referral hospitals, a teaching hospital
+              and federal institutions, so a per-resident rate for each on its own is not a like-for-like measure of
+              how well its residents are served (W.P. Putrajaya's own staff rate, about 3,036 per 100,000 in 2022, is
+              roughly nine times Selangor's 341, largely because its staff count sits against only about 117,000
+              residents). For comparisons between areas — rankings, gap ratios, maps, the Priority Areas score,
+              correlations and the AI assistant — the pipeline publishes a pooled rate in which those three units' counts
+              and populations are each summed and divided once (about 509 staff and 144 beds per 100,000 in 2022), and
+              every other state keeps its own rate. Each territory's own rate is still shown in the Healthcare Access and
+              Data Explorer tables. In correlations the three units are left out, since a pooled rate cannot be paired
+              with any one of them. The source catalogue does not say whether staff are counted by place of work or by
+              place of residence; the pooling is a comparison convention, not a correction of the source.
+            </li>
+            <li>
               <span className="font-medium text-ink-primary">Poverty-line methodology changes over time.</span>{" "}
               DOSM revised its Poverty Line Income methodology around 2019; pre- and post-2019 absolute poverty
               rates are not fully comparable, and this dashboard does not adjust for that break when showing the

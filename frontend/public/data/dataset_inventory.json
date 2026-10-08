@@ -403,7 +403,7 @@
         "population_state/district for per-100k rate"
       ],
       "recommended_use": "Healthcare Access page, beds-per-100,000 map",
-      "limitations": "District-level series only ingested for 2022 (most recent year) in this build; full 2015-2022 district panel can be pulled by re-running ingest_data.py in an unrestricted network environment.",
+      "limitations": "District-level series only ingested for 2022 (most recent year) in this build; full 2015-2022 district panel can be pulled by re-running ingest_data.py in an unrestricted network environment. Per-100,000 rates compare Selangor, W.P. Kuala Lumpur and W.P. Putrajaya as one pooled Klang Valley unit (shared national referral hospitals and federal institutions; the catalogue does not say whether staff are counted by place of work or residence).",
       "status": "ingested"
     },
     {
@@ -430,7 +430,7 @@
         "population_state for per-100k rate"
       ],
       "recommended_use": "Healthcare workforce density map/ranking",
-      "limitations": "Public sector only — excludes private-sector doctors/nurses, which are a significant share of urban healthcare capacity.",
+      "limitations": "Public sector only — excludes private-sector doctors/nurses, which are a significant share of urban healthcare capacity. Per-100,000 rates compare Selangor, W.P. Kuala Lumpur and W.P. Putrajaya as one pooled Klang Valley unit (shared national referral hospitals and federal institutions; the catalogue does not say whether staff are counted by place of work or residence).",
       "status": "ingested"
     },
     {

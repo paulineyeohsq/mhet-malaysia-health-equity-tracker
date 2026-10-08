@@ -44,8 +44,8 @@ interface AccessIndicator {
 }
 
 const ACCESS_INDICATORS: AccessIndicator[] = [
-  { id: "staff", label: "Healthcare staff availability", file: "healthcare_access_state.json", field: "staff_per_100k", unit: "per 100,000 population", sourceKey: "healthcare_staff" },
-  { id: "beds", label: "Hospital bed availability", file: "healthcare_access_state.json", field: "beds_per_100k", unit: "per 100,000 population", sourceKey: "hospital_beds" },
+  { id: "staff", label: "Healthcare staff availability (Klang Valley pooled)", file: "healthcare_access_state.json", field: "staff_per_100k_pooled", unit: "per 100,000 population", sourceKey: "healthcare_staff" },
+  { id: "beds", label: "Hospital bed availability (Klang Valley pooled)", file: "healthcare_access_state.json", field: "beds_per_100k_pooled", unit: "per 100,000 population", sourceKey: "hospital_beds" },
   { id: "sanitation", label: "Basic sanitation access", file: "sanitation_access_state.json", field: "sanitation_access_pct", unit: "%", sourceKey: "sanitation" },
   { id: "water", label: "Basic water access", file: "water_access_state.json", field: "water_access_pct", unit: "%", sourceKey: "water", filter: (r) => r.strata === "overall" },
   { id: "pekab40", label: "PeKa B40 screening reach (annual)", file: "health_programmes_state.json", field: "pekab40_screenings_abs", unit: "screenings", sourceKey: "health_programmes" },

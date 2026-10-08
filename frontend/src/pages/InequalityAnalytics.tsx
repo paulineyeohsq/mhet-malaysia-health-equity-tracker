@@ -95,9 +95,9 @@ const OUTCOME_INDICATORS: OutcomeIndicator[] = [
   },
   {
     id: "staff",
-    label: "Healthcare workforce availability",
+    label: "Healthcare workforce availability (Klang Valley pooled)",
     file: "healthcare_access_state.json",
-    valueField: "staff_per_100k",
+    valueField: "staff_per_100k_pooled",
     countField: "staff_all",
     countLabel: "healthcare staff headcount (absolute count)",
     unit: "per 100,000 population",
@@ -107,9 +107,9 @@ const OUTCOME_INDICATORS: OutcomeIndicator[] = [
   },
   {
     id: "beds",
-    label: "Hospital bed availability",
+    label: "Hospital bed availability (Klang Valley pooled)",
     file: "healthcare_access_state.json",
-    valueField: "beds_per_100k",
+    valueField: "beds_per_100k_pooled",
     countField: "hospital_beds",
     countLabel: "hospital beds (absolute count)",
     unit: "per 100,000 population",
