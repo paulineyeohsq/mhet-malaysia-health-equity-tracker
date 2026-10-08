@@ -5,17 +5,17 @@ import CorrelationCaveat from "../components/CorrelationCaveat";
 import ResearchOpportunityPanel from "../components/ResearchOpportunityPanel";
 import { useData } from "../lib/useData";
 import type { Row } from "../lib/equity";
-import { yearsWithCoverage, computeGroupGapStats, fmt } from "../lib/equity";
+import { yearsWithCoverage, computeGroupGapStats, computeAverage, fmt } from "../lib/equity";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
 import { OUTCOME_FIELDS, DETERMINANT_FIELDS, rowsForField, type FieldDef } from "../lib/determinantFields";
 import { buildStructuredQuestion } from "../lib/researchQuestionTemplates";
+import { aiCacheKey, readAiCache, writeAiCache } from "../lib/aiCache";
 import { findBestYear, buildPairs, computeCorrelationStats, interpretCorrelation } from "../lib/correlation";
 import { useChat } from "../lib/chatContext";
 import MetadataPanel from "../components/MetadataPanel";
 import MarkdownLite from "../components/MarkdownLite";
 import { INVENTORY_MAP } from "../lib/inventoryMap";
 
-const SUGGESTION_CACHE_KEY = "mhet.researchOpportunities.suggestion";
 const POPULATION_SCOPES = ["General population", "Older adults (65+)", "Children under 5", "Adults of working age"];
 const EQUITY_DIMENSIONS = ["Income", "Poverty", "Healthcare access", "Geographic (state-level)"];
 
@@ -307,11 +307,7 @@ export default function ResearchOpportunities() {
       const match = /INDICATOR:\s*(.+)/.exec(reply);
       const nextExcluded = match ? Array.from(new Set([...excludeIndicators, match[1].trim()])) : excludeIndicators;
       setExcludeIndicators(nextExcluded);
-      try {
-        sessionStorage.setItem(SUGGESTION_CACHE_KEY, JSON.stringify({ text: reply, excluded: nextExcluded }));
-      } catch {
-        /* sessionStorage unavailable (private mode etc.) — caching is optional */
-      }
+      writeAiCache(aiCacheKey(location.pathname, "suggest"), { text: reply, excluded: nextExcluded });
     } catch (e) {
       setSuggestError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -331,18 +327,11 @@ export default function ResearchOpportunities() {
     if (hasAutoSuggested) return;
     if (buildGapTable().length < 3) return;
     setHasAutoSuggested(true);
-    try {
-      const cached = sessionStorage.getItem(SUGGESTION_CACHE_KEY);
-      if (cached) {
-        const parsed = JSON.parse(cached) as { text?: string; excluded?: string[] };
-        if (parsed.text) {
-          setSuggestion(parsed.text);
-          setExcludeIndicators(parsed.excluded ?? []);
-          return;
-        }
-      }
-    } catch {
-      /* unreadable cache — fall through to a fresh request */
+    const cached = readAiCache<{ text?: string; excluded?: string[] }>(aiCacheKey(location.pathname, "suggest"));
+    if (cached?.text) {
+      setSuggestion(cached.text);
+      setExcludeIndicators(cached.excluded ?? []);
+      return;
     }
     void handleSuggest();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -382,6 +371,13 @@ export default function ResearchOpportunities() {
     // top 4 matched fields internally by buildCorrelationSummary, same
     // reasoning as the row cap above.
     const correlationLines = scopedFields.length > 0 ? buildCorrelationSummary(scopedFields) : [];
+    // Same topic typed again in this session → serve the stored answer, no new AI call.
+    const interestKey = aiCacheKey(location.pathname, "interest", trimmed.toLowerCase());
+    const cachedInterest = readAiCache<{ text: string }>(interestKey);
+    if (cachedInterest?.text) {
+      setInterestResult(cachedInterest.text);
+      return;
+    }
     setInterestLoading(true);
     setInterestError(null);
     try {
@@ -423,6 +419,7 @@ export default function ResearchOpportunities() {
           `DATA TABLE:\n${rows.join("\n")}`
       );
       setInterestResult(reply);
+      writeAiCache(interestKey, { text: reply });
     } catch (e) {
       setInterestError(e instanceof Error ? e.message : String(e));
     } finally {
@@ -435,6 +432,109 @@ export default function ResearchOpportunities() {
   const outcomeSourceRows = OUTCOME_SOURCES[outcome.file];
   const outcomeRows = useMemo(() => rowsForField(outcomeSourceRows, outcome), [outcomeSourceRows, outcome]);
   const year = useMemo(() => yearsWithCoverage(outcomeRows, outcome.field)[0] ?? null, [outcomeRows, outcome.field]);
+
+  // ---- Context-aware AI research angle ----
+  // Unlike the two cards above (which look at the whole indicator table or
+  // a typed topic), this one is driven by the Selection controls: change the
+  // state, outcome or determinant and the facts sent to the AI change with
+  // them. The facts are computed here from the loaded data - the AI only
+  // writes the framing. Each combination is cached in sessionStorage under
+  // its own composite key (ai_research_<route>_<outcome>_<determinant>_<state>)
+  // so revisiting a combination costs no AI call, and switching selection can
+  // never show an answer written for a different one.
+  const detFile = determinant?.file;
+  const detAlreadyLoaded = detFile ? OUTCOME_SOURCES[detFile] !== null : true;
+  // Most determinant files aren't loaded for the other cards on this page;
+  // fetch only the selected one, on demand.
+  const { data: extraDetRows } = useData<Row[]>(detFile && !detAlreadyLoaded ? detFile : null);
+
+  function buildSelectionContext(): { text: string } | { error: string } {
+    if (year === null) return { error: `No ${outcome.label.toLowerCase()} data is available to describe.` };
+    const gap = computeGroupGapStats(outcomeRows, year, outcome.field, outcome.higherIsWorse);
+    const stateEntry = gap?.snapshot.find((e) => e.name === selectedState);
+    if (!gap || !stateEntry) {
+      return { error: `${selectedState} has no reported ${outcome.label.toLowerCase()} for ${year}, so there is nothing to ground an AI answer in.` };
+    }
+    const avg = computeAverage(outcomeRows, year, outcome.field);
+    const worstFirst = [...gap.snapshot].sort((a, b) => (outcome.higherIsWorse ? b.value - a.value : a.value - b.value));
+    const rank = worstFirst.findIndex((e) => e.name === selectedState) + 1;
+    const lines = [
+      `SELECTION: state = ${selectedState}; health outcome = ${outcome.label} (${outcome.unit}); potential determinant = ${determinant?.label ?? "none"}${determinant ? ` (${determinant.unit})` : ""}`,
+      `OUTCOME (${year}): ${selectedState} = ${fmt(stateEntry.value, 1)}${avg ? `; average of the ${avg.n} reporting states = ${fmt(avg.mean, 1)}` : ""}. ` +
+        `Ranks ${rank} of ${gap.n} states (1 = worst). Worst: ${gap.worst.name} ${fmt(gap.worst.value, 1)}; best: ${gap.best.name} ${fmt(gap.best.value, 1)}.`,
+    ];
+    if (!determinant) {
+      lines.push("DETERMINANT: none selected.");
+    } else {
+      const detRows = rowsForField(OUTCOME_SOURCES[determinant.file] ?? extraDetRows, determinant);
+      if (!detRows) {
+        lines.push(`DETERMINANT: data for ${determinant.label} is still loading or unavailable.`);
+      } else if (determinant.file === outcome.file && determinant.field === outcome.field) {
+        lines.push("DETERMINANT: same measure as the outcome, so no correlation is meaningful.");
+      } else {
+        const shared = findBestYear(detRows, outcomeRows ?? [], determinant.field, outcome.field);
+        const stats =
+          shared.year !== null && shared.n >= 3
+            ? computeCorrelationStats(buildPairs(detRows, outcomeRows ?? [], shared.year, determinant.field, outcome.field))
+            : null;
+        const stateDet = shared.year !== null ? detRows.find((r) => r.state === selectedState && r.year === shared.year) : undefined;
+        const stateDetVal = typeof stateDet?.[determinant.field] === "number" ? (stateDet[determinant.field] as number) : null;
+        if (stats && shared.year !== null) {
+          lines.push(
+            `DETERMINANT (${shared.year}): ${selectedState} = ${stateDetVal !== null ? fmt(stateDetVal, 1) : "not reported"}. ` +
+              `CORRELATION across ${shared.n} states in ${shared.year}: Pearson r = ${stats.pearson.toFixed(2)} (${interpretCorrelation(stats.pearson).label})${stats.reliable ? "" : " - small sample, read with caution"}.`
+          );
+        } else {
+          lines.push(`DETERMINANT: no correlation could be computed - fewer than 3 states report both ${outcome.label} and ${determinant.label} in a shared year.`);
+        }
+      }
+    }
+    return { text: lines.join("\n") };
+  }
+
+  const route = location.pathname;
+  const ctxKey = aiCacheKey(route, outcomeId, determinantId, selectedState);
+  const [ctxResults, setCtxResults] = useState<Record<string, string>>({});
+  const [ctxLoadingKey, setCtxLoadingKey] = useState<string | null>(null);
+  const [ctxError, setCtxError] = useState<{ key: string; message: string } | null>(null);
+  const ctxText = ctxResults[ctxKey] ?? readAiCache<{ text: string }>(ctxKey)?.text ?? null;
+  const ctxContext = buildSelectionContext();
+
+  async function handleSelectionAngle(force: boolean) {
+    if (ctxLoadingKey) return;
+    if ("error" in ctxContext) {
+      setCtxError({ key: ctxKey, message: ctxContext.error });
+      return;
+    }
+    if (!force && ctxText) return;
+    const key = ctxKey;
+    setCtxLoadingKey(key);
+    setCtxError(null);
+    try {
+      // Instructions first, facts last - see the note in handleSuggest.
+      const reply = await askDirect(
+        `You are helping a user of the Malaysia Health Equity Observatory dashboard's Research Opportunities page. ` +
+          `They have selected the combination described in CONTEXT at the end of this message.\n\n` +
+          `Rules:\n` +
+          `- Use ONLY the facts in CONTEXT. Do not use outside knowledge about Malaysian health statistics, and do not ` +
+          `recalculate, round differently, or restate any number other than exactly as written there.\n` +
+          `- A correlation is a cross-sectional association between states, never proof of cause: never say or imply ` +
+          `that the determinant causes the outcome. If CONTEXT says no correlation could be computed, say so plainly.\n` +
+          `- Be specific to the selected state, not generic.\n\n` +
+          `Respond in exactly this format and nothing else:\n` +
+          `WHAT THE DATA SHOWS: <1-2 sentences using only numbers from CONTEXT>\n` +
+          `RESEARCH ANGLE: <one specific research question for this state and outcome, treating the determinant only as a possible association>\n` +
+          `CAVEAT: <one sentence on the main limit, e.g. state-level aggregate, single year, or small sample>\n\n` +
+          `CONTEXT:\n${ctxContext.text}`
+      );
+      setCtxResults((prev) => ({ ...prev, [key]: reply }));
+      writeAiCache(key, { text: reply });
+    } catch (e) {
+      setCtxError({ key, message: e instanceof Error ? e.message : String(e) });
+    } finally {
+      setCtxLoadingKey(null);
+    }
+  }
 
   // Minimal embedded Research Question Builder (deterministic templates, not chat).
   const [population, setPopulation] = useState(POPULATION_SCOPES[0]);
@@ -622,6 +722,54 @@ export default function ResearchOpportunities() {
             outcomeRows={outcomeRows}
             year={year}
           />
+        </section>
+
+        <section aria-labelledby="ro-ctx">
+          <h2 id="ro-ctx" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            AI research angle for this selection
+          </h2>
+          <div className="rounded-lg border border-line-axis bg-plane p-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <p className="max-w-2xl text-sm text-ink-secondary">
+                Uses the state, health outcome and determinant chosen above: the facts (this state's value, its rank,
+                the state average and the correlation with the determinant) are computed from the data first, then the
+                MY-HEO Assistant frames a research angle around them. Change a selection and this card follows it -
+                answers you've already generated for a combination are kept for this session.
+              </p>
+              <button
+                type="button"
+                onClick={() => void handleSelectionAngle(Boolean(ctxText))}
+                disabled={ctxLoadingKey !== null}
+                className="shrink-0 rounded-md bg-series-1 px-4 py-2 text-sm font-medium text-white hover:opacity-90 disabled:opacity-60"
+              >
+                {ctxLoadingKey !== null ? "Thinking…" : ctxText ? "Regenerate" : "Generate AI research angle"}
+              </button>
+            </div>
+            <p className="mt-3 text-xs text-ink-muted">
+              Selection: {selectedState} · {outcome.label} · {determinant?.label ?? "no determinant"}
+            </p>
+            <div className="mt-2 rounded-md border border-line-grid bg-surface p-4">
+              {ctxError && ctxError.key === ctxKey ? (
+                <p className="text-sm text-status-critical">Couldn't generate an angle: {ctxError.message}</p>
+              ) : ctxText ? (
+                <MarkdownLite text={ctxText} />
+              ) : (
+                <p className="text-sm text-ink-muted">
+                  {"error" in ctxContext
+                    ? ctxContext.error
+                    : "Not generated yet for this combination. Choose Generate to ask the assistant."}
+                </p>
+              )}
+            </div>
+            {!("error" in ctxContext) && (
+              <details className="mt-3 text-xs text-ink-muted">
+                <summary className="cursor-pointer">Facts sent to the AI for this selection</summary>
+                <pre className="mt-2 whitespace-pre-wrap rounded-md border border-line-grid bg-surface p-3 text-xs text-ink-secondary">
+                  {ctxContext.text}
+                </pre>
+              </details>
+            )}
+          </div>
         </section>
 
         {/* Research Question Builder (Researcher Mode, minimal/embedded this phase) */}
