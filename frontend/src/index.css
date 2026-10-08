@@ -43,12 +43,6 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* OpenStreetMap's standard style is colourful; grey and lighten its tiles so the basemap gives
-   geographic context without competing with the choropleth fill colours. */
-.basemap-muted {
-  filter: grayscale(1) contrast(0.8) brightness(1.12);
-}
-
 /* Leaflet map container needs an explicit height */
 .leaflet-container {
   width: 100%;

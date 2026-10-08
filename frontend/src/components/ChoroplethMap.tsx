@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { MapContainer, TileLayer, GeoJSON, AttributionControl, useMap } from "react-leaflet";
+import { MapContainer, GeoJSON, AttributionControl, useMap } from "react-leaflet";
 import L from "leaflet";
 import type { Layer, StyleFunction, LeafletMouseEvent, Path } from "leaflet";
 import type { Feature, Geometry } from "geojson";
@@ -154,12 +154,11 @@ export default function ChoroplethMap({
     });
   };
 
-  // Table toggle + CSV export. PNG export is deliberately not offered here
-  // (unlike BarRankingCard/LineChartCard): the map mixes in cross-origin
-  // raster tiles from an external CDN, which taints a <canvas> on export
-  // without a dedicated screenshot library — rather than ship a button that
-  // silently fails, this component sticks to what a zero-dependency
-  // approach can actually deliver (table + CSV).
+  // Table toggle + CSV export. PNG export is deliberately not offered for the
+  // map: Leaflet draws it as live SVG/DOM layers rather than a canvas, so a
+  // faithful image would need a dedicated screenshot library - rather than ship
+  // a button that silently fails, this component sticks to what a
+  // zero-dependency approach can actually deliver (table + CSV).
   const [showTable, setShowTable] = useState(false);
   const { explain } = useChat();
   const tableColumns: Column[] = [
@@ -196,24 +195,15 @@ export default function ChoroplethMap({
             zoom={5.5}
             scrollWheelZoom={false}
             zoomSnap={0.25}
-            style={{ background: "#fcfcfb" }}
+            style={{ background: "#e8eef2" }}
             attributionControl={false}
           >
-            {/* Basemap: OpenStreetMap's standard tile server (no API key). This used to be CARTO's free
-                light_nolabels tiles, but CARTO now answers EVERY tile request on that endpoint with a
-                placeholder image reading "API KEY REQUIRED" (same image for every zoom/location, HTTP 200,
-                so it looked healthy). OSM's tile policy allows light use with visible attribution and a
-                valid Referer (browsers send one); revisit if traffic grows — see
-                https://operations.osmfoundation.org/policies/tiles/ . The "basemap-muted" class greys the
-                tiles (index.css) so they don't compete with the choropleth colours. */}
-            <TileLayer
-              url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-              maxZoom={19}
-              className="basemap-muted"
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors'
-            />
-            {/* Visible credit is part of OSM's licence (ODbL). The control was previously switched off, so
-                the attribution prop on the tile layer was never displayed. */}
+            {/* No basemap on purpose. This map used to draw raster tiles from a third-party server (CARTO, then
+                OpenStreetMap). Public tile servers are not meant for production traffic - CARTO started answering
+                every request with an "API KEY REQUIRED" placeholder image, and OSM's tile policy limits heavy use -
+                and each tile request also exposed the visitor's IP address to that server. The DOSM boundary
+                polygons alone already show where each state/district is, so the map now depends on nothing outside
+                this site. Attribution for the boundary data stays visible via the control below. */}
             <AttributionControl prefix={false} position="bottomright" />
             <GeoJSON
               key={`geo-${data.length}-${min}-${max}-${tiers ? tiers.breaks.join(",") : "ramp"}`}

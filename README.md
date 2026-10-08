@@ -180,9 +180,8 @@ The dashboard shows aggregated public statistics only; it has no accounts and
 stores no personal data. If you use an AI feature, the question you type (and
 the page's published data, as context) is sent to a Netlify function and on to
 Google Gemini to generate the answer — so please **do not enter personal or
-patient information**. Map background tiles are requested from OpenStreetMap, so
-your browser's IP address is visible to that service. See the Privacy section of
-the Methodology page.
+patient information**. The maps draw DOSM boundary polygons only, with no third-party
+map tiles. See the Privacy section of the Methodology page.
 
 ## Documentation
 

@@ -486,8 +486,8 @@ export default function Methodology() {
             </li>
             <li>
               <span className="font-medium text-ink-primary">Third-party requests.</span> Pages are served by GitHub
-              Pages, and any map background tiles are fetched from the provider named in the map's attribution, which
-              can see your IP address as for any web request.
+              Pages, which can see your IP address as for any web request. The maps are drawn from boundary data bundled
+              with this site and load no third-party map tiles.
             </li>
           </ul>
         </section>
