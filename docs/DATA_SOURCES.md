@@ -3,11 +3,11 @@
 This is the human-readable companion to the machine-readable catalogue at
 [`data/inventory/dataset_inventory.json`](../data/inventory/dataset_inventory.json).
 That file documents every dataset examined during the Phase 1/2 audit of
-[data.gov.my](https://data.gov.my/data-catalogue): **<!--count:ingested-->52<!--/count--> datasets with
+[data.gov.my](https://data.gov.my/data-catalogue): **<!--count:ingested-->53<!--/count--> datasets with
 `status: ingested`** have raw files under `data/raw/` and processed outputs
 under `data/processed/` (produced by `scripts/transform_data.py`), plus
 **<!--count:reference-->1<!--/count--> dataset ingested for cross-validation only** (`hies_2019_snapshot`, not
-loaded into the dashboard), and **<!--count:notingested-->8<!--/count--> datasets identified and schema-verified
+loaded into the dashboard), and **<!--count:notingested-->7<!--/count--> datasets identified and schema-verified
 but not yet ingested** into this build. (These counts are rewritten from the
 inventory by `scripts/update_database.py` on every successful run.)
 
@@ -231,6 +231,14 @@ All from the Household Income and Expenditure Survey (HIES), an irregular
 - **Date range:** 2020–2024 · **Geographic resolution:** district · **Update frequency:** Annual
 - District-resolution upgrade of "Annual Live Births by State" above (added 2026-08-14) — live birth counts and rate by district and sex.
 - **Limitations:** Shorter time range (2020–2024) than the state-level series — a resolution upgrade, not a full historical replacement.
+
+### Life Expectancy at Birth by State, Sex & Ethnicity
+- **URL:** https://open.dosm.gov.my/dashboard/life-expectancy
+- **Source org:** DOSM (Abridged Life Tables)
+- **Date range:** 1957–2025 national; 2025 only for states · **Geographic resolution:** state (latest year) and national · **Update frequency:** Annual (the dashboard names 2026-09-30 as the next release)
+- Life expectancy at birth for every state by sex, and a national series by sex and ethnic group. Added 2026-10-09; this replaces the earlier "identified but not ingested" entry for it.
+- **How it is fetched:** DOSM publishes this only as a dashboard, with no data-catalogue CSV or API entry. `scripts/ingest_data.py` (method `dosm_dashboard`) reads the JSON the dashboard page renders from and checks its shape strictly. If DOSM restructures the page the fetch fails, the previous file stays, and the weekly workflow raises its normal issue; wrong values are never published. Because it is not a catalogue dataset, the "check for newer data" button cannot compare it with the publisher cheaply; the weekly refresh picks up a new release.
+- **Limitations:** State figures are for one year only (no state history, no confidence intervals). Life expectancy is a life-table result, so it is never pooled across Selangor / Kuala Lumpur / Putrajaya. The non-citizen group's figure depends on who is counted in it and should not be read as a health advantage.
 
 ---
 

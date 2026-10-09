@@ -29,6 +29,7 @@ export default function LineChartCard({
   series,
   unit,
   height = 280,
+  yDomain,
 }: {
   title?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,6 +38,8 @@ export default function LineChartCard({
   series: Series[];
   unit?: string;
   height?: number;
+  /** Y-axis range; leave unset for the default (starts at zero). For series that vary within a narrow band, e.g. life expectancy. */
+  yDomain?: [number | ((dataMin: number) => number), number | ((dataMax: number) => number)];
 }) {
   // One sentence per series: first and last real point, plus the low and high - read aloud in place of the drawing.
   const seriesSummary = series
@@ -112,6 +115,7 @@ export default function LineChartCard({
                 tickLine={false}
                 axisLine={false}
                 width={48}
+                domain={yDomain}
                 unit={unit ? ` ${unit}` : undefined}
               />
               <Tooltip

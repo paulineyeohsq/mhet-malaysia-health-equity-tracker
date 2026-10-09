@@ -69,6 +69,20 @@ interface EthnicityDeathRow {
   deaths_abs: number | null;
 }
 
+interface LifeExpStateRow {
+  state: string;
+  year: number;
+  sex: string;
+  life_expectancy: number;
+}
+
+interface LifeExpNationalRow {
+  year: number;
+  sex: string;
+  ethnicity: string;
+  life_expectancy: number;
+}
+
 interface CovidRow {
   state: string;
   year: number;
@@ -110,7 +124,7 @@ const PEKA_RANGE_OPTIONS = [
   { id: "all", label: "All time, weekly totals (since 2019-04-15)", days: null as number | null },
 ];
 
-type Category = "mortality" | "std" | "immunisation" | "nutrition" | "covid" | "programmes" | "ethnicity";
+type Category = "mortality" | "std" | "immunisation" | "nutrition" | "covid" | "programmes" | "ethnicity" | "lifeexp";
 
 const CATEGORY_LABELS: Record<Category, string> = {
   mortality: "Mortality & Births",
@@ -120,7 +134,20 @@ const CATEGORY_LABELS: Record<Category, string> = {
   covid: "COVID-19",
   programmes: "Health Programme Participation",
   ethnicity: "Deaths by Ethnicity",
+  lifeexp: "Life Expectancy at Birth",
 };
+
+const SEX_LABELS: Record<string, string> = { both: "Both sexes", male: "Male", female: "Female" };
+
+// National life-expectancy series drawn on the trend chart. DOSM also publishes the two Bumiputera sub-groups
+// (bumi_malay, bumi_other); they sit in the table and the Data Explorer rather than adding two near-identical lines.
+const LIFE_EXP_GROUPS: { key: string; label: string; color: string }[] = [
+  { key: "overall", label: "All Malaysians and residents", color: "#3a7173" },
+  { key: "bumi", label: "Bumiputera", color: "#eb6834" },
+  { key: "chinese", label: "Chinese", color: "#4a3aa7" },
+  { key: "indian", label: "Indian", color: "#c28400" },
+  { key: "noncitizen", label: "Non-citizens", color: "#e46595" },
+];
 
 const ETHNICITY_LABELS: Record<string, string> = {
   bumi_malay: "Malay",
@@ -213,6 +240,8 @@ export default function HealthOutcomes() {
   const { data: covid } = useData<CovidRow[]>("covid_state.json");
   const { data: covidNational } = useData<CovidRow[]>("covid_national.json");
   const { data: programmes } = useData<ProgrammeRow[]>("health_programmes_state.json");
+  const { data: lifeExpState } = useData<LifeExpStateRow[]>("life_expectancy_state.json");
+  const { data: lifeExpNational } = useData<LifeExpNationalRow[]>("life_expectancy_national.json");
 
   const [category, setCategory] = useState<Category>("mortality");
   const [pekaRangeId, setPekaRangeId] = useState("90");
@@ -282,6 +311,11 @@ export default function HealthOutcomes() {
     return Array.from(new Set(ethnicityDeaths.map((r) => r.year))).sort((a, b) => b - a);
   }, [ethnicityDeaths]);
 
+  const lifeExpYears = useMemo(() => {
+    if (!lifeExpState) return [];
+    return Array.from(new Set(lifeExpState.map((r) => r.year))).sort((a, b) => b - a);
+  }, [lifeExpState]);
+
   const yearsForCategory =
     category === "std"
       ? stdYears
@@ -293,12 +327,15 @@ export default function HealthOutcomes() {
             ? programmeYears
             : category === "ethnicity"
               ? ethnicityYears
-              : mortalityYears;
+              : category === "lifeexp"
+                ? lifeExpYears
+                : mortalityYears;
   const effectiveYear = year ?? yearsForCategory[0] ?? null;
 
   function selectCategory(next: Category) {
     setCategory(next);
     setYear(null);
+    if (next === "lifeexp" && !(sex in SEX_LABELS)) setSex("both");
     if (next === "nutrition" && nutritionSexes.length > 0 && !nutritionSexes.includes(sex)) {
       setSex(nutritionSexes.includes("both") ? "both" : nutritionSexes[0]);
     }
@@ -370,6 +407,35 @@ export default function HealthOutcomes() {
     { key: "Male", label: "Male", color: "#5c92d9" },
     { key: "Female", label: "Female", color: "#0d366b" },
   ];
+
+  // ---- Life expectancy ----
+  // State values exist for one year only (DOSM publishes no state history); the national series runs back to 1957.
+  const lifeExpSex = sex in SEX_LABELS ? sex : "both";
+  const lifeExpRows = useMemo(() => {
+    if (!lifeExpState || effectiveYear === null) return [];
+    return lifeExpState.filter((r) => r.sex === lifeExpSex && r.year === effectiveYear);
+  }, [lifeExpState, lifeExpSex, effectiveYear]);
+  const lifeExpSnapshot = useMemo(() => lifeExpRows.map((r) => ({ state: r.state, value: r.life_expectancy })), [lifeExpRows]);
+  const lifeExpSummary = useMemo(() => {
+    if (lifeExpRows.length < 2) return null;
+    const sorted = [...lifeExpRows].sort((a, b) => b.life_expectancy - a.life_expectancy);
+    const best = sorted[0];
+    const worst = sorted[sorted.length - 1];
+    const national = lifeExpNational?.find((r) => r.ethnicity === "overall" && r.sex === lifeExpSex && r.year === effectiveYear);
+    return { best, worst, gap: best.life_expectancy - worst.life_expectancy, national: national?.life_expectancy ?? null };
+  }, [lifeExpRows, lifeExpNational, lifeExpSex, effectiveYear]);
+  const lifeExpTrend = useMemo(() => {
+    if (!lifeExpNational) return [];
+    const wanted = new Set(LIFE_EXP_GROUPS.map((g) => g.key));
+    const byYear = new Map<number, Record<string, number | null>>();
+    lifeExpNational
+      .filter((r) => r.sex === lifeExpSex && wanted.has(r.ethnicity))
+      .forEach((r) => {
+        if (!byYear.has(r.year)) byYear.set(r.year, { year: r.year });
+        byYear.get(r.year)![r.ethnicity] = r.life_expectancy;
+      });
+    return Array.from(byYear.values()).sort((a, b) => (a.year as number) - (b.year as number));
+  }, [lifeExpNational, lifeExpSex]);
 
   const stdSnapshot = useMemo(() => {
     if (!stateOutcomes || effectiveYear === null) return [];
@@ -521,8 +587,18 @@ export default function HealthOutcomes() {
         reason: `Fewer than two states report ${programmeMetric.label.toLowerCase()} for ${effectiveYear ?? "the selected year"}.`,
       };
     }
+    if (category === "lifeexp") {
+      return {
+        rows: lifeExpRows as unknown as Row[],
+        valueField: "life_expectancy",
+        metricLabel: "life expectancy at birth",
+        unit: "years",
+        higherIsWorse: false,
+        reason: `Fewer than two states report life expectancy for ${effectiveYear ?? "the selected year"}.`,
+      };
+    }
     return null;
-  }, [category, stateOutcomes, mortalityMetric, covid, covidMetric, programmes, programmeMetric, effectiveYear]);
+  }, [category, stateOutcomes, mortalityMetric, covid, covidMetric, programmes, programmeMetric, lifeExpRows, effectiveYear]);
 
   // ---- Deaths by ethnicity ----
   // Shown as raw counts, not rates: this project has no state-level
@@ -641,6 +717,14 @@ export default function HealthOutcomes() {
         { key: "deaths_abs", label: "Deaths (count)", numeric: true },
       ];
     }
+    if (category === "lifeexp") {
+      return [
+        { key: "state", label: "State" },
+        { key: "year", label: "Year", numeric: true },
+        { key: "sex", label: "Sex" },
+        { key: "life_expectancy", label: "Life expectancy (years)", numeric: true },
+      ];
+    }
     return [
       { key: "year", label: "Year", numeric: true },
       { key: "sex", label: "Sex" },
@@ -660,8 +744,9 @@ export default function HealthOutcomes() {
     if (category === "covid" && covid) return covid as unknown as Record<string, unknown>[];
     if (category === "programmes" && programmes) return programmes as unknown as Record<string, unknown>[];
     if (category === "ethnicity" && ethnicityDeaths) return ethnicityDeaths.filter((r) => r.state === state) as unknown as Record<string, unknown>[];
+    if (category === "lifeexp" && lifeExpState) return lifeExpState as unknown as Record<string, unknown>[];
     return [];
-  }, [category, stateOutcomes, immunisation, nutrition, covid, programmes, ethnicityDeaths, state]);
+  }, [category, stateOutcomes, immunisation, nutrition, covid, programmes, ethnicityDeaths, lifeExpState, state]);
 
   const tableSourceKey =
     category === "mortality"
@@ -676,13 +761,15 @@ export default function HealthOutcomes() {
               ? "health_programmes"
               : category === "ethnicity"
                 ? "deaths_ethnicity"
-                : "nutrition";
+                : category === "lifeexp"
+                  ? "life_expectancy"
+                  : "nutrition";
 
   return (
     <div>
       <PageHeader
         title="Health Outcomes Explorer"
-        subtitle="Mortality, maternal/infant/child health, STD incidence, immunisation coverage and child nutrition — across states and over time, exactly as published by MOH/DOSM."
+        subtitle="Mortality, life expectancy, maternal/infant/child health, STD incidence, immunisation coverage and child nutrition — across states and over time, exactly as published by MOH/DOSM."
       />
       <div className="space-y-8 p-6 lg:p-10">
         {/* Filters */}
@@ -785,6 +872,26 @@ export default function HealthOutcomes() {
             </div>
           )}
 
+          {category === "lifeexp" && (
+            <div>
+              <label htmlFor="lifeexp-sex-select" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                Sex
+              </label>
+              <select
+                id="lifeexp-sex-select"
+                value={lifeExpSex}
+                onChange={(e) => setSex(e.target.value)}
+                className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+              >
+                {Object.entries(SEX_LABELS).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           {category === "nutrition" && nutritionSexes.length > 1 && (
             <div>
               <label htmlFor="sex-select" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
@@ -838,6 +945,8 @@ export default function HealthOutcomes() {
               "Aggregated from daily case/death counts to annual state totals — the latest year is partial (data continues to the ingestion date)."}
             {category === "programmes" &&
               "Aggregated from daily participation counts to annual state totals — each indicator starts in a different year and the latest year is partial."}
+            {category === "lifeexp" &&
+              "DOSM publishes state life expectancy for the latest year only, so there is no state trend. Selangor, Kuala Lumpur and Putrajaya are shown separately, as published."}
             {category === "ethnicity" &&
               "Raw death counts by ethnicity, not rates — this project has no state-level population-by-ethnicity dataset to normalise against, so ethnic groups' absolute counts are not directly comparable (larger groups will show larger counts regardless of relative risk)."}
           </p>
@@ -1224,6 +1333,68 @@ export default function HealthOutcomes() {
                 <InsufficientData reason={`No ethnicity-disaggregated death records for ${state} in ${effectiveYear}.`} />
               )}
               <SourceNote sourceKey="deaths_ethnicity" year={effectiveYear ?? undefined} extra="Excludes DOSM's own 'overall' cross-check total row." />
+            </section>
+          </>
+        )}
+
+        {/* ---------------- Life expectancy ---------------- */}
+        {category === "lifeexp" && (
+          <>
+            <section>
+              <KPISummarySection
+                title={`Life expectancy at birth — ${effectiveYear ?? "…"}, ${SEX_LABELS[lifeExpSex].toLowerCase()}`}
+                headingId="lifeexp-kpis"
+                columns={4}
+                items={[
+                  { label: "Malaysia", value: fmt(lifeExpSummary?.national, 1), unit: "years" },
+                  { label: "Highest state", value: fmt(lifeExpSummary?.best.life_expectancy, 1), unit: "years", sublabel: lifeExpSummary?.best.state },
+                  { label: "Lowest state", value: fmt(lifeExpSummary?.worst.life_expectancy, 1), unit: "years", sublabel: lifeExpSummary?.worst.state },
+                  { label: "Gap, highest to lowest", value: fmt(lifeExpSummary?.gap, 1), unit: "years" },
+                ]}
+              />
+              <SourceNote sourceKey="life_expectancy" year={effectiveYear ?? undefined} />
+            </section>
+
+            <section aria-labelledby="lifeexp-ranking">
+              <h2 id="lifeexp-ranking" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+                Life expectancy at birth by state — {effectiveYear ?? "…"}
+              </h2>
+              {lifeExpSnapshot.length > 0 ? (
+                <BarRankingCard title="Life expectancy at birth (years)" data={lifeExpSnapshot} nameKey="state" valueKey="value" unit="years" color="#19a472" />
+              ) : (
+                <InsufficientData reason={`No life expectancy figures for ${effectiveYear ?? "the selected year"}.`} />
+              )}
+              <p className="mt-2 max-w-3xl text-xs text-ink-muted">
+                Life expectancy comes from a life table, not a count of people, so it cannot be pooled across areas the way
+                per-100,000 rates are. Selangor, W.P. Kuala Lumpur and W.P. Putrajaya are therefore always shown separately,
+                even when the Klang Valley toggle is on elsewhere. These are DOSM's published figures: no confidence
+                intervals are published, so small differences between states should not be over-read.
+              </p>
+              <SourceNote sourceKey="life_expectancy" year={effectiveYear ?? undefined} />
+            </section>
+
+            <section aria-labelledby="lifeexp-trend">
+              <h2 id="lifeexp-trend" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+                Life expectancy — national trend by ethnic group ({SEX_LABELS[lifeExpSex].toLowerCase()})
+              </h2>
+              {lifeExpTrend.length > 0 ? (
+                <LineChartCard
+                  title="Life expectancy at birth (years)"
+                  data={lifeExpTrend}
+                  xKey="year"
+                  series={LIFE_EXP_GROUPS.map((g) => ({ key: g.key, label: g.label, color: g.color }))}
+                  yDomain={[(min) => Math.floor(min - 2), (max) => Math.ceil(max + 2)]}
+                />
+              ) : (
+                <InsufficientData reason="No national life expectancy series available." />
+              )}
+              <p className="mt-2 max-w-3xl text-xs text-ink-muted">
+                National figures only: the ethnic-group breakdown is not published by state. Each group's series starts in
+                the year DOSM first reports it (the both-sexes series by group starts in 1991, the male and female series in
+                1957). The non-citizen figure depends on who is counted in that group, so read it with care rather than as
+                a health advantage. The two Bumiputera sub-groups (Malay, other) are in the Data Explorer.
+              </p>
+              <SourceNote sourceKey="life_expectancy" />
             </section>
           </>
         )}

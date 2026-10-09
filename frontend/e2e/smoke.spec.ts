@@ -202,6 +202,18 @@ test.describe("consolidated pages", () => {
     await expect(page.getByLabel("Each territory on its own")).toBeVisible();
   });
 
+  test("Health Outcomes: the life expectancy view ranks every state and keeps Klang Valley separate", async ({ page }) => {
+    await page.goto("/#/topics/outcomes");
+    await page.getByLabel("Indicator category").selectOption({ label: "Life Expectancy at Birth" });
+    await expect(page.getByRole("heading", { name: /Life expectancy at birth by state/ })).toBeVisible();
+    await expect(page.getByText("Highest state")).toBeVisible();
+    await expect(page.getByText("Gap, highest to lowest")).toBeVisible();
+    await expect(page.getByRole("heading", { name: /national trend by ethnic group/ })).toBeVisible();
+    await page.getByLabel("Sex", { exact: true }).selectOption({ label: "Female" });
+    await expect(page.getByRole("heading", { name: /\(female\)/ })).toBeVisible();
+    await expect(page.getByText(/always shown separately/)).toBeVisible();
+  });
+
   test("Patterns & Inequality: a toggle switches between trend, matrix and inequality views", async ({ page }) => {
     await page.goto("/#/patterns");
     await expect(page).toHaveURL(/#\/patterns\/trends$/);

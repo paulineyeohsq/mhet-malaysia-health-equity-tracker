@@ -42,6 +42,8 @@ export const PAGE_DATA_FILES: Record<string, string[]> = {
     "pekab40_screenings_daily_state.json",
     "hiv_incidence_national.json",
     "deaths_ethnicity_state.json",
+    "life_expectancy_state.json",
+    "life_expectancy_national.json",
     "covid_national.json",
   ],
   "/healthcare-access": [

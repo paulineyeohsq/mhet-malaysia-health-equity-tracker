@@ -101,6 +101,36 @@ describe("Klang Valley pooled staff and bed rates", () => {
   });
 });
 
+describe("Life expectancy files (read from DOSM's dashboard)", () => {
+  interface StateRow { state: string; year: number; sex: string; life_expectancy: number }
+  interface NationalRow { year: number; sex: string; ethnicity: string; life_expectancy: number }
+  const state = readJson<StateRow[]>("life_expectancy_state.json");
+  const national = readJson<NationalRow[]>("life_expectancy_national.json");
+
+  it("has every one of the 16 states for each sex in a single year, Selangor / KL / Putrajaya separate", () => {
+    expect(new Set(state.map((r) => r.year)).size).toBe(1);
+    for (const sex of ["both", "male", "female"]) {
+      const names = state.filter((r) => r.sex === sex).map((r) => r.state);
+      expect(new Set(names).size).toBe(16);
+      expect(names).toEqual(expect.arrayContaining(["Selangor", "W.P. Kuala Lumpur", "W.P. Putrajaya"]));
+    }
+  });
+
+  it("holds plausible values, with women living longer than men in every state", () => {
+    expect(state.every((r) => r.life_expectancy > 50 && r.life_expectancy < 95)).toBe(true);
+    for (const s of new Set(state.map((r) => r.state))) {
+      const get = (sex: string) => state.find((r) => r.state === s && r.sex === sex)!.life_expectancy;
+      expect(get("female")).toBeGreaterThan(get("male"));
+    }
+  });
+
+  it("has a national series that ends in the same year as the state figures", () => {
+    const stateYear = state[0].year;
+    expect(Math.max(...national.map((r) => r.year))).toBe(stateYear);
+    expect(national.some((r) => r.ethnicity === "overall" && r.sex === "both" && r.year === stateYear)).toBe(true);
+  });
+});
+
 describe("PeKa B40 files", () => {
   interface Daily { state: string; date: string; screenings: number | null }
   interface Weekly { state: string; week_start: string; days: number; screenings: number | null }

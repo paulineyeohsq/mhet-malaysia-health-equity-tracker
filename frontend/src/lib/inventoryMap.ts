@@ -90,6 +90,8 @@ export const INVENTORY_MAP: Record<string, string[]> = {
   "nutrition_national.json": ["nutrition_status_u5_sex"],
   "hiv_incidence_national.json": ["sdg_03-3-1"],
   "deaths_ethnicity_state.json": ["death_sex_ethnic_state"],
+  "life_expectancy_state.json": ["life_expectancy"],
+  "life_expectancy_national.json": ["life_expectancy"],
   "deaths_district_sex.json": ["death_district_sex"],
   "births_district_sex.json": ["birth_district_sex"],
   "nhms_ncd_state.json": ["nhms_ncd_2019"],
