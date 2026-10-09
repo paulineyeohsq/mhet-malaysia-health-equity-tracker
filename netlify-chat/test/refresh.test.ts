@@ -201,6 +201,10 @@ reset();
   check("CORS: an allowed origin is echoed", ok.headers.get("Access-Control-Allow-Origin") === ORIGIN);
   const evil = await call("GET", "5.5.5.5", "https://evil.example");
   check("CORS: another origin gets no allow header", evil.headers.get("Access-Control-Allow-Origin") === "");
+  for (const o of ["https://my-heo.netlify.app", "https://paulineyeohsq.github.io"]) {
+    const r = await call("GET", "5.5.5.6", o);
+    check(`CORS: the site at ${o} is allowed to ask for the check`, r.headers.get("Access-Control-Allow-Origin") === o);
+  }
   const opt = await handler(new Request("https://example.test/refresh", { method: "OPTIONS", headers: { Origin: ORIGIN } }), { ip: "5.5.5.5" });
   check("OPTIONS preflight returns 204", opt.status === 204);
   const put = await call("PUT");

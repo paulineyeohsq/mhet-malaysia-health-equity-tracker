@@ -28,6 +28,8 @@ netlify-chat/
                                       # edge-functions/, since Netlify's bundler treats every
                                       # top-level .ts file there as its own function and errors
                                       # on ones with no `export default` handler
+      config.ts                      # the site address, repository and allowed origins - the one place
+                                      # both functions read them from (SITE_URL env var overrides the address)
       pageData.ts                    # route → data-file map 
       systemPrompt.ts                # guardrail prompt 
       gemini.ts                      # Gemini API client 
@@ -79,6 +81,7 @@ network, API key or Netlify account:
 cd netlify-chat
 deno run -A --no-check --import-map=test/import_map.json test/chat.test.ts
 deno run -A --no-check --import-map=test/import_map.json test/refresh.test.ts
+deno run -A --no-check --import-map=test/import_map.json test/config.test.ts
 ```
 
 It does not exercise Netlify's own runtime, so the deploy preview is still the final check.
@@ -98,5 +101,6 @@ production branch.
 
 `POST /chat` — body `{ messages: {role, content}[], path: string }`,
 returns `{ reply: string }` or `{ error: string }`. CORS is restricted to
-the production GitHub Pages origin and `localhost:5173` for local dev.
+the dashboard origins listed in `lib/config.ts` (`https://my-heo.netlify.app`, the original GitHub Pages site) and
+`localhost:5173` for local dev.
 Rate-limited to 10 requests/IP/minute via Netlify Blobs.

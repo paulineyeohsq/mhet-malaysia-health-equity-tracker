@@ -74,3 +74,7 @@ jobs:
       - name: Refresh function behaviour tests
         working-directory: netlify-chat
         run: deno run -A --no-check --import-map=test/import_map.json test/refresh.test.ts
+
+      - name: Shared address and allowed-origin tests
+        working-directory: netlify-chat
+        run: deno run -A --no-check --import-map=test/import_map.json test/config.test.ts

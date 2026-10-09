@@ -1,5 +1,6 @@
 import { getStore } from "@netlify/blobs";
 import type { Config, Context } from "@netlify/edge-functions";
+import { allowedOrigin, REPO, siteUrl } from "./lib/config.ts";
 
 /**
  * "Check for newer data" / "Update now" for the dashboard's home page.
@@ -16,11 +17,8 @@ import type { Config, Context } from "@netlify/edge-functions";
  * visitors that updates are applied automatically every Monday.
  */
 
-const REPO = "paulineyeohsq/mhet-malaysia-health-equity-tracker";
-const SITE = "https://paulineyeohsq.github.io/mhet-malaysia-health-equity-tracker/";
 const UPDATE_WORKFLOW = "update-data.yml";
 const DEPLOY_WORKFLOW = "deploy-pages.yml";
-const ALLOWED_ORIGINS = new Set(["https://paulineyeohsq.github.io", "http://localhost:5173"]);
 const CHECK_TTL_MS = 5 * 60_000; // many visitors clicking at once share one round of publisher requests
 const COOLDOWN_MS = 3 * 3_600_000; // at most one on-demand refresh per three hours
 const FETCH_TIMEOUT_MS = 8_000;
@@ -63,7 +61,7 @@ interface RunInfo {
 
 function corsHeaders(origin: string | null): Record<string, string> {
   return {
-    "Access-Control-Allow-Origin": origin && ALLOWED_ORIGINS.has(origin) ? origin : "",
+    "Access-Control-Allow-Origin": allowedOrigin(origin),
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
     Vary: "Origin",
@@ -138,7 +136,7 @@ async function newerReason(entry: SourceEntry): Promise<{ reason: string | null;
 }
 
 export async function check(): Promise<CheckResult> {
-  const res = await timed(`${SITE}data/dataset_inventory.json`, { headers: { "Cache-Control": "no-cache" } });
+  const res = await timed(`${siteUrl()}data/dataset_inventory.json`, { headers: { "Cache-Control": "no-cache" } });
   if (!res.ok) throw new Error(`inventory HTTP ${res.status}`);
   const inventory = (await res.json()) as Inventory;
   const names = new Map((inventory.datasets ?? []).map((d) => [d.id, d.name]));

@@ -1,6 +1,6 @@
 # Malaysia Health Equity Observatory (MY-HEO)
 
-**Live site:** <https://paulineyeohsq.github.io/mhet-malaysia-health-equity-tracker/>
+**Live site:** <https://my-heo.netlify.app/> (the original GitHub Pages site, <https://paulineyeohsq.github.io/mhet-malaysia-health-equity-tracker/>, still works)
 
 MY-HEO is a static React + TypeScript dashboard for exploring health inequity in
 Malaysia, built entirely from real, publicly available Malaysian government open
@@ -202,7 +202,14 @@ and healthcare staff currently stop at 2022), and the app shows each publisher's
 
 ## Deployment
 
-**Site (GitHub Pages).** [`deploy-pages.yml`](.github/workflows/deploy-pages.yml)
+**Site (Netlify, the public address).** [`netlify.toml`](netlify.toml) holds the build settings (base `frontend`,
+publish `dist`, Node 20). Netlify builds on every push to `main` and runs lint and the unit tests first, so a failing
+check leaves the previous version live. The browser tests run in GitHub Actions on every pull request and in the
+weekly data workflow, before anything reaches `main`. The site's address for social previews comes from
+`frontend/.env` (`VITE_SITE_URL`); the functions read it from the `SITE_URL` variable (default
+`https://my-heo.netlify.app/`).
+
+**Site (GitHub Pages, original address).** [`deploy-pages.yml`](.github/workflows/deploy-pages.yml)
 builds the frontend and publishes it on every push to `main` using GitHub's
 official Pages actions. One-time setup: **Settings → Pages → Build and deployment →
 Source → GitHub Actions**. `vite.config.ts` uses a relative base path and routing
@@ -212,8 +219,9 @@ uses `HashRouter`, so it works at a project subpath
 **Chat proxy (Netlify).** `netlify-chat/` is its own small Netlify site. Required
 environment variable: `GEMINI_API_KEY` (scoped for edge functions). Optional:
 `DAILY_REQUEST_CAP` — maximum AI calls per UTC day across all visitors (default
-1000). The key never reaches the browser; the allowed origins are the GitHub Pages
-site and `http://localhost:5173`. Full details in
+1000). The key never reaches the browser; the allowed origins (one list shared by both functions, in
+`netlify-chat/netlify/edge-functions/lib/config.ts`) are `https://my-heo.netlify.app`, the GitHub Pages site and
+`http://localhost:5173`. Full details in
 [`netlify-chat/README.md`](netlify-chat/README.md).
 
 ## Privacy
