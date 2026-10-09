@@ -103,11 +103,15 @@ async function newerReason(entry: SourceEntry): Promise<{ reason: string | null;
     // A direct look at the file the pipeline downloads is the most reliable signal (publishers' catalogue metadata
     // can lag the file by days).
     if (entry.http_url && (entry.etag || entry.last_modified)) {
-      const res = await timed(entry.http_url, { method: "HEAD" });
+      // Ask for the uncompressed file: a compressed response carries a different (weak) ETag that would never match the
+      // one recorded when the file was downloaded, and every such file would look "replaced".
+      const res = await timed(entry.http_url, { method: "HEAD", headers: { "Accept-Encoding": "identity" } });
       if (res.ok) {
         const etag = res.headers.get("etag");
         const modified = res.headers.get("last-modified");
-        if (entry.etag && etag) {
+        // A weak ETag (W/...) cannot be compared with the strong one on record: fall through to Last-Modified, or leave
+        // the dataset unchecked, rather than call it newer.
+        if (entry.etag && etag && !etag.startsWith("W/")) {
           return { reason: etag !== entry.etag ? `file replaced${modified ? ` (${modified})` : ""}` : null, checked: true };
         }
         if (entry.last_modified && modified) {

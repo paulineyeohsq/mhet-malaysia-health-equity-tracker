@@ -16,6 +16,7 @@ const world = {
   runs: { update: null as null | { status: string; conclusion: string | null; created_at: string; html_url: string }, deploy: null as null | { status: string; conclusion: string | null; created_at: string; html_url: string } },
   dispatchStatus: 204,
   headCalls: 0,
+  lastHeadEncoding: null as string | null,
   dispatches: [] as { url: string; auth: string | null; body: string }[],
 };
 const reset = () => {
@@ -45,6 +46,7 @@ globalThis.fetch = ((input: string | URL | Request, init?: RequestInit) => {
   if (url === "https://files.example/deaths.csv" && method === "HEAD") {
     world.headCalls++;
     if (world.httpDown) return Promise.reject(new Error("network down"));
+    world.lastHeadEncoding = new Headers(init?.headers).get("accept-encoding");
     return Promise.resolve(new Response(null, { status: 200, headers: { ETag: world.etag, "Last-Modified": "Tue, 07 Jul 2026 15:43:35 GMT" } }));
   }
   if (url.startsWith("https://api.data.gov.my/data-catalogue/")) {
@@ -95,6 +97,15 @@ world.apiLastUpdated = "2026-10-09 10:00";
   const ids = j.newer.map((n: { id: string }) => n.id).sort().join();
   check("GET: reports both a replaced file (ETag) and a newer catalogue entry", ids === "deaths,staff", ids);
   check("GET: gives the dataset name and a reason", j.newer.every((n: { name: string; reason: string }) => n.name.length > 0 && n.reason.length > 0));
+}
+
+// 2b. a weak ETag (what a compressed response carries) is not proof of a change, and the check asks for the uncompressed file
+reset();
+world.etag = 'W/"different-because-compressed"';
+{
+  const j = await body(await call("GET"));
+  check("GET: a weak ETag does not make a file look replaced", !j.newer.some((n: { id: string }) => n.id === "deaths"), JSON.stringify(j.newer));
+  check("GET: the file check asks for the uncompressed response", world.lastHeadEncoding === "identity", String(world.lastHeadEncoding));
 }
 
 // 3. an unreachable publisher is 'unchecked', never 'newer'
