@@ -1,171 +1,171 @@
-date,state,district,type,beds
-2022-01-01,Malaysia,All,all,49985
-2022-01-01,Johor,All Districts,all,5433
-2022-01-01,Johor,Batu Pahat,all,610
-2022-01-01,Johor,Johor Bahru,all,3042
-2022-01-01,Johor,Kluang,all,382
-2022-01-01,Johor,Kota Tinggi,all,158
-2022-01-01,Johor,Kulaijaya,all,93
-2022-01-01,Johor,Ledang,all,69
-2022-01-01,Johor,Mersing,all,70
-2022-01-01,Johor,Muar,all,575
-2022-01-01,Johor,Pontian,all,120
-2022-01-01,Johor,Segamat,all,314
-2022-01-01,Kedah,All Districts,all,2762
-2022-01-01,Kedah,Baling,all,115
-2022-01-01,Kedah,Bandar Baharu,all,0
-2022-01-01,Kedah,Kota Setar,all,1108
-2022-01-01,Kedah,Kuala Muda,all,703
-2022-01-01,Kedah,Kubang Pasu,all,91
-2022-01-01,Kedah,Kulim,all,320
-2022-01-01,Kedah,Langkawi,all,163
-2022-01-01,Kedah,Padang Terap,all,80
-2022-01-01,Kedah,Pendang,all,0
-2022-01-01,Kedah,Pokok Sena,all,0
-2022-01-01,Kedah,Sik,all,93
-2022-01-01,Kedah,Yan,all,89
-2022-01-01,Kelantan,All Districts,all,2970
-2022-01-01,Kelantan,Bachok,all,0
-2022-01-01,Kelantan,Gua Musang,all,90
-2022-01-01,Kelantan,Jeli,all,80
-2022-01-01,Kelantan,Kota Bharu,all,1811
-2022-01-01,Kelantan,Kuala Krai,all,424
-2022-01-01,Kelantan,Machang,all,90
-2022-01-01,Kelantan,Pasir Mas,all,120
-2022-01-01,Kelantan,Pasir Puteh,all,90
-2022-01-01,Kelantan,Tanah Merah,all,146
-2022-01-01,Kelantan,Tumpat,all,119
-2022-01-01,Melaka,All Districts,all,1454
-2022-01-01,Melaka,Alor Gajah,all,106
-2022-01-01,Melaka,Jasin,all,103
-2022-01-01,Melaka,Melaka Tengah,all,1245
-2022-01-01,Negeri Sembilan,All Districts,all,1977
-2022-01-01,Negeri Sembilan,Jelebu,all,76
-2022-01-01,Negeri Sembilan,Jempol,all,108
-2022-01-01,Negeri Sembilan,Kuala Pilah,all,314
-2022-01-01,Negeri Sembilan,Port Dickson,all,116
-2022-01-01,Negeri Sembilan,Rembau,all,76
-2022-01-01,Negeri Sembilan,Seremban,all,1143
-2022-01-01,Negeri Sembilan,Tampin,all,144
-2022-01-01,Pahang,All Districts,all,2681
-2022-01-01,Pahang,Bentong,all,152
-2022-01-01,Pahang,Bera,all,40
-2022-01-01,Pahang,Cameron Highlands,all,40
-2022-01-01,Pahang,Jerantut,all,77
-2022-01-01,Pahang,Kuantan,all,1176
-2022-01-01,Pahang,Lipis,all,168
-2022-01-01,Pahang,Maran,all,70
-2022-01-01,Pahang,Pekan,all,110
-2022-01-01,Pahang,Raub,all,89
-2022-01-01,Pahang,Rompin,all,109
-2022-01-01,Pahang,Temerloh,all,650
-2022-01-01,Perak,All Districts,all,5887
-2022-01-01,Perak,Batang Padang (Tapah),all,350
-2022-01-01,Perak,Hilir Perak,all,548
-2022-01-01,Perak,Hulu Perak,all,75
-2022-01-01,Perak,Kampar,all,68
-2022-01-01,Perak,Kerian,all,100
-2022-01-01,Perak,Kinta (Ipoh),all,3354
-2022-01-01,Perak,Kuala Kangsar,all,229
-2022-01-01,Perak,Larut & Matang (Taiping),all,698
-2022-01-01,Perak,Manjung (Sitiawan),all,415
-2022-01-01,Perak,Perak Tengah,all,50
-2022-01-01,Perlis,All Districts,all,508
-2022-01-01,Perlis,Perlis,all,508
-2022-01-01,Pulau Pinang,All Districts,all,2138
-2022-01-01,Pulau Pinang,Barat Daya,all,81
-2022-01-01,Pulau Pinang,Seberang Perai Selatan,all,105
-2022-01-01,Pulau Pinang,Seberang Perai Tengah,all,655
-2022-01-01,Pulau Pinang,Seberang Perai Utara (Butterworth),all,134
-2022-01-01,Pulau Pinang,Timur Laut (Georgetown),all,1163
-2022-01-01,Sabah,All Districts,all,5053
-2022-01-01,Sabah,Beaufort,all,275
-2022-01-01,Sabah,Beluran,all,52
-2022-01-01,Sabah,Keningau,all,216
-2022-01-01,Sabah,Kinabatangan,all,68
-2022-01-01,Sabah,Kota Belud,all,172
-2022-01-01,Sabah,Kota Kinabalu,all,2175
-2022-01-01,Sabah,Kota Marudu,all,97
-2022-01-01,Sabah,Kota Penyu,all,48
-2022-01-01,Sabah,Kudat,all,180
-2022-01-01,Sabah,Kunak,all,48
-2022-01-01,Sabah,Lahad Datu,all,268
-2022-01-01,Sabah,Nabawan,all,0
-2022-01-01,Sabah,Papar,all,77
-2022-01-01,Sabah,Penampang,all,0
-2022-01-01,Sabah,Pitas,all,72
-2022-01-01,Sabah,Putatan,all,0
-2022-01-01,Sabah,Ranau,all,110
-2022-01-01,Sabah,Sandakan,all,400
-2022-01-01,Sabah,Semporna,all,70
-2022-01-01,Sabah,Sipitang,all,93
-2022-01-01,Sabah,Tambunan,all,49
-2022-01-01,Sabah,Tawau,all,431
-2022-01-01,Sabah,Telupid,all,0
-2022-01-01,Sabah,Tenom,all,70
-2022-01-01,Sabah,Tongad,all,0
-2022-01-01,Sabah,Tuaran,all,82
-2022-01-01,Sarawak,All Districts,all,4119
-2022-01-01,Sarawak,Asajaya,all,0
-2022-01-01,Sarawak,Bau,all,68
-2022-01-01,Sarawak,Belaga,all,0
-2022-01-01,Sarawak,Beluru,all,0
-2022-01-01,Sarawak,Betong,all,48
-2022-01-01,Sarawak,Bintulu,all,302
-2022-01-01,Sarawak,Bukit Mabong,all,0
-2022-01-01,Sarawak,Dalat,all,8
-2022-01-01,Sarawak,Daro,all,46
-2022-01-01,Sarawak,Julau,all,0
-2022-01-01,Sarawak,Kabong,all,0
-2022-01-01,Sarawak,Kanowit,all,100
-2022-01-01,Sarawak,Kapit,all,134
-2022-01-01,Sarawak,Kuching,all,1412
-2022-01-01,Sarawak,Lawas,all,46
-2022-01-01,Sarawak,Limbang,all,100
-2022-01-01,Sarawak,Lubok Antu,all,0
-2022-01-01,Sarawak,Lundu,all,46
-2022-01-01,Sarawak,Marudi,all,54
-2022-01-01,Sarawak,Matu,all,0
-2022-01-01,Sarawak,Meradong,all,0
-2022-01-01,Sarawak,Miri,all,349
-2022-01-01,Sarawak,Mukah,all,80
-2022-01-01,Sarawak,Pakan,all,0
-2022-01-01,Sarawak,Pusa,all,0
-2022-01-01,Sarawak,Samarahan,all,128
-2022-01-01,Sarawak,Saratok,all,106
-2022-01-01,Sarawak,Sarikei,all,212
-2022-01-01,Sarawak,Sebauh,all,0
-2022-01-01,Sarawak,Selangau,all,0
-2022-01-01,Sarawak,Serian,all,84
-2022-01-01,Sarawak,Sibu,all,662
-2022-01-01,Sarawak,Simunjan,all,42
-2022-01-01,Sarawak,Song,all,0
-2022-01-01,Sarawak,Sri Aman,all,92
-2022-01-01,Sarawak,Subis,all,0
-2022-01-01,Sarawak,Tanjung Manis,all,0
-2022-01-01,Sarawak,Tatau,all,0
-2022-01-01,Sarawak,Tebedu,all,0
-2022-01-01,Selangor,All Districts,all,7640
-2022-01-01,Selangor,Gombak (Rawang),all,3153
-2022-01-01,Selangor,Hulu Langat (Bangi),all,1087
-2022-01-01,Selangor,Hulu Selangor,all,120
-2022-01-01,Selangor,Klang,all,1261
-2022-01-01,Selangor,Kuala Langat,all,196
-2022-01-01,Selangor,Kuala Selangor,all,114
-2022-01-01,Selangor,Petaling (Subang Jaya),all,490
-2022-01-01,Selangor,Sabak Bernam,all,93
-2022-01-01,Selangor,Sepang,all,1126
-2022-01-01,Terengganu,All Districts,all,1730
-2022-01-01,Terengganu,Besut,all,140
-2022-01-01,Terengganu,Dungun,all,100
-2022-01-01,Terengganu,Hulu Terengganu,all,95
-2022-01-01,Terengganu,Kemaman,all,164
-2022-01-01,Terengganu,Kuala Terengganu,all,1155
-2022-01-01,Terengganu,Marang,all,0
-2022-01-01,Terengganu,Setiu,all,76
-2022-01-01,W.P. Kuala Lumpur,All Districts,all,4874
-2022-01-01,W.P. Kuala Lumpur,W.P. Kuala Lumpur,all,4874
-2022-01-01,W.P. Labuan,All Districts,all,122
-2022-01-01,W.P. Labuan,W.P. Labuan,all,122
-2022-01-01,W.P. Putrajaya,All Districts,all,637
-2022-01-01,W.P. Putrajaya,W.P. Putrajaya,all,637
+beds,date,type,state,district
+49985,2022-01-01,all,Malaysia,All
+5433,2022-01-01,all,Johor,All Districts
+610,2022-01-01,all,Johor,Batu Pahat
+3042,2022-01-01,all,Johor,Johor Bahru
+382,2022-01-01,all,Johor,Kluang
+158,2022-01-01,all,Johor,Kota Tinggi
+93,2022-01-01,all,Johor,Kulaijaya
+69,2022-01-01,all,Johor,Ledang
+70,2022-01-01,all,Johor,Mersing
+575,2022-01-01,all,Johor,Muar
+120,2022-01-01,all,Johor,Pontian
+314,2022-01-01,all,Johor,Segamat
+2762,2022-01-01,all,Kedah,All Districts
+115,2022-01-01,all,Kedah,Baling
+0,2022-01-01,all,Kedah,Bandar Baharu
+1108,2022-01-01,all,Kedah,Kota Setar
+703,2022-01-01,all,Kedah,Kuala Muda
+91,2022-01-01,all,Kedah,Kubang Pasu
+320,2022-01-01,all,Kedah,Kulim
+163,2022-01-01,all,Kedah,Langkawi
+80,2022-01-01,all,Kedah,Padang Terap
+0,2022-01-01,all,Kedah,Pendang
+0,2022-01-01,all,Kedah,Pokok Sena
+93,2022-01-01,all,Kedah,Sik
+89,2022-01-01,all,Kedah,Yan
+2970,2022-01-01,all,Kelantan,All Districts
+0,2022-01-01,all,Kelantan,Bachok
+90,2022-01-01,all,Kelantan,Gua Musang
+80,2022-01-01,all,Kelantan,Jeli
+1811,2022-01-01,all,Kelantan,Kota Bharu
+424,2022-01-01,all,Kelantan,Kuala Krai
+90,2022-01-01,all,Kelantan,Machang
+120,2022-01-01,all,Kelantan,Pasir Mas
+90,2022-01-01,all,Kelantan,Pasir Puteh
+146,2022-01-01,all,Kelantan,Tanah Merah
+119,2022-01-01,all,Kelantan,Tumpat
+1454,2022-01-01,all,Melaka,All Districts
+106,2022-01-01,all,Melaka,Alor Gajah
+103,2022-01-01,all,Melaka,Jasin
+1245,2022-01-01,all,Melaka,Melaka Tengah
+1977,2022-01-01,all,Negeri Sembilan,All Districts
+76,2022-01-01,all,Negeri Sembilan,Jelebu
+108,2022-01-01,all,Negeri Sembilan,Jempol
+314,2022-01-01,all,Negeri Sembilan,Kuala Pilah
+116,2022-01-01,all,Negeri Sembilan,Port Dickson
+76,2022-01-01,all,Negeri Sembilan,Rembau
+1143,2022-01-01,all,Negeri Sembilan,Seremban
+144,2022-01-01,all,Negeri Sembilan,Tampin
+2681,2022-01-01,all,Pahang,All Districts
+152,2022-01-01,all,Pahang,Bentong
+40,2022-01-01,all,Pahang,Bera
+40,2022-01-01,all,Pahang,Cameron Highlands
+77,2022-01-01,all,Pahang,Jerantut
+1176,2022-01-01,all,Pahang,Kuantan
+168,2022-01-01,all,Pahang,Lipis
+70,2022-01-01,all,Pahang,Maran
+110,2022-01-01,all,Pahang,Pekan
+89,2022-01-01,all,Pahang,Raub
+109,2022-01-01,all,Pahang,Rompin
+650,2022-01-01,all,Pahang,Temerloh
+5887,2022-01-01,all,Perak,All Districts
+350,2022-01-01,all,Perak,Batang Padang (Tapah)
+548,2022-01-01,all,Perak,Hilir Perak
+75,2022-01-01,all,Perak,Hulu Perak
+68,2022-01-01,all,Perak,Kampar
+100,2022-01-01,all,Perak,Kerian
+3354,2022-01-01,all,Perak,Kinta (Ipoh)
+229,2022-01-01,all,Perak,Kuala Kangsar
+698,2022-01-01,all,Perak,Larut & Matang (Taiping)
+415,2022-01-01,all,Perak,Manjung (Sitiawan)
+50,2022-01-01,all,Perak,Perak Tengah
+508,2022-01-01,all,Perlis,All Districts
+508,2022-01-01,all,Perlis,Perlis
+2138,2022-01-01,all,Pulau Pinang,All Districts
+81,2022-01-01,all,Pulau Pinang,Barat Daya
+105,2022-01-01,all,Pulau Pinang,Seberang Perai Selatan
+655,2022-01-01,all,Pulau Pinang,Seberang Perai Tengah
+134,2022-01-01,all,Pulau Pinang,Seberang Perai Utara (Butterworth)
+1163,2022-01-01,all,Pulau Pinang,Timur Laut (Georgetown)
+5053,2022-01-01,all,Sabah,All Districts
+275,2022-01-01,all,Sabah,Beaufort
+52,2022-01-01,all,Sabah,Beluran
+216,2022-01-01,all,Sabah,Keningau
+68,2022-01-01,all,Sabah,Kinabatangan
+172,2022-01-01,all,Sabah,Kota Belud
+2175,2022-01-01,all,Sabah,Kota Kinabalu
+97,2022-01-01,all,Sabah,Kota Marudu
+48,2022-01-01,all,Sabah,Kota Penyu
+180,2022-01-01,all,Sabah,Kudat
+48,2022-01-01,all,Sabah,Kunak
+268,2022-01-01,all,Sabah,Lahad Datu
+0,2022-01-01,all,Sabah,Nabawan
+77,2022-01-01,all,Sabah,Papar
+0,2022-01-01,all,Sabah,Penampang
+72,2022-01-01,all,Sabah,Pitas
+0,2022-01-01,all,Sabah,Putatan
+110,2022-01-01,all,Sabah,Ranau
+400,2022-01-01,all,Sabah,Sandakan
+70,2022-01-01,all,Sabah,Semporna
+93,2022-01-01,all,Sabah,Sipitang
+49,2022-01-01,all,Sabah,Tambunan
+431,2022-01-01,all,Sabah,Tawau
+0,2022-01-01,all,Sabah,Telupid
+70,2022-01-01,all,Sabah,Tenom
+0,2022-01-01,all,Sabah,Tongad
+82,2022-01-01,all,Sabah,Tuaran
+4119,2022-01-01,all,Sarawak,All Districts
+0,2022-01-01,all,Sarawak,Asajaya
+68,2022-01-01,all,Sarawak,Bau
+0,2022-01-01,all,Sarawak,Belaga
+0,2022-01-01,all,Sarawak,Beluru
+48,2022-01-01,all,Sarawak,Betong
+302,2022-01-01,all,Sarawak,Bintulu
+0,2022-01-01,all,Sarawak,Bukit Mabong
+8,2022-01-01,all,Sarawak,Dalat
+46,2022-01-01,all,Sarawak,Daro
+0,2022-01-01,all,Sarawak,Julau
+0,2022-01-01,all,Sarawak,Kabong
+100,2022-01-01,all,Sarawak,Kanowit
+134,2022-01-01,all,Sarawak,Kapit
+1412,2022-01-01,all,Sarawak,Kuching
+46,2022-01-01,all,Sarawak,Lawas
+100,2022-01-01,all,Sarawak,Limbang
+0,2022-01-01,all,Sarawak,Lubok Antu
+46,2022-01-01,all,Sarawak,Lundu
+54,2022-01-01,all,Sarawak,Marudi
+0,2022-01-01,all,Sarawak,Matu
+0,2022-01-01,all,Sarawak,Meradong
+349,2022-01-01,all,Sarawak,Miri
+80,2022-01-01,all,Sarawak,Mukah
+0,2022-01-01,all,Sarawak,Pakan
+0,2022-01-01,all,Sarawak,Pusa
+128,2022-01-01,all,Sarawak,Samarahan
+106,2022-01-01,all,Sarawak,Saratok
+212,2022-01-01,all,Sarawak,Sarikei
+0,2022-01-01,all,Sarawak,Sebauh
+0,2022-01-01,all,Sarawak,Selangau
+84,2022-01-01,all,Sarawak,Serian
+662,2022-01-01,all,Sarawak,Sibu
+42,2022-01-01,all,Sarawak,Simunjan
+0,2022-01-01,all,Sarawak,Song
+92,2022-01-01,all,Sarawak,Sri Aman
+0,2022-01-01,all,Sarawak,Subis
+0,2022-01-01,all,Sarawak,Tanjung Manis
+0,2022-01-01,all,Sarawak,Tatau
+0,2022-01-01,all,Sarawak,Tebedu
+7640,2022-01-01,all,Selangor,All Districts
+3153,2022-01-01,all,Selangor,Gombak (Rawang)
+1087,2022-01-01,all,Selangor,Hulu Langat (Bangi)
+120,2022-01-01,all,Selangor,Hulu Selangor
+1261,2022-01-01,all,Selangor,Klang
+196,2022-01-01,all,Selangor,Kuala Langat
+114,2022-01-01,all,Selangor,Kuala Selangor
+490,2022-01-01,all,Selangor,Petaling (Subang Jaya)
+93,2022-01-01,all,Selangor,Sabak Bernam
+1126,2022-01-01,all,Selangor,Sepang
+1730,2022-01-01,all,Terengganu,All Districts
+140,2022-01-01,all,Terengganu,Besut
+100,2022-01-01,all,Terengganu,Dungun
+95,2022-01-01,all,Terengganu,Hulu Terengganu
+164,2022-01-01,all,Terengganu,Kemaman
+1155,2022-01-01,all,Terengganu,Kuala Terengganu
+0,2022-01-01,all,Terengganu,Marang
+76,2022-01-01,all,Terengganu,Setiu
+4874,2022-01-01,all,W.P. Kuala Lumpur,All Districts
+4874,2022-01-01,all,W.P. Kuala Lumpur,W.P. Kuala Lumpur
+122,2022-01-01,all,W.P. Labuan,All Districts
+122,2022-01-01,all,W.P. Labuan,W.P. Labuan
+637,2022-01-01,all,W.P. Putrajaya,All Districts
+637,2022-01-01,all,W.P. Putrajaya,W.P. Putrajaya

@@ -1,0 +1,144 @@
+{
+ "run_at": "2026-10-08T09:53:07Z",
+ "summary": {
+  "ok": 6,
+  "unchanged": 0,
+  "failed": 0,
+  "refused": 0
+ },
+ "results": [
+  {
+   "id": "hh_access_amenities",
+   "file": "data/raw/socioeconomic/hh_access_amenities.csv",
+   "method": "api",
+   "rows": 694,
+   "latest_year": 2024,
+   "previous_rows": 172,
+   "status": "ok",
+   "source": {
+    "catalogue_id": "hh_access_amenities",
+    "data_as_of": "2024",
+    "last_updated": "2026-09-30 12:00",
+    "next_update": "tbc",
+    "data_source": [
+     "DOSM"
+    ],
+    "update_frequency": "YEARLY",
+    "total": 694,
+    "limit": 1000000
+   },
+   "checked_at": "2026-10-08T09:53:07Z"
+  },
+  {
+   "id": "population_state",
+   "file": "data/raw/demography/population_state.json",
+   "method": "api_json_raw",
+   "rows": 25536,
+   "latest_year": 2023,
+   "previous_rows": 192,
+   "status": "ok",
+   "source": {
+    "catalogue_id": "population_state",
+    "data_as_of": "2023",
+    "last_updated": "2023-07-31 12:00",
+    "next_update": "2024-07-31 12:00",
+    "data_source": [
+     "DOSM"
+    ],
+    "update_frequency": "YEARLY",
+    "total": 25536,
+    "limit": 1000000
+   },
+   "checked_at": "2026-10-08T09:53:07Z"
+  },
+  {
+   "id": "hospital_beds_2022",
+   "file": "data/raw/healthcare/hospital_beds_2022.csv",
+   "method": "api",
+   "rows": 170,
+   "latest_year": 2022,
+   "previous_rows": 170,
+   "status": "ok",
+   "source": {
+    "catalogue_id": "hospital_beds",
+    "data_as_of": "2022-12-31 23:59",
+    "last_updated": "2024-09-01 12:00",
+    "next_update": "tbc",
+    "data_source": [
+     "MOH"
+    ],
+    "update_frequency": "YEARLY",
+    "total": 5468,
+    "limit": 1000000
+   },
+   "checked_at": "2026-10-08T09:53:07Z"
+  },
+  {
+   "id": "healthcare_staff",
+   "file": "data/raw/healthcare/healthcare_staff.csv",
+   "method": "api",
+   "rows": 765,
+   "latest_year": 2022,
+   "previous_rows": 765,
+   "status": "ok",
+   "source": {
+    "catalogue_id": "healthcare_staff",
+    "data_as_of": "2022-12-31 23:59",
+    "last_updated": "2024-09-01 12:00",
+    "next_update": "tbc",
+    "data_source": [
+     "MOH"
+    ],
+    "update_frequency": "YEARLY",
+    "total": 765,
+    "limit": 1000000
+   },
+   "checked_at": "2026-10-08T09:53:07Z"
+  },
+  {
+   "id": "deaths_early_childhood_state",
+   "file": "data/raw/health_outcomes/deaths_early_childhood_state.csv",
+   "method": "api",
+   "rows": 1950,
+   "latest_year": 2024,
+   "previous_rows": 708,
+   "status": "ok",
+   "source": {
+    "catalogue_id": "deaths_early_childhood_state",
+    "data_as_of": "2024",
+    "last_updated": "2025-10-16 12:00",
+    "next_update": "2026-10-15 12:30",
+    "data_source": [
+     "JPN",
+     "DOSM"
+    ],
+    "update_frequency": "YEARLY",
+    "total": 1950,
+    "limit": 1000000
+   },
+   "checked_at": "2026-10-08T09:53:07Z"
+  },
+  {
+   "id": "std_state",
+   "file": "data/raw/health_outcomes/std_state.csv",
+   "method": "api",
+   "rows": 480,
+   "latest_year": 2022,
+   "previous_rows": 480,
+   "status": "ok",
+   "source": {
+    "catalogue_id": "std_state",
+    "data_as_of": "2022",
+    "last_updated": "2024-09-01 12:00",
+    "next_update": "tbc",
+    "data_source": [
+     "MOH"
+    ],
+    "update_frequency": "YEARLY",
+    "total": 480,
+    "limit": 1000000
+   },
+   "checked_at": "2026-10-08T09:53:07Z"
+  }
+ ]
+}

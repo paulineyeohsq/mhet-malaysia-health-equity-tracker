@@ -1,6 +1,9 @@
-import type { InventoryDataset } from "../lib/inventoryMap";
+import { useData } from "../lib/useData";
+import type { InventoryDataset, InventoryFile } from "../lib/inventoryMap";
 
 export default function ProvenanceCard({ entry }: { entry: InventoryDataset }) {
+  const { data: inventory } = useData<InventoryFile>("dataset_inventory.json");
+  const status = inventory?.source_status?.[entry.id];
   return (
     <div className="rounded-lg border border-line-grid bg-surface p-4">
       <div className="flex items-start justify-between gap-2">
@@ -41,6 +44,15 @@ export default function ProvenanceCard({ entry }: { entry: InventoryDataset }) {
           <dd className="text-ink-primary">{entry.missingness}</dd>
         </div>
       </dl>
+      {status && (
+        <p className="mt-3 border-t border-line-grid pt-2 text-xs text-ink-secondary">
+          <span className="font-medium text-ink-primary">Publisher says: </span>
+          data as of {status.data_as_of ?? "not stated"}
+          {status.last_updated ? `, last updated ${status.last_updated.slice(0, 10)}` : ""}
+          {status.next_update ? `, next update ${status.next_update.slice(0, 10)}` : ""}. If this is later than the latest
+          year this dashboard shows, the next automatic refresh will pick it up.
+        </p>
+      )}
       <p className="mt-3 border-t border-line-grid pt-2 text-xs text-ink-secondary">
         <span className="font-medium text-ink-primary">Limitations: </span>
         {entry.limitations}

@@ -22,22 +22,22 @@ Design principles (matching transform_data.py / validate_data.py):
   - Every run appends a timestamped entry to data/raw/ingest_log.txt so the
     provenance of "when was this file last successfully refreshed" is never
     lost.
-  - Two fetch strategies are supported per dataset:
-      1. "csv"  — a direct CSV download from storage.dosm.gov.my /
+  - Three fetch strategies are supported per dataset:
+      1. "csv"  - a direct CSV download from storage.dosm.gov.my /
                   storage.data.gov.my (works for most datasets).
-      2. "api"  — the data.gov.my JSON API
-                  (api.data.gov.my/data-catalogue?id=...&limit=...&filter=...),
-                  used for datasets where the raw CSV endpoint has been
-                  observed to fail or truncate (large multi-year,
-                  multi-district files). The API is paginated here by
-                  looping over `filter_years` (one request per year) because
-                  the API's `limit=` parameter does not lift an underlying
-                  response-size cap on very large slices — narrowing by year
-                  keeps each request well under that cap.
-      3. "github" — a direct raw.githubusercontent.com fetch from the
-                  official dosm-malaysia/data-open mirror (used for
-                  administrative boundaries and historical census data that
-                  are not published through the data.gov.my catalogue API).
+      2. "api"  - the data.gov.my JSON API (api.data.gov.my/data-catalogue/?id=...),
+                  fetching the WHOLE dataset in one request, used where the raw CSV
+                  endpoint has been observed to fail. (It used to loop over a hard-coded
+                  list of years, which meant anything published later was never picked up.)
+      3. "github" - a direct raw.githubusercontent.com fetch from the official
+                  dosm-malaysia/data-open mirror (administrative boundaries and
+                  historical census data).
+  - Every run writes data/raw/ingest_report.json: per dataset, whether it was refreshed,
+    unchanged, failed or refused (a download with >10% fewer rows than the file on disk is
+    treated as truncated), its latest data year, and what the publisher itself says about
+    how current the dataset is (data_as_of / last_updated / next_update).
+  - Exit code 0 = everything fine, 3 = some datasets kept their previous file (see the
+    report), 2 = nothing could be fetched.
 
 Run: python3 scripts/ingest_data.py [--only id1,id2,...] [--dry-run]
 """
@@ -46,10 +46,12 @@ import argparse
 import csv
 import io
 import json
+import re
 import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlparse
 from urllib.request import urlopen, Request
 from urllib.error import URLError, HTTPError
 
@@ -91,15 +93,15 @@ DATASETS = [
      "method": "csv", "url": "https://storage.dosm.gov.my/hies/hh_inequality_state.csv"},
     {"id": "hh_inequality_district", "category": "socioeconomic", "filename": "hh_inequality_district.csv",
      "method": "csv", "url": "https://storage.dosm.gov.my/hies/hh_inequality_district.csv"},
-    {"id": "hh_access_amenities", "category": "socioeconomic", "filename": "hh_access_amenities_2022.csv",
-     "method": "api", "api_id": "hh_access_amenities", "filter_years": [2022],
+    {"id": "hh_access_amenities", "category": "socioeconomic", "filename": "hh_access_amenities.csv",
+     "method": "api", "api_id": "hh_access_amenities",
      "note": "Observed to fail as a direct CSV fetch in the original build (binary-data error from the CDN); the JSON API works reliably."},
     {"id": "hies_2019_snapshot", "category": "socioeconomic", "filename": "hies_2019_snapshot.csv",
      "method": "github", "url": "https://raw.githubusercontent.com/dosm-malaysia/data-open/main/datasets/economy/hies_2019.csv"},
 
     # -- Demography -----------------------------------------------------------
-    {"id": "population_state", "category": "demography", "filename": "population_state_2020_2023.json",
-     "method": "api_json_raw", "api_id": "population_state", "filter_years": [2020, 2021, 2022, 2023],
+    {"id": "population_state", "category": "demography", "filename": "population_state.json",
+     "method": "api_json_raw", "api_id": "population_state",
      "note": "Saved as JSON (not CSV) because transform_data.py's build_population_state() reads this file's dimensional (age/ethnicity/sex) records directly as JSON."},
     {"id": "census_district", "category": "demography", "filename": "census_district.csv",
      "method": "github", "url": "https://raw.githubusercontent.com/dosm-malaysia/data-open/main/datasets/census/census_district.csv"},
@@ -117,10 +119,10 @@ DATASETS = [
      "method": "csv", "url": "https://storage.data.gov.my/healthcare/hospital_beds.csv",
      "note": "National time series by bed type. If the direct CSV fails, fall back to method='api' with api_id='hospital_beds' and filter=[('type','all')] etc."},
     {"id": "hospital_beds_2022", "category": "healthcare", "filename": "hospital_beds_2022.csv",
-     "method": "api", "api_id": "hospital_beds", "filter_years": [2022],
-     "note": "State + district snapshot for 2022 only; the district-level breakdown only exists for this year in the source."},
+     "method": "api", "api_id": "hospital_beds", "keep": {"type": "all"}, "latest_year_only": True,
+     "note": "State + district snapshot of the latest year the publisher has released (2022 at the time of writing; the file name is historical), total beds only. The source also holds earlier years - see docs/DATA_SOURCES.md."},
     {"id": "healthcare_staff", "category": "healthcare", "filename": "healthcare_staff.csv",
-     "method": "api", "api_id": "healthcare_staff", "filter_years": list(range(2014, 2023)),
+     "method": "api", "api_id": "healthcare_staff",
      "note": "Direct CSV fetch observed to fail (binary-data error); JSON API paginated by year works reliably."},
 
     # -- Health outcomes ----------------------------------------------------------
@@ -129,7 +131,7 @@ DATASETS = [
     {"id": "death_maternal_state", "category": "health_outcomes", "filename": "death_maternal_state.csv",
      "method": "csv", "url": "https://storage.dosm.gov.my/demography/death_maternal_state.csv"},
     {"id": "deaths_early_childhood_state", "category": "health_outcomes", "filename": "deaths_early_childhood_state.csv",
-     "method": "api", "api_id": "deaths_early_childhood_state", "filter_years": list(range(2000, 2023)),
+     "method": "api", "api_id": "deaths_early_childhood_state",
      "note": "Direct CSV fetch observed to fail (binary-data error); JSON API paginated by year works reliably."},
     {"id": "birth_state", "category": "health_outcomes", "filename": "birth_state.csv",
      "method": "csv", "url": "https://storage.dosm.gov.my/demography/birth_state.csv"},
@@ -138,7 +140,7 @@ DATASETS = [
     {"id": "nutrition_status_u5_sex", "category": "health_outcomes", "filename": "nutrition_status_u5_sex.csv",
      "method": "csv", "url": "https://storage.data.gov.my/healthcare/nutrition_status_u5_sex.csv"},
     {"id": "std_state", "category": "health_outcomes", "filename": "std_state.csv",
-     "method": "api", "api_id": "std_state", "filter_years": list(range(2017, 2023)),
+     "method": "api", "api_id": "std_state",
      "note": "Direct CSV fetch observed to fail (binary-data error); JSON API paginated by year works reliably."},
     {"id": "death_sex_ethnic_state", "category": "health_outcomes", "filename": "death_sex_ethnic_state.csv",
      "method": "csv", "url": "https://storage.dosm.gov.my/demography/death_sex_ethnic_state.csv",
@@ -247,106 +249,134 @@ DATASETS = [
      "note": "National monthly only, by sector (total/local/local_public/local_private/imports/distribution); summed to an annual total (MKWh) per sector/year in transform_data.py."},
 ]
 
-API_BASE = "https://api.data.gov.my/data-catalogue"
+API_BASE = "https://api.data.gov.my/data-catalogue/"  # the trailing slash matters: without it the API answers with an empty body
+REPORT_PATH = RAW / "ingest_report.json"
+RETRIES = 3
+# A refreshed file with this much less data than the one on disk is treated as a truncated download, not as news.
+MAX_SHRINK = 0.10
 
 
 def log(msg: str):
     ts = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     line = f"[{ts}] {msg}"
     print(line)
-    with open(LOG_PATH, "a") as f:
+    with open(LOG_PATH, "a", encoding="utf-8") as f:
         f.write(line + "\n")
 
 
-def _http_get(url: str, timeout: int = 60) -> bytes:
-    req = Request(url, headers={"User-Agent": USER_AGENT})
-    with urlopen(req, timeout=timeout) as resp:
-        return resp.read()
+def _http_get(url: str, timeout: int = 90) -> bytes:
+    """GET with retries (transient 5xx / timeouts are common on the open-data CDN)."""
+    last: Exception | None = None
+    for attempt in range(RETRIES):
+        try:
+            req = Request(url, headers={"User-Agent": USER_AGENT})
+            with urlopen(req, timeout=timeout) as resp:
+                return resp.read()
+        except (URLError, HTTPError, TimeoutError, ConnectionError) as e:
+            last = e
+            if attempt < RETRIES - 1:
+                time.sleep(2 * 3**attempt)  # 2s, 6s
+    assert last is not None
+    raise last
 
 
-def fetch_csv(ds: dict) -> bytes | None:
-    try:
-        return _http_get(ds["url"])
-    except (URLError, HTTPError) as e:
-        log(f"  ERROR fetching CSV for {ds['id']}: {e}")
-        return None
+class IngestError(Exception):
+    pass
 
 
-def fetch_github(ds: dict) -> bytes | None:
-    try:
-        return _http_get(ds["url"])
-    except (URLError, HTTPError) as e:
-        log(f"  ERROR fetching GitHub mirror file for {ds['id']}: {e}")
-        return None
+def _check_not_html(content: bytes, what: str) -> None:
+    head = content[:200].lstrip().lower()
+    if head.startswith((b"<!doctype", b"<html", b"<?xml")):
+        raise IngestError(f"{what} returned an HTML/XML page instead of data")
 
 
-def fetch_api_year(api_id: str, year: int, extra_filters: list[tuple[str, str]] | None = None) -> list[dict]:
-    """Fetch one year's slice of a data.gov.my catalogue dataset via the JSON
-    API, narrowed with filter= so the response stays under the API's
-    underlying ~60-70KB size cap regardless of the limit= value."""
-    filters = [f"{year}-01-01@date"] if False else []  # placeholder, real filter built below
-    filter_parts = [f"{year}@year"]
-    if extra_filters:
-        filter_parts += [f"{v}@{k}" for k, v in extra_filters]
-    filter_str = ",".join(filter_parts)
-    url = f"{API_BASE}?id={api_id}&limit=10000&filter={filter_str}"
-    try:
-        raw = _http_get(url)
-    except (URLError, HTTPError) as e:
-        log(f"  ERROR fetching API year={year} for {api_id}: {e}")
+def _year_of(value) -> int | None:
+    m = re.match(r"\s*(\d{4})", str(value)) if value not in (None, "") else None
+    return int(m.group(1)) if m else None
+
+
+def _latest_year(rows: list[dict]) -> int | None:
+    years = [y for r in rows for y in (_year_of(r.get("date", r.get("year"))),) if y is not None]
+    return max(years) if years else None
+
+
+def _rows_of(content: bytes, ds: dict) -> list[dict]:
+    """Parse fetched bytes back into row dicts, for counting and the latest-year report. Not for geojson."""
+    if ds["filename"].endswith(".json"):
+        data = json.loads(content)
+        return data if isinstance(data, list) else []
+    if ds["filename"].endswith(".geojson"):
         return []
+    return list(csv.DictReader(io.StringIO(content.decode("utf-8-sig", "replace"))))
+
+
+def fetch_csv(ds: dict) -> tuple[bytes, dict | None]:
+    content = _http_get(ds["url"])
+    _check_not_html(content, "the CSV endpoint")
+    return content, None
+
+
+def fetch_github(ds: dict) -> tuple[bytes, dict | None]:
+    content = _http_get(ds["url"])
+    _check_not_html(content, "the GitHub mirror")
+    return content, None
+
+
+def fetch_api_all(ds: dict) -> tuple[list[dict], dict | None]:
+    """The whole dataset in one request, plus the publisher's own freshness metadata (`meta=true`).
+
+    This used to fetch one hard-coded year at a time (`filter=<year>@year`), which silently stopped picking up
+    anything published after the listed years - and, with the old URL (no trailing slash), returned nothing at all.
+    Optional per-dataset narrowing: `keep` ({column: value} the row must match) and `latest_year_only`."""
+    url = f"{API_BASE}?id={ds['api_id']}&limit=1000000&meta=true"
+    raw = _http_get(url, timeout=180)
     try:
         payload = json.loads(raw)
-    except json.JSONDecodeError:
-        log(f"  WARNING: non-JSON / truncated response for {api_id} year={year}, skipping this year")
-        return []
-    # The API's top-level shape has varied historically between a bare list
-    # and {"data": [...]}; handle both defensively.
+    except json.JSONDecodeError as e:
+        raise IngestError(f"the API answered with something that is not JSON ({e})")
+    meta = None
     if isinstance(payload, dict) and "data" in payload:
-        return payload["data"]
-    if isinstance(payload, list):
-        return payload
-    return []
+        meta = payload.get("meta")
+        rows = payload["data"]
+    elif isinstance(payload, list):
+        rows = payload
+    else:
+        raise IngestError("unrecognised API response shape")
+    if meta and meta.get("total") is not None and meta["total"] != len(rows):
+        raise IngestError(f"API reported {meta['total']} rows but returned {len(rows)} (truncated response)")
+    for column, value in (ds.get("keep") or {}).items():
+        rows = [r for r in rows if str(r.get(column)) == str(value)]
+    if ds.get("latest_year_only") and rows:
+        newest = _latest_year(rows)
+        rows = [r for r in rows if _year_of(r.get("date")) == newest]
+    return rows, meta
 
 
-def fetch_api(ds: dict) -> bytes | None:
-    """Fetch a dataset across multiple years via the JSON API and serialise
-    the concatenated result back to CSV bytes (so downstream raw/ files stay
-    uniformly CSV regardless of fetch method)."""
-    all_rows: list[dict] = []
-    for year in ds["filter_years"]:
-        rows = fetch_api_year(ds["api_id"], year)
-        all_rows.extend(rows)
-        time.sleep(0.2)  # be polite to the API
-    if not all_rows:
-        return None
-    # Union of all keys across all rows, stable order (first-seen).
+def fetch_api(ds: dict) -> tuple[bytes, dict | None]:
+    """API rows serialised to CSV so downstream raw/ files stay uniformly CSV regardless of fetch method."""
+    rows, meta = fetch_api_all(ds)
+    if not rows:
+        raise IngestError("the API returned no rows")
     fieldnames: list[str] = []
-    for r in all_rows:
+    for r in rows:
         for k in r.keys():
             if k not in fieldnames:
                 fieldnames.append(k)
     buf = io.StringIO()
-    writer = csv.DictWriter(buf, fieldnames=fieldnames)
+    writer = csv.DictWriter(buf, fieldnames=fieldnames, lineterminator="\n")
     writer.writeheader()
-    for r in all_rows:
+    for r in rows:
         writer.writerow(r)
-    return buf.getvalue().encode("utf-8")
+    return buf.getvalue().encode("utf-8"), meta
 
 
-def fetch_api_json_raw(ds: dict) -> bytes | None:
-    """Like fetch_api, but preserves the raw JSON record list instead of
-    flattening to CSV — used only for population_state, whose downstream
-    transform (transform_data.py: build_population_state) expects the
-    original dimensional JSON records (age/ethnicity/sex breakdowns)."""
-    all_rows: list[dict] = []
-    for year in ds["filter_years"]:
-        rows = fetch_api_year(ds["api_id"], year)
-        all_rows.extend(rows)
-        time.sleep(0.2)
-    if not all_rows:
-        return None
-    return json.dumps(all_rows, indent=1).encode("utf-8")
+def fetch_api_json_raw(ds: dict) -> tuple[bytes, dict | None]:
+    """Like fetch_api, but keeps the raw JSON records - used only for population_state, whose transform expects
+    the original dimensional records (age/ethnicity/sex)."""
+    rows, meta = fetch_api_all(ds)
+    if not rows:
+        raise IngestError("the API returned no rows")
+    return json.dumps(rows, indent=1).encode("utf-8"), meta
 
 
 FETCHERS = {
@@ -357,30 +387,87 @@ FETCHERS = {
 }
 
 
-def ingest_one(ds: dict, dry_run: bool = False) -> bool:
+def fetch_source_meta(ds: dict) -> dict | None:
+    """Best-effort: what the publisher says about its own dataset (data_as_of / last_updated / next_update).
+    Lets the app say "the source has not published anything newer" instead of looking like we are behind."""
+    cid = ds.get("api_id") or (Path(urlparse(ds.get("url", "")).path).stem if ds["method"] == "csv" else None)
+    if not cid:
+        return None
+    try:
+        payload = json.loads(_http_get(f"{API_BASE}?id={cid}&limit=1&meta=true", timeout=30))
+        meta = payload.get("meta") if isinstance(payload, dict) else None
+    except Exception:  # noqa: BLE001 - metadata is a nicety, never a reason to fail a refresh
+        return None
+    if not isinstance(meta, dict):
+        return None
+    return {k: meta.get(k) for k in ("data_as_of", "last_updated", "next_update", "update_frequency") if meta.get(k) is not None}
+
+
+def _count_rows(path: Path, ds: dict) -> int | None:
+    try:
+        return len(_rows_of(path.read_bytes(), ds))
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def ingest_one(ds: dict, dry_run: bool = False) -> dict:
+    """Refresh one raw file. Returns a result dict (never raises): status is ok / unchanged / failed / refused."""
     out_path = RAW / ds["category"] / ds["filename"]
     min_bytes = ds.get("min_bytes", DEFAULT_MIN_BYTES)
-    log(f"Ingesting {ds['id']} -> {out_path.relative_to(ROOT)}  (method={ds['method']})")
-    if "note" in ds:
-        log(f"  note: {ds['note']}")
-
+    result: dict = {"id": ds["id"], "file": str(out_path.relative_to(ROOT)).replace("\\", "/"), "method": ds["method"]}
+    log(f"Ingesting {ds['id']} -> {result['file']}  (method={ds['method']})")
     if dry_run:
-        log("  (dry run — not fetching)")
-        return True
+        log("  (dry run - not fetching)")
+        return {**result, "status": "dry-run"}
 
-    fetcher = FETCHERS[ds["method"]]
-    content = fetcher(ds)
+    try:
+        content, meta = FETCHERS[ds["method"]](ds)
+    except Exception as e:  # noqa: BLE001 - any failure leaves the previous file untouched
+        log(f"  FAILED: {e}. Previous file left UNCHANGED.")
+        return {**result, "status": "failed", "error": str(e)}
 
-    if content is None or len(content) < min_bytes:
-        got = 0 if content is None else len(content)
-        log(f"  FAILED (got {got} bytes, need >= {min_bytes}). "
-            f"Previous file at {out_path.relative_to(ROOT)} left UNCHANGED.")
-        return False
+    if len(content) < min_bytes:
+        log(f"  FAILED (got {len(content)} bytes, need >= {min_bytes}). Previous file left UNCHANGED.")
+        return {**result, "status": "failed", "error": f"only {len(content)} bytes"}
+
+    rows = _rows_of(content, ds)
+    result["rows"] = len(rows) if rows else None
+    result["latest_year"] = _latest_year(rows) if rows else None
+
+    if out_path.exists():
+        if out_path.read_bytes() == content:
+            log("  unchanged since last run")
+            return {**result, "status": "unchanged", "source": meta or fetch_source_meta(ds)}
+        old_rows = _count_rows(out_path, ds)
+        if old_rows and rows and len(rows) < old_rows * (1 - MAX_SHRINK) and not ds.get("allow_shrink"):
+            msg = f"new file has {len(rows)} rows vs {old_rows} on disk (more than {MAX_SHRINK:.0%} fewer) - looks truncated"
+            log(f"  REFUSED: {msg}. Previous file left UNCHANGED.")
+            return {**result, "status": "refused", "error": msg}
+        result["previous_rows"] = old_rows
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_bytes(content)
-    log(f"  OK — wrote {len(content):,} bytes")
-    return True
+    log(f"  OK - wrote {len(content):,} bytes ({result['rows']} rows, latest year {result['latest_year']})")
+    return {**result, "status": "ok", "source": meta or fetch_source_meta(ds)}
+
+
+def write_report(results: list[dict]) -> None:
+    """data/raw/ingest_report.json - what happened to every dataset in this run (merged with earlier runs for any
+    dataset not part of this one, so `--only` runs do not erase the rest)."""
+    previous: dict[str, dict] = {}
+    if REPORT_PATH.exists():
+        try:
+            previous = {r["id"]: r for r in json.loads(REPORT_PATH.read_text(encoding="utf-8")).get("results", [])}
+        except Exception:  # noqa: BLE001
+            previous = {}
+    for r in results:
+        previous[r["id"]] = {**r, "checked_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")}
+    merged = [previous[d["id"]] for d in DATASETS if d["id"] in previous]
+    summary = {s: sum(1 for r in merged if r["status"] == s) for s in ("ok", "unchanged", "failed", "refused")}
+    REPORT_PATH.write_text(
+        json.dumps({"run_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "summary": summary, "results": merged}, indent=1) + "\n",
+        encoding="utf-8",
+    )
 
 
 def main():
@@ -398,15 +485,21 @@ def main():
         log(f"No datasets matched --only={args.only!r}")
         sys.exit(1)
 
-    results = {"ok": 0, "failed": 0}
+    results = []
     for ds in targets:
-        ok = ingest_one(ds, dry_run=args.dry_run)
-        results["ok" if ok else "failed"] += 1
+        results.append(ingest_one(ds, dry_run=args.dry_run))
+        time.sleep(0.2)  # be polite to the open-data CDN
 
-    log(f"=== ingest_data.py run finished: {results['ok']} ok, {results['failed']} failed ===\n")
-    if results["failed"]:
-        print(f"\n{results['failed']} dataset(s) failed to refresh — previous versions retained. See {LOG_PATH.relative_to(ROOT)}.")
-        sys.exit(2 if results["ok"] == 0 else 0)
+    if not args.dry_run:
+        write_report(results)
+    counts = {s: sum(1 for r in results if r["status"] == s) for s in ("ok", "unchanged", "failed", "refused")}
+    log(f"=== ingest_data.py run finished: {counts} ===\n")
+    bad = counts["failed"] + counts["refused"]
+    if bad:
+        names = ", ".join(r["id"] for r in results if r["status"] in ("failed", "refused"))
+        print(f"\n{bad} dataset(s) did not refresh - previous versions retained: {names}. See {REPORT_PATH.relative_to(ROOT)}.")
+        # 2 = nothing worked (abort the pipeline); 3 = partial (the pipeline continues, the workflow raises an issue)
+        sys.exit(2 if counts["ok"] + counts["unchanged"] == 0 else 3)
 
 
 if __name__ == "__main__":

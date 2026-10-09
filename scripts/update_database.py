@@ -46,8 +46,19 @@ going stale (both before the sync, so the published copy is current):
     data/inventory/dataset_inventory.json (shown on the Overview/Methodology)
   - stamp_data_years(): writes the latest year of data in each published JSON file
     to `data_files` in the inventory, which the app shows as "data as of" per page.
+  - stamp_source_status(): copies what each publisher says about its own dataset
+    (data_as_of / last_updated / next_update, collected by ingest_data.py) into `source_status` in
+    the inventory, so the app can say "the publisher has not released anything newer" rather than
+    looking out of date
   - sync_doc_counts(): rewrites the dataset counts in README.md and
     docs/DATA_SOURCES.md from that same inventory
+
+Unattended use (the scheduled workflow): ingest may exit 3 ("some datasets kept their previous file"),
+which is not fatal - the previous file is a valid, older version. After syncing, write_update_summary()
+compares the new published files with the previous ones and writes data/processed/update_summary.json:
+which files changed, any anomaly (a file lost more than 10% of its rows, its latest year went backwards,
+a dataset failed to refresh) and `needs_review`. The workflow publishes straight to main only when
+`needs_review` is false; otherwise it opens a pull request for a human instead.
 
 Run: python3 scripts/update_database.py [--skip-ingest]
 """
@@ -138,12 +149,15 @@ def log(msg: str):
         f.write(line + "\n")
 
 
-def run_stage(name: str, cmd: list[str]) -> bool:
+def run_stage(name: str, cmd: list[str], ok_codes: tuple[int, ...] = (0,)) -> bool:
     log(f"--- stage: {name} ---")
     log(f"  running: {' '.join(cmd)}")
     result = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True)
     if result.stdout:
         log(f"  stdout (tail): {result.stdout[-2000:]}")
+    if result.returncode in ok_codes and result.returncode != 0:
+        log(f"  OK with warnings (exit code {result.returncode}): see data/raw/ingest_report.json")
+        return True
     if result.returncode != 0:
         log(f"  FAILED (exit code {result.returncode})")
         if result.stderr:
@@ -287,6 +301,97 @@ def stamp_data_years(
     return years
 
 
+def _stamp_block(text: str, key: str, obj: dict, after_key: str) -> str:
+    """Insert or replace a top-level `"key": {...},` block (one entry per line, values are flat) in the
+    inventory text, directly after `after_key`, without re-serialising the rest of the file."""
+    nl = "\r\n" if "\r\n" in text else "\n"
+    lines = [f'    {json.dumps(k)}: {json.dumps(v, ensure_ascii=False)}' for k, v in obj.items()]
+    block = f'"{key}": {{' + nl + ("," + nl).join(lines) + nl + "  },"
+    pattern = rf'"{key}":\s*\{{(?:[^{{}}]|\{{[^{{}}]*\}})*\}},?'
+    if re.search(pattern, text):
+        return re.sub(pattern, lambda m: block, text, count=1)
+    new, n = re.subn(rf'("{after_key}":\s*(?:"[^"]*"|\{{(?:[^{{}}]|\{{[^{{}}]*\}})*\}}),?)', lambda m: m.group(1) + nl + "  " + block, text, count=1)
+    assert n == 1, f"could not find `{after_key}` to stamp `{key}` after"
+    return new
+
+
+def stamp_source_status(report_path: Path = ROOT / "data" / "raw" / "ingest_report.json", inventory_path: Path = INVENTORY_PATH) -> int:
+    """Write `source_status` ({dataset id: what the publisher says}) into the inventory from the ingest report."""
+    if not report_path.exists():
+        return 0
+    report = json.loads(report_path.read_text(encoding="utf-8"))
+    status: dict[str, dict] = {}
+    for r in report.get("results", []):
+        src = r.get("source")
+        if src:
+            status[r["id"]] = src
+    if not status:
+        return 0
+    text = _stamp_block(_read_exact(inventory_path), "source_status", dict(sorted(status.items())), "data_files")
+    json.loads(text)  # refuse to write anything that is not valid JSON
+    _write_exact(inventory_path, text)
+    return len(status)
+
+
+SUMMARY_PATH = PROCESSED / "update_summary.json"
+MAX_ROW_LOSS = 0.10  # a published file with >10% fewer rows than before is an anomaly
+
+
+def _row_count(path: Path) -> int | None:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return len(data) if isinstance(data, list) else None
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def write_update_summary() -> dict:
+    """Compare the freshly built published files with the previous ones (the .backup snapshot taken at the start
+    of the run) and write data/processed/update_summary.json. `needs_review` is true when anything looks wrong,
+    which makes the unattended workflow open a pull request instead of publishing."""
+    changed, anomalies = [], []
+    for _src_rel, dest_rel in PUBLISHED_FILES:
+        new_path, old_path = FRONTEND_DATA / dest_rel, FRONTEND_DATA_BACKUP / dest_rel
+        if not new_path.exists():
+            anomalies.append(f"{dest_rel}: missing after the refresh")
+            continue
+        if not old_path.exists():
+            changed.append({"file": dest_rel, "note": "new file"})
+            continue
+        if new_path.read_bytes() == old_path.read_bytes():
+            continue
+        entry: dict = {"file": dest_rel}
+        if dest_rel.endswith(".json") and dest_rel != "dataset_inventory.json" and not dest_rel.startswith("geo/"):
+            before_rows, after_rows = _row_count(old_path), _row_count(new_path)
+            before_year, after_year = latest_data_year(old_path), latest_data_year(new_path)
+            entry.update(rows_before=before_rows, rows_after=after_rows, latest_year_before=before_year, latest_year_after=after_year)
+            if before_rows and after_rows is not None and after_rows < before_rows * (1 - MAX_ROW_LOSS):
+                anomalies.append(f"{dest_rel}: rows fell from {before_rows} to {after_rows}")
+            if before_year and after_year and after_year < before_year:
+                anomalies.append(f"{dest_rel}: latest data year went backwards ({before_year} to {after_year})")
+        changed.append(entry)
+
+    report_path = ROOT / "data" / "raw" / "ingest_report.json"
+    not_refreshed: list[str] = []
+    if report_path.exists():
+        for r in json.loads(report_path.read_text(encoding="utf-8")).get("results", []):
+            if r.get("status") in ("failed", "refused"):
+                not_refreshed.append(f"{r['id']}: {r.get('error', r['status'])}")
+    anomalies += [f"not refreshed - {x}" for x in not_refreshed]
+
+    summary = {
+        "generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "changed_files": changed,
+        "anomalies": anomalies,
+        "needs_review": bool(anomalies),
+    }
+    SUMMARY_PATH.write_text(json.dumps(summary, indent=1) + "\n", encoding="utf-8")
+    log(f"Update summary: {len(changed)} file(s) changed, {len(anomalies)} anomaly(ies), needs_review={summary['needs_review']}")
+    for a in anomalies:
+        log(f"  anomaly: {a}")
+    return summary
+
+
 COUNT_MARKER = re.compile(r"(<!--count:(ingested|reference|notingested)-->)[^<]*(<!--/count-->)")
 
 
@@ -331,7 +436,8 @@ def main():
     backup_frontend_data()
 
     if not args.skip_ingest:
-        if not run_stage("ingest_data.py", [sys.executable, str(SCRIPTS / "ingest_data.py")]):
+        # exit 3 = some datasets kept their previous (older but valid) file; only "nothing fetched" aborts.
+        if not run_stage("ingest_data.py", [sys.executable, str(SCRIPTS / "ingest_data.py")], ok_codes=(0, 3)):
             log("ABORTED after ingest failure. frontend/public/data/ left unchanged.")
             sys.exit(1)
     else:
@@ -347,6 +453,7 @@ def main():
     try:
         log(f"Stamped dataset_inventory.json last_refreshed = {stamp_inventory_refresh()}")
         log(f"Stamped dataset_inventory.json data_files for {len(stamp_data_years())} files")
+        log(f"Stamped dataset_inventory.json source_status for {stamp_source_status()} datasets")
         log(f"Synced dataset counts into README/docs: {sync_doc_counts()}")
     except Exception as e:  # bookkeeping must never block publishing refreshed data
         log(f"WARNING: metadata bookkeeping failed ({e!r}) - continuing without it.")
@@ -355,6 +462,11 @@ def main():
         log("ABORTED after sync failure. Restoring previous valid frontend/public/data/ contents.")
         restore_frontend_data()
         sys.exit(1)
+
+    try:
+        write_update_summary()
+    except Exception as e:  # noqa: BLE001 - the summary is advisory for the workflow, never a reason to undo a good refresh
+        log(f"WARNING: could not write update_summary.json ({e!r})")
 
     log("=== update_database.py run finished successfully ===\n")
 

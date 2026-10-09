@@ -89,9 +89,9 @@ All from the Household Income and Expenditure Survey (HIES), an irregular
 ### Access to Basic Amenities by State & District
 - **URL:** https://data.gov.my/data-catalogue/hh_access_amenities
 - **Source org:** DOSM (from HIES)
-- **Date range:** 2022 ingested (dataset covers 2016–2024) · **Geographic resolution:** district · **Update frequency:** ~biennial
+- **Date range:** 2016–2024 · **Geographic resolution:** district · **Update frequency:** ~biennial
 - % of households with piped water, sanitary latrines, and electricity, by state and district.
-- **Limitations:** Only the 2022 cross-section was ingested in this build; 2016/2018/2020/2024 exist upstream and can be pulled by re-running `ingest_data.py`. A few remote Sabah/Sarawak districts (e.g. Kalabakan) have null electricity/piped-water values in the source itself.
+- **Limitations:** Ingested for every year the publisher holds (2016–2024) and joined to the district income/poverty rows for 2019, 2022 and 2024. A few remote Sabah/Sarawak districts (e.g. Kalabakan) have null electricity/piped-water values in the source itself.
 
 ### HIES 2019 State Snapshot (DOSM GitHub mirror) — *cross-validation reference only*
 - **URL:** https://github.com/dosm-malaysia/data-open/tree/main/datasets/economy
@@ -288,7 +288,7 @@ agency.
   open aggregate table. **Path forward:** a formal data request to MOH's
   NHMS unit, or watch data.gov.my for a future release.
 - **District-level health outcomes** (mortality, morbidity beyond the
-  2022-only hospital-beds/amenities snapshots already ingested). Not
+  latest-year hospital-beds snapshot already ingested). Not
   published at district resolution anywhere in MOH's or DOSM's open
   catalogues — almost certainly suppressed for small-area privacy/
   disclosure-risk reasons. **Path forward:** a formal MOH data-sharing

@@ -62,7 +62,7 @@ the district-level HIES series covers. **Rows: 480** (172 distinct
 state+district pairs × up to 3 years: 2019, 2022, 2024). Built by
 `build_socioeconomic_district()`, joining `hh_income_district.csv` +
 `hh_poverty_district.csv` + `hh_inequality_district.csv` +
-`hh_access_amenities_2022.csv` on (canonical state, canonical district,
+`hh_access_amenities.csv` on (canonical state, canonical district,
 year). "All Districts" aggregate rows are dropped (`canonical_district()`
 returns `None` for them, which the build function explicitly filters out —
 those totals belong in the state-level file, not here).
@@ -77,9 +77,9 @@ those totals belong in the state-level file, not here).
 | `poverty_absolute` | number | % | never null in this file | `2.9` |
 | `poverty_relative` | number | % | never null in this file | `9` |
 | `gini` | number | index, 0–1 | never null in this file | `0.295` |
-| `sanitation_pct` | number | % of households | null for 322 of 480 rows — the amenities source (`hh_access_amenities_2022.csv`) was ingested for the **2022 cross-section only** (per `dataset_inventory.json`'s `hh_access_amenities` entry), so 2019 and 2024 rows are always null for this field | `100` |
-| `electricity_pct` | number | % of households | null for 323 of 480 rows — same 2022-only reason as `sanitation_pct` | `100` |
-| `piped_water_pct` | number | % of households | null for 323 of 480 rows — same 2022-only reason | `100` |
+| `sanitation_pct` | number | % of households | null for a few remote Sabah/Sarawak districts that the source leaves blank (18 of 480 rows at the last refresh). The amenities source (`hh_access_amenities.csv`) is ingested for all its years (2016-2024) and joined to the district rows by year, so the 2019, 2022 and 2024 rows are all populated | `100` |
+| `electricity_pct` | number | % of households | same join and the same blanks in the source as `sanitation_pct` (13 of 480 rows) | `100` |
+| `piped_water_pct` | number | % of households | same (13 of 480 rows) | `100` |
 
 ---
 
@@ -87,7 +87,7 @@ those totals belong in the state-level file, not here).
 
 **Grain:** one row per state per year per sex. **Rows: 192** (16 states ×
 4 years [2020–2023] × 3 sex categories: `male`, `female`, `overall`). Built
-by `build_population_state()` from `population_state_2020_2023.json`
+by `build_population_state()` from `population_state.json`
 (the DOSM intercensal-estimate API slice), filtering to
 `age == "overall_age"` and `ethnicity == "overall_ethnicity"` only — the
 full source also has 5-year age bands and 7 ethnicity categories, not
