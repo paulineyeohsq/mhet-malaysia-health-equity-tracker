@@ -55,7 +55,7 @@
 - [healthcare/mnha_moh.csv](healthcare__mnha_moh.md)
 - [healthcare/sanitation_access.csv](healthcare__sanitation_access.md)
 - [healthcare/water_access.csv](healthcare__water_access.md)
-- [socioeconomic/hh_access_amenities_2022.csv](socioeconomic__hh_access_amenities_2022.md)
+- [socioeconomic/hh_access_amenities.csv](socioeconomic__hh_access_amenities.md)
 - [socioeconomic/hh_income.csv](socioeconomic__hh_income.md)
 - [socioeconomic/hh_income_district.csv](socioeconomic__hh_income_district.md)
 - [socioeconomic/hh_income_state.csv](socioeconomic__hh_income_state.md)

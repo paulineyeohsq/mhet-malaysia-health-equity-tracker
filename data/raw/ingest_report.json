@@ -1,20 +1,154 @@
 {
- "run_at": "2026-10-08T09:53:07Z",
+ "run_at": "2026-10-09T03:56:53Z",
  "summary": {
-  "ok": 6,
-  "unchanged": 0,
+  "ok": 7,
+  "unchanged": 51,
   "failed": 0,
   "refused": 0
  },
  "results": [
+  {
+   "id": "hh_income",
+   "file": "data/raw/socioeconomic/hh_income.csv",
+   "method": "csv",
+   "rows": 22,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2025-12-31 12:00",
+    "next_update": "\u2014",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "hh_income_state",
+   "file": "data/raw/socioeconomic/hh_income_state.csv",
+   "method": "csv",
+   "rows": 319,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2025-12-31 12:00",
+    "next_update": "\u2014",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "hh_income_district",
+   "file": "data/raw/socioeconomic/hh_income_district.csv",
+   "method": "csv",
+   "rows": 480,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2025-12-31 12:00",
+    "next_update": "\u2014",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "hh_poverty",
+   "file": "data/raw/socioeconomic/hh_poverty.csv",
+   "method": "csv",
+   "rows": 21,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2025-12-31 12:00",
+    "next_update": "\u2014",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "hh_poverty_state",
+   "file": "data/raw/socioeconomic/hh_poverty_state.csv",
+   "method": "csv",
+   "rows": 310,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2025-12-31 12:00",
+    "next_update": "\u2014",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "hh_poverty_district",
+   "file": "data/raw/socioeconomic/hh_poverty_district.csv",
+   "method": "csv",
+   "rows": 480,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2025-12-31 12:00",
+    "next_update": "\u2014",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "hh_inequality",
+   "file": "data/raw/socioeconomic/hh_inequality.csv",
+   "method": "csv",
+   "rows": 21,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2025-12-31 12:00",
+    "next_update": "\u2014",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "hh_inequality_state",
+   "file": "data/raw/socioeconomic/hh_inequality_state.csv",
+   "method": "csv",
+   "rows": 289,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2025-12-31 12:00",
+    "next_update": "\u2014",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "hh_inequality_district",
+   "file": "data/raw/socioeconomic/hh_inequality_district.csv",
+   "method": "csv",
+   "rows": 480,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2025-12-31 12:00",
+    "next_update": "\u2014",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
   {
    "id": "hh_access_amenities",
    "file": "data/raw/socioeconomic/hh_access_amenities.csv",
    "method": "api",
    "rows": 694,
    "latest_year": 2024,
-   "previous_rows": 172,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "catalogue_id": "hh_access_amenities",
     "data_as_of": "2024",
@@ -27,7 +161,17 @@
     "total": 694,
     "limit": 1000000
    },
-   "checked_at": "2026-10-08T09:53:07Z"
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "hies_2019_snapshot",
+   "file": "data/raw/socioeconomic/hies_2019_snapshot.csv",
+   "method": "github",
+   "rows": 998,
+   "latest_year": null,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
   },
   {
    "id": "population_state",
@@ -35,8 +179,7 @@
    "method": "api_json_raw",
    "rows": 25536,
    "latest_year": 2023,
-   "previous_rows": 192,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "catalogue_id": "population_state",
     "data_as_of": "2023",
@@ -49,7 +192,52 @@
     "total": 25536,
     "limit": 1000000
    },
-   "checked_at": "2026-10-08T09:53:07Z"
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "census_district",
+   "file": "data/raw/demography/census_district.csv",
+   "method": "github",
+   "rows": 960,
+   "latest_year": 2020,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "administrative_1_state",
+   "file": "data/raw/geo/administrative_1_state.geojson",
+   "method": "github",
+   "rows": null,
+   "latest_year": null,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "administrative_2_district",
+   "file": "data/raw/geo/administrative_2_district.geojson",
+   "method": "github",
+   "rows": null,
+   "latest_year": null,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "hospital_beds_national",
+   "file": "data/raw/healthcare/hospital_beds_national.csv",
+   "method": "csv",
+   "rows": 5468,
+   "latest_year": 2022,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2022-12-31 23:59",
+    "last_updated": "2024-09-01 12:00",
+    "next_update": "tbc",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
   },
   {
    "id": "hospital_beds_2022",
@@ -57,8 +245,7 @@
    "method": "api",
    "rows": 170,
    "latest_year": 2022,
-   "previous_rows": 170,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "catalogue_id": "hospital_beds",
     "data_as_of": "2022-12-31 23:59",
@@ -71,7 +258,7 @@
     "total": 5468,
     "limit": 1000000
    },
-   "checked_at": "2026-10-08T09:53:07Z"
+   "checked_at": "2026-10-09T03:56:53Z"
   },
   {
    "id": "healthcare_staff",
@@ -79,8 +266,7 @@
    "method": "api",
    "rows": 765,
    "latest_year": 2022,
-   "previous_rows": 765,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "catalogue_id": "healthcare_staff",
     "data_as_of": "2022-12-31 23:59",
@@ -93,7 +279,27 @@
     "total": 765,
     "limit": 1000000
    },
-   "checked_at": "2026-10-08T09:53:07Z"
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "death_state",
+   "file": "data/raw/health_outcomes/death_state.csv",
+   "method": "csv",
+   "rows": 390,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "death_maternal_state",
+   "file": "data/raw/health_outcomes/death_maternal_state.csv",
+   "method": "csv",
+   "rows": 390,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
   },
   {
    "id": "deaths_early_childhood_state",
@@ -101,8 +307,7 @@
    "method": "api",
    "rows": 1950,
    "latest_year": 2024,
-   "previous_rows": 708,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "catalogue_id": "deaths_early_childhood_state",
     "data_as_of": "2024",
@@ -116,7 +321,42 @@
     "total": 1950,
     "limit": 1000000
    },
-   "checked_at": "2026-10-08T09:53:07Z"
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "birth_state",
+   "file": "data/raw/health_outcomes/birth_state.csv",
+   "method": "csv",
+   "rows": 390,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "infant_immunisation",
+   "file": "data/raw/health_outcomes/infant_immunisation.csv",
+   "method": "csv",
+   "rows": 120,
+   "latest_year": 2023,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2023",
+    "last_updated": "2024-11-20 12:00",
+    "next_update": "2025-11-30 12:00",
+    "update_frequency": "ANNUAL"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "nutrition_status_u5_sex",
+   "file": "data/raw/health_outcomes/nutrition_status_u5_sex.csv",
+   "method": "csv",
+   "rows": 30,
+   "latest_year": 2019,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
   },
   {
    "id": "std_state",
@@ -124,8 +364,7 @@
    "method": "api",
    "rows": 480,
    "latest_year": 2022,
-   "previous_rows": 480,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "catalogue_id": "std_state",
     "data_as_of": "2022",
@@ -138,7 +377,469 @@
     "total": 480,
     "limit": 1000000
    },
-   "checked_at": "2026-10-08T09:53:07Z"
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "death_sex_ethnic_state",
+   "file": "data/raw/health_outcomes/death_sex_ethnic_state.csv",
+   "method": "csv",
+   "rows": 8190,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "death_district_sex",
+   "file": "data/raw/health_outcomes/death_district_sex.csv",
+   "method": "csv",
+   "rows": 2361,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "birth_district_sex",
+   "file": "data/raw/health_outcomes/birth_district_sex.csv",
+   "method": "csv",
+   "rows": 2361,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "stillbirth_state",
+   "file": "data/raw/health_outcomes/stillbirth_state.csv",
+   "method": "csv",
+   "rows": 390,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "sdg_03-3-1",
+   "file": "data/raw/health_outcomes/sdg_03-3-1.csv",
+   "method": "csv",
+   "rows": 21,
+   "latest_year": 2022,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2022",
+    "last_updated": "2024-09-01 12:00",
+    "next_update": "tbc",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "population_parlimen",
+   "file": "data/raw/demography/population_parlimen.csv",
+   "method": "csv",
+   "rows": 5550,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "population_dun",
+   "file": "data/raw/demography/population_dun.csv",
+   "method": "csv",
+   "rows": 15000,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "population_district_full",
+   "file": "data/raw/demography/population_district_full.csv",
+   "method": "csv",
+   "rows": 451668,
+   "latest_year": 2026,
+   "previous_rows": 383040,
+   "status": "ok",
+   "source": {
+    "data_as_of": "2026",
+    "last_updated": "2026-10-07 13:00",
+    "next_update": "2027-10-31 12:00",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "hies_malaysia_percentile",
+   "file": "data/raw/socioeconomic/hies_malaysia_percentile.csv",
+   "method": "csv",
+   "rows": 1200,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2025-10-08 12:00",
+    "next_update": "TBC",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "marriages",
+   "file": "data/raw/demography/marriages.csv",
+   "method": "csv",
+   "rows": 12,
+   "latest_year": 2022,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2022-12-31 23:59",
+    "last_updated": "2023-11-23 12:00",
+    "next_update": "2024-11-21 12:00",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "marriages_state",
+   "file": "data/raw/demography/marriages_state.csv",
+   "method": "csv",
+   "rows": 192,
+   "latest_year": 2022,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2022-12-31 23:59",
+    "last_updated": "2023-11-23 12:00",
+    "next_update": "2024-11-21 12:00",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "fertility_state",
+   "file": "data/raw/demography/fertility_state.csv",
+   "method": "csv",
+   "rows": 3000,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2025-10-16 12:00",
+    "next_update": "2026-10-15 12:30",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "blood_donations_state",
+   "file": "data/raw/health_outcomes/blood_donations_state.csv",
+   "method": "csv",
+   "rows": 493090,
+   "latest_year": 2026,
+   "previous_rows": 492505,
+   "status": "ok",
+   "source": {
+    "data_as_of": "2026-10-08 23:59",
+    "last_updated": "2026-10-09 10:00",
+    "next_update": "2026-10-10 10:00",
+    "update_frequency": "DAILY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "organ_pledges_state",
+   "file": "data/raw/health_outcomes/organ_pledges_state.csv",
+   "method": "csv",
+   "rows": 103632,
+   "latest_year": 2026,
+   "previous_rows": 103504,
+   "status": "ok",
+   "source": {
+    "data_as_of": "2026-10-08 23:59",
+    "last_updated": "2026-10-09 10:00",
+    "next_update": "2026-10-10 10:00",
+    "update_frequency": "DAILY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "pekab40_screenings_state",
+   "file": "data/raw/health_outcomes/pekab40_screenings_state.csv",
+   "method": "csv",
+   "rows": 43728,
+   "latest_year": 2026,
+   "previous_rows": 43600,
+   "status": "ok",
+   "source": {
+    "data_as_of": "2026-10-05 23:59",
+    "last_updated": "2026-10-06 10:00",
+    "next_update": "2026-10-07 10:00",
+    "update_frequency": "DAILY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "covid_cases",
+   "file": "data/raw/health_outcomes/covid_cases.csv",
+   "method": "csv",
+   "rows": 33218,
+   "latest_year": 2025,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2025-05-31 23:59",
+    "last_updated": "2025-06-01 12:00",
+    "next_update": "\u2014",
+    "update_frequency": "DAILY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "covid_cases_age",
+   "file": "data/raw/health_outcomes/covid_cases_age.csv",
+   "method": "csv",
+   "rows": 33218,
+   "latest_year": 2025,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2025-05-31 23:59",
+    "last_updated": "2025-06-01 12:00",
+    "next_update": "\u2014",
+    "update_frequency": "DAILY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "covid_deaths_linelist",
+   "file": "data/raw/health_outcomes/covid_deaths_linelist.csv",
+   "method": "csv",
+   "rows": 37351,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "mnha",
+   "file": "data/raw/healthcare/mnha.csv",
+   "method": "csv",
+   "rows": 60,
+   "latest_year": 2022,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2022",
+    "last_updated": "2024-11-11",
+    "next_update": "-",
+    "update_frequency": "ANNUAL"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "mnha_moh",
+   "file": "data/raw/healthcare/mnha_moh.csv",
+   "method": "csv",
+   "rows": 10,
+   "latest_year": 2022,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2022",
+    "last_updated": "2024-11-11",
+    "next_update": "-",
+    "update_frequency": "ANNUAL"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "sanitation_access",
+   "file": "data/raw/healthcare/sanitation_access.csv",
+   "method": "csv",
+   "rows": 308,
+   "latest_year": 2022,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2022",
+    "last_updated": "2024-09-01 12:00",
+    "next_update": "tbc",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "water_access",
+   "file": "data/raw/healthcare/water_access.csv",
+   "method": "csv",
+   "rows": 1035,
+   "latest_year": 2022,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2022-12-31 23:59",
+    "last_updated": "2024-09-01 12:00",
+    "next_update": "tbc",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "electricity_access",
+   "file": "data/raw/healthcare/electricity_access.csv",
+   "method": "csv",
+   "rows": 56,
+   "latest_year": 2024,
+   "previous_rows": 44,
+   "status": "ok",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2026-10-08 12:00",
+    "next_update": "tbc",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "nutrition_children_strata",
+   "file": "data/raw/health_outcomes/nutrition_status_u5_strata.csv",
+   "method": "csv",
+   "rows": 30,
+   "latest_year": 2019,
+   "status": "unchanged",
+   "source": null,
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "forest_reserve",
+   "file": "data/raw/environment/forest_reserve.csv",
+   "method": "csv",
+   "rows": 20,
+   "latest_year": 2022,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2022",
+    "last_updated": "2026-09-30 12:00",
+    "next_update": "tbc",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "forest_reserve_state",
+   "file": "data/raw/environment/forest_reserve_state.csv",
+   "method": "csv",
+   "rows": 340,
+   "latest_year": 2022,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2022",
+    "last_updated": "2026-09-30 12:00",
+    "next_update": "tbc",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "air_pollution",
+   "file": "data/raw/environment/air_pollution.csv",
+   "method": "csv",
+   "rows": 576,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024-12-31 23:59",
+    "last_updated": "2026-09-30 12:00",
+    "next_update": "tbc",
+    "update_frequency": "MONTHLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "ghg_emissions",
+   "file": "data/raw/environment/ghg_emissions.csv",
+   "method": "csv",
+   "rows": 56,
+   "latest_year": 2021,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2021",
+    "last_updated": "2024-09-01",
+    "next_update": "-",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "water_pollution_basin",
+   "file": "data/raw/environment/water_pollution_basin.csv",
+   "method": "csv",
+   "rows": 225,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024",
+    "last_updated": "2026-09-30 12:00",
+    "next_update": "tbc",
+    "update_frequency": "YEARLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "water_consumption",
+   "file": "data/raw/environment/water_consumption.csv",
+   "method": "csv",
+   "rows": 660,
+   "latest_year": 2024,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2024-12-31 23:59",
+    "last_updated": "2026-09-30 12:00",
+    "next_update": "tbc",
+    "update_frequency": "ANNUAL"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "water_production",
+   "file": "data/raw/environment/water_production.csv",
+   "method": "csv",
+   "rows": 345,
+   "latest_year": 2022,
+   "status": "unchanged",
+   "source": {
+    "data_as_of": "2022-12-31 23:59",
+    "last_updated": "2024-09-01 12:00",
+    "next_update": "tbc",
+    "update_frequency": "ANNUAL"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "electricity_consumption",
+   "file": "data/raw/environment/electricity_consumption.csv",
+   "method": "csv",
+   "rows": 612,
+   "latest_year": 2026,
+   "previous_rows": 468,
+   "status": "ok",
+   "source": {
+    "data_as_of": "2026-06-30 23:59",
+    "last_updated": "2026-10-08 12:00",
+    "next_update": "tbc",
+    "update_frequency": "MONTHLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
+  },
+  {
+   "id": "electricity_supply",
+   "file": "data/raw/environment/electricity_supply.csv",
+   "method": "csv",
+   "rows": 612,
+   "latest_year": 2026,
+   "previous_rows": 468,
+   "status": "ok",
+   "source": {
+    "data_as_of": "2026-06-30 23:59",
+    "last_updated": "2026-10-08 12:00",
+    "next_update": "tbc",
+    "update_frequency": "MONTHLY"
+   },
+   "checked_at": "2026-10-09T03:56:53Z"
   }
  ]
 }

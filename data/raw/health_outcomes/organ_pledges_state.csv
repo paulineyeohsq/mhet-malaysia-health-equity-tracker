@@ -6411,7 +6411,7 @@ date,state,pledges
 2026-08-02,Johor,4
 2026-08-03,Johor,9
 2026-08-04,Johor,10
-2026-08-05,Johor,22
+2026-08-05,Johor,21
 2026-08-06,Johor,9
 2026-08-07,Johor,11
 2026-08-08,Johor,10
@@ -6462,12 +6462,20 @@ date,state,pledges
 2026-09-22,Johor,15
 2026-09-23,Johor,15
 2026-09-24,Johor,13
-2026-09-25,Johor,9
+2026-09-25,Johor,8
 2026-09-26,Johor,28
 2026-09-27,Johor,44
 2026-09-28,Johor,12
 2026-09-29,Johor,15
 2026-09-30,Johor,9
+2026-10-01,Johor,8
+2026-10-02,Johor,26
+2026-10-03,Johor,13
+2026-10-04,Johor,13
+2026-10-05,Johor,7
+2026-10-06,Johor,8
+2026-10-07,Johor,9
+2026-10-08,Johor,7
 2009-01-14,Kedah,0
 2009-01-15,Kedah,0
 2009-01-16,Kedah,0
@@ -12890,13 +12898,13 @@ date,state,pledges
 2026-08-12,Kedah,5
 2026-08-13,Kedah,204
 2026-08-14,Kedah,160
-2026-08-15,Kedah,116
+2026-08-15,Kedah,115
 2026-08-16,Kedah,195
 2026-08-17,Kedah,152
 2026-08-18,Kedah,115
 2026-08-19,Kedah,95
 2026-08-20,Kedah,96
-2026-08-21,Kedah,124
+2026-08-21,Kedah,123
 2026-08-22,Kedah,164
 2026-08-23,Kedah,114
 2026-08-24,Kedah,78
@@ -12917,7 +12925,7 @@ date,state,pledges
 2026-09-08,Kedah,8
 2026-09-09,Kedah,15
 2026-09-10,Kedah,25
-2026-09-11,Kedah,28
+2026-09-11,Kedah,27
 2026-09-12,Kedah,13
 2026-09-13,Kedah,26
 2026-09-14,Kedah,26
@@ -12928,7 +12936,7 @@ date,state,pledges
 2026-09-19,Kedah,42
 2026-09-20,Kedah,5
 2026-09-21,Kedah,6
-2026-09-22,Kedah,14
+2026-09-22,Kedah,13
 2026-09-23,Kedah,4
 2026-09-24,Kedah,6
 2026-09-25,Kedah,6
@@ -12937,6 +12945,14 @@ date,state,pledges
 2026-09-28,Kedah,6
 2026-09-29,Kedah,10
 2026-09-30,Kedah,4
+2026-10-01,Kedah,4
+2026-10-02,Kedah,8
+2026-10-03,Kedah,6
+2026-10-04,Kedah,4
+2026-10-05,Kedah,1
+2026-10-06,Kedah,11
+2026-10-07,Kedah,7
+2026-10-08,Kedah,17
 2009-01-14,Kelantan,0
 2009-01-15,Kelantan,0
 2009-01-16,Kelantan,0
@@ -19349,7 +19365,7 @@ date,state,pledges
 2026-08-02,Kelantan,1
 2026-08-03,Kelantan,0
 2026-08-04,Kelantan,3
-2026-08-05,Kelantan,4
+2026-08-05,Kelantan,3
 2026-08-06,Kelantan,3
 2026-08-07,Kelantan,1
 2026-08-08,Kelantan,3
@@ -19406,6 +19422,14 @@ date,state,pledges
 2026-09-28,Kelantan,4
 2026-09-29,Kelantan,4
 2026-09-30,Kelantan,1
+2026-10-01,Kelantan,2
+2026-10-02,Kelantan,2
+2026-10-03,Kelantan,3
+2026-10-04,Kelantan,2
+2026-10-05,Kelantan,2
+2026-10-06,Kelantan,4
+2026-10-07,Kelantan,1
+2026-10-08,Kelantan,3
 2009-01-14,Melaka,0
 2009-01-15,Melaka,0
 2009-01-16,Melaka,0
@@ -24885,7 +24909,7 @@ date,state,pledges
 2024-01-12,Melaka,0
 2024-01-13,Melaka,1
 2024-01-14,Melaka,1
-2024-01-15,Melaka,1
+2024-01-15,Melaka,0
 2024-01-16,Melaka,0
 2024-01-17,Melaka,0
 2024-01-18,Melaka,2
@@ -25718,7 +25742,7 @@ date,state,pledges
 2026-04-24,Melaka,4
 2026-04-25,Melaka,0
 2026-04-26,Melaka,11
-2026-04-27,Melaka,42
+2026-04-27,Melaka,41
 2026-04-28,Melaka,14
 2026-04-29,Melaka,11
 2026-04-30,Melaka,15
@@ -25833,9 +25857,9 @@ date,state,pledges
 2026-08-17,Melaka,49
 2026-08-18,Melaka,38
 2026-08-19,Melaka,47
-2026-08-20,Melaka,43
+2026-08-20,Melaka,42
 2026-08-21,Melaka,32
-2026-08-22,Melaka,59
+2026-08-22,Melaka,58
 2026-08-23,Melaka,48
 2026-08-24,Melaka,23
 2026-08-25,Melaka,24
@@ -25875,6 +25899,14 @@ date,state,pledges
 2026-09-28,Melaka,9
 2026-09-29,Melaka,5
 2026-09-30,Melaka,2
+2026-10-01,Melaka,3
+2026-10-02,Melaka,5
+2026-10-03,Melaka,2
+2026-10-04,Melaka,4
+2026-10-05,Melaka,3
+2026-10-06,Melaka,6
+2026-10-07,Melaka,5
+2026-10-08,Melaka,1
 2009-01-14,Negeri Sembilan,0
 2009-01-15,Negeri Sembilan,0
 2009-01-16,Negeri Sembilan,0
@@ -31380,7 +31412,7 @@ date,state,pledges
 2024-02-07,Negeri Sembilan,1
 2024-02-08,Negeri Sembilan,1
 2024-02-09,Negeri Sembilan,1
-2024-02-10,Negeri Sembilan,2
+2024-02-10,Negeri Sembilan,1
 2024-02-11,Negeri Sembilan,1
 2024-02-12,Negeri Sembilan,1
 2024-02-13,Negeri Sembilan,1
@@ -32304,9 +32336,9 @@ date,state,pledges
 2026-08-19,Negeri Sembilan,73
 2026-08-20,Negeri Sembilan,47
 2026-08-21,Negeri Sembilan,85
-2026-08-22,Negeri Sembilan,89
+2026-08-22,Negeri Sembilan,88
 2026-08-23,Negeri Sembilan,59
-2026-08-24,Negeri Sembilan,62
+2026-08-24,Negeri Sembilan,61
 2026-08-25,Negeri Sembilan,50
 2026-08-26,Negeri Sembilan,26
 2026-08-27,Negeri Sembilan,17
@@ -32344,6 +32376,14 @@ date,state,pledges
 2026-09-28,Negeri Sembilan,4
 2026-09-29,Negeri Sembilan,6
 2026-09-30,Negeri Sembilan,2
+2026-10-01,Negeri Sembilan,3
+2026-10-02,Negeri Sembilan,4
+2026-10-03,Negeri Sembilan,6
+2026-10-04,Negeri Sembilan,5
+2026-10-05,Negeri Sembilan,5
+2026-10-06,Negeri Sembilan,3
+2026-10-07,Negeri Sembilan,5
+2026-10-08,Negeri Sembilan,4
 2009-01-14,Pahang,0
 2009-01-15,Pahang,0
 2009-01-16,Pahang,0
@@ -38813,6 +38853,14 @@ date,state,pledges
 2026-09-28,Pahang,3
 2026-09-29,Pahang,2
 2026-09-30,Pahang,3
+2026-10-01,Pahang,3
+2026-10-02,Pahang,4
+2026-10-03,Pahang,12
+2026-10-04,Pahang,2
+2026-10-05,Pahang,2
+2026-10-06,Pahang,2
+2026-10-07,Pahang,4
+2026-10-08,Pahang,4
 2009-01-14,Perak,0
 2009-01-15,Perak,0
 2009-01-16,Perak,0
@@ -45247,7 +45295,7 @@ date,state,pledges
 2026-08-24,Perak,70
 2026-08-25,Perak,183
 2026-08-26,Perak,118
-2026-08-27,Perak,79
+2026-08-27,Perak,78
 2026-08-28,Perak,30
 2026-08-29,Perak,28
 2026-08-30,Perak,40
@@ -45282,6 +45330,14 @@ date,state,pledges
 2026-09-28,Perak,7
 2026-09-29,Perak,10
 2026-09-30,Perak,5
+2026-10-01,Perak,10
+2026-10-02,Perak,14
+2026-10-03,Perak,4
+2026-10-04,Perak,10
+2026-10-05,Perak,9
+2026-10-06,Perak,11
+2026-10-07,Perak,6
+2026-10-08,Perak,4
 2009-01-14,Perlis,0
 2009-01-15,Perlis,0
 2009-01-16,Perlis,0
@@ -51751,6 +51807,14 @@ date,state,pledges
 2026-09-28,Perlis,0
 2026-09-29,Perlis,1
 2026-09-30,Perlis,3
+2026-10-01,Perlis,1
+2026-10-02,Perlis,1
+2026-10-03,Perlis,1
+2026-10-04,Perlis,0
+2026-10-05,Perlis,1
+2026-10-06,Perlis,12
+2026-10-07,Perlis,0
+2026-10-08,Perlis,1
 2009-01-14,Pulau Pinang,1
 2009-01-15,Pulau Pinang,0
 2009-01-16,Pulau Pinang,0
@@ -57241,7 +57305,7 @@ date,state,pledges
 2024-01-23,Pulau Pinang,2
 2024-01-24,Pulau Pinang,9
 2024-01-25,Pulau Pinang,5
-2024-01-26,Pulau Pinang,7
+2024-01-26,Pulau Pinang,6
 2024-01-27,Pulau Pinang,4
 2024-01-28,Pulau Pinang,3
 2024-01-29,Pulau Pinang,2
@@ -57993,7 +58057,7 @@ date,state,pledges
 2026-02-13,Pulau Pinang,1
 2026-02-14,Pulau Pinang,2
 2026-02-15,Pulau Pinang,1
-2026-02-16,Pulau Pinang,3
+2026-02-16,Pulau Pinang,2
 2026-02-17,Pulau Pinang,2
 2026-02-18,Pulau Pinang,2
 2026-02-19,Pulau Pinang,4
@@ -58122,7 +58186,7 @@ date,state,pledges
 2026-06-22,Pulau Pinang,6
 2026-06-23,Pulau Pinang,14
 2026-06-24,Pulau Pinang,5
-2026-06-25,Pulau Pinang,11
+2026-06-25,Pulau Pinang,10
 2026-06-26,Pulau Pinang,2
 2026-06-27,Pulau Pinang,1
 2026-06-28,Pulau Pinang,7
@@ -58220,6 +58284,14 @@ date,state,pledges
 2026-09-28,Pulau Pinang,6
 2026-09-29,Pulau Pinang,15
 2026-09-30,Pulau Pinang,6
+2026-10-01,Pulau Pinang,4
+2026-10-02,Pulau Pinang,7
+2026-10-03,Pulau Pinang,9
+2026-10-04,Pulau Pinang,3
+2026-10-05,Pulau Pinang,7
+2026-10-06,Pulau Pinang,5
+2026-10-07,Pulau Pinang,7
+2026-10-08,Pulau Pinang,4
 2009-01-14,Sabah,0
 2009-01-15,Sabah,0
 2009-01-16,Sabah,0
@@ -63606,7 +63678,7 @@ date,state,pledges
 2023-10-11,Sabah,1
 2023-10-12,Sabah,8
 2023-10-13,Sabah,7
-2023-10-14,Sabah,4
+2023-10-14,Sabah,3
 2023-10-15,Sabah,4
 2023-10-16,Sabah,14
 2023-10-17,Sabah,9
@@ -64420,7 +64492,7 @@ date,state,pledges
 2026-01-02,Sabah,3
 2026-01-03,Sabah,2
 2026-01-04,Sabah,2
-2026-01-05,Sabah,33
+2026-01-05,Sabah,32
 2026-01-06,Sabah,11
 2026-01-07,Sabah,32
 2026-01-08,Sabah,22
@@ -64689,6 +64761,14 @@ date,state,pledges
 2026-09-28,Sabah,7
 2026-09-29,Sabah,4
 2026-09-30,Sabah,3
+2026-10-01,Sabah,5
+2026-10-02,Sabah,15
+2026-10-03,Sabah,5
+2026-10-04,Sabah,6
+2026-10-05,Sabah,11
+2026-10-06,Sabah,3
+2026-10-07,Sabah,3
+2026-10-08,Sabah,6
 2009-01-14,Sarawak,0
 2009-01-15,Sarawak,0
 2009-01-16,Sarawak,0
@@ -70136,7 +70216,7 @@ date,state,pledges
 2023-12-11,Sarawak,5
 2023-12-12,Sarawak,8
 2023-12-13,Sarawak,8
-2023-12-14,Sarawak,15
+2023-12-14,Sarawak,14
 2023-12-15,Sarawak,4
 2023-12-16,Sarawak,4
 2023-12-17,Sarawak,4
@@ -70195,7 +70275,7 @@ date,state,pledges
 2024-02-08,Sarawak,9
 2024-02-09,Sarawak,0
 2024-02-10,Sarawak,2
-2024-02-11,Sarawak,2
+2024-02-11,Sarawak,1
 2024-02-12,Sarawak,4
 2024-02-13,Sarawak,0
 2024-02-14,Sarawak,2
@@ -70751,7 +70831,7 @@ date,state,pledges
 2025-08-17,Sarawak,3
 2025-08-18,Sarawak,27
 2025-08-19,Sarawak,36
-2025-08-20,Sarawak,25
+2025-08-20,Sarawak,24
 2025-08-21,Sarawak,7
 2025-08-22,Sarawak,9
 2025-08-23,Sarawak,5
@@ -70921,7 +71001,7 @@ date,state,pledges
 2026-02-03,Sarawak,1
 2026-02-04,Sarawak,1
 2026-02-05,Sarawak,3
-2026-02-06,Sarawak,5
+2026-02-06,Sarawak,4
 2026-02-07,Sarawak,1
 2026-02-08,Sarawak,3
 2026-02-09,Sarawak,2
@@ -71158,6 +71238,14 @@ date,state,pledges
 2026-09-28,Sarawak,4
 2026-09-29,Sarawak,4
 2026-09-30,Sarawak,5
+2026-10-01,Sarawak,19
+2026-10-02,Sarawak,110
+2026-10-03,Sarawak,84
+2026-10-04,Sarawak,35
+2026-10-05,Sarawak,30
+2026-10-06,Sarawak,12
+2026-10-07,Sarawak,15
+2026-10-08,Sarawak,16
 2009-01-14,Selangor,0
 2009-01-15,Selangor,0
 2009-01-16,Selangor,0
@@ -76227,7 +76315,7 @@ date,state,pledges
 2022-11-28,Selangor,43
 2022-11-29,Selangor,37
 2022-11-30,Selangor,54
-2022-12-01,Selangor,62
+2022-12-01,Selangor,61
 2022-12-02,Selangor,35
 2022-12-03,Selangor,37
 2022-12-04,Selangor,61
@@ -77073,7 +77161,7 @@ date,state,pledges
 2025-03-23,Selangor,9
 2025-03-24,Selangor,12
 2025-03-25,Selangor,9
-2025-03-26,Selangor,11
+2025-03-26,Selangor,10
 2025-03-27,Selangor,12
 2025-03-28,Selangor,11
 2025-03-29,Selangor,5
@@ -77222,7 +77310,7 @@ date,state,pledges
 2025-08-19,Selangor,100
 2025-08-20,Selangor,133
 2025-08-21,Selangor,62
-2025-08-22,Selangor,56
+2025-08-22,Selangor,55
 2025-08-23,Selangor,32
 2025-08-24,Selangor,55
 2025-08-25,Selangor,267
@@ -77471,9 +77559,9 @@ date,state,pledges
 2026-04-25,Selangor,15
 2026-04-26,Selangor,104
 2026-04-27,Selangor,317
-2026-04-28,Selangor,211
+2026-04-28,Selangor,210
 2026-04-29,Selangor,115
-2026-04-30,Selangor,61
+2026-04-30,Selangor,60
 2026-05-01,Selangor,34
 2026-05-02,Selangor,25
 2026-05-03,Selangor,39
@@ -77581,13 +77669,13 @@ date,state,pledges
 2026-08-13,Selangor,70
 2026-08-14,Selangor,158
 2026-08-15,Selangor,249
-2026-08-16,Selangor,464
+2026-08-16,Selangor,463
 2026-08-17,Selangor,318
 2026-08-18,Selangor,405
 2026-08-19,Selangor,311
 2026-08-20,Selangor,265
 2026-08-21,Selangor,305
-2026-08-22,Selangor,380
+2026-08-22,Selangor,379
 2026-08-23,Selangor,252
 2026-08-24,Selangor,187
 2026-08-25,Selangor,207
@@ -77615,9 +77703,9 @@ date,state,pledges
 2026-09-16,Selangor,32
 2026-09-17,Selangor,33
 2026-09-18,Selangor,44
-2026-09-19,Selangor,68
+2026-09-19,Selangor,67
 2026-09-20,Selangor,29
-2026-09-21,Selangor,23
+2026-09-21,Selangor,22
 2026-09-22,Selangor,40
 2026-09-23,Selangor,36
 2026-09-24,Selangor,29
@@ -77627,6 +77715,14 @@ date,state,pledges
 2026-09-28,Selangor,35
 2026-09-29,Selangor,22
 2026-09-30,Selangor,31
+2026-10-01,Selangor,22
+2026-10-02,Selangor,34
+2026-10-03,Selangor,31
+2026-10-04,Selangor,17
+2026-10-05,Selangor,28
+2026-10-06,Selangor,13
+2026-10-07,Selangor,18
+2026-10-08,Selangor,24
 2009-01-14,Terengganu,0
 2009-01-15,Terengganu,0
 2009-01-16,Terengganu,0
@@ -83827,7 +83923,7 @@ date,state,pledges
 2026-01-02,Terengganu,1
 2026-01-03,Terengganu,2
 2026-01-04,Terengganu,1
-2026-01-05,Terengganu,50
+2026-01-05,Terengganu,49
 2026-01-06,Terengganu,20
 2026-01-07,Terengganu,32
 2026-01-08,Terengganu,29
@@ -84096,6 +84192,14 @@ date,state,pledges
 2026-09-28,Terengganu,2
 2026-09-29,Terengganu,3
 2026-09-30,Terengganu,1
+2026-10-01,Terengganu,1
+2026-10-02,Terengganu,5
+2026-10-03,Terengganu,3
+2026-10-04,Terengganu,1
+2026-10-05,Terengganu,2
+2026-10-06,Terengganu,0
+2026-10-07,Terengganu,3
+2026-10-08,Terengganu,0
 2009-01-14,W.P. Kuala Lumpur,0
 2009-01-15,W.P. Kuala Lumpur,0
 2009-01-16,W.P. Kuala Lumpur,0
@@ -90248,7 +90352,7 @@ date,state,pledges
 2025-11-15,W.P. Kuala Lumpur,2
 2025-11-16,W.P. Kuala Lumpur,3
 2025-11-17,W.P. Kuala Lumpur,4
-2025-11-18,W.P. Kuala Lumpur,3
+2025-11-18,W.P. Kuala Lumpur,2
 2025-11-19,W.P. Kuala Lumpur,3
 2025-11-20,W.P. Kuala Lumpur,8
 2025-11-21,W.P. Kuala Lumpur,5
@@ -90563,8 +90667,16 @@ date,state,pledges
 2026-09-26,W.P. Kuala Lumpur,7
 2026-09-27,W.P. Kuala Lumpur,15
 2026-09-28,W.P. Kuala Lumpur,8
-2026-09-29,W.P. Kuala Lumpur,15
+2026-09-29,W.P. Kuala Lumpur,14
 2026-09-30,W.P. Kuala Lumpur,11
+2026-10-01,W.P. Kuala Lumpur,9
+2026-10-02,W.P. Kuala Lumpur,20
+2026-10-03,W.P. Kuala Lumpur,10
+2026-10-04,W.P. Kuala Lumpur,9
+2026-10-05,W.P. Kuala Lumpur,7
+2026-10-06,W.P. Kuala Lumpur,8
+2026-10-07,W.P. Kuala Lumpur,6
+2026-10-08,W.P. Kuala Lumpur,6
 2009-01-14,W.P. Labuan,0
 2009-01-15,W.P. Labuan,0
 2009-01-16,W.P. Labuan,0
@@ -97034,6 +97146,14 @@ date,state,pledges
 2026-09-28,W.P. Labuan,0
 2026-09-29,W.P. Labuan,0
 2026-09-30,W.P. Labuan,1
+2026-10-01,W.P. Labuan,0
+2026-10-02,W.P. Labuan,0
+2026-10-03,W.P. Labuan,0
+2026-10-04,W.P. Labuan,1
+2026-10-05,W.P. Labuan,0
+2026-10-06,W.P. Labuan,0
+2026-10-07,W.P. Labuan,0
+2026-10-08,W.P. Labuan,0
 2009-01-14,W.P. Putrajaya,0
 2009-01-15,W.P. Putrajaya,0
 2009-01-16,W.P. Putrajaya,0
@@ -103503,3 +103623,11 @@ date,state,pledges
 2026-09-28,W.P. Putrajaya,0
 2026-09-29,W.P. Putrajaya,3
 2026-09-30,W.P. Putrajaya,0
+2026-10-01,W.P. Putrajaya,1
+2026-10-02,W.P. Putrajaya,0
+2026-10-03,W.P. Putrajaya,1
+2026-10-04,W.P. Putrajaya,0
+2026-10-05,W.P. Putrajaya,2
+2026-10-06,W.P. Putrajaya,2
+2026-10-07,W.P. Putrajaya,1
+2026-10-08,W.P. Putrajaya,1

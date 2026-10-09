@@ -1,15 +1,15 @@
 # Validation report: `data/raw/health_outcomes/pekab40_screenings_state.csv`
 
-- Rows: **43600**
+- Rows: **43728**
 - Columns: `date, state, screenings`
 
 ## Missingness
 
 | column | non-missing | missing (blank) | % missing |
 |---|---|---|---|
-| date | 43600 | 0 | 0.0% |
-| state | 43600 | 0 | 0.0% |
-| screenings | 43600 | 0 | 0.0% |
+| date | 43728 | 0 | 0.0% |
+| state | 43728 | 0 | 0.0% |
+| screenings | 43728 | 0 | 0.0% |
 
 ## Duplicates
 
