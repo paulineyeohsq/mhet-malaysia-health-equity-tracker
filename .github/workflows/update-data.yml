@@ -109,9 +109,11 @@ jobs:
           # Things that change on every run without being data (logs, the generated backup) are not "a change".
           git add -A
           git reset -q -- frontend/public/data/.backup 2>/dev/null || true
-          # Run logs, the inventory's refresh date and publisher metadata, and the validation reports change on every
-          # run without the data having changed, so they alone do not count as "something changed".
-          ignorable='^(data/processed/(update_log|transform_log)\.txt|data/processed/update_summary\.json|data/raw/ingest_report\.json|data/validation_reports/.*|data/inventory/dataset_inventory\.json|frontend/public/data/dataset_inventory\.json|README\.md|docs/DATA_SOURCES\.md)$'
+          # Run logs and the validation reports change on every run without the data having changed, so they alone do
+          # not count as "something changed". The inventory does count: it carries the baseline (ETags / catalogue
+          # timestamps) that the home page's "Check for newer data" compares against, so it must be committed even when
+          # the data itself is identical, or the button would keep reporting an update that has already been applied.
+          ignorable='^(data/processed/(update_log|transform_log)\.txt|data/processed/update_summary\.json|data/raw/ingest_report\.json|data/validation_reports/.*|README\.md|docs/DATA_SOURCES\.md)$'
           if ! git diff --cached --name-only | grep -vE "$ignorable" | grep -q .; then
             echo "action=none" >> "$GITHUB_OUTPUT"
             echo "No data changed this run."

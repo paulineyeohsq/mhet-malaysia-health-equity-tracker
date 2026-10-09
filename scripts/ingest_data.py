@@ -264,20 +264,24 @@ def log(msg: str):
         f.write(line + "\n")
 
 
-def _http_get(url: str, timeout: int = 90) -> bytes:
-    """GET with retries (transient 5xx / timeouts are common on the open-data CDN)."""
+def _http_get_with_headers(url: str, timeout: int = 90) -> tuple[bytes, dict]:
+    """GET with retries (transient 5xx / timeouts are common on the open-data CDN). Returns body and headers."""
     last: Exception | None = None
     for attempt in range(RETRIES):
         try:
             req = Request(url, headers={"User-Agent": USER_AGENT})
             with urlopen(req, timeout=timeout) as resp:
-                return resp.read()
+                return resp.read(), {k.lower(): v for k, v in resp.headers.items()}
         except (URLError, HTTPError, TimeoutError, ConnectionError) as e:
             last = e
             if attempt < RETRIES - 1:
                 time.sleep(2 * 3**attempt)  # 2s, 6s
     assert last is not None
     raise last
+
+
+def _http_get(url: str, timeout: int = 90) -> bytes:
+    return _http_get_with_headers(url, timeout)[0]
 
 
 class IngestError(Exception):
@@ -310,8 +314,18 @@ def _rows_of(content: bytes, ds: dict) -> list[dict]:
     return list(csv.DictReader(io.StringIO(content.decode("utf-8-sig", "replace"))))
 
 
+def _http_signature(url: str, headers: dict) -> dict:
+    """What the server said about this exact file, so "has the publisher changed it since?" is one cheap HEAD request."""
+    sig = {"http_url": url}
+    if headers.get("etag"):
+        sig["etag"] = headers["etag"]
+    if headers.get("last-modified"):
+        sig["last_modified"] = headers["last-modified"]
+    return sig
+
+
 def fetch_csv(ds: dict) -> tuple[bytes, dict | None]:
-    content = _http_get(ds["url"])
+    content, headers = _http_get_with_headers(ds["url"])
     _check_not_html(content, "the CSV endpoint")
     since = ds.get("since_year")
     if since:
@@ -325,13 +339,13 @@ def fetch_csv(ds: dict) -> tuple[bytes, dict | None]:
             if y is not None and y >= since:
                 writer.writerow(row)
         content = buf.getvalue().encode("utf-8")
-    return content, None
+    return content, {"_http": _http_signature(ds["url"], headers)}
 
 
 def fetch_github(ds: dict) -> tuple[bytes, dict | None]:
-    content = _http_get(ds["url"])
+    content, headers = _http_get_with_headers(ds["url"])
     _check_not_html(content, "the GitHub mirror")
-    return content, None
+    return content, {"_http": _http_signature(ds["url"], headers)}
 
 
 def fetch_api_all(ds: dict) -> tuple[list[dict], dict | None]:
@@ -412,7 +426,10 @@ def fetch_source_meta(ds: dict) -> dict | None:
         return None
     if not isinstance(meta, dict):
         return None
-    return {k: meta.get(k) for k in ("data_as_of", "last_updated", "next_update", "update_frequency") if meta.get(k) is not None}
+    out = {k: meta.get(k) for k in ("data_as_of", "last_updated", "next_update", "update_frequency") if meta.get(k) is not None}
+    if out:
+        out["api_id"] = cid  # lets the app's "check for newer data" ask the publisher the same question later
+    return out
 
 
 def _count_rows(path: Path, ds: dict) -> int | None:
@@ -442,6 +459,16 @@ def ingest_one(ds: dict, dry_run: bool = False) -> dict:
         log(f"  FAILED (got {len(content)} bytes, need >= {min_bytes}). Previous file left UNCHANGED.")
         return {**result, "status": "failed", "error": f"only {len(content)} bytes"}
 
+    meta = dict(meta) if meta else {}
+    http_sig = meta.pop("_http", None)
+    publisher = {k: meta[k] for k in ("data_as_of", "last_updated", "next_update", "update_frequency") if meta.get(k) is not None}
+    source = publisher or fetch_source_meta(ds) or {}
+    if "api_id" not in source and ds["method"] in ("api", "api_json_raw"):
+        source["api_id"] = ds["api_id"]
+    if http_sig:
+        source.update(http_sig)
+    source = source or None
+
     rows = _rows_of(content, ds)
     result["rows"] = len(rows) if rows else None
     result["latest_year"] = _latest_year(rows) if rows else None
@@ -449,7 +476,7 @@ def ingest_one(ds: dict, dry_run: bool = False) -> dict:
     if out_path.exists():
         if out_path.read_bytes() == content:
             log("  unchanged since last run")
-            return {**result, "status": "unchanged", "source": meta or fetch_source_meta(ds)}
+            return {**result, "status": "unchanged", "source": source}
         old_rows = _count_rows(out_path, ds)
         if old_rows and rows and len(rows) < old_rows * (1 - MAX_SHRINK) and not ds.get("allow_shrink"):
             msg = f"new file has {len(rows)} rows vs {old_rows} on disk (more than {MAX_SHRINK:.0%} fewer) - looks truncated"
@@ -460,7 +487,7 @@ def ingest_one(ds: dict, dry_run: bool = False) -> dict:
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_bytes(content)
     log(f"  OK - wrote {len(content):,} bytes ({result['rows']} rows, latest year {result['latest_year']})")
-    return {**result, "status": "ok", "source": meta or fetch_source_meta(ds)}
+    return {**result, "status": "ok", "source": source}
 
 
 def write_report(results: list[dict]) -> None:

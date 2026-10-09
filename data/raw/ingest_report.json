@@ -1,8 +1,8 @@
 {
- "run_at": "2026-10-09T06:41:18Z",
+ "run_at": "2026-10-09T06:57:40Z",
  "summary": {
-  "ok": 8,
-  "unchanged": 50,
+  "ok": 9,
+  "unchanged": 49,
   "failed": 0,
   "refused": 0
  },
@@ -260,20 +260,16 @@
    "method": "api",
    "rows": 765,
    "latest_year": 2022,
-   "status": "unchanged",
+   "previous_rows": 765,
+   "status": "ok",
    "source": {
-    "catalogue_id": "healthcare_staff",
     "data_as_of": "2022-12-31 23:59",
     "last_updated": "2024-09-01 12:00",
     "next_update": "tbc",
-    "data_source": [
-     "MOH"
-    ],
     "update_frequency": "YEARLY",
-    "total": 765,
-    "limit": 1000000
+    "api_id": "healthcare_staff"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T06:57:40Z"
   },
   {
    "id": "death_state",
@@ -282,8 +278,12 @@
    "rows": 390,
    "latest_year": 2024,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://storage.dosm.gov.my/demography/death_state.csv",
+    "etag": "\"3996aa757c152d73b5a61768a7195092\"",
+    "last_modified": "Tue, 07 Jul 2026 15:43:35 GMT"
+   },
+   "checked_at": "2026-10-09T06:57:40Z"
   },
   {
    "id": "death_maternal_state",
@@ -562,15 +562,19 @@
    "method": "csv",
    "rows": 43728,
    "latest_year": 2026,
-   "previous_rows": 43600,
+   "previous_rows": 43728,
    "status": "ok",
    "source": {
     "data_as_of": "2026-10-05 23:59",
     "last_updated": "2026-10-06 10:00",
     "next_update": "2026-10-07 10:00",
-    "update_frequency": "DAILY"
+    "update_frequency": "DAILY",
+    "api_id": "pekab40_screenings_state",
+    "http_url": "https://storage.data.gov.my/healthcare/pekab40_screenings_state.csv",
+    "etag": "\"dba84a08f6677cf7bb2a74c7b4194326\"",
+    "last_modified": "Fri, 09 Oct 2026 00:01:49 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T06:57:40Z"
   },
   {
    "id": "covid_cases",

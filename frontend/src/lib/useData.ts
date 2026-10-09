@@ -27,7 +27,9 @@ export function useData<T = unknown>(
     // name === null means "don't load yet" - lets a page defer a large file until it is needed.
     if (name === null || cache.has(name)) return;
     let cancelled = false;
-    fetch(`${import.meta.env.BASE_URL}data/${name}`)
+    // "no-cache" = always check with the server (a cheap conditional request: 304 when unchanged), so a visitor never
+    // sees a data file up to ten minutes older than the one just deployed.
+    fetch(`${import.meta.env.BASE_URL}data/${name}`, { cache: "no-cache" })
       .then((r) => {
         if (!r.ok) throw new Error(`Failed to load ${name}: HTTP ${r.status}`);
         return r.json();
