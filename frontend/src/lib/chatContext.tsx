@@ -1,5 +1,6 @@
 import { useCallback, useState, type ReactNode } from "react";
 import { useLocation } from "react-router-dom";
+import { canonicalPath } from "./routes";
 import {
   aiErrorMessage,
   ChatContext,
@@ -28,7 +29,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
       setLoading(true);
       setError(null);
       try {
-        const { reply } = await postChat({ messages: next, path: location.pathname });
+        const { reply } = await postChat({ messages: next, path: canonicalPath(location.pathname) });
         setMessages([...next, { role: "assistant", content: reply }]);
       } catch (e) {
         setError(aiErrorMessage(e));
@@ -76,7 +77,7 @@ export function ChatProvider({ children }: { children: ReactNode }) {
         try {
           const { reply } = await postChat({
             messages: [{ role: "user", content: prompt }],
-            path: location.pathname,
+            path: canonicalPath(location.pathname),
             ...(options?.pageContext ? {} : { context: "none" }),
           });
           return reply;

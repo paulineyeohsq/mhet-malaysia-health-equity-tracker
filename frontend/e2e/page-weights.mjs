@@ -6,7 +6,7 @@
 import { gzipSync } from "node:zlib";
 import { chromium } from "@playwright/test";
 
-const ROUTES = ["", "population", "map", "determinants", "matrix", "trends", "socioeconomic", "health-outcomes", "healthcare-access", "financing", "environment", "analytics", "state-matrix", "priority-areas", "research-opportunities", "explorer", "data-gaps", "methodology"];
+const ROUTES = ["", "population", "map", "topics/outcomes", "topics/access", "topics/financing", "topics/environment", "patterns/trends", "patterns/matrix", "patterns/inequality", "determinants", "analytics", "state-matrix", "priority-areas", "research-opportunities", "explorer", "data-gaps", "methodology"];
 const base = process.argv[2] ?? "http://localhost:4173/";
 const TEXT = /^(text\/|application\/(javascript|json|xml)|image\/svg)/;
 

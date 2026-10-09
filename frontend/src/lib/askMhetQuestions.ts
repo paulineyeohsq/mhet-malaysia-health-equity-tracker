@@ -29,13 +29,13 @@ export const ASK_MHET_QUESTIONS: AskMhetQuestion[] = [
   {
     id: "poverty-inequality",
     question: "How unequal is poverty across Malaysian states?",
-    path: "/socioeconomic",
+    path: "/patterns/inequality",
     state: { rankIndicatorId: "poverty_absolute" },
   },
   {
     id: "maternal-mortality",
     question: "Which state has the highest maternal mortality rate?",
-    path: "/health-outcomes",
+    path: "/topics/outcomes",
     state: { category: "mortality", mortalityMetricId: "maternal_mortality" },
   },
   {

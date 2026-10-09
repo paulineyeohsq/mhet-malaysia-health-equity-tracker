@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { ROUTES } from "./routes";
+import { LEGACY_REDIRECTS, ROUTES } from "./routes";
 
 /** Collects everything that would show up as a problem to a visitor: console errors, uncaught exceptions, failed
  * or erroring requests, and requests that leave this site. */
@@ -102,15 +102,15 @@ test.describe("mobile navigation", () => {
 
     await menuButton.click();
     await expect(menuButton).toHaveAttribute("aria-expanded", "true");
-    await expect(menu.getByRole("link")).toHaveCount(18);
+    await expect(menu.getByRole("link")).toHaveCount(13);
 
     await page.keyboard.press("Escape");
     await expect(menu).toBeHidden();
     await expect(menuButton).toBeFocused();
 
     await menuButton.click();
-    await menu.getByRole("link", { name: "Healthcare Access" }).click();
-    await expect(page).toHaveURL(/#\/healthcare-access$/);
+    await menu.getByRole("link", { name: "Health Topics" }).click();
+    await expect(page).toHaveURL(/#\/topics\/outcomes$/);
     await expect(menu).toBeHidden();
   });
 
@@ -123,10 +123,10 @@ test.describe("mobile navigation", () => {
 test.describe("desktop navigation", () => {
   test.skip(({ viewport }) => (viewport?.width ?? 0) < 1024, "desktop layout only");
 
-  test("shows the sidebar with all 18 pages and no mobile menu button", async ({ page }) => {
+  test("shows the sidebar with all 13 links and no mobile menu button", async ({ page }) => {
     await page.goto("/#/");
     await expect(page.getByRole("button", { name: "Menu" })).toBeHidden();
-    await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link")).toHaveCount(18);
+    await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link")).toHaveCount(13);
   });
 });
 
@@ -170,4 +170,63 @@ test("Priority Areas explains its weights and equity gap, and scores every indic
   await expect.poll(async () => Number(/from (\d+) indicator/.exec(await insight.innerText())?.[1])).toBe(before - 1);
   // every state has a rank range and the table has one row per state with a score
   await expect(page.locator("table").first().locator("tbody tr")).toHaveCount(16);
+});
+
+test.describe("consolidated pages", () => {
+  for (const [legacy, now] of Object.entries(LEGACY_REDIRECTS)) {
+    test(`the old /${legacy} URL still works and lands on /${now}`, async ({ page }) => {
+      await page.goto(`/#/${legacy}`);
+      await expect(page).toHaveURL(new RegExp(`#/${now}$`));
+      await expect(page.locator("main h1").first()).toBeVisible();
+    });
+  }
+
+  test("Health Topics: a dropdown switches between the four dashboards and keeps the data-as-of line", async ({ page }) => {
+    await page.goto("/#/topics");
+    await expect(page).toHaveURL(/#\/topics\/outcomes$/);
+    await expect(page.locator("main h1").first()).toContainText("Health Outcomes");
+    const select = page.getByLabel("Health topic");
+    await expect(select.locator("option")).toHaveText(["Health Outcomes", "Healthcare Access", "Healthcare Financing", "Environment"]);
+    for (const [label, path, h1] of [
+      ["Healthcare Access", "access", "Healthcare Access"],
+      ["Healthcare Financing", "financing", "Financing"],
+      ["Environment", "environment", "Environment"],
+    ]) {
+      await select.selectOption({ label });
+      await expect(page).toHaveURL(new RegExp(`#/topics/${path}$`));
+      await expect(page.locator("main h1").first()).toContainText(h1);
+      await expect(page.getByText(/Data as of/).first()).toBeVisible();
+    }
+    // the Klang Valley control still appears for the access topic (it is looked up by the page's original path)
+    await select.selectOption({ label: "Healthcare Access" });
+    await expect(page.getByLabel("Each territory on its own")).toBeVisible();
+  });
+
+  test("Patterns & Inequality: a toggle switches between trend, matrix and inequality views", async ({ page }) => {
+    await page.goto("/#/patterns");
+    await expect(page).toHaveURL(/#\/patterns\/trends$/);
+    const group = page.getByRole("radiogroup", { name: "View as" });
+    await expect(group.getByRole("radio")).toHaveCount(3);
+    await expect(group.getByRole("radio", { name: "Trend over time" })).toHaveAttribute("aria-checked", "true");
+    await group.getByRole("radio", { name: "Indicator matrix" }).click();
+    await expect(page).toHaveURL(/#\/patterns\/matrix$/);
+    await expect(group.getByRole("radio", { name: "Indicator matrix" })).toHaveAttribute("aria-checked", "true");
+    await group.getByRole("radio", { name: "Inequality gap" }).click();
+    await expect(page).toHaveURL(/#\/patterns\/inequality$/);
+    await expect(page.locator("main h1").first()).toHaveText("Socioeconomic Inequality");
+  });
+
+  test("an unknown topic or view falls back to the first option", async ({ page }) => {
+    await page.goto("/#/topics/nonsense");
+    await expect(page).toHaveURL(/#\/topics\/outcomes$/);
+    await page.goto("/#/patterns/nonsense");
+    await expect(page).toHaveURL(/#\/patterns\/trends$/);
+  });
+
+  test('"Ask MY-HEO" shortcuts still carry their filters through the redirect', async ({ page }) => {
+    await page.goto("/#/");
+    await page.getByLabel("Ask MY-HEO").selectOption({ label: "Which state has the highest maternal mortality rate?" });
+    await expect(page).toHaveURL(/#\/topics\/outcomes$/);
+    await expect(page.locator("#metric-select")).toHaveValue("maternal_mortality");
+  });
 });

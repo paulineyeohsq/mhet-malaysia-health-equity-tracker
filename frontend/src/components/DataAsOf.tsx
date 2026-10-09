@@ -3,6 +3,7 @@ import { useData } from "../lib/useData";
 import type { InventoryFile } from "../lib/inventoryMap";
 import { PAGE_DATA_FILES } from "../lib/pageDataFiles";
 import { isStaleYear } from "../lib/dataAge";
+import { canonicalPath } from "../lib/routes";
 
 function prettyFile(name: string): string {
   return name
@@ -20,7 +21,7 @@ function prettyFile(name: string): string {
 export default function DataAsOf() {
   const { pathname } = useLocation();
   const { data: inventory } = useData<InventoryFile>("dataset_inventory.json");
-  const files = PAGE_DATA_FILES[pathname];
+  const files = PAGE_DATA_FILES[canonicalPath(pathname)];
   if (!files || !inventory?.data_files) return null;
 
   const rows = files
