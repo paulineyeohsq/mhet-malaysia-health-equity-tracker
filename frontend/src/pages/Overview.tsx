@@ -284,8 +284,8 @@ export default function Overview() {
             healthcare workforce and infrastructure, and mortality/morbidity outcomes. Geographic resolution ranges from
             national to state to district depending on the indicator — the Health Equity Map and Data Explorer clearly
             label which resolution each indicator supports. See the{" "}
-            <a href="#/methodology" className="text-series-1 underline underline-offset-2">Methodology</a> page for full
-            provenance, limitations and update cadence.
+            <a href="#/methodology" className="text-series-1 underline underline-offset-2">Data Governance &amp; Terms</a> page for
+            data sources, limitations and privacy; each dataset's own card on the Data Explorer gives its provenance and update cadence.
             {inventory?.last_refreshed && (
               <>
                 {" "}

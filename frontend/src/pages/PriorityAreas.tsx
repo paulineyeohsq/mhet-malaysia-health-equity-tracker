@@ -271,12 +271,7 @@ export default function PriorityAreas() {
         <div className="rounded-lg border border-line-axis bg-plane p-4 text-sm text-ink-secondary">
           <p className="font-medium text-ink-primary">This is a research prioritisation tool, not a clinical risk score.</p>
           <p className="mt-1.5 max-w-4xl leading-relaxed">
-            This is deliberately <strong>not</strong> the composite "equity index" this project's own methodology argues
-            against (see the{" "}
-            <a href="#/methodology" className="text-series-1 underline underline-offset-2">
-              Methodology
-            </a>{" "}
-            page) — there is no single official weighting of health, socioeconomic and access indicators. Every indicator
+            This is deliberately <strong>not</strong> a single composite "equity index" — there is no single official weighting of health, socioeconomic and access indicators. Every indicator
             below is a real published figure, shown with its own value and year, and the choices (which indicators count,
             and how much each component weighs) are yours. A higher score means a state sits closer to the more-disadvantaged
             end of the states with data — describe it as a <em>potential priority area for further investigation</em>,

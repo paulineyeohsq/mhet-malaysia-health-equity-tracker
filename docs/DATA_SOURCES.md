@@ -7,7 +7,7 @@ That file documents every dataset examined during the Phase 1/2 audit of
 `status: ingested`** have raw files under `data/raw/` and processed outputs
 under `data/processed/` (produced by `scripts/transform_data.py`), plus
 **<!--count:reference-->1<!--/count--> dataset ingested for cross-validation only** (`hies_2019_snapshot`, not
-loaded into the dashboard), and **<!--count:notingested-->7<!--/count--> datasets identified and schema-verified
+loaded into the dashboard), and **<!--count:notingested-->6<!--/count--> datasets identified and schema-verified
 but not yet ingested** into this build. (These counts are rewritten from the
 inventory by `scripts/update_database.py` on every successful run.)
 
@@ -251,33 +251,30 @@ across every page.
 
 ---
 
-## Identified but not yet ingested (out of scope for this build)
+## Identified but not yet ingested
 
-These datasets were confirmed to exist — URL and schema verified — but were
-deliberately not pulled into this build. This is a scope decision, not a
-data gap discovered by accident; `scripts/ingest_data.py` can fetch them
-directly once run in an environment with normal, unrestricted internet
-access.
+Re-audited 2026-10-09 against both catalogues (OpenDOSM: 185 datasets; data.gov.my: 297). Everything that earlier
+versions of this page listed here (parliamentary and state-assembly population, income percentiles, marriage and
+fertility, health programmes, COVID-19, national health accounts, the amenities series, nutrition by strata and the
+2020 onward district population) **has since been ingested** and is documented above. What remains is the list below,
+which is also what the app's Data Gaps page shows (it reads the inventory). None of these has a data-catalogue file or
+API entry to ingest from, so closing them is not a pipeline task.
 
-| Dataset | Reason not ingested |
+| Dataset | Why it is not in the dashboard |
 |---|---|
-| **Population by Parliamentary Constituency** (`population_parlimen`) | Different geography (electoral, not administrative) — out of scope for this state/district-focused build. |
-| **Population by State Legislative Assembly** (`population_dun`) | Same as above. |
-| **Household Income by Percentile** (`hies_malaysia_percentile`) | Would enable a concentration-index calculation using true micro-level percentile data, but requires percentile-level micro-aggregates not yet pulled. |
-| **Marriage & fertility datasets** (`marriages` / `marriages_state` / `fertility_state`) | Lower direct relevance to health equity; deferred for a future iteration. |
-| **Health programme participation datasets** (`blood_donations_state` / `organ_pledges_state` / `pekab40_screenings_state`) | Daily-grain datasets requiring heavier aggregation; deferred. |
-| **COVID-19 datasets** (`covid_cases` / `covid_cases_age` / `covid_deaths_linelist`) | Deferred — a distinct outbreak-analytics use case rather than chronic health-equity monitoring; can be added as a new domain without redesigning the schema. |
-| **National Health Accounts / health expenditure** (`mnha` / `mnha_moh`) | Valuable for a future "healthcare financing equity" domain; deferred. |
-| **Standalone amenities time series** (state-level long series: `sanitation_access` / `electricity_access` / `water_access`) | The district-level 2022 `hh_access_amenities` snapshot was prioritised instead since it matches the geographic resolution of the income/poverty/gini district series; these longer state-level series remain available for a future time-series amenities view. |
-| **Full district population by sex/age/ethnicity, 2020–2024** (`population_district`, live series) | Raw file exceeded the sandbox's single-request fetch-size limit during this build; the historical `census_district` series (1970–2020) was used instead. Re-running `scripts/ingest_data.py` from an unrestricted network environment will pull this in full. |
-| **Nutritional Status of Children Under 5 by Strata** (`nutrition_children_strata`) — confirmed to exist at `https://data.gov.my/data-catalogue/nutrition_children_strata` (MOH, urban/rural breakdown, 2019, national level) | The real urban/rural counterpart to the already-ingested `nutrition_children_sex`. Not yet ingested — would follow the exact same `transform_data.py` pattern already used for the sex-disaggregated version. This is the **only** genuine urban/rural-stratified dataset found anywhere in DOSM's or MOH's open catalogues as of 2026-08-13 (OpenDOSM's population tables are sex/age/ethnicity only, with no strata dimension; MOH's catalogue was checked category-by-category and this is the sole urban/rural entry). |
+| **Older Persons Health — Diabetes, Hypertension, Hypercholesterolaemia, Dementia, Frailty (NHMS 2025)** (`nhms_older_persons_2025`) | Confirmed during a 2026-08-13 check of iku.nih.gov.my/nhms2025: a new NHMS 2025 survey of adults aged 60+ exists, covering diabetes/hypertension/hypercholesterolaemia specifically in that age group plus dementia, cognitive impairment, depression, falls, frailty and caregiver burden — a genuinely new population subgroup (older persons) not otherwise represented in this dataset. Only a national-level fact sheet and key-findings infographic are published so far (iku.nih.gov.my/images/nhms-2025/factsheet_eng.pdf, checked directly — 0 state-name mentions across the whole document); no state-disaggregated technical report exists yet. Re-check this source when a full technical report is published — historically (NHMS 2019/2023) that has lagged the fact sheet by roughly a year. |
+| **NCD Risk Factor Prevalence by State (NHMS 2011, Vol. II)** (`nhms_ncd_2011`) | Attempted during the 2026-08-13 NHMS multi-year extraction (see nhms_ncd_2019's limitations field): NHMS 2011 Volume II (iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2011-VolumeII.pdf) does contain state-level NCD tables in principle, but this specific PDF's text extraction repeatedly detached table titles from their data across page breaks, and the one table spot-checked against the report's own stated 95% CI showed a small mismatch (12.1-13.6 extracted vs. 12.2-13.5 stated) — high enough error risk that extraction was abandoned rather than risk publishing wrong figures. Would need a cleaner source (e.g. a non-scanned original, or manual page-by-page verification) to attempt again. |
+| **Causes of Death, ICD-Coded (by state/district)** (`causes_of_death`) | Confirmed during the 2026-08-14 audit: DOSM publishes an annual 'Statistics on Causes of Death' report and an interactive 'Cause of Death Calculator' (kalkulator.dosm.gov.my/cod/) built on 2000-2023 medically-certified-death data. No confirmed open CSV/API dataset was found behind either — search results point to PDF releases and the calculator tool itself, not a data-catalogue entry. Would need direct confirmation on open.dosm.gov.my/data.gov.my, or reverse-engineering the calculator's own data source, before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to ingest. |
+| **Divorce Statistics by State** (`divorce_state`) | Confirmed during the 2026-08-14 audit: DOSM publishes annual marriage-and-divorce reports including divorce counts and crude divorce rate, complementing the already-ingested marriages_state dataset. These appear to be PDF-only releases — no divorce-specific data-catalogue entry (analogous to marriages_state's CSV) was found. Re-check OpenDOSM's demography catalogue directly for a 'divorce_state'-style entry before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to ingest. |
+| **Number of Healthcare Clinics by Type** (`clinic_counts`) | Confirmed during the 2026-08-14 audit: a clinic-count dataset (klinik kesihatan/klinik desa counts) exists but only on the deprecated archive.data.gov.my portal, covering 2000-2019. This project's hospital_beds/healthcare_staff datasets cover beds and staff, not facility counts, and only for hospitals, not clinics — a real resolution gap. Unclear whether a current equivalent exists on the live data.gov.my catalogue; needs a direct search there before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to ingest. |
+| **Person with Disability (OKU) Statistics** (`disability_statistics`) | Confirmed during the 2026-08-14 audit: DOSM publishes an annual 'Person with Disability Statistics' report (2023/2024 editions found) using JKM registry figures. Appears to be released as a narrative PDF publication, not a confirmed open dataset table — no data-catalogue entry found. Needs direct confirmation on open.dosm.gov.my before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to ingest. |
 
-See [`docs/METHODOLOGY.md`](METHODOLOGY.md) for more on the sandbox
-network/data-volume constraints referenced above.
+Life expectancy by state, sex and ethnicity used to be on this list; it is now ingested from DOSM's dashboard (see
+"Life Expectancy at Birth by State, Sex & Ethnicity" above).
 
 ---
 
-## Confirmed unavailable as open data (as of 2026-08-13)
+## Confirmed unavailable as open data (as of 2026-08-13; two entries updated 2026-10-09)
 
 Unlike the datasets above — which exist and are simply not yet ingested —
 these were searched for specifically and **could not be found** in either
@@ -287,6 +284,10 @@ Closing these gaps isn't an ingestion task; it needs either a new open
 dataset to be published, or a formal data-sharing request to the source
 agency.
 
+- **UPDATE 2026-10-09 (partly out of date): state-level NCD/diabetes prevalence.** The NHMS 2019 state-level tables
+  have since been extracted and are in the dashboard (`nhms_ncd`); the 2011 report could not be extracted reliably
+  and the 2025 older-persons survey has only a national fact sheet (both on the Data Gaps page). District-level
+  prevalence is still unavailable. The original note follows.
 - **NCD/diabetes prevalence, by state or district.** MOH's open catalogue
   was checked category-by-category (General Health, Healthcare
   Infrastructure, Healthcare Programs, Infectious Diseases, Regulation,
@@ -295,6 +296,9 @@ agency.
   usual source for this figure, is not published as open microdata or an
   open aggregate table. **Path forward:** a formal data request to MOH's
   NHMS unit, or watch data.gov.my for a future release.
+- **UPDATE 2026-10-09 (partly out of date): district-level health outcomes.** District deaths and births by sex
+  (2020 onward) are now ingested (`deaths_district_sex`, `births_district_sex`). Morbidity at district level is still
+  unavailable. The original note follows.
 - **District-level health outcomes** (mortality, morbidity beyond the
   latest-year hospital-beds snapshot already ingested). Not
   published at district resolution anywhere in MOH's or DOSM's open
