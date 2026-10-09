@@ -140,10 +140,12 @@ test("the Klang Valley toggle switches the staff headline between pooled and eac
   };
   await page.goto("/#/");
   await expect(page.getByLabel(/Pooled as one Klang Valley unit/)).toBeChecked();
+  // the tile shows a dash until the data has loaded: wait for a real number before taking the baseline
+  await expect.poll(ratio).not.toBeNaN();
   const pooled = await ratio();
   await page.getByLabel("Each territory on its own").check();
   await expect(page.getByText("Showing each territory's own rate")).toBeVisible();
-  await expect.poll(ratio).toBeGreaterThan(pooled * 2);
+  await expect.poll(async () => (await ratio()) > pooled * 2).toBe(true);
   // remembered across a reload
   await page.reload();
   await expect(page.getByLabel("Each territory on its own")).toBeChecked();
