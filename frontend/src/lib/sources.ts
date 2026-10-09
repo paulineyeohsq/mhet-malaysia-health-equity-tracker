@@ -149,7 +149,7 @@ export const SOURCES: Record<string, SourceInfo> = {
   },
   census: {
     label: "Census Population (historical)",
-    org: "Department of Statistics Malaysia (DOSM), GitHub open-data mirror",
+    org: "Department of Statistics Malaysia (DOSM)",
     url: "https://github.com/dosm-malaysia/data-open",
     geography: "District",
     unit: "persons",
@@ -157,7 +157,7 @@ export const SOURCES: Record<string, SourceInfo> = {
   },
   boundaries: {
     label: "Administrative Boundaries",
-    org: "Department of Statistics Malaysia (DOSM), GitHub open-data mirror",
+    org: "Department of Statistics Malaysia (DOSM)",
     url: "https://github.com/dosm-malaysia/data-open",
     geography: "State / District",
     unit: "geometry",
@@ -239,7 +239,7 @@ export const SOURCES: Record<string, SourceInfo> = {
     label: "Household Electricity Access",
     org: "Energy Commission Malaysia",
     url: "https://data.gov.my/data-catalogue/electricity_access",
-    geography: "4 utility-operator regions — not the 16-state schema",
+    geography: "4 utility-operator regions (not by state)",
     unit: "count of households",
     lastUpdated: "2021",
   },

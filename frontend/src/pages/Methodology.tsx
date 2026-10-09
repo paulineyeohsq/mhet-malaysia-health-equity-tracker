@@ -15,14 +15,6 @@ function P({ children }: { children: React.ReactNode }) {
   return <p className="mb-3 text-sm leading-relaxed text-ink-secondary">{children}</p>;
 }
 
-function Code({ children }: { children: React.ReactNode }) {
-  return (
-    <code className="rounded bg-line-grid/60 px-1.5 py-0.5 font-mono text-[0.85em] text-ink-primary">
-      {children}
-    </code>
-  );
-}
-
 function ExtLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
     <a
@@ -70,9 +62,8 @@ export default function DataGovernance() {
             <ExtLink href="https://data.gov.my/data-catalogue">data.gov.my</ExtLink> or the official DOSM open-data
             mirror on GitHub. Nothing on this dashboard is simulated, estimated by the dashboard itself, or filled
             in to make a chart look complete. Where a number cannot be derived from the source data without making
-            an assumption the pipeline is not confident in, the dashboard shows "No data" rather than a guess. This
-            page documents exactly how that pipeline works, so a researcher can verify or reproduce any figure
-            shown.
+            an assumption we are not confident in, the dashboard shows "No data" rather than a guess. This page sets
+            out where the data comes from and its limits, so a researcher can verify any figure shown.
           </P>
         </section>
 
@@ -110,23 +101,12 @@ export default function DataGovernance() {
                 automated workflow that publishes new data only after its tests pass).{" "}
               </>
             )}
-            As of this build, the project's{" "}
-            <ExtLink href="https://data.gov.my/data-catalogue">dataset inventory</ExtLink> documents{" "}
-            <span className="font-medium text-ink-primary">{ingestedCount ?? "…"} datasets that have been fully ingested</span> — with
-            raw files under <Code>data/raw/</Code> and processed outputs under <Code>data/processed/</Code>,
-            produced by the project's Python pipeline (documented step by step in{" "}
-            <ExtLink href="https://github.com/paulineyeohsq/mhet-malaysia-health-equity-tracker/blob/main/docs/METHODOLOGY.md">
-              docs/METHODOLOGY.md
-            </ExtLink>{" "}
-            in the repository) — and{" "}
-            <span className="font-medium text-ink-primary">
-              {notIngestedCount ?? "…"} additional datasets that were identified and schema-verified but not yet ingested
-            </span>{" "}
-            into this build (for example, income-percentile microdata that would be needed for a concentration-index
-            calculation, and the live 2020–2024 district population series, whose raw file exceeded the sandboxed
-            environment's single-request fetch-size limit during this build). Every dataset — ingested or not, with
-            its exact catalogue URL, date range, geographic resolution, known missingness and stated limitations —
-            is itemised on the{" "}
+            The dashboard currently uses{" "}
+            <span className="font-medium text-ink-primary">{ingestedCount ?? "…"} datasets</span>, and a further{" "}
+            <span className="font-medium text-ink-primary">{notIngestedCount ?? "…"} datasets</span> are known to exist
+            but are not included yet (for example causes of death, divorce statistics, clinic counts and disability
+            statistics, for which no machine-readable source is published). Every dataset, with its source link, date
+            range, geographic resolution, known missingness and stated limitations, is itemised on the{" "}
             <a href="#/explorer" className="text-series-1 underline underline-offset-2">
               Data Explorer
             </a>{" "}
@@ -147,19 +127,14 @@ export default function DataGovernance() {
             </li>
             <li>
               <span className="font-medium text-ink-primary">Single-snapshot-year datasets.</span> Several datasets
-              were ingested for only one recent year rather than a full time series, because of sandboxed-environment
-              data-fetch constraints encountered during this build (documented per-dataset in the inventory) —
-              notably district-level hospital beds, ingested for the latest year the publisher has released (2022),
+              are included for only one recent year rather than a full time series (noted per dataset in the Data
+              Explorer) — notably district-level hospital beds, ingested for the latest year the publisher has released (2022),
               even though the publisher also holds earlier years.
             </li>
             <li>
               <span className="font-medium text-ink-primary">Ethnicity–health linkage: counts only, no rate.</span>{" "}
-              <span className="line-through text-ink-muted">
-                No ethnicity-linked health outcome dataset exists in either catalogue.
-              </span>{" "}
-              <span className="font-medium text-ink-primary">Update (2026-08-14):</span> this earlier finding was
-              wrong. DOSM publishes annual deaths by state, sex and ethnicity, now ingested into this build and
-              shown on the Health Outcomes page as a dedicated "Deaths by Ethnicity" view. What is still missing is
+              DOSM publishes annual deaths by state, sex and ethnicity, shown on the Health Outcomes page as a
+              dedicated "Deaths by Ethnicity" view. What is still missing is
               a per-ethnicity-group <em>rate</em> — there is no state-level population-by-ethnicity denominator in
               this project's sources (only the district-level census tables break population down by ethnicity), so
               the dashboard shows raw death counts by ethnicity with an explicit non-rate caveat, not a per-capita
@@ -194,7 +169,7 @@ export default function DataGovernance() {
               how well its residents are served (W.P. Putrajaya's own staff rate, about 3,036 per 100,000 in 2022, is
               roughly nine times Selangor's 341, largely because its staff count sits against only about 117,000
               residents). For comparisons between areas — rankings, gap ratios, maps, the Priority Areas score,
-              correlations and the AI assistant — the pipeline publishes a pooled rate in which those three units' counts
+              correlations and the AI assistant — the dashboard uses a pooled rate in which those three units' counts
               and populations are each summed and divided once (about 509 staff and 144 beds per 100,000 in 2022), and
               every other state keeps its own rate. Each territory's own rate is still shown in the Healthcare Access and
               Data Explorer tables. In correlations the three units are left out, since a pooled rate cannot be paired
@@ -220,17 +195,17 @@ export default function DataGovernance() {
           <ul className="list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink-secondary">
             <li>
               <span className="font-medium text-ink-primary">AI features.</span> If you use the MY-HEO Assistant, an
-              "Explain this" button or a Research Opportunities card, the text of your question or the chart data
-              involved, plus the page's published data as context, is sent to a Netlify function and on to Google
-              Gemini, which generates the answer. Please do not enter personal or patient information. The function
-              itself keeps only counters used for rate limiting (your IP address or, if unavailable, a hash of basic browser
-              headers, plus a global daily total) and does not store your questions. Netlify and Google may keep their
-              own standard logs; Google's handling of API requests is governed by its own terms.
+              "Explain this" button or a Research Opportunities card, your question or the chart data involved, plus
+              the published data for the page you are on, is sent to an external AI service provided by Google, which
+              writes the answer. Please do not submit personal, patient or confidential information. We keep only
+              counters used to limit repeated requests (your IP address or, if unavailable, a code made from basic
+              browser details, plus a daily total) and do not store your questions. Our hosting provider and Google may
+              keep their own standard logs, which are governed by their own terms.
             </li>
             <li>
               <span className="font-medium text-ink-primary">Browser storage.</span> Answers you have already
-              generated are kept in your browser's session storage for the current tab so they are not requested twice;
-              closing the tab clears them.
+              generated are kept in your browser for the current tab only, so they are not requested twice; closing the
+              tab clears them.
             </li>
             <li>
               <span className="font-medium text-ink-primary">Third-party requests.</span> Pages are served by GitHub

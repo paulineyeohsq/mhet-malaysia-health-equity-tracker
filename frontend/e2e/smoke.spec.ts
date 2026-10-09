@@ -86,6 +86,37 @@ test("Data Governance & Terms has six numbered sections and the project contact"
   }
 });
 
+test.describe("plain-language copy", () => {
+  // Words that belong in code, not in what a visitor reads. (The privacy section may still name Google, who processes AI questions.)
+  const TECH = /Netlify|Gemini|serverless|Recharts|D3|JSON|\.json|pipeline|API|\.py|sandbox|client-side/i;
+  for (const route of ROUTES) {
+    test(`/${route || ""}: no development or tech-stack wording`, async ({ page }) => {
+      await page.goto(`/#/${route}`);
+      await expect(page.locator("main h1").first()).toBeVisible();
+      await page.waitForLoadState("networkidle");
+      const text = await page.locator("main").innerText();
+      expect(text.match(TECH)?.[0] ?? null).toBeNull();
+    });
+  }
+
+  test("assistant and sidebar carry the short, user-facing notices", async ({ page }) => {
+    await page.goto("/#/");
+    await page.getByRole("button", { name: "Open MY-HEO Assistant" }).first().click();
+    await expect(page.getByText("Ask a question about the health data. Please do not submit personal or confidential information.")).toBeVisible();
+    if ((page.viewportSize()?.width ?? 0) >= 1024) {
+      await expect(page.getByText("Source: Official DOSM & MOH data.")).toBeVisible();
+    }
+  });
+
+  test("a dataset that cannot be loaded says so in plain words", async ({ page }) => {
+    await page.route(/life_expectancy_state\.json/, (route) => route.fulfill({ status: 500, body: "boom" }));
+    await page.goto("/#/explorer");
+    await page.getByLabel("Dataset", { exact: true }).selectOption({ label: "Life Expectancy at Birth — State" });
+    await expect(page.getByText("Data for this section is currently unavailable.")).toBeVisible();
+    await expect(page.locator("main")).not.toContainText(/HTTP|500|Failed to load/);
+  });
+});
+
 test("Data Gaps lists only what has no machine-readable source", async ({ page }) => {
   await page.goto("/#/data-gaps");
   const list = page.locator("#not-ingested-heading + div li");

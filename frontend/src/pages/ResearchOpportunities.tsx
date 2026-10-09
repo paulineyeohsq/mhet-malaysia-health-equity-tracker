@@ -544,7 +544,7 @@ export default function ResearchOpportunities() {
             <div className="flex flex-wrap items-center justify-between gap-3">
               <p className="max-w-2xl text-sm text-ink-secondary">
                 Computes the real state-to-state gap for every outcome indicator this dashboard tracks, then asks the
-                MY-HEO Assistant (Gemini) to pick the most compelling starting point and explain why — the numbers
+                MY-HEO Assistant to pick the most compelling starting point and explain why — the numbers
                 are always real and computed, never invented, but the pick and the reasoning come from the AI agent,
                 not a fixed rule.
               </p>

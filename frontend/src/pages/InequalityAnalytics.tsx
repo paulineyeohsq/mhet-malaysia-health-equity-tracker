@@ -452,7 +452,7 @@ export default function InequalityAnalytics() {
             statistical association, not causation. A gap between the richest and poorest state does not by itself
             prove that poverty causes worse health outcomes. This page only presents a recognized inequality measure
             where the underlying real government data can support it; where a textbook measure would require data
-            this pipeline does not have (e.g. individual- or district-level microdata), that is stated explicitly
+            this dashboard does not have (e.g. individual- or district-level microdata), that is stated explicitly
             rather than approximated and mislabelled. See the{" "}
             <a href="#/methodology" className="text-series-1 underline underline-offset-2">
               Data Governance &amp; Terms
@@ -616,7 +616,7 @@ export default function InequalityAnalytics() {
             <p className="ml-auto max-w-md text-xs text-ink-muted">
               Only years where at least 12 of 16 states report this indicator are offered, so the comparison is not
               distorted by states silently missing from the source data. Indicators published for only a handful of
-              states (e.g. infant, neonatal, perinatal or under-5 mortality — 5-6 of 16 states in this pipeline) are
+              states (e.g. infant, neonatal, perinatal or under-5 mortality — 5-6 of 16 states) are
               intentionally excluded from this selector rather than shown as an unreliable 16-state ranking.
             </p>
           </div>
@@ -850,8 +850,8 @@ export default function InequalityAnalytics() {
           <div className="mb-3 rounded-md border border-line-axis bg-plane p-3 text-xs leading-relaxed text-ink-secondary">
             <strong className="text-ink-primary">Methodology — SII & RII.</strong> States are ranked by their DOSM
             absolute poverty rate and each is assigned a "relative rank" between 0 (most disadvantaged / highest
-            poverty) and 1 (least disadvantaged / lowest poverty), using its share of the national population from{" "}
-            <code>population_state.json</code> (the standard Mackenbach–Kunst population-weighted midpoint-rank
+            poverty) and 1 (least disadvantaged / lowest poverty), using its share of the national population from
+            DOSM's state population estimates (the standard Mackenbach–Kunst population-weighted midpoint-rank
             method). A population-weighted linear regression of the outcome on that rank is then fitted across all
             16 states. <strong><Term id="sii">SII</Term></strong> is the regression slope: the modelled absolute gap
             in the outcome between the least- and most-disadvantaged end of the poverty distribution.{" "}
@@ -896,8 +896,7 @@ export default function InequalityAnalytics() {
               </select>
             </div>
             <p className="ml-auto max-w-md text-xs text-ink-muted">
-              Restricted to 2020 and 2022 — the only years where health outcomes, poverty (
-              <code>socioeconomic_state.json</code>) and population (<code>population_state.json</code>) are all
+              Restricted to 2020 and 2022 — the only years where health outcomes, poverty and population are all
               published for the same states. This selection is shared with the concentration index below.
             </p>
           </div>

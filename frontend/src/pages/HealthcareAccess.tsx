@@ -139,7 +139,7 @@ export default function HealthcareAccess() {
   const districtNote =
     districtRows[0]?.note ??
     districtMalaysiaAggregate?.note ??
-    "No 2022 district-level population denominator is available in this pipeline, so a beds-per-100,000 rate is not computed at district level.";
+    "No 2022 district-level population denominator is available here, so a beds-per-100,000 rate is not computed at district level.";
 
   const stateColumns: Column[] = [
     { key: "state", label: "State" },
@@ -218,9 +218,9 @@ export default function HealthcareAccess() {
                   Calculation: {nationalRate.bedsTotal.toLocaleString()} beds ÷{" "}
                   {nationalRate.population.toLocaleString()} population × 100,000 = {fmtRate(nationalRate.rate)} per
                   100,000. Numerator: total hospital beds, Ministry of Health Malaysia, {nationalRate.year}.
-                  Denominator: sum of DOSM state population estimates ("overall" sex) for {nationalRate.year}, from{" "}
-                  <code>population_state.json</code>. This national rate is not published directly by the source
-                  agency and is computed here client-side only for a year where both figures share the same year.
+                  Denominator: sum of DOSM state population estimates ("overall" sex) for {nationalRate.year}, .
+                  This national rate is not published directly by the source agency; it is calculated on this page, and
+                  only for a year where both figures are available.
                 </p>
               </>
             ) : (
@@ -349,7 +349,7 @@ export default function HealthcareAccess() {
                 <h3 className="mb-2 text-sm font-medium text-ink-primary">
                   Hospital beds per 100,000 population by state — {effectiveStateYear}
                 </h3>
-                <InsufficientData reason="State-level hospital bed counts only exist as a 2022 snapshot in the source pipeline — no other year has a state-level beds figure, so no rate or count can be shown here for this year. Select 2022 to see bed data." />
+                <InsufficientData reason="State-level hospital bed counts only exist as a 2022 snapshot in the source data — no other year has a state-level beds figure, so no rate or count can be shown here for this year. Select 2022 to see bed data." />
               </div>
             )}
           </div>

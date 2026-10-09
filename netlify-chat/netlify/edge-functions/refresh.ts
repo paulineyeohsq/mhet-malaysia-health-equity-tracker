@@ -233,7 +233,7 @@ export default async (request: Request, context: Context): Promise<Response> => 
     try {
       return await handle(request, context, origin);
     } catch {
-      return json({ error: "Unexpected server error." }, 500, origin);
+      return json({ error: "Something went wrong. Please try again." }, 500, origin);
     }
   }
   return json({ error: "Not found." }, 404, origin);

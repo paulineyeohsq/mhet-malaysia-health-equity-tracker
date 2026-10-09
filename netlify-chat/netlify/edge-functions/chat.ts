@@ -112,7 +112,7 @@ async function fetchDataFile(name: string): Promise<{ name: string; body: string
 async function handleChat(request: Request, context: Context, origin: string | null): Promise<Response> {
   const apiKey = Netlify.env.get("GEMINI_API_KEY");
   if (!apiKey) {
-    return json({ error: "Chat is not configured yet." }, 500, origin);
+    return json({ error: "The assistant is currently unavailable." }, 500, origin);
   }
 
   const withinLimit = await checkRateLimit(request, context.ip);
@@ -122,18 +122,18 @@ async function handleChat(request: Request, context: Context, origin: string | n
 
   const rawBody = await request.text();
   if (rawBody.length > MAX_BODY_BYTES) {
-    return json({ error: "Request too large." }, 413, origin);
+    return json({ error: "That question is too long. Please shorten it and try again." }, 413, origin);
   }
 
   let parsed: { messages?: unknown; path?: unknown; context?: unknown };
   try {
     parsed = JSON.parse(rawBody);
   } catch {
-    return json({ error: "Invalid JSON body." }, 400, origin);
+    return json({ error: "That question couldn't be processed. Please try again." }, 400, origin);
   }
 
   if (!Array.isArray(parsed.messages)) {
-    return json({ error: "messages must be an array." }, 400, origin);
+    return json({ error: "That question couldn't be processed. Please try again." }, 400, origin);
   }
   const messages: ChatMessage[] = parsed.messages
     .filter(
@@ -147,7 +147,7 @@ async function handleChat(request: Request, context: Context, origin: string | n
     .slice(-MAX_TURNS);
 
   if (messages.length === 0) {
-    return json({ error: "No valid messages provided." }, 400, origin);
+    return json({ error: "Please type a question first." }, 400, origin);
   }
 
   // Callers whose message already carries all the data they need (the Research Opportunities cards) send
@@ -173,7 +173,7 @@ async function handleChat(request: Request, context: Context, origin: string | n
 
     if (files.length === 0) {
       return json(
-        { error: "Couldn't load current dashboard data right now — please try again shortly." },
+        { error: "Data for this section is currently unavailable. Please try again shortly." },
         502,
         origin
       );
@@ -200,14 +200,14 @@ async function handleChat(request: Request, context: Context, origin: string | n
   } catch (e) {
     if (e instanceof GeminiError) {
       if (e.status === 401 || e.status === 403) {
-        return json({ error: "Chat service auth error — the API key may be invalid." }, 502, origin);
+        return json({ error: "The assistant is currently unavailable." }, 502, origin);
       }
       if (e.status === 429 || e.status === 503) {
         return json({ error: "The AI service is temporarily busy — try again in a moment." }, 503, origin);
       }
       return json({ error: "Couldn't reach the AI service — try again shortly." }, 502, origin);
     }
-    return json({ error: "Unexpected error handling the chat request." }, 500, origin);
+    return json({ error: "The assistant is currently unavailable." }, 500, origin);
   }
 }
 
@@ -222,7 +222,7 @@ export default async (request: Request, context: Context): Promise<Response> => 
     try {
       return await handleChat(request, context, origin);
     } catch {
-      return json({ error: "Unexpected server error." }, 500, origin);
+      return json({ error: "Something went wrong. Please try again." }, 500, origin);
     }
   }
 

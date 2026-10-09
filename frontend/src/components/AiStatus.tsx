@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 export function AiPrivacyNote({ className = "" }: { className?: string }) {
   return (
     <p className={`text-xs text-ink-muted ${className}`}>
-      Questions are sent to a Netlify function and Google Gemini to generate an answer. Please don't enter personal
-      or patient information.
+      Ask a question about the health data. Please do not submit personal or confidential information.
     </p>
   );
 }

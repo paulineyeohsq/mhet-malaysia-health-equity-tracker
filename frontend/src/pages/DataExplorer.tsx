@@ -563,10 +563,7 @@ export default function DataExplorer() {
                 </option>
               ))}
             </select>
-            <p className="mt-2 text-xs text-ink-muted">
-              File: <code className="rounded bg-plane px-1 py-0.5">public/data/{dataset.file}</code>
-              {rows && !loading ? ` · ${rows.length} rows` : ""}
-            </p>
+            {rows && !loading && <p className="mt-2 text-xs text-ink-muted">{rows.length} rows</p>}
           </div>
         </section>
 
@@ -585,8 +582,7 @@ export default function DataExplorer() {
           )}
           {matchedEntries.length > 1 && (
             <p className="mt-3 text-xs text-ink-muted">
-              This processed dataset is built by merging {matchedEntries.length} raw source datasets from the
-              catalogue above (see <code className="rounded bg-plane px-1 py-0.5">scripts/transform_data.py</code>).
+              This dataset combines {matchedEntries.length} published source datasets, listed above.
             </p>
           )}
         </section>
@@ -609,7 +605,7 @@ export default function DataExplorer() {
           {loading ? (
             <p className="text-sm text-ink-secondary">Loading data…</p>
           ) : error ? (
-            <InsufficientData reason={`Could not load ${dataset.file}: ${error}`} />
+            <InsufficientData reason="Data for this section is currently unavailable." />
           ) : rows && rows.length > 0 ? (
             <DataTable columns={dataset.columns} rows={rows} pageSize={25} />
           ) : (

@@ -29,8 +29,7 @@ export default function ChartToolbar({
     <div className="mb-2 flex flex-wrap items-center justify-end gap-2">
       {onExplain && (
         <span className="mr-auto text-[11px] leading-snug text-ink-muted">
-          “Explain this” sends this chart's data to a Netlify function and Google Gemini. Don't enter personal or
-          patient information.
+          Explains this chart in plain language. Please do not submit personal or confidential information.
         </span>
       )}
       {onExplain && (

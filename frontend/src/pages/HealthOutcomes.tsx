@@ -942,7 +942,7 @@ export default function HealthOutcomes() {
             {category === "nutrition" &&
               `Nutrition status is a single national survey (NHMS ${nutritionYear ?? "2019"}) — no state breakdown or other survey year exists in this dataset.`}
             {category === "covid" &&
-              "Aggregated from daily case/death counts to annual state totals — the latest year is partial (data continues to the ingestion date)."}
+              "Aggregated from daily case/death counts to annual state totals — the latest year is partial (it includes data only up to the latest update)."}
             {category === "programmes" &&
               "Aggregated from daily participation counts to annual state totals — each indicator starts in a different year and the latest year is partial."}
             {category === "lifeexp" &&
