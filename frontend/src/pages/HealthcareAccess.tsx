@@ -330,7 +330,7 @@ export default function HealthcareAccess() {
                 <h3 className="mb-2 text-sm font-medium text-ink-primary">
                   Healthcare staff per 100,000 population by state — {effectiveStateYear}
                 </h3>
-                <InsufficientData reason={`A staff-per-100,000 rate can only be computed for years with a matching state population estimate (2020–2022). No population estimate exists for ${effectiveStateYear}, so absolute staff counts are shown in the table below instead of a fabricated rate.`} />
+                <InsufficientData reason={`A staff-per-100,000 rate can only be computed for years with both a staff count and a state population estimate (2020–2022: staff counts stop at 2022 upstream, and population estimates are kept from 2020). No population estimate exists for ${effectiveStateYear}, so absolute staff counts are shown in the table below instead of a fabricated rate.`} />
               </div>
             )}
 
@@ -358,7 +358,7 @@ export default function HealthcareAccess() {
               <span className="font-medium text-ink-primary">Rate formula (staff):</span> staff_all ÷
               population_used_for_rate × 100,000. Numerator: total healthcare staff (MOH), Ministry of Health
               Malaysia. Denominator: DOSM state population estimate for the exact same state and year (shown per-row
-              in the table below as "Population (rate denominator)"). Staff rates exist only for 2020–2022, the
+              in the table below as "Population (rate denominator)"). Staff rates exist only for 2020–2022 (staff counts stop at 2022 upstream), the
               years for which a matching state population estimate is available.
             </p>
             <p className="mt-2">

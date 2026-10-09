@@ -188,20 +188,22 @@ def build_socioeconomic_district():
 
 
 # ---------------------------------------------------------------------------
-# 4. Population — state panel (2020-2023, DOSM intercensal estimates)
+# 4. Population — state panel (DOSM population estimates; file starts at 2020 and runs to the latest published year)
 # ---------------------------------------------------------------------------
 def build_population_state():
-    data = json.loads((RAW / "demography" / "population_state.json").read_text())
+    data = read_csv(RAW / "demography" / "population_state.csv")
     out = []
     for r in data:
-        if r.get("age") != "overall_age" or r.get("ethnicity") != "overall_ethnicity":
+        # DOSM's CSV labels the all-ages / all-ethnicities / both-sexes rows "overall" / "overall" / "both" (the
+        # data.gov.my API copy this used to read said "overall_age" / "overall_ethnicity" / "overall_sex").
+        if r.get("age") not in ("overall", "overall_age") or r.get("ethnicity") not in ("overall", "overall_ethnicity"):
             continue
         st = canonical_state(r["state"])
         out.append({
             "state": st,
             "year": year_of(r["date"]),
-            "sex": r["sex"].replace("overall_sex", "overall"),
-            "population_thousands": r["population"],
+            "sex": r["sex"].replace("overall_sex", "overall").replace("both", "overall"),
+            "population_thousands": num(r["population"]),
         })
     write_json("population_state.json", out)
 

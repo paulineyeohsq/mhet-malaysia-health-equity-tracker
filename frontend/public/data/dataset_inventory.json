@@ -38,7 +38,7 @@
     "population_district_full.json": 2026,
     "population_dun.json": 2024,
     "population_parlimen.json": 2024,
-    "population_state.json": 2023,
+    "population_state.json": 2026,
     "sanitation_access_national.json": 2022,
     "sanitation_access_state.json": 2022,
     "socioeconomic_district.json": 2024,
@@ -85,7 +85,7 @@
     "organ_pledges_state": {"data_as_of": "2026-10-08 23:59", "last_updated": "2026-10-09 10:00", "next_update": "2026-10-10 10:00", "update_frequency": "DAILY"},
     "pekab40_screenings_state": {"data_as_of": "2026-10-05 23:59", "last_updated": "2026-10-06 10:00", "next_update": "2026-10-07 10:00", "update_frequency": "DAILY"},
     "population_district_full": {"data_as_of": "2026", "last_updated": "2026-10-07 13:00", "next_update": "2027-10-31 12:00", "update_frequency": "YEARLY"},
-    "population_state": {"catalogue_id": "population_state", "data_as_of": "2023", "last_updated": "2023-07-31 12:00", "next_update": "2024-07-31 12:00", "data_source": ["DOSM"], "update_frequency": "YEARLY", "total": 25536, "limit": 1000000},
+    "population_state": {"data_as_of": "2023", "last_updated": "2023-07-31 12:00", "next_update": "2024-07-31 12:00", "update_frequency": "YEARLY"},
     "sanitation_access": {"data_as_of": "2022", "last_updated": "2024-09-01 12:00", "next_update": "tbc", "update_frequency": "YEARLY"},
     "sdg_03-3-1": {"data_as_of": "2022", "last_updated": "2024-09-01 12:00", "next_update": "tbc", "update_frequency": "YEARLY"},
     "std_state": {"catalogue_id": "std_state", "data_as_of": "2022", "last_updated": "2024-09-01 12:00", "next_update": "tbc", "data_source": ["MOH"], "update_frequency": "YEARLY", "total": 480, "limit": 1000000},
@@ -390,7 +390,7 @@
       "description": "DOSM intercensal population estimates by state, sex, age band and ethnicity.",
       "source_org": "DOSM",
       "update_frequency": "Annual",
-      "date_range": "Full series 1970-2026; this build ingested 2020-2023 (overall age/ethnicity, by sex)",
+      "date_range": "Full series 1970-2026; this build keeps 2020-2026 (overall age/ethnicity, by sex)",
       "geographic_resolution": "state",
       "dimensions": [
         "state",
@@ -406,7 +406,7 @@
         "healthcare_staff, hospital_beds via state+year (population denominator)"
       ],
       "recommended_use": "Denominator for per-100,000 healthcare access rates",
-      "limitations": "Full dataset also has 5-year age bands and 7 ethnicity categories; only 'overall age' x 'overall ethnicity' x sex was ingested in this build due to the raw file's size. Re-run ingest_data.py for full disaggregation.",
+      "limitations": "Full dataset also has 5-year age bands and 7 ethnicity categories; only 'overall age' x 'overall ethnicity' x sex is used, and only 2020 onward is kept, because of the raw file's size. Ingested from DOSM's own CSV (the data.gov.my API copy of this dataset stops at 2023).",
       "status": "ingested"
     },
     {

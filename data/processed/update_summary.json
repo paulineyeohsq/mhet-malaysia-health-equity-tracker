@@ -1,57 +1,22 @@
 {
- "generated_at": "2026-10-09T03:57:04Z",
+ "generated_at": "2026-10-09T06:41:48Z",
  "changed_files": [
   {
-   "file": "dataset_inventory.json"
-  },
-  {
-   "file": "population_district_full.json",
-   "rows_before": 2880,
-   "rows_after": 3396,
-   "latest_year_before": 2025,
-   "latest_year_after": 2026
-  },
-  {
-   "file": "health_programmes_state.json",
-   "rows_before": 327,
-   "rows_after": 327,
-   "latest_year_before": 2026,
-   "latest_year_after": 2026
-  },
-  {
-   "file": "pekab40_screenings_daily_state.json",
-   "rows_before": 5856,
-   "rows_after": 5856,
-   "latest_year_before": 2026,
-   "latest_year_after": 2026
-  },
-  {
-   "file": "pekab40_screenings_weekly_state.json",
-   "rows_before": 6240,
-   "rows_after": 6256,
+   "file": "population_state.json",
+   "rows_before": 0,
+   "rows_after": 336,
    "latest_year_before": null,
-   "latest_year_after": null
-  },
-  {
-   "file": "electricity_access_region.json",
-   "rows_before": 44,
-   "rows_after": 56,
-   "latest_year_before": 2021,
-   "latest_year_after": 2024
-  },
-  {
-   "file": "electricity_consumption_national.json",
-   "rows_before": 42,
-   "rows_after": 54,
-   "latest_year_before": 2024,
    "latest_year_after": 2026
   },
   {
-   "file": "electricity_supply_national.json",
-   "rows_before": 42,
-   "rows_after": 54,
-   "latest_year_before": 2024,
-   "latest_year_after": 2026
+   "file": "healthcare_access_state.json",
+   "rows_before": 144,
+   "rows_after": 144,
+   "latest_year_before": 2022,
+   "latest_year_after": 2022
+  },
+  {
+   "file": "dataset_inventory.json"
   }
  ],
  "anomalies": [],

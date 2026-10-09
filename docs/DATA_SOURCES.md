@@ -108,9 +108,9 @@ All from the Household Income and Expenditure Survey (HIES), an irregular
 ### Population Table: States
 - **URL:** https://data.gov.my/data-catalogue/population_state
 - **Source org:** DOSM
-- **Date range:** Full series 1970–2026; this build ingested 2020–2023 (overall age/ethnicity, by sex) · **Geographic resolution:** state · **Update frequency:** Annual
+- **Date range:** Full series 1970–2026; this build keeps 2020–2026 (overall age/ethnicity, by sex) · **Geographic resolution:** state · **Update frequency:** Annual
 - DOSM intercensal population estimates by state, sex, age band and ethnicity — used as the denominator for per-100,000 healthcare access rates.
-- **Limitations:** Full dataset also has 5-year age bands and 7 ethnicity categories; only "overall age" × "overall ethnicity" × sex was ingested in this build due to the raw file's size.
+- **Limitations:** Full dataset also has 5-year age bands and 7 ethnicity categories; only "overall age" × "overall ethnicity" × sex is used, and only 2020 onward is kept, because of the raw file's size (about 40 MB with every age/ethnicity combination). Ingested from DOSM's own CSV; the data.gov.my API copy of this dataset stops at 2023.
 
 ### Census District Table (DOSM data-open GitHub mirror)
 - **URL:** https://github.com/dosm-malaysia/data-open/tree/main/datasets/census
