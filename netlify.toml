@@ -1,0 +1,15 @@
+# Build settings for the dashboard site (https://my-heo.netlify.app), kept in the repository so they cannot drift from
+# what the code needs. The chat/refresh backend is a separate Netlify site with its own settings in
+# netlify-chat/netlify.toml; leave the "Base directory" of THIS site empty in the Netlify UI so this file is used.
+#
+# The build runs the same lint and unit tests as .github/workflows/deploy-pages.yml before building, so a failing
+# check stops the deploy and the previous version stays live. (The browser tests run in GitHub Actions, on every pull
+# request and in the weekly data workflow, before anything reaches main; Netlify's build image cannot run a browser.)
+
+[build]
+  base = "frontend"
+  publish = "dist"
+  command = "npm run lint && npm test && npm run build"
+
+[build.environment]
+  NODE_VERSION = "20"

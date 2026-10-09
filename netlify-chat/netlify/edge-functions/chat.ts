@@ -4,6 +4,7 @@ import { bundleFor } from "./lib/pageData.ts";
 import { SYSTEM_PROMPT } from "./lib/systemPrompt.ts";
 import { callGemini, GeminiError, type ChatMessage } from "./lib/gemini.ts";
 import { buildCompactContext, NO_PAGE_CONTEXT } from "./lib/compactContext.ts";
+import { allowedOrigin, siteUrl } from "./lib/config.ts";
 
 /**
  * Netlify Edge Function: chat proxy for the dashboard's AI features — CORS,
@@ -17,8 +18,6 @@ import { buildCompactContext, NO_PAGE_CONTEXT } from "./lib/compactContext.ts";
  * scale the extra unused keys are negligible.
  */
 
-const GH_PAGES_BASE = "https://paulineyeohsq.github.io/mhet-malaysia-health-equity-tracker/data/";
-const ALLOWED_ORIGINS = new Set(["https://paulineyeohsq.github.io", "http://localhost:5173"]);
 const MAX_BODY_BYTES = 20_000;
 const MAX_TURNS = 8;
 // 6000 (was 2000): the Research Opportunities prompts embed a ~26-row indicator table
@@ -36,7 +35,7 @@ const RATE_LIMIT_UNKNOWN_IP_PER_MINUTE = 3;
 const DEFAULT_DAILY_REQUEST_CAP = 1000;
 
 function corsHeaders(origin: string | null): Record<string, string> {
-  const allow = origin && ALLOWED_ORIGINS.has(origin) ? origin : "";
+  const allow = allowedOrigin(origin);
   return {
     "Access-Control-Allow-Origin": allow,
     "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -99,7 +98,7 @@ async function takeDailyBudget(): Promise<boolean> {
 }
 
 async function fetchDataFile(name: string): Promise<{ name: string; body: string } | null> {
-  const url = GH_PAGES_BASE + name;
+  const url = `${siteUrl()}data/${name}`;
   try {
     const upstream = await fetch(url);
     if (!upstream.ok) return null;

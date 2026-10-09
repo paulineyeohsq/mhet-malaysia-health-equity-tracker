@@ -18,7 +18,7 @@ globalThis.fetch = ((input: string | URL | Request, init?: RequestInit) => {
     geminiCalls++;
     return Promise.resolve(new Response(JSON.stringify({ candidates: [{ content: { parts: [{ text: "stub reply" }] } }] }), { status: 200 }));
   }
-  if (url.includes("github.io")) return Promise.resolve(new Response("[]", { status: 200 }));
+  if (url.startsWith("https://my-heo.netlify.app/data/")) return Promise.resolve(new Response("[]", { status: 200 }));
   return realFetch(input, init);
 }) as typeof fetch;
 
@@ -118,6 +118,12 @@ function check(name: string, cond: boolean, extra = "") {
   check("OPTIONS preflight returns 204", opt.status === 204);
   const evil = await post(ok, "6.6.6.6", { Origin: "https://evil.example" });
   check("a disallowed origin gets no CORS allow header", evil.headers.get("Access-Control-Allow-Origin") === "");
+  for (const o of ["https://my-heo.netlify.app", "https://paulineyeohsq.github.io"]) {
+    const r = await post(ok, "6.6.6.7", { Origin: o });
+    check(`the site at ${o} is allowed to call the assistant`, r.headers.get("Access-Control-Allow-Origin") === o);
+  }
+  const lookalike = await post(ok, "6.6.6.8", { Origin: "https://my-heo.netlify.app.evil.example" });
+  check("a look-alike origin is refused", lookalike.headers.get("Access-Control-Allow-Origin") === "");
 }
 
 console.log(failed === 0 ? "\nALL PASSED" : `\n${failed} FAILED`);
