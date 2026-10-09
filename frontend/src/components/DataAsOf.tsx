@@ -39,7 +39,7 @@ export default function DataAsOf() {
     <div className="mt-2 text-xs text-ink-secondary">
       <span className="font-medium text-ink-primary">Data as of {range}</span>
       {" "}(latest year in the datasets this page uses
-      {inventory.last_refreshed ? `; pipeline last refreshed ${inventory.last_refreshed}` : ""}).
+      {inventory.last_refreshed ? `; last refreshed ${inventory.last_refreshed}` : ""}).
       {stale.length > 0 && (
         <span className="ml-1 rounded bg-amber-100 px-1.5 py-0.5 font-semibold text-amber-900">
           {stale.length} of {rows.length} are more than 3 years old

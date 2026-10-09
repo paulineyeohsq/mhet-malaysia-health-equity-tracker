@@ -48,6 +48,12 @@ export class ChatError extends Error {
   }
 }
 
+/** The server's own wording for the cases it words for users (busy, too many requests, daily limit); plain text for the rest. */
+function userFacingChatError(status: number, data: { error?: string; code?: string }): string {
+  if (data.error && (data.code === "daily_cap" || status === 429 || status === 503)) return data.error;
+  return friendlyStatusMessage(status);
+}
+
 function friendlyStatusMessage(status: number): string {
   if (status === 429 || status === 503) return "The AI service is busy right now. Please try again in a moment.";
   if (status >= 500) return "The AI service had a problem. Please try again in a moment.";
@@ -78,7 +84,7 @@ export async function postChat(body: unknown): Promise<{ reply: string }> {
     /* non-JSON error page — handled below */
   }
   if (res.ok && data.reply) return { reply: data.reply };
-  throw new ChatError(data.error ?? friendlyStatusMessage(res.status), data.code, res.status);
+  throw new ChatError(userFacingChatError(res.status, data), data.code, res.status);
 }
 
 /**

@@ -649,7 +649,7 @@ export default function SocioeconomicInequality() {
           <p className="mb-3 max-w-3xl text-sm text-ink-secondary">
             A longer annual state-level series than the district amenities figures above (2019, 2022 and 2024 only), plus a national
             urban/rural breakdown for water access. Electricity access is shown separately below, since its source
-            only reports 4 utility-operator regions rather than the 16-state schema used everywhere else.
+            only reports 4 utility-operator regions rather than by each of the 16 states as elsewhere.
           </p>
 
           <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
@@ -746,7 +746,7 @@ export default function SocioeconomicInequality() {
             <p className="mb-2 text-xs text-ink-muted">
               This source reports raw household counts for 4 utility-operator regions (Malaysia, Semenanjung
               Malaysia, Sabah, Sarawak) rather than a percentage across the 16 states — shown here as its own table
-              rather than force-joined onto the state schema used elsewhere on this page.
+              rather than forced into the state-by-state view used elsewhere on this page.
             </p>
             {electricityRegion && electricityLatestYear !== null ? (
               <DataTable

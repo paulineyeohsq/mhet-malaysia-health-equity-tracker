@@ -207,7 +207,7 @@ function LayoutShell() {
         </div>
         <NavList />
         <div className="px-5 py-4 mt-auto text-xs text-ink-muted border-t border-line-grid">
-          Data: data.gov.my / DOSM / MOH
+          Source: Official DOSM &amp; MOH data.
           <br />
           Not for clinical or individual-level decision-making.
         </div>
