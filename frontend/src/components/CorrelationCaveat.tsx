@@ -1,3 +1,5 @@
+import Disclosure from "./Disclosure";
+
 /**
  * Shared "correlation, not causation" disclaimer for any WHY/determinants
  * analysis. Language throughout the app must stick to "associated with /
@@ -13,10 +15,20 @@ export const CORRELATION_CAVEAT_TEXT =
 export default function CorrelationCaveat() {
   return (
     <div className="mb-3 rounded-md border border-status-warning bg-status-warning/10 p-3 text-sm text-ink-primary">
-      <span className="font-medium">Correlation, not causation.</span> These analyses are observational and
-      descriptive. Associations should not be interpreted as causal relationships. The statistics below describe a
-      statistical association across Malaysian states in a single year — confounding factors such as urbanisation,
-      age structure, healthcare capacity and reporting practices are not controlled for here.
+      <Disclosure
+        summary={
+          <>
+            <span className="font-medium">Correlation, not causation.</span> These are associations between states, not causes.
+          </>
+        }
+        summaryClassName="text-ink-primary"
+      >
+        <p className="text-ink-secondary">
+          These analyses are observational and descriptive. Associations should not be interpreted as causal relationships.
+          The statistics describe a statistical association across Malaysian states in a single year — confounding factors
+          such as urbanisation, age structure, healthcare capacity and reporting practices are not controlled for here.
+        </p>
+      </Disclosure>
     </div>
   );
 }

@@ -1,9 +1,10 @@
 import { Suspense, useEffect, useRef, useState } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
 import AskMhet from "./AskMhet";
-import ChatPanel from "./ChatPanel";
+import ChatPanel, { ChatLauncher } from "./ChatPanel";
 import ErrorBoundary from "./ErrorBoundary";
 import { ChatProvider } from "../lib/chatContext";
+import { useChat } from "../lib/chatCore";
 
 interface NavItem {
   to: string;
@@ -133,6 +134,8 @@ function MobileBar() {
           <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="h-9 w-9 object-contain" />
           <span className="text-sm font-semibold text-ink-primary">MY-HEO</span>
         </NavLink>
+        <div className="flex items-center gap-2">
+        <ChatLauncher variant="bar" />
         <button
           ref={buttonRef}
           type="button"
@@ -150,6 +153,7 @@ function MobileBar() {
           </svg>
           Menu
         </button>
+        </div>
       </div>
       <div
         id="mobile-menu"
@@ -164,9 +168,20 @@ function MobileBar() {
 }
 
 export default function Layout() {
-  const { pathname } = useLocation();
   return (
-    <div className="min-h-screen flex flex-col lg:flex-row">
+    <ChatProvider>
+      <LayoutShell />
+    </ChatProvider>
+  );
+}
+
+function LayoutShell() {
+  const { pathname } = useLocation();
+  const { open: chatOpen } = useChat();
+  return (
+    // While the assistant is open on a wide screen the page makes room for it (right padding = the drawer's width)
+    // instead of being covered; on narrower screens the drawer slides over a dimmed backdrop.
+    <div className={`min-h-screen flex flex-col lg:flex-row xl:transition-[padding] xl:duration-200 ${chatOpen ? "xl:pr-[380px]" : ""}`}>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded focus:bg-seq-600 focus:px-3 focus:py-2 focus:text-white"
@@ -187,6 +202,9 @@ export default function Layout() {
             />
           </NavLink>
         </div>
+        <div className="px-3 pt-3">
+          <ChatLauncher variant="sidebar" />
+        </div>
         <NavList />
         <div className="px-5 py-4 mt-auto text-xs text-ink-muted border-t border-line-grid">
           Data: data.gov.my / DOSM / MOH
@@ -197,7 +215,7 @@ export default function Layout() {
 
       {/* Main content */}
       <main id="main-content" className="flex-1 min-w-0">
-        <ChatProvider>
+        <>
           <AskMhet />
           {/* Pages are code-split (React.lazy in App.tsx); the nav stays put while one loads. The boundary is
               keyed by route so navigating away from a crashed page recovers without a reload. */}
@@ -207,7 +225,7 @@ export default function Layout() {
             </Suspense>
           </ErrorBoundary>
           <ChatPanel />
-        </ChatProvider>
+        </>
       </main>
     </div>
   );

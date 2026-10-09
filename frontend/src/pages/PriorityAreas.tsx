@@ -5,6 +5,8 @@ import DataTable, { type Column } from "../components/DataTable";
 import BarRankingCard from "../components/BarRankingCard";
 import InsufficientData from "../components/InsufficientData";
 import SourceNote from "../components/SourceNote";
+import Drawer from "../components/Drawer";
+import Disclosure from "../components/Disclosure";
 import { useData } from "../lib/useData";
 import { yearsWithCoverage, type Row } from "../lib/equity";
 import { isStaleYear } from "../lib/dataAge";
@@ -181,6 +183,7 @@ export default function PriorityAreas() {
   };
 
   const [weights, setWeights] = useState<Record<GroupKey, number>>(EQUAL_WEIGHTS);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [selected, setSelected] = useState<Record<string, boolean>>(() => Object.fromEntries(SPECS.map((s) => [s.id, s.defaultOn])));
 
   // Every indicator's own latest year and per-state values (computed whether ticked or not, so the list can show them).
@@ -296,20 +299,49 @@ export default function PriorityAreas() {
           </div>
         )}
 
-        <section aria-labelledby="priority-weights" className="space-y-4">
-          <h2 id="priority-weights" className="text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-            Component weights
+        {/* The score's settings live in a panel; the page shows what they currently are and explains them. */}
+        <section aria-labelledby="priority-settings" className="space-y-3">
+          <h2 id="priority-settings" className="text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            Score settings
           </h2>
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-line-grid bg-surface p-4">
+            <div className="text-sm text-ink-secondary">
+              <p className="text-ink-primary">
+                <span className="font-medium">{active.length} indicators</span> across {groupsInUse.length} components
+              </p>
+              <p className="mt-0.5 text-xs">
+                Weights:{" "}
+                {GROUP_KEYS.map((g, i) => (
+                  <span key={g}>
+                    {i > 0 ? " · " : ""}
+                    {GROUPS[g].label.split(" (")[0]} {Math.round((weights[g] / totalWeight) * 100)}%
+                  </span>
+                ))}
+                {JSON.stringify(weights) === JSON.stringify(EQUAL_WEIGHTS) ? " (equal, the default)" : ""}
+              </p>
+            </div>
+            <button
+              type="button"
+              aria-haspopup="dialog"
+              onClick={() => setSettingsOpen(true)}
+              className="rounded-md bg-series-1 px-3 py-1.5 text-sm font-medium text-white hover:opacity-90"
+            >
+              Customize the score…
+            </button>
+          </div>
 
-          <details className="rounded-lg border border-line-grid bg-surface p-4 text-sm text-ink-secondary" open>
-            <summary className="cursor-pointer font-medium text-ink-primary">Where do these weights come from?</summary>
-            <div className="mt-2 max-w-4xl space-y-2 leading-relaxed">
+          <Disclosure
+            className="rounded-lg border border-line-grid bg-surface p-3 text-sm text-ink-secondary"
+            summaryClassName="font-medium text-ink-primary"
+            summary="Where do the weights come from?"
+          >
+            <div className="max-w-4xl space-y-2 leading-relaxed">
               <p>
                 <strong>They are an assumption, not a finding.</strong> The default of 25% for each of the four components
                 is simply equal weighting. It was not estimated from the data, tested against outcomes, or taken from
                 any ministry, WHO or published index, because no evidence-based way to say how much more a mortality rate
                 should count than poverty or bed supply exists. Equal weights are the least presumptuous starting point, but
-                they are still a choice, which is why the sliders are here.
+                they are still a choice, which is why you can change them.
               </p>
               <p>
                 <strong>Inside a component</strong> every indicator you tick counts equally. <strong>Each indicator</strong>{" "}
@@ -324,50 +356,14 @@ export default function PriorityAreas() {
                 state's position depends on what you decide matters.
               </p>
             </div>
-          </details>
+          </Disclosure>
 
-          <div className="rounded-lg border border-line-grid bg-surface p-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              {GROUP_KEYS.map((key) => (
-                <div key={key}>
-                  <div className="flex items-center justify-between text-xs text-ink-secondary">
-                    <label htmlFor={`weight-${key}`}>{GROUPS[key].label}</label>
-                    <span className="tabular-nums text-ink-primary">{Math.round((weights[key] / totalWeight) * 100)}%</span>
-                  </div>
-                  <input
-                    id={`weight-${key}`}
-                    type="range"
-                    min={0}
-                    max={100}
-                    value={weights[key]}
-                    onChange={(e) => setWeights((w) => ({ ...w, [key]: Number(e.target.value) }))}
-                    className="mt-1 w-full"
-                  />
-                  <p className="mt-0.5 text-[11px] leading-snug text-ink-muted">{GROUPS[key].blurb}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-3 flex flex-wrap items-center gap-3 text-xs text-ink-muted">
-              <button
-                type="button"
-                onClick={() => setWeights(EQUAL_WEIGHTS)}
-                className="rounded border border-line-axis px-2 py-1 font-medium text-ink-secondary hover:border-series-1 hover:text-series-1"
-              >
-                Reset to equal weights
-              </button>
-              <span>Weights are re-scaled to sum to 100%.</span>
-            </div>
-          </div>
-        </section>
-
-        <section aria-labelledby="priority-indicators" className="space-y-3">
-          <h2 id="priority-indicators" className="text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-            Indicators included
-          </h2>
-
-          <details className="rounded-lg border border-line-grid bg-surface p-4 text-sm text-ink-secondary" open>
-            <summary className="cursor-pointer font-medium text-ink-primary">Where does the equity gap come from?</summary>
-            <div className="mt-2 max-w-4xl space-y-2 leading-relaxed">
+          <Disclosure
+            className="rounded-lg border border-line-grid bg-surface p-3 text-sm text-ink-secondary"
+            summaryClassName="font-medium text-ink-primary"
+            summary="Where does the equity gap come from?"
+          >
+            <div className="max-w-4xl space-y-2 leading-relaxed">
               <p>
                 The equity-gap component measures <strong>inequality inside each state</strong>: how far apart its districts
                 are. It uses three gaps between a state's highest and lowest district: the poverty rate (percentage points)
@@ -386,12 +382,58 @@ export default function PriorityAreas() {
                 nothing about inequality. If you would rather define the equity gap another way, say so.
               </p>
             </div>
-          </details>
+          </Disclosure>
+        </section>
 
-          <div className="grid gap-4 lg:grid-cols-2">
+        <Drawer
+          open={settingsOpen}
+          onClose={() => setSettingsOpen(false)}
+          title="Customize the score"
+          footer={
+            <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-ink-muted">
+              <button
+                type="button"
+                onClick={() => {
+                  setWeights(EQUAL_WEIGHTS);
+                  setSelected(Object.fromEntries(SPECS.map((s) => [s.id, s.defaultOn])));
+                }}
+                className="rounded border border-line-axis px-2 py-1 font-medium text-ink-secondary hover:border-series-1 hover:text-series-1"
+              >
+                Reset everything to the defaults
+              </button>
+              <span>Results update as you change things.</span>
+            </div>
+          }
+        >
+          <h3 className="text-sm font-medium text-ink-primary">Component weights</h3>
+          <p className="mt-0.5 text-xs text-ink-muted">Weights are re-scaled to sum to 100%.</p>
+          <div className="mt-3 space-y-4">
+            {GROUP_KEYS.map((key) => (
+              <div key={key}>
+                <div className="flex items-center justify-between text-xs text-ink-secondary">
+                  <label htmlFor={`weight-${key}`}>{GROUPS[key].label}</label>
+                  <span className="tabular-nums text-ink-primary">{Math.round((weights[key] / totalWeight) * 100)}%</span>
+                </div>
+                <input
+                  id={`weight-${key}`}
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={weights[key]}
+                  onChange={(e) => setWeights((w) => ({ ...w, [key]: Number(e.target.value) }))}
+                  className="mt-1 w-full"
+                />
+                <p className="mt-0.5 text-[11px] leading-snug text-ink-muted">{GROUPS[key].blurb}</p>
+              </div>
+            ))}
+          </div>
+
+          <h3 className="mt-6 text-sm font-medium text-ink-primary">Indicators included</h3>
+          <p className="mt-0.5 text-xs text-ink-muted">Untick an indicator to leave it out of its component.</p>
+          <div className="mt-3 space-y-5">
             {GROUP_KEYS.map((g) => (
-              <div key={g} className="rounded-lg border border-line-grid bg-surface p-4">
-                <h3 className="text-sm font-medium text-ink-primary">{GROUPS[g].label}</h3>
+              <fieldset key={g}>
+                <legend className="text-xs font-semibold uppercase tracking-wide text-ink-secondary">{GROUPS[g].label}</legend>
                 <ul className="mt-2 space-y-2">
                   {resolved
                     .filter((r) => r.spec.group === g)
@@ -426,10 +468,10 @@ export default function PriorityAreas() {
                       );
                     })}
                 </ul>
-              </div>
+              </fieldset>
             ))}
           </div>
-        </section>
+        </Drawer>
 
         <section aria-labelledby="priority-results">
           <h2 id="priority-results" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">

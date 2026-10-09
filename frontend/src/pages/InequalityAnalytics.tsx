@@ -20,6 +20,7 @@ import DataTable, { type Column } from "../components/DataTable";
 import { toCSV } from "../lib/csv";
 import InsufficientData from "../components/InsufficientData";
 import ChartToolbar from "../components/ChartToolbar";
+import Disclosure from "../components/Disclosure";
 import Term from "../components/Term";
 import { useData } from "../lib/useData";
 import { useChat, buildExplainPrompt } from "../lib/chatCore";
@@ -440,9 +441,12 @@ export default function InequalityAnalytics() {
 
       <div className="space-y-8 p-6 lg:p-10">
         {/* Persistent methodology callout */}
-        <div className="rounded-lg border border-line-axis bg-plane p-4 text-sm text-ink-secondary">
-          <p className="font-medium text-ink-primary">How to read this page</p>
-          <p className="mt-1.5 max-w-4xl leading-relaxed">
+        <Disclosure
+          className="rounded-lg border border-line-axis bg-plane p-3 text-sm text-ink-secondary"
+          summaryClassName="font-medium text-ink-primary"
+          summary="How to read this page: these compare whole states, and show association, not cause"
+        >
+          <p className="max-w-4xl leading-relaxed">
             Every measure below compares whole <strong>states</strong> to one another — these are between-state
             (ecological) inequality measures, not measures of who within a state is affected, and they describe
             statistical association, not causation. A gap between the richest and poorest state does not by itself
@@ -455,19 +459,23 @@ export default function InequalityAnalytics() {
             </a>{" "}
             page for full data provenance and limitations.
           </p>
-        </div>
+        </Disclosure>
 
         {/* Equity gap summary — all outcomes at once, against a chosen reference */}
         <section aria-labelledby="gap-summary-section">
           <h2 id="gap-summary-section" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
             Equity gap summary
           </h2>
-          <div className="mb-3 rounded-md border border-line-axis bg-plane p-3 text-xs leading-relaxed text-ink-secondary">
-            <strong className="text-ink-primary">Methodology.</strong> For each outcome below, "Group/area" is the
+          <Disclosure
+            className="mb-3 rounded-md border border-line-axis bg-plane p-3 text-xs leading-relaxed text-ink-secondary"
+            summaryClassName="font-medium text-ink-primary"
+            summary="How is the equity gap calculated?"
+          >
+            <p>For each outcome below, "Group/area" is the
             most disadvantaged state for that outcome in its own most recent year with full state coverage.
             "Absolute gap" = |group value − reference value|. "Relative gap" = higher value ÷ lower value between
-            the group and the reference (always ≥ 1×), undefined when either value is 0.
-          </div>
+            the group and the reference (always ≥ 1×), undefined when either value is 0.</p>
+          </Disclosure>
           <div className="mb-4 flex flex-wrap items-end gap-4 rounded-lg border border-line-grid bg-surface p-4">
             <div>
               <label htmlFor="ref-mode" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
@@ -949,8 +957,12 @@ export default function InequalityAnalytics() {
           <h2 id="ci-section" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
             Concentration index
           </h2>
-          <div className="mb-3 rounded-md border border-line-axis bg-plane p-3 text-xs leading-relaxed text-ink-secondary">
-            <strong className="text-ink-primary">Methodology — concentration index.</strong> Using the same outcome
+          <Disclosure
+            className="mb-3 rounded-md border border-line-axis bg-plane p-3 text-xs leading-relaxed text-ink-secondary"
+            summaryClassName="font-medium text-ink-primary"
+            summary="How is the concentration index calculated?"
+          >
+            <p>Using the same outcome
             and year selected above, states are ranked from most disadvantaged (highest poverty rate) to least
             disadvantaged (lowest poverty rate). The concentration curve plots the cumulative share of the national
             population (x-axis) against the cumulative share of the underlying{" "}
@@ -960,8 +972,8 @@ export default function InequalityAnalytics() {
             <code>CI = 1 − Σ(Xᵢ−Xᵢ₋₁)(Yᵢ+Yᵢ₋₁)</code>, the standard trapezoidal-area formula computed directly from
             this curve (range −1 to +1). This uses real published absolute counts and real population weights, not
             a rate-based approximation — but like SII/RII above, it is a state-level (ecological) measure across
-            only 16 units, so treat the value as indicative rather than precise.
-          </div>
+            only 16 units, so treat the value as indicative rather than precise.</p>
+          </Disclosure>
 
           {!ciResult ? (
             <InsufficientData

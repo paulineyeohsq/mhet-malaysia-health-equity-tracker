@@ -1,9 +1,10 @@
 import { SOURCES } from "../lib/sources";
+import Disclosure from "./Disclosure";
 
 /**
- * Provenance footer required on every indicator: source org, geography,
- * unit, last-updated date, and a "View source" link to the original
- * data.gov.my dataset page. Never hide or omit this.
+ * Provenance footer required on every indicator. The line you always see names the source organisation and year (and
+ * flags that a note exists); one click shows the rest: geography, unit, last-updated date, the "View source" link and
+ * any caveat that applies to the figure.
  */
 export default function SourceNote({
   sourceKey,
@@ -17,26 +18,39 @@ export default function SourceNote({
   const s = SOURCES[sourceKey];
   if (!s) return null;
   return (
-    <p className="mt-2 text-xs leading-relaxed text-ink-muted">
-      Source: {s.org}
-      {year !== undefined ? ` · Year: ${year}` : ""} · Geography: {s.geography} · Unit: {s.unit} · Last
-      updated: {s.lastUpdated}
-      {extra ? ` · ${extra}` : ""}{" "}
-      <a
-        href={s.url}
-        target="_blank"
-        rel="noreferrer"
-        className="text-series-1 underline underline-offset-2 hover:text-seq-600"
-      >
-        View source
-      </a>
+    <Disclosure
+      className="mt-2 text-xs leading-relaxed text-ink-muted"
+      summary={
+        <>
+          View source — {s.org}
+          {year !== undefined ? ` · ${year}` : ""}
+          {s.caveat && (
+            <span className="ml-1.5 rounded bg-amber-100 px-1 py-0.5 text-[10px] font-semibold text-amber-900">⚠ note</span>
+          )}
+        </>
+      }
+    >
+      <p>
+        Source: {s.org}
+        {year !== undefined ? ` · Year: ${year}` : ""} · Geography: {s.geography} · Unit: {s.unit} · Last updated:{" "}
+        {s.lastUpdated}
+        {extra ? ` · ${extra}` : ""}{" "}
+        <a
+          href={s.url}
+          target="_blank"
+          rel="noreferrer"
+          className="text-series-1 underline underline-offset-2 hover:text-seq-600"
+        >
+          Open the dataset
+        </a>
+      </p>
       {s.caveat && (
-        <span className="mt-1 block text-ink-secondary">
+        <p className="mt-1 text-ink-secondary">
           <span aria-hidden="true">⚠ </span>
           <span className="font-medium">Note: </span>
           {s.caveat}
-        </span>
+        </p>
       )}
-    </p>
+    </Disclosure>
   );
 }
