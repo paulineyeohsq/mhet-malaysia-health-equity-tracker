@@ -17,11 +17,12 @@ const world = {
   dispatchStatus: 204,
   headCalls: 0,
   lastHeadEncoding: null as string | null,
+  pulls: [] as { html_url: string; created_at: string }[],
   dispatches: [] as { url: string; auth: string | null; body: string }[],
 };
 const reset = () => {
   __reset();
-  Object.assign(world, { etag: '"e1"', apiLastUpdated: "2026-01-01 12:00", httpDown: false, dispatchStatus: 204, headCalls: 0, dispatches: [] });
+  Object.assign(world, { etag: '"e1"', apiLastUpdated: "2026-01-01 12:00", httpDown: false, dispatchStatus: 204, headCalls: 0, pulls: [], dispatches: [] });
   world.runs = { update: null, deploy: null };
   delete env.GITHUB_DISPATCH_TOKEN;
 };
@@ -57,6 +58,7 @@ globalThis.fetch = ((input: string | URL | Request, init?: RequestInit) => {
     const run = runsMatch[1] === "update-data" ? world.runs.update : world.runs.deploy;
     return Promise.resolve(new Response(JSON.stringify({ workflow_runs: run ? [run] : [] })));
   }
+  if (url.includes("/pulls?state=open&head=") && url.includes("automated%2Fdata-refresh")) return Promise.resolve(new Response(JSON.stringify(world.pulls)));
   if (url.endsWith("/actions/workflows/update-data.yml/dispatches") && method === "POST") {
     const headers = new Headers(init?.headers);
     world.dispatches.push({ url, auth: headers.get("Authorization"), body: String(init?.body) });
@@ -106,6 +108,16 @@ world.etag = 'W/"different-because-compressed"';
   const j = await body(await call("GET"));
   check("GET: a weak ETag does not make a file look replaced", !j.newer.some((n: { id: string }) => n.id === "deaths"), JSON.stringify(j.newer));
   check("GET: the file check asks for the uncompressed response", world.lastHeadEncoding === "identity", String(world.lastHeadEncoding));
+}
+
+// 2c. a refresh waiting for review is reported, so the page can say nothing has gone live yet
+reset();
+{
+  const none = await body(await call("GET"));
+  check("GET: no pull request waiting means reviewPending is null", none.reviewPending === null, JSON.stringify(none.reviewPending));
+  world.pulls = [{ html_url: "https://github.com/x/pull/9", created_at: "2026-10-12T02:30:00Z" }];
+  const j = await body(await call("GET", "2.2.2.2"));
+  check("GET: an open data-refresh pull request is reported", j.reviewPending?.url === "https://github.com/x/pull/9" && j.reviewPending?.createdAt === "2026-10-12T02:30:00Z", JSON.stringify(j.reviewPending));
 }
 
 // 3. an unreachable publisher is 'unchecked', never 'newer'

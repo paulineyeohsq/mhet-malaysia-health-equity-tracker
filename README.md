@@ -188,6 +188,14 @@ demand (**Actions → Update data → Run workflow**). With no manual step it:
    opens a pull request instead; if the run fails it opens (or updates) an issue titled "Automated data refresh
    failed" and publishes nothing. The issue closes itself on the next clean run.
 
+**Publishing is automatic when the checks pass; unusual changes wait for a person.** That is a deliberate choice: a
+clean refresh needs no approval, and a refresh that looks wrong never goes live until someone merges its pull request.
+The home page card says exactly this, and shows "Waiting for review" (with a link) while such a pull request is open.
+Before anything is published the deploy repeats the same gates (`deploy-pages.yml`: lint, unit tests, build, browser and
+accessibility tests). Both sites are published from that one tested build when the optional `NETLIFY_AUTH_TOKEN` and
+`NETLIFY_SITE_ID` repository secrets are set (and "Stop auto publishing" is chosen for the Netlify site); without them,
+Netlify builds `main` on its own, running lint and the unit tests only, because its build image cannot run a browser.
+
 **Between Mondays.** The home page has an "Is the data up to date?" card. *Check for newer data* asks the publishers (through
 the `/refresh` function in `netlify-chat/`) whether anything has been released since the last ingest; if so, *Update the
 dashboard now* starts this same workflow and the card follows it until the new data is published. The button only works

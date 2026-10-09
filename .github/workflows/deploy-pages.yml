@@ -1,7 +1,16 @@
 name: Deploy to GitHub Pages
 
 # Builds the frontend and publishes it to GitHub Pages on every push to
-# main. Uses the official GitHub Pages Actions flow (upload-pages-artifact +
+# main - and, when the two Netlify secrets below are set, to the Netlify site (https://my-heo.netlify.app) too, from
+# the very same build, after the very same gates (lint, unit tests, build, browser and accessibility tests).
+#
+# Netlify can also build main by itself; that build runs lint and the unit tests but cannot run a browser. To make
+# the browser tests a gate for the Netlify site as well, add the secrets NETLIFY_AUTH_TOKEN (a personal access token)
+# and NETLIFY_SITE_ID (the my-heo site's API ID) to this repository, and in Netlify choose Deploys -> "Stop auto
+# publishing" for the my-heo site so that only this workflow publishes it. Without the secrets this job is skipped and
+# Netlify keeps building main on its own.
+#
+# Pages: Uses the official GitHub Pages Actions flow (upload-pages-artifact +
 # deploy-pages) rather than a gh-pages branch, so no extra branch or
 # personal access token is needed — just the repo's built-in GITHUB_TOKEN.
 #
@@ -62,6 +71,13 @@ jobs:
         working-directory: frontend
         run: npm run test:e2e
 
+      - name: Keep the tested build for the Netlify deploy
+        uses: actions/upload-artifact@v4
+        with:
+          name: site-dist
+          path: frontend/dist
+          retention-days: 1
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
@@ -80,3 +96,34 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  # Publishes the build that just passed every gate to the Netlify site. Skipped unless both secrets exist.
+  deploy-netlify:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    steps:
+      - name: Netlify secrets not set
+        if: env.NETLIFY_AUTH_TOKEN == '' || env.NETLIFY_SITE_ID == ''
+        run: echo "NETLIFY_AUTH_TOKEN / NETLIFY_SITE_ID are not set, so Netlify keeps building main on its own (lint and unit tests only)."
+
+      - name: Download the tested build
+        if: env.NETLIFY_AUTH_TOKEN != '' && env.NETLIFY_SITE_ID != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: site-dist
+          path: site
+
+      - name: Deploy the tested build to Netlify
+        if: env.NETLIFY_AUTH_TOKEN != '' && env.NETLIFY_SITE_ID != ''
+        run: |
+          set -euo pipefail
+          (cd site && zip -qr ../site.zip .)
+          curl --fail-with-body -sS -X POST \
+            -H "Authorization: Bearer $NETLIFY_AUTH_TOKEN" \
+            -H "Content-Type: application/zip" \
+            --data-binary @site.zip \
+            "https://api.netlify.com/api/v1/sites/$NETLIFY_SITE_ID/deploys" -o netlify-response.json
+          python3 -c "import json; d=json.load(open('netlify-response.json')); print('Netlify deploy', d.get('id'), d.get('state'), d.get('ssl_url') or d.get('url'))"

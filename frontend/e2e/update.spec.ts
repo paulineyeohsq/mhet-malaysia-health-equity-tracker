@@ -42,7 +42,7 @@ test("nothing newer: says everything is up to date and offers no update button",
   await page.goto("/#/");
   await expect(page.getByRole("heading", { name: "Is the data up to date?" })).toBeVisible();
   await expect(page.getByText(/Last refreshed from the publishers on/)).toBeVisible();
-  await expect(page.getByText(/each Monday \(next:/)).toBeVisible();
+  await expect(page.getByText(/Each Monday \(next:/)).toBeVisible();
   await page.getByRole("button", { name: "Check for newer data" }).click();
   await expect(page.getByText(/Everything is up to date/)).toBeVisible();
   await expect(page.getByText(/none of the 56 sources checked/)).toBeVisible();
@@ -83,6 +83,23 @@ test("newer data but on-demand updates are not enabled: explains the Monday refr
   await expect(page.getByText("2 sources have newer data")).toBeVisible();
   await expect(page.getByText(/will pick these up on Monday/)).toBeVisible();
   await expect(page.getByRole("button", { name: "Update the dashboard now" })).toHaveCount(0);
+});
+
+test("the card explains what actually happens: checks first, unusual changes held for review", async ({ page }) => {
+  await script(page, [{ body: { ...base, newer: [] } }]);
+  await page.goto("/#/");
+  await expect(page.getByText(/runs its automated checks and,\s+if they all pass, publishes the new data by itself/)).toBeVisible();
+  await expect(page.getByText(/Anything that looks unusual is held back for a person to\s+review/)).toBeVisible();
+});
+
+test("a refresh held for review is shown as waiting, not as published or as nothing to do", async ({ page }) => {
+  const pr = { url: "https://github.com/x/pull/9", createdAt: "2026-10-12T02:30:00Z" };
+  await script(page, [{ body: { ...base, newer: [], reviewPending: pr } }]);
+  await page.goto("/#/");
+  await page.getByRole("button", { name: "Check for newer data" }).click();
+  await expect(page.getByText("Waiting for review")).toBeVisible();
+  await expect(page.getByText(/has not gone live yet and the dashboard still shows its previous data/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "See what is proposed" })).toHaveAttribute("href", pr.url);
 });
 
 test("a recent update: the button waits for the cooldown", async ({ page }) => {
