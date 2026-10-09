@@ -1,0 +1,24 @@
+{
+ "generated_at": "2026-10-09T02:33:49Z",
+ "changed_files": [
+  {
+   "file": "socioeconomic_district.json",
+   "rows_before": 480,
+   "rows_after": 480,
+   "latest_year_before": 2024,
+   "latest_year_after": 2024
+  },
+  {
+   "file": "health_outcomes_state.json",
+   "rows_before": 390,
+   "rows_after": 390,
+   "latest_year_before": 2024,
+   "latest_year_after": 2024
+  },
+  {
+   "file": "dataset_inventory.json"
+  }
+ ],
+ "anomalies": [],
+ "needs_review": false
+}

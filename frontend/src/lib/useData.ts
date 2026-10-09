@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import type { Row } from "./equity";
+import { applyKlangValleyMode, HEALTHCARE_ACCESS_FILE, useKlangValleyMode } from "./klangValley";
 
 const cache = new Map<string, unknown>();
 
@@ -7,11 +9,19 @@ const cache = new Map<string, unknown>();
  * build time — see scripts/transform_data.py for how these are produced).
  * Simple in-memory cache so navigating between pages doesn't re-fetch.
  * Pass null to skip loading (data stays null) until a file is actually needed.
+ *
+ * The healthcare-access file is returned in the visitor's chosen Klang Valley mode (pooled or each territory
+ * separately, see lib/klangValley.ts). Pass `{ raw: true }` for the file exactly as published, e.g. a table that
+ * shows both the own-state and pooled columns side by side.
  */
-export function useData<T = unknown>(name: string | null): { data: T | null; loading: boolean; error: string | null } {
+export function useData<T = unknown>(
+  name: string | null,
+  options?: { raw?: boolean }
+): { data: T | null; loading: boolean; error: string | null } {
   // Results of fetches this hook started. Everything returned is derived from this and the module cache, so no
   // state is set synchronously inside the effect.
   const [fetched, setFetched] = useState<{ name: string; data: T | null; error: string | null } | null>(null);
+  const [kvMode] = useKlangValleyMode();
 
   useEffect(() => {
     // name === null means "don't load yet" - lets a page defer a large file until it is needed.
@@ -36,8 +46,15 @@ export function useData<T = unknown>(name: string | null): { data: T | null; loa
     };
   }, [name]);
 
-  if (name === null) return { data: null, loading: false, error: null };
-  if (cache.has(name)) return { data: cache.get(name) as T, loading: false, error: null };
   const mine = fetched && fetched.name === name ? fetched : null;
-  return { data: mine?.data ?? null, loading: mine === null, error: mine?.error ?? null };
+  const base: T | null = name === null ? null : cache.has(name) ? (cache.get(name) as T) : (mine?.data ?? null);
+  const raw = options?.raw === true;
+  const data = useMemo(
+    () => (name === HEALTHCARE_ACCESS_FILE && !raw && Array.isArray(base) ? (applyKlangValleyMode(base as Row[], kvMode) as T) : base),
+    [name, raw, base, kvMode]
+  );
+
+  if (name === null) return { data: null, loading: false, error: null };
+  if (cache.has(name)) return { data, loading: false, error: null };
+  return { data, loading: mine === null, error: mine?.error ?? null };
 }

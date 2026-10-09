@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { computePriorityScores, normalizeMinMax, type ScoreComponentInput } from "./priorityScore";
+import {
+  computeGroupedScores,
+  computePriorityScores,
+  normalizeMinMax,
+  rankRanges,
+  rankStates,
+  type IndicatorInput,
+  type ScoreComponentInput,
+} from "./priorityScore";
 
 describe("normalizeMinMax", () => {
   it("maps min to 0 and max to 1", () => {
@@ -76,5 +84,72 @@ describe("computePriorityScores", () => {
   it("ignores components that have no weight entry", () => {
     const rows = computePriorityScores(states, [comp("x", { A: 1, B: 2, C: 3 }, true), comp("z", { A: 9, B: 1, C: 5 }, true)], { x: 1 });
     expect(rows.map((r) => r.weightedTotal)).toEqual([0, 0.5, 1]);
+  });
+});
+
+const ind = (key: string, group: string, vals: Record<string, number | null>, higherIsMorePriority = true): IndicatorInput => ({
+  key,
+  group,
+  label: key,
+  values: new Map(Object.entries(vals)),
+  higherIsMorePriority,
+});
+
+describe("computeGroupedScores", () => {
+  const states = ["A", "B", "C"];
+
+  it("averages the indicators inside a group, then weights the groups", () => {
+    const rows = computeGroupedScores(
+      states,
+      [ind("m1", "burden", { A: 0, B: 5, C: 10 }), ind("m2", "burden", { A: 10, B: 5, C: 0 }), ind("p", "ses", { A: 1, B: 2, C: 3 })],
+      { burden: 1, ses: 1 }
+    );
+    const b = rows.find((r) => r.state === "B")!;
+    expect(b.groups.burden).toBeCloseTo(0.5, 10); // (0.5 + 0.5) / 2
+    expect(b.groups.ses).toBeCloseTo(0.5, 10);
+    expect(rows.find((r) => r.state === "A")!.groups.burden).toBeCloseTo(0.5, 10); // (0 + 1) / 2
+    expect(rows.find((r) => r.state === "C")!.weightedTotal).toBeCloseTo((0.5 + 1) / 2, 10);
+  });
+
+  it("inverts indicators where higher means less priority", () => {
+    const rows = computeGroupedScores(states, [ind("beds", "access", { A: 100, B: 200, C: 300 }, false)], { access: 1 });
+    expect(rows.map((r) => r.weightedTotal)).toEqual([1, 0.5, 0]);
+  });
+
+  it("drops a missing value instead of scoring it as zero, at both levels", () => {
+    const rows = computeGroupedScores(
+      states,
+      [ind("x1", "burden", { A: 1, B: 2, C: null }), ind("x2", "burden", { A: 2, B: 1, C: 9 }), ind("s", "ses", { A: 1, B: 2, C: null })],
+      { burden: 1, ses: 1 }
+    );
+    const c = rows.find((r) => r.state === "C")!;
+    expect(c.indicators.x1).toBeNull();
+    expect(c.groups.burden).toBe(1); // only x2 counts for C: it is C's max
+    expect(c.groups.ses).toBeNull();
+    expect(c.weightedTotal).toBe(1); // ses missing -> weight re-based onto burden alone
+  });
+
+  it("gives no score when a state has no value in any indicator", () => {
+    const none = computeGroupedScores(["A", "B"], [ind("x", "burden", { A: 1, B: null })], { burden: 1 });
+    expect(none.find((r) => r.state === "B")!.weightedTotal).toBeNull();
+  });
+});
+
+describe("rankStates and rankRanges", () => {
+  const states = ["A", "B", "C"];
+  const indicators = [ind("burden1", "burden", { A: 3, B: 2, C: 1 }), ind("ses1", "ses", { A: 1, B: 2, C: 3 })];
+
+  it("ranks by score, 1 = highest, ties sharing the better rank", () => {
+    const tie = computeGroupedScores(states, indicators, { burden: 1, ses: 1 });
+    expect([...rankStates(tie).values()]).toEqual([1, 1, 1]); // every state scores 0.5
+    const burdenOnly = rankStates(computeGroupedScores(states, indicators, { burden: 1, ses: 0 }));
+    expect(burdenOnly.get("A")).toBe(1);
+    expect(burdenOnly.get("C")).toBe(3);
+  });
+
+  it("reports the best and worst rank over several weightings", () => {
+    const r = rankRanges(states, indicators, [{ burden: 1, ses: 0 }, { burden: 0, ses: 1 }]);
+    expect(r.get("A")).toEqual({ best: 1, worst: 3 });
+    expect(r.get("B")).toEqual({ best: 2, worst: 2 });
   });
 });

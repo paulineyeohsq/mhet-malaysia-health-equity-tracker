@@ -31,7 +31,7 @@ composite "equity score".
 ## How it fits together
 
 ```
- data.gov.my / DOSM / MOH                    GitHub Actions (monthly + on push)
+ data.gov.my / DOSM / MOH                    GitHub Actions (weekly + on push)
         │                                              │
         ▼                                              ▼
   scripts/ (Python, stdlib)  ───►  frontend/public/data/*.json  ───►  GitHub Pages
@@ -55,7 +55,8 @@ composite "equity score".
   without it.
 - **The data** is rebuilt by the Python pipeline in [`scripts/`](scripts/). A
   scheduled workflow ([`update-data.yml`](.github/workflows/update-data.yml)) runs
-  it monthly and opens a pull request for review.
+  it every Monday with no manual step and publishes the result only if every test
+  passes (see "Automatic data updates" below).
 
 ## Repo structure
 
@@ -72,7 +73,7 @@ mhet/
 ├── backend/              Explains why there is no live API/database (see its README)
 ├── database/             Sketch of the schema a future DB-backed version would use
 ├── docs/                 DATA_DICTIONARY.md, DATA_SOURCES.md, METHODOLOGY.md
-└── .github/workflows/    deploy-pages.yml (publish on push to main), update-data.yml (monthly refresh)
+└── .github/workflows/    deploy-pages.yml (publish on push to main), update-data.yml (weekly refresh)
 ```
 
 ## The 18 pages
@@ -175,6 +176,26 @@ python3 scripts/update_database.py
 `frontend/public/data/`, snapshotting the previous contents to a `.backup/` folder
 and leaving them untouched if any stage fails. See
 [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md) for the stage-by-stage detail.
+
+## Automatic data updates
+
+[`update-data.yml`](.github/workflows/update-data.yml) runs every Monday at 02:00 UTC (10:00 Malaysia time) and on
+demand (**Actions → Update data → Run workflow**). With no manual step it:
+
+1. re-fetches every source dataset (`scripts/ingest_data.py`; each fetch is retried, and a download with more than
+   10% fewer rows than the file on disk is refused as truncated and the old file kept);
+2. validates, transforms, and syncs into `frontend/public/data/` (`scripts/update_database.py`);
+3. runs the same gates as any code change: lint, unit and data-consistency tests, build, and the Playwright and
+   axe suites against the refreshed data;
+4. then, if the data changed and nothing looks wrong, commits to `main` and triggers the deploy. If anything looks
+   wrong (a dataset failed or was refused, a file lost more than 10% of its rows, a latest year went backwards) it
+   opens a pull request instead; if the run fails it opens (or updates) an issue titled "Automated data refresh
+   failed" and publishes nothing. The issue closes itself on the next clean run.
+
+Every run writes `data/raw/ingest_report.json` (per dataset: refreshed, unchanged, failed or refused, its latest year,
+and what the publisher says about its own `data_as_of` / `next_update`) and `data/processed/update_summary.json`.
+The data can only be as new as its publisher makes it: some sources are updated yearly or less often (hospital beds
+and healthcare staff currently stop at 2022), and the app shows each publisher's own statement beside the data.
 
 ## Deployment
 

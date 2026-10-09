@@ -1,4 +1,5 @@
 import DataAsOf from "./DataAsOf";
+import KlangValleyToggle from "./KlangValleyToggle";
 
 export default function PageHeader({
   title,
@@ -12,6 +13,7 @@ export default function PageHeader({
       <h1 className="text-2xl font-semibold text-ink-primary">{title}</h1>
       {subtitle && <p className="mt-1 max-w-3xl text-sm text-ink-secondary">{subtitle}</p>}
       <DataAsOf />
+      <KlangValleyToggle />
     </div>
   );
 }

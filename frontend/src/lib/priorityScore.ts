@@ -79,3 +79,93 @@ export function computePriorityScores(
     return { state, components: comps, weightedTotal };
   });
 }
+
+// ---------------------------------------------------------------------------------------------------------------
+// Grouped scoring: every indicator the user ticks counts, weighted within its component group.
+// ---------------------------------------------------------------------------------------------------------------
+
+export interface IndicatorInput {
+  key: string;
+  /** Which component the indicator belongs to ("burden", "ses", "access", "equity"). */
+  group: string;
+  label: string;
+  /** state -> raw value (null where the state has no usable value). */
+  values: Map<string, number | null>;
+  /** true if a HIGHER raw value means MORE priority (e.g. a mortality rate); false if it means less (e.g. beds per 100,000). */
+  higherIsMorePriority: boolean;
+}
+
+export interface GroupedScoreRow {
+  state: string;
+  /** indicator key -> min-max normalised value (1 = most priority-worthy), null where the state has no value. */
+  indicators: Record<string, number | null>;
+  /** group key -> mean of that group's normalised indicators (null when the state has none for the group). */
+  groups: Record<string, number | null>;
+  weightedTotal: number | null;
+}
+
+/**
+ * Two-level score. Each indicator is min-max normalised across states (inverted where a higher raw value means less
+ * priority); a group's score is the plain mean of its normalised indicators that the state actually has; the overall
+ * score is the weighted mean of group scores, with weights re-based over the groups the state has. A missing value
+ * is never scored as 0: it simply drops out and the remaining ones carry its share.
+ */
+export function computeGroupedScores(
+  states: string[],
+  indicators: IndicatorInput[],
+  groupWeights: Record<string, number>
+): GroupedScoreRow[] {
+  const normalised: Record<string, (number | null)[]> = {};
+  for (const ind of indicators) {
+    normalised[ind.key] = normalizeMinMax(
+      states.map((s) => ind.values.get(s) ?? null),
+      !ind.higherIsMorePriority
+    );
+  }
+  const groupKeys = Array.from(new Set(indicators.map((i) => i.group)));
+  return states.map((state, i) => {
+    const perIndicator: Record<string, number | null> = {};
+    for (const ind of indicators) perIndicator[ind.key] = normalised[ind.key][i];
+    const groups: Record<string, number | null> = {};
+    for (const g of groupKeys) {
+      const vals = indicators
+        .filter((ind) => ind.group === g)
+        .map((ind) => perIndicator[ind.key])
+        .filter((v): v is number => v !== null);
+      groups[g] = vals.length ? vals.reduce((s, v) => s + v, 0) / vals.length : null;
+    }
+    const have = groupKeys.filter((g) => groups[g] !== null);
+    const sumW = have.reduce((s, g) => s + (groupWeights[g] ?? 0), 0);
+    const weightedTotal =
+      have.length && sumW > 0 ? have.reduce((s, g) => s + (groupWeights[g] ?? 0) * (groups[g] as number), 0) / sumW : null;
+    return { state, indicators: perIndicator, groups, weightedTotal };
+  });
+}
+
+/** 1-based rank per state (1 = highest score); states without a score are absent. Ties share the better rank. */
+export function rankStates(rows: GroupedScoreRow[]): Map<string, number> {
+  const scored = rows.filter((r) => r.weightedTotal !== null).sort((a, b) => (b.weightedTotal as number) - (a.weightedTotal as number));
+  const ranks = new Map<string, number>();
+  scored.forEach((r, i) => {
+    const prev = i > 0 ? scored[i - 1] : null;
+    ranks.set(r.state, prev && prev.weightedTotal === r.weightedTotal ? (ranks.get(prev.state) as number) : i + 1);
+  });
+  return ranks;
+}
+
+/** Best and worst rank each state gets across several weightings (e.g. equal weights, and each group alone). */
+export function rankRanges(
+  states: string[],
+  indicators: IndicatorInput[],
+  weightings: Record<string, number>[]
+): Map<string, { best: number; worst: number }> {
+  const out = new Map<string, { best: number; worst: number }>();
+  for (const w of weightings) {
+    const ranks = rankStates(computeGroupedScores(states, indicators, w));
+    for (const [state, rank] of ranks) {
+      const cur = out.get(state);
+      out.set(state, cur ? { best: Math.min(cur.best, rank), worst: Math.max(cur.worst, rank) } : { best: rank, worst: rank });
+    }
+  }
+  return out;
+}

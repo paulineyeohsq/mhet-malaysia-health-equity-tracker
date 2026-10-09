@@ -34,6 +34,8 @@ export interface InventoryFile {
   last_refreshed?: string;
   /** Latest data year in each published JSON file, computed by scripts/update_database.py (stamp_data_years). */
   data_files?: Record<string, number>;
+  /** What each publisher says about its own dataset, collected by the pipeline from the data.gov.my catalogue. */
+  source_status?: Record<string, { data_as_of?: string; last_updated?: string; next_update?: string; update_frequency?: string }>;
   source_catalogue: string;
   note: string;
   datasets: InventoryDataset[];

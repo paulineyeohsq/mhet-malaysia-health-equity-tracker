@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import KPISummarySection from "./KPISummarySection";
 import SourceNote from "./SourceNote";
 import { useData } from "../lib/useData";
+import { useKlangValleyMode } from "../lib/klangValley";
 import { EAST_MALAYSIA_STATES, PENINSULAR_STATES } from "../lib/geoConstants";
 import { computeGroupGapStats, computeGroupMeanGap, fmt, type Row } from "../lib/equity";
 
@@ -14,6 +15,7 @@ import { computeGroupGapStats, computeGroupMeanGap, fmt, type Row } from "../lib
  * computable for the latest year.
  */
 export default function EquityGapBanner() {
+  const [kvMode] = useKlangValleyMode();
   const { data: socioRows } = useData<Row[]>("socioeconomic_state.json");
   const { data: staffRows } = useData<Row[]>("healthcare_access_state.json");
 
@@ -98,7 +100,7 @@ export default function EquityGapBanner() {
             label: "Widest healthcare-staff ratio (public sector)",
             value: widestStaffRatio?.ratio !== null && widestStaffRatio !== null ? `${fmt(widestStaffRatio.ratio, 1)}×` : "—",
             sublabel: widestStaffRatio
-              ? `${widestStaffRatio.best.name} vs ${widestStaffRatio.worst.name}, ${staffYear}. Klang Valley (Selangor, W.P. KL, W.P. Putrajaya) pooled`
+              ? `${widestStaffRatio.best.name} vs ${widestStaffRatio.worst.name}, ${staffYear}${kvMode === "pooled" ? ". Klang Valley (Selangor, W.P. KL, W.P. Putrajaya) pooled" : ". Each territory on its own: not like-for-like"}`
               : "Not enough state data for the latest year",
           },
         ]}

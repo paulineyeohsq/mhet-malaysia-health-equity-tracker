@@ -1,39 +1,61 @@
 name: Update data
 
-# Scheduled automated refresh for the Malaysia Health Equity Observatory (MY-HEO).
+# Unattended data refresh for the Malaysia Health Equity Observatory (MY-HEO).
 #
-# Runs the full pipeline (ingest -> validate -> transform -> sync into
-# frontend/public/data) via scripts/update_database.py, then opens a pull
-# request with the resulting changes rather than pushing straight to main —
-# so a human reviews any material shift in the published data before it goes
-# live. If any pipeline stage fails, update_database.py exits non-zero and
-# leaves frontend/public/data untouched (it restores its own pre-run
-# backup), so this workflow deliberately does NOT attempt to catch/ignore
-# that failure — a red run here means the previous published data is still
-# safe.
+# Every Monday (and on demand) this re-fetches every source dataset, rebuilds the published JSON, proves the result
+# with the same gates a code change must pass (lint, unit + data-consistency tests, build, browser and accessibility
+# tests), and then:
 #
-# Trigger:
-#   - Scheduled monthly (data.gov.my's underlying sources — HIES, DOSM vital
-#     statistics, MOH facility/workforce counts — are not updated more
-#     frequently than that; see docs/DATA_SOURCES.md for each dataset's
-#     real update cadence).
-#   - Manually via workflow_dispatch for an on-demand refresh.
+#   * nothing changed .......................... does nothing
+#   * changed, and nothing looks wrong ......... commits straight to main and triggers the site deploy
+#                                                (no human step)
+#   * changed, but something looks wrong ....... opens a pull request instead, for a human to look at. "Wrong" means
+#                                                a dataset failed to refresh or was refused as truncated, a published
+#                                                file lost more than 10% of its rows, or a file's latest year went
+#                                                backwards (see data/processed/update_summary.json)
+#   * the run itself fails ..................... leaves main and the live site untouched (update_database.py restores
+#                                                its own backup and every gate must pass before anything is committed)
+#                                                and opens / updates an issue; the issue closes itself on the next
+#                                                clean run
+#
+# The data can only be as new as the publishers make it: data.gov.my / DOSM / MOH release some datasets annually or
+# less often (e.g. hospital beds and healthcare staff stop at 2022). The pipeline records what each publisher says
+# about its own data_as_of / next_update in dataset_inventory.json (source_status) and the app shows it.
 
 on:
   schedule:
-    - cron: "0 3 1 * *" # 03:00 UTC on the 1st of each month
-  workflow_dispatch: {}
+    - cron: "0 2 * * 1" # Mondays 02:00 UTC = 10:00 Malaysia time
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "auto = commit to main when nothing looks wrong; pull-request = always open a PR instead"
+        type: choice
+        options: [auto, pull-request]
+        default: auto
 
 permissions:
   contents: write
   pull-requests: write
+  issues: write
+  actions: write
+
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
+env:
+  ISSUE_TITLE: "Automated data refresh failed"
 
 jobs:
   update-data:
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     steps:
-      - name: Check out repository
+      - name: Check out main
         uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -43,10 +65,10 @@ jobs:
       - name: Install Python dependencies
         run: pip install shapely
 
-      - name: Run full data pipeline (ingest -> validate -> transform -> sync)
+      - name: Run the full data pipeline (ingest, validate, transform, sync)
         run: python3 scripts/update_database.py
 
-      - name: Rebuild geographic lookup table
+      - name: Rebuild the geographic lookup table
         run: python3 scripts/build_geo_lookup.py
 
       - name: Set up Node
@@ -60,23 +82,114 @@ jobs:
         working-directory: frontend
         run: npm ci
 
-      - name: Build frontend (sanity check that new data doesn't break the build)
+      - name: Lint
+        working-directory: frontend
+        run: npm run lint
+
+      - name: Unit and data-consistency tests
+        working-directory: frontend
+        run: npm test
+
+      - name: Build
         working-directory: frontend
         run: npm run build
 
-      - name: Open pull request with any data changes
+      - name: Install Playwright browser
+        working-directory: frontend
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser and accessibility tests against the refreshed data
+        working-directory: frontend
+        run: npm run test:e2e
+
+      - name: Decide what to do with the result
+        id: decide
+        run: |
+          set -euo pipefail
+          # Things that change on every run without being data (logs, the generated backup) are not "a change".
+          git add -A
+          git reset -q -- frontend/public/data/.backup 2>/dev/null || true
+          # Run logs, the inventory's refresh date and publisher metadata, and the validation reports change on every
+          # run without the data having changed, so they alone do not count as "something changed".
+          ignorable='^(data/processed/(update_log|transform_log)\.txt|data/processed/update_summary\.json|data/raw/ingest_report\.json|data/validation_reports/.*|data/inventory/dataset_inventory\.json|frontend/public/data/dataset_inventory\.json|README\.md|docs/DATA_SOURCES\.md)$'
+          if ! git diff --cached --name-only | grep -vE "$ignorable" | grep -q .; then
+            echo "action=none" >> "$GITHUB_OUTPUT"
+            echo "No data changed this run."
+            exit 0
+          fi
+          needs_review=$(python3 -c "import json; print(str(json.load(open('data/processed/update_summary.json'))['needs_review']).lower())")
+          if [ "$needs_review" = "true" ] || [ "${{ github.event.inputs.publish }}" = "pull-request" ]; then
+            echo "action=pull-request" >> "$GITHUB_OUTPUT"
+          else
+            echo "action=publish" >> "$GITHUB_OUTPUT"
+          fi
+          python3 - <<'PY' > "$RUNNER_TEMP/summary.md"
+          import json
+          s = json.load(open("data/processed/update_summary.json"))
+          print(f"{len(s['changed_files'])} published file(s) changed.\n")
+          if s["anomalies"]:
+              print("**Needs a human look:**\n")
+              for a in s["anomalies"]:
+                  print(f"- {a}")
+              print()
+          for c in s["changed_files"]:
+              if "rows_after" in c:
+                  print(f"- `{c['file']}`: {c.get('rows_before')} to {c.get('rows_after')} rows, latest year {c.get('latest_year_before')} to {c.get('latest_year_after')}")
+              else:
+                  print(f"- `{c['file']}`")
+          PY
+
+      - name: Publish straight to main and deploy
+        if: steps.decide.outputs.action == 'publish'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          { echo "chore(data): automated data refresh"; echo; cat "$RUNNER_TEMP/summary.md"; echo; echo "Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"; } > "$RUNNER_TEMP/commit.txt"
+          git commit -q -F "$RUNNER_TEMP/commit.txt"
+          # main may have moved while this ran; replay on top of it, and if that is not clean fall back to a PR
+          if git pull --rebase -q origin main && git push -q origin HEAD:main; then
+            # pushes made with GITHUB_TOKEN do not start other workflows, so ask for the deploy explicitly
+            gh workflow run deploy-pages.yml --ref main
+            echo "Published to main and triggered the deploy."
+          else
+            echo "Could not push cleanly; falling back to a pull request."
+            git rebase --abort 2>/dev/null || true
+            git reset -q --soft HEAD~1   # un-commit, so the PR step sees the changes
+            echo "fallback=true" >> "$GITHUB_ENV"
+          fi
+
+      - name: Open a pull request for review
+        if: steps.decide.outputs.action == 'pull-request' || env.fallback == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
-          commit-message: "chore(data): automated monthly data refresh"
-          title: "Automated data refresh — ${{ github.run_id }}"
-          body: |
-            Automated run of `scripts/update_database.py` (ingest -> validate -> transform -> sync).
-
-            Review `data/processed/update_log.txt` and `data/validation_reports/` for
-            details of what changed before merging. The frontend build was verified
-            to succeed against the refreshed data as part of this workflow.
+          commit-message: "chore(data): automated data refresh"
+          title: "Automated data refresh needs review (run ${{ github.run_id }})"
+          body-path: ${{ runner.temp }}/summary.md
           branch: automated/data-refresh
           delete-branch: true
           labels: |
             automated
             data-refresh
+
+      - name: Close the failure issue after a clean run
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          n=$(gh issue list --state open --search "in:title \"$ISSUE_TITLE\"" --json number -q '.[0].number // empty')
+          if [ -n "$n" ]; then gh issue close "$n" --comment "Recovered: the run at $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID succeeded."; fi
+
+      - name: Report the failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          body="The scheduled data refresh did not complete: $url
+
+          Nothing was published; the live site still has the previous data. Common causes are a source endpoint that is down or has changed, or a new release of a dataset that breaks the transform or one of the tests. The log of the failing step says which. This issue closes itself when a later run succeeds."
+          n=$(gh issue list --state open --search "in:title \"$ISSUE_TITLE\"" --json number -q '.[0].number // empty')
+          if [ -n "$n" ]; then gh issue comment "$n" --body "Failed again: $url"; else gh issue create --title "$ISSUE_TITLE" --body "$body"; fi

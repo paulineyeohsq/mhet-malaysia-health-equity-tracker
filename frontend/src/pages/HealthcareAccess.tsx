@@ -11,6 +11,7 @@ import EquityInsightCard from "../components/EquityInsightCard";
 import { buildEquityInsight } from "../lib/equityInsight";
 import { useData } from "../lib/useData";
 import { collapsePooledRows, type Row } from "../lib/equity";
+import { useKlangValleyMode } from "../lib/klangValley";
 
 interface NationalRow {
   year: number;
@@ -67,6 +68,8 @@ function fmtRate(v: number | null | undefined): string {
 }
 
 export default function HealthcareAccess() {
+  const [kvMode] = useKlangValleyMode();
+  const kvSuffix = kvMode === "pooled" ? " (Klang Valley pooled)" : "";
   const { data: national } = useData<NationalRow[]>("healthcare_access_national.json");
   const { data: stateData } = useData<StateRow[]>("healthcare_access_state.json");
   const { data: districtData } = useData<DistrictRow[]>("healthcare_access_district_2022.json");
@@ -146,10 +149,10 @@ export default function HealthcareAccess() {
     { key: "staff_nurse_community", label: "Community nurses", numeric: true },
     { key: "population_used_for_rate", label: "Population (rate denominator)", numeric: true },
     { key: "staff_per_100k", label: "Staff per 100,000 (own state)", numeric: true },
-    { key: "staff_per_100k_pooled", label: "Staff per 100,000 (Klang Valley pooled)", numeric: true },
+    ...(kvMode === "pooled" ? [{ key: "staff_per_100k_pooled", label: "Staff per 100,000 (Klang Valley pooled)", numeric: true }] : []),
     { key: "hospital_beds", label: "Hospital beds", numeric: true },
     { key: "beds_per_100k", label: "Beds per 100,000 (own state)", numeric: true },
-    { key: "beds_per_100k_pooled", label: "Beds per 100,000 (Klang Valley pooled)", numeric: true },
+    ...(kvMode === "pooled" ? [{ key: "beds_per_100k_pooled", label: "Beds per 100,000 (Klang Valley pooled)", numeric: true }] : []),
   ];
 
   const districtColumns: Column[] = [
@@ -305,7 +308,7 @@ export default function HealthcareAccess() {
               rows: stateData as unknown as Row[] | null,
               year: effectiveStateYear,
               valueField: "staff_per_100k_pooled",
-              metricLabel: "public-sector healthcare staff per 100,000 population (Klang Valley pooled)",
+              metricLabel: `public-sector healthcare staff per 100,000 population${kvSuffix}`,
               unit: "per 100k",
               higherIsWorse: false,
             })}
@@ -315,7 +318,7 @@ export default function HealthcareAccess() {
           <div className="grid gap-4 lg:grid-cols-2">
             {staffRateAvailable ? (
               <BarRankingCard
-                title={`Healthcare staff per 100,000 population by state — ${effectiveStateYear} (Klang Valley pooled)`}
+                title={`Healthcare staff per 100,000 population by state — ${effectiveStateYear}${kvSuffix}`}
                 data={collapsePooledRows(stateSnapshot as unknown as Row[], "staff_per_100k_pooled").filter((r) => r.staff_per_100k_pooled !== null)}
                 nameKey="state"
                 valueKey="staff_per_100k_pooled"
@@ -333,7 +336,7 @@ export default function HealthcareAccess() {
 
             {bedsRateAvailable ? (
               <BarRankingCard
-                title={`Hospital beds per 100,000 population by state — ${effectiveStateYear} (Klang Valley pooled)`}
+                title={`Hospital beds per 100,000 population by state — ${effectiveStateYear}${kvSuffix}`}
                 data={collapsePooledRows(stateSnapshot as unknown as Row[], "beds_per_100k_pooled").filter((r) => r.beds_per_100k_pooled !== null)}
                 nameKey="state"
                 valueKey="beds_per_100k_pooled"
@@ -359,13 +362,24 @@ export default function HealthcareAccess() {
               years for which a matching state population estimate is available.
             </p>
             <p className="mt-2">
-              <span className="font-medium text-ink-primary">Klang Valley pooling:</span> in the charts and ranking
-              above, Selangor, W.P. Kuala Lumpur and W.P. Putrajaya are combined into one unit (their staff or bed counts
-              summed ÷ their populations summed × 100,000), because the same referral hospitals, teaching hospital and
-              federal institutions serve residents of all three. Each territory's own rate is still shown in the table
-              below ("own state"), but is not comparable like-for-like — for example W.P. Putrajaya's counts include
-              federal-level facilities against a resident population of only about 117,000. The source catalogue does
-              not say whether staff are counted by place of work or place of residence.
+              <span className="font-medium text-ink-primary">Klang Valley {kvMode === "pooled" ? "pooling" : "(shown separately)"}:</span>{" "}
+              {kvMode === "pooled" ? (
+                <>
+                  in the charts and ranking above, Selangor, W.P. Kuala Lumpur and W.P. Putrajaya are combined into one
+                  unit (their staff or bed counts summed ÷ their populations summed × 100,000), because the same referral
+                  hospitals, teaching hospital and federal institutions serve residents of all three. Each territory's own
+                  rate is still shown in the table below ("own state"), but is not comparable like-for-like — for example
+                  W.P. Putrajaya's counts include federal-level facilities against a resident population of only about
+                  117,000.
+                </>
+              ) : (
+                <>
+                  each territory is shown with its own rate, as you chose above. Treat the three with care: they share the
+                  same referral hospitals, teaching hospital and federal institutions, so W.P. Putrajaya's counts include
+                  federal-level facilities against a resident population of only about 117,000.
+                </>
+              )}{" "}
+              The source catalogue does not say whether staff are counted by place of work or place of residence.
             </p>
             <p className="mt-2">
               <span className="font-medium text-ink-primary">Rate formula (beds):</span> hospital_beds ÷

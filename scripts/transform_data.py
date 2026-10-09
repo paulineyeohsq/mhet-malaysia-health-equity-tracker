@@ -144,7 +144,7 @@ def build_socioeconomic_district():
     income = read_csv(RAW / "socioeconomic" / "hh_income_district.csv")
     poverty = read_csv(RAW / "socioeconomic" / "hh_poverty_district.csv")
     gini = read_csv(RAW / "socioeconomic" / "hh_inequality_district.csv")
-    amenities = read_csv(RAW / "socioeconomic" / "hh_access_amenities_2022.csv")
+    amenities = read_csv(RAW / "socioeconomic" / "hh_access_amenities.csv")
 
     def index_by(rows):
         d = {}
@@ -191,7 +191,7 @@ def build_socioeconomic_district():
 # 4. Population — state panel (2020-2023, DOSM intercensal estimates)
 # ---------------------------------------------------------------------------
 def build_population_state():
-    data = json.loads((RAW / "demography" / "population_state_2020_2023.json").read_text())
+    data = json.loads((RAW / "demography" / "population_state.json").read_text())
     out = []
     for r in data:
         if r.get("age") != "overall_age" or r.get("ethnicity") != "overall_ethnicity":

@@ -1,6 +1,6 @@
 {
   "generated": "2026-08-12",
-  "last_refreshed": "2026-10-01",
+  "last_refreshed": "2026-10-09",
   "data_files": {
 
     "air_pollution_national.json": 2024,
@@ -49,6 +49,14 @@
     "water_consumption_state.json": 2024,
     "water_pollution_basin_national.json": 2024,
     "water_production_state.json": 2022
+  },
+  "source_status": {
+    "deaths_early_childhood_state": {"catalogue_id": "deaths_early_childhood_state", "data_as_of": "2024", "last_updated": "2025-10-16 12:00", "next_update": "2026-10-15 12:30", "data_source": ["JPN", "DOSM"], "update_frequency": "YEARLY", "total": 1950, "limit": 1000000},
+    "healthcare_staff": {"catalogue_id": "healthcare_staff", "data_as_of": "2022-12-31 23:59", "last_updated": "2024-09-01 12:00", "next_update": "tbc", "data_source": ["MOH"], "update_frequency": "YEARLY", "total": 765, "limit": 1000000},
+    "hh_access_amenities": {"catalogue_id": "hh_access_amenities", "data_as_of": "2024", "last_updated": "2026-09-30 12:00", "next_update": "tbc", "data_source": ["DOSM"], "update_frequency": "YEARLY", "total": 694, "limit": 1000000},
+    "hospital_beds_2022": {"catalogue_id": "hospital_beds", "data_as_of": "2022-12-31 23:59", "last_updated": "2024-09-01 12:00", "next_update": "tbc", "data_source": ["MOH"], "update_frequency": "YEARLY", "total": 5468, "limit": 1000000},
+    "population_state": {"catalogue_id": "population_state", "data_as_of": "2023", "last_updated": "2023-07-31 12:00", "next_update": "2024-07-31 12:00", "data_source": ["DOSM"], "update_frequency": "YEARLY", "total": 25536, "limit": 1000000},
+    "std_state": {"catalogue_id": "std_state", "data_as_of": "2022", "last_updated": "2024-09-01 12:00", "next_update": "tbc", "data_source": ["MOH"], "update_frequency": "YEARLY", "total": 480, "limit": 1000000}
   },
   "source_catalogue": "https://data.gov.my/data-catalogue",
   "note": "Each entry documents a dataset examined during the Phase 1/2 audit of data.gov.my. `status: ingested` datasets have raw files under data/raw/ and processed outputs under data/processed/, produced by scripts/transform_data.py. `status: identified_not_ingested` datasets were confirmed to exist (URL + schema verified) but were not pulled into this build, usually because of sandbox network/data-volume constraints described in METHODOLOGY.md — scripts/ingest_data.py can fetch them directly once run in an environment with normal internet access.",
@@ -315,7 +323,7 @@
       "description": "% of households with piped water, sanitary latrines, and electricity, by state and district.",
       "source_org": "DOSM (from HIES)",
       "update_frequency": "~biennial",
-      "date_range": "2022 ingested (dataset covers 2016-2024)",
+      "date_range": "2016-2024",
       "geographic_resolution": "district",
       "dimensions": [
         "state",
@@ -335,7 +343,7 @@
         "hh_inequality_district"
       ],
       "recommended_use": "Basic-amenities choropleth, socioeconomic vulnerability domain",
-      "limitations": "Only the 2022 cross-section was ingested in this build (see METHODOLOGY.md); 2016/2018/2020/2024 exist upstream and can be pulled by re-running ingest_data.py.",
+      "limitations": "Ingested for every year the publisher holds (2016-2024); joined to the district income/poverty rows for 2019, 2022 and 2024.",
       "status": "ingested"
     },
     {
