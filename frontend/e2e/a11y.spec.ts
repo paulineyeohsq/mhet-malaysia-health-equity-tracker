@@ -45,6 +45,34 @@ test("maps are named regions with a text summary", async ({ page }) => {
   await expect(page.locator(`#${describedBy}`)).toContainText("have a value. Highest:");
 });
 
+test("Population Explorer: every dropdown and search box has a name, in every mode, and axe is clean", async ({ page }) => {
+  await page.goto("/#/population");
+  await expect(page.locator("main h1").first()).toBeVisible();
+  await page.waitForLoadState("networkidle");
+  const unnamed = () =>
+    page.evaluate(() =>
+      Array.from(document.querySelectorAll("main select, main input"))
+        .filter((el) => {
+          const input = el as HTMLInputElement | HTMLSelectElement;
+          return !(input.labels && input.labels.length > 0) && !el.getAttribute("aria-label") && !el.getAttribute("aria-labelledby");
+        })
+        .map((el) => `${el.tagName.toLowerCase()}#${el.id}`)
+    );
+  expect(await unnamed()).toEqual([]);
+  // the controls that appear only in some modes: walk every option of each mode switch
+  for (const id of ["eth-level", "age-geo", "group-field"]) {
+    const select = page.locator(`#${id}`);
+    const values = await select.locator("option").evaluateAll((opts) => opts.map((o) => (o as HTMLOptionElement).value));
+    for (const v of values) {
+      await select.selectOption(v);
+      expect(await unnamed(), `after choosing ${v} in #${id}`).toEqual([]);
+    }
+  }
+  const results = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "best-practice"]).include("main").analyze();
+  const bad = results.violations.filter((v) => ["label", "select-name", "duplicate-id", "duplicate-id-aria"].includes(v.id));
+  expect(bad.map((v) => `${v.id}: ${v.nodes[0]?.html.slice(0, 100)}`)).toEqual([]);
+});
+
 test("the 'Ask MY-HEO' label is associated with its select", async ({ page }) => {
   await page.goto("/#/");
   const select = page.getByLabel("Ask MY-HEO");

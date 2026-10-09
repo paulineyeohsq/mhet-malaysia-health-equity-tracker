@@ -100,6 +100,8 @@ export const INVENTORY_MAP: Record<string, string[]> = {
   "nhms_adolescent_mental_health_national.json": ["nhms_adolescent_mental_health_2017"],
   "population_parlimen.json": ["population_parlimen"],
   "population_dun.json": ["population_dun"],
+  "population_parlimen_latest.json": ["population_parlimen"],
+  "population_dun_latest.json": ["population_dun"],
   "population_district_full.json": ["population_district_full"],
   "hies_percentile_national.json": ["hies_malaysia_percentile"],
   "marriages_national.json": ["marriages"],

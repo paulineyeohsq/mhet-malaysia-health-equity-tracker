@@ -117,6 +117,56 @@ test.describe("plain-language copy", () => {
   });
 });
 
+test("Population page: the big electoral files are fetched only when their section is near, as small slices", async ({ page }) => {
+  const requested: string[] = [];
+  page.on("request", (r) => {
+    const m = r.url().match(/\/data\/(population_(?:dun|parlimen)[a-z_]*\.json)/);
+    if (m) requested.push(m[1]);
+  });
+  await page.goto("/#/population");
+  await expect(page.locator("main h1").first()).toBeVisible();
+  await page.waitForLoadState("networkidle");
+  expect(requested).toEqual([]);
+  await page.locator("#pop-electoral").scrollIntoViewIfNeeded();
+  await expect(page.getByRole("heading", { name: /State assembly \(DUN\) constituencies/ })).toBeVisible();
+  await expect(page.getByText(/No DUN constituency data/)).toHaveCount(0);
+  expect(requested.sort()).toEqual(["population_dun_latest.json", "population_parlimen_latest.json"]);
+});
+
+test("Map page: only the boundary file for the chosen geography is fetched", async ({ page }) => {
+  const geo: string[] = [];
+  page.on("request", (r) => {
+    const m = r.url().match(/\/geo\/(state|district)\.geojson/);
+    if (m) geo.push(m[1]);
+  });
+  await page.goto("/#/map");
+  await expect(page.getByRole("region", { name: /^Map of .* by state$/ })).toBeVisible();
+  await page.waitForLoadState("networkidle");
+  expect(Array.from(new Set(geo))).toEqual(["state"]);
+  await page.getByLabel("Geography").selectOption("district");
+  await expect(page.getByRole("region", { name: /^Map of .* by district$/ })).toBeVisible();
+  expect(Array.from(new Set(geo)).sort()).toEqual(["district", "state"]);
+});
+
+test("Data Gaps: grouped and searchable, with every dataset still reachable", async ({ page }) => {
+  await page.goto("/#/data-gaps");
+  const groups = page.locator("#limitations-heading").locator("xpath=ancestor::section").locator(":scope > div > details");
+  await expect(groups).toHaveCount(6);
+  await expect(page.getByRole("status")).toContainText(/datasets in 6 groups, and 6 known gaps/);
+  // nothing is lost: opening every group shows every dataset (the number the status line reports)
+  await page.getByRole("button", { name: "Open all groups" }).click();
+  const total = Number((await page.getByRole("status").innerText()).match(/(\d+) datasets in/)![1]);
+  await expect(page.locator("#limitations-heading").locator("xpath=ancestor::section").locator("li")).toHaveCount(total);
+  // searching narrows both the datasets and the gaps
+  await page.getByLabel("Search the gaps and datasets").fill("life expectancy");
+  await expect(page.getByRole("status")).toContainText(/\d+ of \d+ datasets match/);
+  await expect(page.locator("#limitations-heading").locator("xpath=ancestor::section").locator("li")).toHaveCount(1);
+  await page.getByLabel("Search the gaps and datasets").fill("causes of death");
+  await expect(page.locator("#not-ingested-heading + div li")).toHaveCount(1);
+  await page.getByLabel("Search the gaps and datasets").fill("zzzz");
+  await expect(page.getByText(/No dataset matches/)).toBeVisible();
+});
+
 test("Data Gaps lists only what has no machine-readable source", async ({ page }) => {
   await page.goto("/#/data-gaps");
   const list = page.locator("#not-ingested-heading + div li");

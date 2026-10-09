@@ -131,6 +131,19 @@ describe("Life expectancy files (read from DOSM's dashboard)", () => {
   });
 });
 
+describe("Population page slices of the electoral files", () => {
+  interface Elec { state: string; year: number; sex: string; population_thousands: number | null; dun?: string; parlimen: string }
+  for (const [full, slice] of [["population_dun.json", "population_dun_latest.json"], ["population_parlimen.json", "population_parlimen_latest.json"]] as const) {
+    it(`${slice} is exactly the latest year, both sexes, of ${full}`, () => {
+      const all = readJson<Elec[]>(full);
+      const latest = Math.max(...all.map((r) => r.year));
+      const expected = all.filter((r) => r.year === latest && r.sex === "both");
+      expect(readJson<Elec[]>(slice)).toEqual(expected);
+      expect(expected.length).toBeGreaterThan(100);
+    });
+  }
+});
+
 describe("PeKa B40 files", () => {
   interface Daily { state: string; date: string; screenings: number | null }
   interface Weekly { state: string; week_start: string; days: number; screenings: number | null }

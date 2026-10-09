@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
 
 export interface Column {
@@ -26,6 +26,8 @@ export default function DataTable({
   pageSize?: number;
   searchable?: boolean;
 }) {
+  // One id per table: several tables on a page used to share a single id, so only the first search box had its label.
+  const searchId = useId();
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState<string | null>(null);
   const [sortDir, setSortDir] = useState<1 | -1>(1);
@@ -66,17 +68,18 @@ export default function DataTable({
     <div>
       {searchable && (
         <div className="mb-3 flex items-center gap-2">
-          <label htmlFor="table-search" className="sr-only">
+          <label htmlFor={searchId} className="sr-only">
             Search table
           </label>
           <input
-            id="table-search"
+            id={searchId}
             type="search"
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
               setPage(0);
             }}
+            aria-label="Search table"
             placeholder="Search…"
             className="w-full max-w-xs rounded-md border border-line-axis px-3 py-1.5 text-sm focus:border-series-1"
           />
