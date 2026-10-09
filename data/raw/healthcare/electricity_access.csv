@@ -10,6 +10,9 @@ date,state,households
 2019-01-01,Malaysia,8656150
 2020-01-01,Malaysia,8855674
 2021-01-01,Malaysia,9077820
+2022-01-01,Malaysia,9307413
+2023-01-01,Malaysia,9560459
+2024-01-01,Malaysia,9808262
 2011-01-01,Sabah,384384
 2012-01-01,Sabah,403387
 2013-01-01,Sabah,422964
@@ -21,6 +24,9 @@ date,state,households
 2019-01-01,Sabah,519308
 2020-01-01,Sabah,529185
 2021-01-01,Sabah,544186
+2022-01-01,Sabah,559312
+2023-01-01,Sabah,574782
+2024-01-01,Sabah,589237
 2011-01-01,Sarawak,444340
 2012-01-01,Sarawak,461422
 2013-01-01,Sarawak,483106
@@ -32,6 +38,9 @@ date,state,households
 2019-01-01,Sarawak,583613
 2020-01-01,Sarawak,598106
 2021-01-01,Sarawak,617255
+2022-01-01,Sarawak,634880
+2023-01-01,Sarawak,650424
+2024-01-01,Sarawak,664805
 2011-01-01,Semenanjung Malaysia,6288281
 2012-01-01,Semenanjung Malaysia,6456647
 2013-01-01,Semenanjung Malaysia,6503417
@@ -43,3 +52,6 @@ date,state,households
 2019-01-01,Semenanjung Malaysia,7553229
 2020-01-01,Semenanjung Malaysia,7728383
 2021-01-01,Semenanjung Malaysia,7916379
+2022-01-01,Semenanjung Malaysia,8113221
+2023-01-01,Semenanjung Malaysia,8335253
+2024-01-01,Semenanjung Malaysia,8554220

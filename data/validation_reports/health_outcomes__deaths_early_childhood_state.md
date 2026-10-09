@@ -1,17 +1,17 @@
 # Validation report: `data/raw/health_outcomes/deaths_early_childhood_state.csv`
 
-- Rows: **708**
-- Columns: `date, state, type, abs, rate`
+- Rows: **1950**
+- Columns: `abs, date, rate, type, state`
 
 ## Missingness
 
 | column | non-missing | missing (blank) | % missing |
 |---|---|---|---|
-| date | 708 | 0 | 0.0% |
-| state | 708 | 0 | 0.0% |
-| type | 708 | 0 | 0.0% |
-| abs | 708 | 0 | 0.0% |
-| rate | 708 | 0 | 0.0% |
+| abs | 1950 | 0 | 0.0% |
+| date | 1950 | 0 | 0.0% |
+| rate | 1950 | 0 | 0.0% |
+| type | 1950 | 0 | 0.0% |
+| state | 1950 | 0 | 0.0% |
 
 ## Duplicates
 
@@ -22,12 +22,12 @@
 
 | column | min | max | non-numeric values (excl. blank) |
 |---|---|---|---|
-| abs | 10.0 | 593.0 | 0 |
-| rate | 0.2 | 13.5 | 0 |
+| abs | 0.0 | 811.0 | 0 |
+| rate | 0.0 | 18.2 | 0 |
 
 ## State-name standardisation
 
-- Distinct state values: 6
+- Distinct state values: 16
 - All state names map cleanly to the 16 canonical DOSM states (or the `Malaysia` national sentinel).
 
 ## Temporal coverage

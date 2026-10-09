@@ -1,21 +1,21 @@
 # Validation report: `data/raw/health_outcomes/blood_donations_state.csv`
 
-- Rows: **492505**
+- Rows: **493090**
 - Columns: `date, state, blood_type, donations`
 
 ## Missingness
 
 | column | non-missing | missing (blank) | % missing |
 |---|---|---|---|
-| date | 492505 | 0 | 0.0% |
-| state | 492505 | 0 | 0.0% |
-| blood_type | 492505 | 0 | 0.0% |
-| donations | 492505 | 0 | 0.0% |
+| date | 493090 | 0 | 0.0% |
+| state | 493090 | 0 | 0.0% |
+| blood_type | 493090 | 0 | 0.0% |
+| donations | 493090 | 0 | 0.0% |
 
 ## Duplicates
 
 - Exact duplicate rows: **0**
-- Rows sharing a `date, state` key with another row: **492505** across **98501** distinct keys
+- Rows sharing a `date, state` key with another row: **493090** across **98618** distinct keys
 
 ## Numeric range checks
 

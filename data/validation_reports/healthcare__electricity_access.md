@@ -1,15 +1,15 @@
 # Validation report: `data/raw/healthcare/electricity_access.csv`
 
-- Rows: **44**
+- Rows: **56**
 - Columns: `date, state, households`
 
 ## Missingness
 
 | column | non-missing | missing (blank) | % missing |
 |---|---|---|---|
-| date | 44 | 0 | 0.0% |
-| state | 44 | 0 | 0.0% |
-| households | 44 | 0 | 0.0% |
+| date | 56 | 0 | 0.0% |
+| state | 56 | 0 | 0.0% |
+| households | 56 | 0 | 0.0% |
 
 ## Duplicates
 
@@ -26,4 +26,4 @@
 
 ## Temporal coverage
 
-- Years present: 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021
+- Years present: 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024

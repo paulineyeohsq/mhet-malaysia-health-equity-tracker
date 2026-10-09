@@ -1,16 +1,16 @@
 # Validation report: `data/raw/healthcare/healthcare_staff.csv`
 
 - Rows: **765**
-- Columns: `date, state, type, staff`
+- Columns: `date, type, staff, state`
 
 ## Missingness
 
 | column | non-missing | missing (blank) | % missing |
 |---|---|---|---|
 | date | 765 | 0 | 0.0% |
-| state | 765 | 0 | 0.0% |
 | type | 765 | 0 | 0.0% |
 | staff | 765 | 0 | 0.0% |
+| state | 765 | 0 | 0.0% |
 
 ## Duplicates
 

@@ -1,17 +1,17 @@
 # Validation report: `data/raw/healthcare/hospital_beds_2022.csv`
 
 - Rows: **170**
-- Columns: `date, state, district, type, beds`
+- Columns: `beds, date, type, state, district`
 
 ## Missingness
 
 | column | non-missing | missing (blank) | % missing |
 |---|---|---|---|
+| beds | 170 | 0 | 0.0% |
 | date | 170 | 0 | 0.0% |
+| type | 170 | 0 | 0.0% |
 | state | 170 | 0 | 0.0% |
 | district | 170 | 0 | 0.0% |
-| type | 170 | 0 | 0.0% |
-| beds | 170 | 0 | 0.0% |
 
 ## Duplicates
 

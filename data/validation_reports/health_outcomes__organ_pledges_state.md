@@ -1,15 +1,15 @@
 # Validation report: `data/raw/health_outcomes/organ_pledges_state.csv`
 
-- Rows: **103504**
+- Rows: **103632**
 - Columns: `date, state, pledges`
 
 ## Missingness
 
 | column | non-missing | missing (blank) | % missing |
 |---|---|---|---|
-| date | 103504 | 0 | 0.0% |
-| state | 103504 | 0 | 0.0% |
-| pledges | 103504 | 0 | 0.0% |
+| date | 103632 | 0 | 0.0% |
+| state | 103632 | 0 | 0.0% |
+| pledges | 103632 | 0 | 0.0% |
 
 ## Duplicates
 

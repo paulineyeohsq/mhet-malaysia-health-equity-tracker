@@ -1,16 +1,16 @@
 # Validation report: `data/raw/health_outcomes/std_state.csv`
 
 - Rows: **480**
-- Columns: `date, state, disease, cases, incidence`
+- Columns: `date, cases, state, disease, incidence`
 
 ## Missingness
 
 | column | non-missing | missing (blank) | % missing |
 |---|---|---|---|
 | date | 480 | 0 | 0.0% |
+| cases | 480 | 0 | 0.0% |
 | state | 480 | 0 | 0.0% |
 | disease | 480 | 0 | 0.0% |
-| cases | 480 | 0 | 0.0% |
 | incidence | 480 | 0 | 0.0% |
 
 ## Duplicates
