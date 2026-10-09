@@ -224,10 +224,10 @@ export default function Overview() {
             </li>
             <li>
               Income and poverty figures are drawn directly from DOSM's Household Income and Expenditure Survey; see the{" "}
-              <a href="#/socioeconomic" className="text-series-1 underline underline-offset-2">
-                Socioeconomic Inequality
+              <a href="#/patterns/inequality" className="text-series-1 underline underline-offset-2">
+                Inequality gap
               </a>{" "}
-              page for district-level detail and correlation with health indicators.
+              view for district-level detail and correlation with health indicators.
             </li>
             <li>
               This overview intentionally does not present a single composite "equity score" — see{" "}

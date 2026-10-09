@@ -76,29 +76,25 @@ mhet/
 └── .github/workflows/    deploy-pages.yml (publish on push to main), update-data.yml (weekly refresh)
 ```
 
-## The 18 pages
+## The pages
 
-Routes are defined in `frontend/src/App.tsx`; the navigation is in
-`frontend/src/components/Layout.tsx` (a sidebar on desktop, a collapsible menu on
-phones). Unknown URLs show a "page not found" view, and a crash on one page is
-contained by an error boundary so the rest of the app keeps working.
+Routes are defined in `frontend/src/App.tsx`; the navigation is in `frontend/src/components/Layout.tsx` (a sidebar on
+desktop, a collapsible menu on phones). The sidebar has 13 links. Two of them are consolidated pages that show one of
+several views of the same kind, each view being the original page unchanged; the original URLs redirect to the new ones,
+so old bookmarks and links still work. Unknown URLs show a "page not found" view, and a crash on one page is contained by
+an error boundary so the rest of the app keeps working.
 
 | Group | Route | Page |
 |---|---|---|
-| | `/` | Home (overview and equity-gap snapshot) |
-| WHO | `/population` | Population Explorer |
-| WHERE | `/map` | Geographic Explorer (state/district choropleth) |
-| WHY | `/determinants` | Determinants Explorer (correlations between an outcome and a determinant) |
-| WHY | `/matrix` | Indicator Matrix |
-| WHY | `/trends` | Trends |
-| WHY | `/socioeconomic` | Socioeconomic Inequality |
-| WHY | `/health-outcomes` | Health Outcomes |
-| WHY | `/healthcare-access` | Healthcare Access |
-| WHY | `/financing` | Healthcare Financing |
-| WHY | `/environment` | Environment |
+| | `/` | Home (equity-gap snapshot, and the "Is the data up to date?" card) |
+| Who and where | `/population` | Population Explorer |
+| Who and where | `/map` | Geographic Explorer (state/district choropleth) |
+| Topics and patterns | `/topics/:topic` | **Health Topics**: a dropdown switches between `outcomes` (was `/health-outcomes`), `access` (`/healthcare-access`), `financing` (`/financing`) and `environment` (`/environment`) |
+| Topics and patterns | `/patterns/:view` | **Patterns & Inequality**: a toggle switches between `trends` (was `/trends`), `matrix` (`/matrix`) and `inequality` (`/socioeconomic`) |
+| Topics and patterns | `/determinants` | Determinants Explorer (correlations between an outcome and a determinant) |
 | Equity gap | `/analytics` | Equity Gap Analysis |
 | Equity gap | `/state-matrix` | State Equity Gap Matrix |
-| Priority & opportunity | `/priority-areas` | Priority Areas (transparent, component-by-component score) |
+| Priority & opportunity | `/priority-areas` | Priority Areas (every indicator scored, with the weights and equity gap explained) |
 | Priority & opportunity | `/research-opportunities` | Research Opportunities (AI-assisted research questions) |
 | Researcher tools | `/explorer` | Data Explorer |
 | Researcher tools | `/data-gaps` | Data Gaps (what is missing and each dataset's limitations) |

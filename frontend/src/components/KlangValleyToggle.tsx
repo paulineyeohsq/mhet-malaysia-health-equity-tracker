@@ -2,6 +2,7 @@ import { useId } from "react";
 import { useLocation } from "react-router-dom";
 import { HEALTHCARE_ACCESS_FILE, KLANG_VALLEY_UNITS, useKlangValleyMode } from "../lib/klangValley";
 import { PAGE_DATA_FILES } from "../lib/pageDataFiles";
+import { canonicalPath } from "../lib/routes";
 
 /**
  * Lets the visitor choose how Selangor, W.P. Kuala Lumpur and W.P. Putrajaya are compared on staff and hospital-bed
@@ -12,7 +13,7 @@ export default function KlangValleyToggle() {
   const { pathname } = useLocation();
   const [mode, setMode] = useKlangValleyMode();
   const id = useId();
-  if (!PAGE_DATA_FILES[pathname]?.includes(HEALTHCARE_ACCESS_FILE)) return null;
+  if (!PAGE_DATA_FILES[canonicalPath(pathname)]?.includes(HEALTHCARE_ACCESS_FILE)) return null;
 
   const option = (value: "pooled" | "separate", label: string) => (
     <label className="flex cursor-pointer items-center gap-1.5">

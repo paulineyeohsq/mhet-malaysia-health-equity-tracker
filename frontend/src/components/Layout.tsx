@@ -17,19 +17,19 @@ interface NavSection {
 
 const NAV_SECTIONS: NavSection[] = [
   { heading: null, items: [{ to: "/", label: "Home", end: true }] },
-  { heading: "WHO", items: [{ to: "/population", label: "Population Explorer" }] },
-  { heading: "WHERE", items: [{ to: "/map", label: "Geographic Explorer" }] },
   {
-    heading: "WHY",
+    heading: "Who and where",
     items: [
+      { to: "/population", label: "Population Explorer" },
+      { to: "/map", label: "Geographic Explorer" },
+    ],
+  },
+  {
+    heading: "Topics and patterns",
+    items: [
+      { to: "/topics", label: "Health Topics" },
+      { to: "/patterns", label: "Patterns & Inequality" },
       { to: "/determinants", label: "Determinants Explorer" },
-      { to: "/matrix", label: "Indicator Matrix" },
-      { to: "/trends", label: "Trends" },
-      { to: "/socioeconomic", label: "Socioeconomic Inequality" },
-      { to: "/health-outcomes", label: "Health Outcomes" },
-      { to: "/healthcare-access", label: "Healthcare Access" },
-      { to: "/financing", label: "Healthcare Financing" },
-      { to: "/environment", label: "Environment" },
     ],
   },
   {
