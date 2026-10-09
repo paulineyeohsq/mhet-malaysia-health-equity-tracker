@@ -72,7 +72,7 @@ export const INVENTORY_MAP: Record<string, string[]> = {
   ],
   "population_state.json": ["population_state"],
   // population_district.json is actually built from the DOSM census_district
-  // series, not the (not-yet-ingested) live population_district source — see
+  // series, not the live population_district source (that is population_district_full.json) — see
   // that entry's `limitations` field in dataset_inventory.json.
   "population_district.json": ["census_district"],
   "healthcare_access_state.json": ["hospital_beds", "healthcare_staff"],

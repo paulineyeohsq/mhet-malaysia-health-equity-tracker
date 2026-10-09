@@ -210,7 +210,7 @@ def inventory_counts(inventory_path: Path = INVENTORY_PATH) -> dict[str, int]:
     inventoryCounts): ingested = status "ingested"; reference-only = status
     "ingested_reference_only"; not ingested = everything in the separate
     identified_but_not_yet_ingested list PLUS any dataset entry whose own status
-    is "identified_not_ingested" (e.g. population_district)."""
+    is "identified_not_ingested" (none at present)."""
     inv = json.loads(_read_exact(inventory_path))
     datasets = inv["datasets"]
     return {

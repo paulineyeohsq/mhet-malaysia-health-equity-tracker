@@ -429,36 +429,6 @@
       "status": "ingested"
     },
     {
-      "id": "population_district",
-      "name": "Population Table: Administrative Districts",
-      "url": "https://data.gov.my/data-catalogue/population_district",
-      "endpoint_csv": "https://storage.dosm.gov.my/population/population_district.csv",
-      "description": "District population 2020-2024 by sex/age/ethnicity (official DOSM live series).",
-      "source_org": "DOSM",
-      "update_frequency": "Annual",
-      "date_range": "2020-2024",
-      "geographic_resolution": "district",
-      "dimensions": [
-        "state",
-        "district",
-        "year",
-        "sex",
-        "age",
-        "ethnicity"
-      ],
-      "variables": [
-        "population (thousands)"
-      ],
-      "unit": "thousands of persons",
-      "missingness": "n/a",
-      "joinable_with": [
-        "hh_income_district etc."
-      ],
-      "recommended_use": "District population denominators for 2020-2024",
-      "limitations": "NOT ingested in this build (raw file exceeds the sandbox fetch-size limit encountered during this session — see METHODOLOGY.md). The dashboard instead uses the DOSM census_district series (below) for district population, which only runs through 2020.",
-      "status": "identified_not_ingested"
-    },
-    {
       "id": "census_district",
       "name": "Census District Table (DOSM data-open GitHub mirror)",
       "url": "https://github.com/dosm-malaysia/data-open/tree/main/datasets/census",

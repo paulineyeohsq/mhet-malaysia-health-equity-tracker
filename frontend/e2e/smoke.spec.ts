@@ -64,7 +64,34 @@ test("a page whose code fails to load shows the friendly fallback, and the nav s
   await page.evaluate(() => {
     window.location.hash = "#/methodology";
   });
-  await expect(page.getByRole("heading", { name: "Methodology", level: 1 })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Data Governance & Terms", level: 1 })).toBeVisible();
+});
+
+test("Data Governance & Terms has six numbered sections and the project contact", async ({ page }) => {
+  await page.goto("/#/methodology");
+  await expect(page.getByRole("heading", { name: "Data Governance & Terms", level: 1 })).toBeVisible();
+  await expect(page.locator("main section h2")).toHaveText([
+    "1. Purpose and research question",
+    "2. Data sources",
+    "3. Limitations",
+    "4. Privacy",
+    "5. Contact & Feedback",
+    "6. Glossary",
+  ]);
+  await expect(page.getByRole("link", { name: "pauline.yeoh@monash.edu" })).toHaveAttribute("href", "mailto:pauline.yeoh@monash.edu");
+  await expect(page.getByText("Developed as part of the MERCi initiative.")).toBeVisible();
+  // on phones the navigation sits behind the Menu button, so check the link only where it is always shown
+  if ((page.viewportSize()?.width ?? 0) >= 1024) {
+    await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Data Governance & Terms" })).toBeVisible();
+  }
+});
+
+test("Data Gaps lists only what has no machine-readable source", async ({ page }) => {
+  await page.goto("/#/data-gaps");
+  const list = page.locator("#not-ingested-heading + div li");
+  await expect(list).toHaveCount(6);
+  await expect(list.filter({ hasText: "Life Expectancy" })).toHaveCount(0);
+  await expect(list.filter({ hasText: "Causes of Death" })).toContainText("Re-checked 2026-10-09");
 });
 
 test("Research Opportunities makes no AI request until a button is clicked", async ({ page }) => {

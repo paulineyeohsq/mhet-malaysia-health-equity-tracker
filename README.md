@@ -98,7 +98,7 @@ an error boundary so the rest of the app keeps working.
 | Priority & opportunity | `/research-opportunities` | Research Opportunities (AI-assisted research questions) |
 | Researcher tools | `/explorer` | Data Explorer |
 | Researcher tools | `/data-gaps` | Data Gaps (what is missing and each dataset's limitations) |
-| About | `/methodology` | Methodology (including the privacy note) |
+| About | `/methodology` | Data Governance & Terms (purpose, data sources, limitations, privacy, contact, glossary) |
 
 ## Tech stack
 
@@ -223,14 +223,14 @@ stores no personal data. If you use an AI feature, the question you type (and
 the page's published data, as context) is sent to a Netlify function and on to
 Google Gemini to generate the answer — so please **do not enter personal or
 patient information**. The maps draw DOSM boundary polygons only, with no third-party
-map tiles. See the Privacy section of the Methodology page.
+map tiles. See the Privacy section of the Data Governance & Terms page.
 
 ## Documentation
 
 - [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) — field-by-field reference
   for every processed JSON/CSV file the frontend reads.
 - [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md) — the full catalogue of all
-  <!--count:ingested-->53<!--/count--> ingested and <!--count:notingested-->7<!--/count--> identified-but-not-ingested
+  <!--count:ingested-->53<!--/count--> ingested and <!--count:notingested-->6<!--/count--> identified-but-not-ingested
   source datasets (counts kept current automatically by `scripts/update_database.py`).
 - [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md) — pipeline methodology: architecture,
   geographic harmonisation, missing-data policy, inequality statistics and known limitations.

@@ -455,9 +455,9 @@ export default function InequalityAnalytics() {
             this pipeline does not have (e.g. individual- or district-level microdata), that is stated explicitly
             rather than approximated and mislabelled. See the{" "}
             <a href="#/methodology" className="text-series-1 underline underline-offset-2">
-              Methodology
+              Data Governance &amp; Terms
             </a>{" "}
-            page for full data provenance and limitations.
+            page for data provenance and limitations.
           </p>
         </Disclosure>
 

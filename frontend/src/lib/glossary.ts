@@ -1,10 +1,10 @@
 /**
  * Plain-language definitions for jargon used across the dashboard's charts,
  * KPI tiles and headings. Wording is kept consistent with (and shorter than)
- * the full explanations on the Methodology page, section 6/7 — this is a
+ * the full explanations in docs/METHODOLOGY.md (sections 6 and 7) — this is a
  * quick-reference layer for someone hovering a term mid-chart, not a
  * replacement for that page. Each definition also anchors to a matching
- * <dt id="glossary-{id}"> entry on Methodology.tsx#m-glossary.
+ * <dt id="glossary-{id}"> entry on the Data Governance & Terms page (Methodology.tsx#m-glossary).
  */
 export interface GlossaryEntry {
   id: string;

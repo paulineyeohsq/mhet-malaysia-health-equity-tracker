@@ -54,7 +54,7 @@ const NAV_SECTIONS: NavSection[] = [
       { to: "/data-gaps", label: "Data Gaps" },
     ],
   },
-  { heading: "About", items: [{ to: "/methodology", label: "Methodology" }] },
+  { heading: "About", items: [{ to: "/methodology", label: "Data Governance & Terms" }] },
 ];
 
 const LOGO_ALT = "Malaysia Health Equity Observatory (MY-HEO)";

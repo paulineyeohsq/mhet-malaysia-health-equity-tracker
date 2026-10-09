@@ -19,8 +19,9 @@ export default function DataGapsList() {
   return (
     <div className="rounded-lg border border-dashed border-line-axis bg-plane p-4">
       <p className="mb-3 text-xs text-ink-secondary">
-        These datasets were confirmed to exist in the data.gov.my catalogue (URL and schema verified) but are not
-        yet available in this dashboard build.
+        These were found to exist (as a survey, a report or a dashboard) but are not in this dashboard, either because
+        there is no machine-readable source to read them from or because they have not been extracted yet. Each
+        entry says what was checked and when; nothing here is estimated or filled in.
       </p>
       <ul className="space-y-2">
         {inventory.identified_but_not_yet_ingested.map((d) => (
