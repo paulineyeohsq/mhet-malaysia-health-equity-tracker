@@ -153,24 +153,46 @@ test("the Klang Valley toggle switches the staff headline between pooled and eac
   await expect.poll(ratio).toBe(pooled);
 });
 
-test("Priority Areas explains its weights and equity gap, and scores every indicator it lists", async ({ page }) => {
+test("Priority Areas: settings live in a panel, explanations are collapsed, and every indicator is scored", async ({ page }) => {
   await page.goto("/#/priority-areas");
-  await expect(page.getByText("Where do these weights come from?")).toBeVisible();
+  // the page itself shows the current settings and the two explanations (collapsed), not 19 checkboxes and 4 sliders
+  await expect(page.getByText("Where do the weights come from?")).toBeVisible();
   await expect(page.getByText("Where does the equity gap come from?")).toBeVisible();
-  for (const group of ["Health burden (proxy)", "Socioeconomic disadvantage", "Healthcare access gap", "Equity gap (inequality inside the state)"]) {
-    await expect(page.getByRole("heading", { name: group, level: 3 })).toBeVisible();
-  }
-  const boxes = page.locator('input[type="checkbox"]');
-  expect(await boxes.count()).toBeGreaterThanOrEqual(19);
+  await expect(page.getByText("They are an assumption, not a finding.")).toBeHidden();
+  await expect(page.locator('input[type="checkbox"]')).toHaveCount(0);
+  await expect(page.locator('input[type="range"]')).toHaveCount(0);
+  await page.getByText("Where do the weights come from?").click();
+  await expect(page.getByText("They are an assumption, not a finding.")).toBeVisible();
+
   const insight = page.getByText(/ranks as the top potential priority area/);
   await expect(insight).toContainText("indicators across 4 components");
-  // untick one indicator: the count in the headline drops by one
   const before = Number(/from (\d+) indicator/.exec(await insight.innerText())?.[1]);
+
+  const opener = page.getByRole("button", { name: "Customize the score…" });
+  await opener.click();
+  const dialog = page.getByRole("dialog", { name: "Customize the score" });
+  await expect(dialog).toBeVisible();
+  for (const group of ["Health burden (proxy)", "Socioeconomic disadvantage", "Healthcare access gap", "Equity gap (inequality inside the state)"]) {
+    await expect(dialog.getByText(group, { exact: true }).first()).toBeVisible();
+  }
+  const boxes = dialog.locator('input[type="checkbox"]');
+  expect(await boxes.count()).toBeGreaterThanOrEqual(19);
+  await expect(dialog.locator('input[type="range"]')).toHaveCount(4);
   await boxes.first().uncheck();
   await expect.poll(async () => Number(/from (\d+) indicator/.exec(await insight.innerText())?.[1])).toBe(before - 1);
-  // every state has a rank range and the table has one row per state with a score
+
+  // Tab stays inside the panel; Escape closes it and focus returns to the button that opened it
+  for (let i = 0; i < 40; i++) {
+    await page.keyboard.press("Tab");
+    expect(await page.evaluate(() => Boolean(document.activeElement?.closest('[role="dialog"]')))).toBe(true);
+  }
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(opener).toBeFocused();
+
   await expect(page.locator("table").first().locator("tbody tr")).toHaveCount(16);
 });
+
 
 test.describe("consolidated pages", () => {
   for (const [legacy, now] of Object.entries(LEGACY_REDIRECTS)) {
@@ -229,4 +251,93 @@ test.describe("consolidated pages", () => {
     await expect(page).toHaveURL(/#\/topics\/outcomes$/);
     await expect(page.locator("#metric-select")).toHaveValue("maternal_mortality");
   });
+});
+
+test.describe("progressive disclosure", () => {
+  test("source notes show one line and open on demand", async ({ page }) => {
+    await page.goto("/#/topics/access");
+    await expect(page.locator("main h1").first()).toBeVisible();
+    const first = page.locator("details", { hasText: "View source" }).first();
+    await expect(first.locator("summary")).toContainText("View source");
+    await expect(first.getByRole("link", { name: "Open the dataset" })).toBeHidden();
+    await first.locator("summary").click();
+    await expect(first.getByRole("link", { name: "Open the dataset" })).toBeVisible();
+  });
+
+  test("the staff and bed source notes flag that they carry a note", async ({ page }) => {
+    await page.goto("/#/topics/access");
+    await expect(page.getByText("⚠ note").first()).toBeVisible();
+  });
+
+  test("the correlation caveat keeps its headline visible and the explanation behind a click", async ({ page }) => {
+    await page.goto("/#/determinants");
+    await expect(page.getByText("Correlation, not causation.").first()).toBeVisible();
+    await expect(page.getByText("confounding factors such as urbanisation")).toBeHidden();
+    await page.getByText("Correlation, not causation.").first().click();
+    await expect(page.getByText("confounding factors such as urbanisation")).toBeVisible();
+  });
+
+  test("calculation notes are collapsed", async ({ page }) => {
+    await page.goto("/#/topics/access");
+    await expect(page.getByText("How are these rates calculated?")).toBeVisible();
+    await expect(page.getByText("Rate formula (staff):")).toBeHidden();
+    await page.goto("/#/analytics");
+    await expect(page.getByText("How is the equity gap calculated?")).toBeVisible();
+  });
+});
+
+test.describe("overlays do not get in the way", () => {
+  test("with the assistant closed nothing is fixed over the page content", async ({ page }) => {
+    await page.goto("/#/topics/access");
+    await expect(page.locator("main h1").first()).toBeVisible();
+    await page.waitForLoadState("networkidle");
+    const covering = await page.evaluate(() =>
+      Array.from(document.querySelectorAll<HTMLElement>("body *"))
+        .filter((el) => getComputedStyle(el).position === "fixed" && !el.closest("aside[inert]"))
+        .map((el) => `${el.tagName}.${el.className}`.slice(0, 80))
+    );
+    expect(covering).toEqual([]);
+  });
+
+  test("the assistant opens from the navigation, never from a floating button", async ({ page }) => {
+    await page.goto("/#/");
+    const launcher = page.getByRole("button", { name: "Open MY-HEO Assistant" });
+    await expect(launcher).toHaveCount(1);
+    expect(await launcher.evaluate((el) => getComputedStyle(el).position)).not.toBe("fixed");
+  });
+
+  test("on a wide screen the open assistant makes room instead of covering the page; on a narrow one it dims and can be dismissed", async ({ page, viewport }) => {
+    await page.goto("/#/topics/outcomes");
+    await expect(page.locator("main h1").first()).toBeVisible();
+    await page.getByRole("button", { name: "Open MY-HEO Assistant" }).click();
+    const drawer = page.getByRole("complementary", { name: "MY-HEO Assistant" });
+    await expect(drawer).toBeVisible();
+    if ((viewport?.width ?? 0) >= 1280) {
+      await expect.poll(async () => page.evaluate(() => document.getElementById("main-content")!.getBoundingClientRect().right)).toBeLessThanOrEqual(1440 - 380 + 1);
+      const mainRight = await page.evaluate(() => document.getElementById("main-content")!.getBoundingClientRect().right);
+      const drawerLeft = await drawer.evaluate((el) => el.getBoundingClientRect().left);
+      expect(mainRight).toBeLessThanOrEqual(drawerLeft + 1);
+    } else {
+      await page.getByRole("button", { name: "Close the assistant" }).click({ force: true, position: { x: 10, y: 300 } });
+      await expect(drawer).toBeHidden();
+    }
+  });
+
+  test("the map never paints over the sticky phone bar", async ({ page, viewport }) => {
+    test.skip((viewport?.width ?? 1440) >= 1024, "phone layout only");
+    await page.goto("/#/map");
+    await expect(page.locator(".leaflet-container")).toBeVisible();
+    // Leaflet's zoom buttons carry z-index 1000. Scroll the page until they sit underneath the sticky bar, then ask what
+    // is actually on top at that spot: it must be the bar, not the map.
+    const hitInsideMap = await page.evaluate(async () => {
+      const zoom = document.querySelector(".leaflet-top.leaflet-left")!.getBoundingClientRect();
+      window.scrollTo(0, zoom.top + window.scrollY - 20);
+      await new Promise((r) => setTimeout(r, 300));
+      const now = document.querySelector(".leaflet-top.leaflet-left")!.getBoundingClientRect();
+      const hit = document.elementFromPoint(now.left + 20, now.top + 15);
+      return Boolean(hit?.closest(".leaflet-container"));
+    });
+    expect(hitInsideMap, "a map control is painted over the sticky bar").toBe(false);
+  });
+
 });

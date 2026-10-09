@@ -11,6 +11,7 @@ import EquityInsightCard from "../components/EquityInsightCard";
 import { buildEquityInsight } from "../lib/equityInsight";
 import { useData } from "../lib/useData";
 import { collapsePooledRows, type Row } from "../lib/equity";
+import Disclosure from "../components/Disclosure";
 import { useKlangValleyMode } from "../lib/klangValley";
 
 interface NationalRow {
@@ -353,7 +354,11 @@ export default function HealthcareAccess() {
             )}
           </div>
 
-          <div className="mt-4 rounded-lg border border-line-grid bg-plane p-4 text-xs leading-relaxed text-ink-secondary">
+          <Disclosure
+            className="mt-4 rounded-lg border border-line-grid bg-plane p-3 text-xs leading-relaxed text-ink-secondary"
+            summaryClassName="font-medium text-ink-primary"
+            summary="How are these rates calculated?"
+          >
             <p>
               <span className="font-medium text-ink-primary">Rate formula (staff):</span> staff_all ÷
               population_used_for_rate × 100,000. Numerator: total healthcare staff (MOH), Ministry of Health
@@ -386,7 +391,7 @@ export default function HealthcareAccess() {
               population_used_for_rate × 100,000, using the same 2022 population denominator. Bed counts by state
               exist only for 2022 in the source data — there is no time series of state-level bed counts.
             </p>
-          </div>
+          </Disclosure>
 
           <div className="mt-4">
             <h3 className="mb-2 text-sm font-medium text-ink-primary">
