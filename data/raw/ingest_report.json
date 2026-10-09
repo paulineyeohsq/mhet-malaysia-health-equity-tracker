@@ -1,8 +1,8 @@
 {
- "run_at": "2026-10-09T03:56:53Z",
+ "run_at": "2026-10-09T06:41:18Z",
  "summary": {
-  "ok": 7,
-  "unchanged": 51,
+  "ok": 8,
+  "unchanged": 50,
   "failed": 0,
   "refused": 0
  },
@@ -175,24 +175,18 @@
   },
   {
    "id": "population_state",
-   "file": "data/raw/demography/population_state.json",
-   "method": "api_json_raw",
-   "rows": 25536,
-   "latest_year": 2023,
-   "status": "unchanged",
+   "file": "data/raw/demography/population_state.csv",
+   "method": "csv",
+   "rows": 44688,
+   "latest_year": 2026,
+   "status": "ok",
    "source": {
-    "catalogue_id": "population_state",
     "data_as_of": "2023",
     "last_updated": "2023-07-31 12:00",
     "next_update": "2024-07-31 12:00",
-    "data_source": [
-     "DOSM"
-    ],
-    "update_frequency": "YEARLY",
-    "total": 25536,
-    "limit": 1000000
+    "update_frequency": "YEARLY"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T06:41:18Z"
   },
   {
    "id": "census_district",

@@ -100,9 +100,9 @@ DATASETS = [
      "method": "github", "url": "https://raw.githubusercontent.com/dosm-malaysia/data-open/main/datasets/economy/hies_2019.csv"},
 
     # -- Demography -----------------------------------------------------------
-    {"id": "population_state", "category": "demography", "filename": "population_state.json",
-     "method": "api_json_raw", "api_id": "population_state",
-     "note": "Saved as JSON (not CSV) because transform_data.py's build_population_state() reads this file's dimensional (age/ethnicity/sex) records directly as JSON."},
+    {"id": "population_state", "category": "demography", "filename": "population_state.csv",
+     "method": "csv", "url": "https://storage.dosm.gov.my/population/population_state.csv", "since_year": 2020,
+     "note": "DOSM's own file, which runs to 2026. The data.gov.my API copy of this dataset (what this entry used before) stopped at 2023. Only 2020 onward is kept (the file goes back to 1970 with every age/ethnicity combination, ~40 MB)."},
     {"id": "census_district", "category": "demography", "filename": "census_district.csv",
      "method": "github", "url": "https://raw.githubusercontent.com/dosm-malaysia/data-open/main/datasets/census/census_district.csv"},
 
@@ -313,6 +313,18 @@ def _rows_of(content: bytes, ds: dict) -> list[dict]:
 def fetch_csv(ds: dict) -> tuple[bytes, dict | None]:
     content = _http_get(ds["url"])
     _check_not_html(content, "the CSV endpoint")
+    since = ds.get("since_year")
+    if since:
+        # Keep only rows from `since_year` on (a `date` or `year` column), for files whose full history we do not need.
+        reader = csv.DictReader(io.StringIO(content.decode("utf-8-sig")))
+        buf = io.StringIO()
+        writer = csv.DictWriter(buf, fieldnames=reader.fieldnames, lineterminator="\n")
+        writer.writeheader()
+        for row in reader:
+            y = _year_of(row.get("date", row.get("year")))
+            if y is not None and y >= since:
+                writer.writerow(row)
+        content = buf.getvalue().encode("utf-8")
     return content, None
 
 

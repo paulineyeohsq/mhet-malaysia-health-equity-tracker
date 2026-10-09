@@ -85,14 +85,16 @@ those totals belong in the state-level file, not here).
 
 ## 4. `population_state.json`
 
-**Grain:** one row per state per year per sex. **Rows: 192** (16 states ×
-4 years [2020–2023] × 3 sex categories: `male`, `female`, `overall`). Built
-by `build_population_state()` from `population_state.json`
-(the DOSM intercensal-estimate API slice), filtering to
-`age == "overall_age"` and `ethnicity == "overall_ethnicity"` only — the
-full source also has 5-year age bands and 7 ethnicity categories, not
-ingested in this build (see `dataset_inventory.json`'s `population_state`
-entry). This file's `sex == "overall"` rows are also used internally
+**Grain:** one row per state per year per sex. **Rows: 336** (16 states ×
+7 years [2020–2026] × 3 sex categories: `male`, `female`, `overall`). Built
+by `build_population_state()` from `data/raw/demography/population_state.csv`
+(DOSM's own file, `storage.dosm.gov.my/population/population_state.csv`, kept
+from 2020 on), filtering to the all-ages, all-ethnicities rows
+(`age == "overall"`, `ethnicity == "overall"`) only — the full source also has
+5-year age bands and 7 ethnicity categories, not ingested (see
+`dataset_inventory.json`'s `population_state` entry). The pipeline used to read
+a data.gov.my API copy of this dataset that stopped at 2023; DOSM's file runs to
+2026. This file's `sex == "overall"` rows are also used internally
 (as an in-memory lookup, not written to disk separately) as the population
 denominator for the `*_per_100k` rate fields in files 6 and 8 below.
 
@@ -153,7 +155,7 @@ from file 4.
 | `staff_dentist` | number | count | never null in this file | `321` |
 | `staff_nurse` | number | count | never null in this file | `5980` |
 | `staff_nurse_community` | number | count | never null in this file | `2093` |
-| `population_used_for_rate` | number | persons (absolute, not thousands) | null for 96 of 144 rows — only populated for years 2020–2023, the range covered by `population_state.json` (file 4); years 2014–2019 have no matching population denominator in this pipeline | `4009700.0` |
+| `population_used_for_rate` | number | persons (absolute, not thousands) | null for 96 of 144 rows — only populated for years 2020 onward, the range this pipeline keeps from `population_state.json` (file 4); years 2014–2019 have no matching population denominator here. Staff counts stop at 2022 upstream, so rates exist for 2020–2022 | `4009700.0` |
 | `staff_per_100k` | number | staff per 100,000 population | null for 96 of 144 rows — computed as `staff_all / population_used_for_rate * 100000`, so it is null wherever the denominator is (2014–2019) | `306.6` |
 | `hospital_beds` | number | count | null for 128 of 144 rows — populated **only for `year == 2022`**, because `hospital_beds_2022.csv` is a single-year snapshot (per `dataset_inventory.json`'s `hospital_beds` entry: "District-level series only ingested for 2022") | `5433` |
 | `beds_per_100k` | number | beds per 100,000 population | null for 128 of 144 rows, same 2022-only reason as `hospital_beds` | `134.9` |
