@@ -501,7 +501,7 @@ export default function DataExplorer() {
   const [selectedId, setSelectedId] = useState(DATASETS[0].id);
   const dataset = DATASETS.find((d) => d.id === selectedId) ?? DATASETS[0];
 
-  const { data: rows, loading, error } = useData<Record<string, unknown>[]>(dataset.file);
+  const { data: rows, loading, error } = useData<Record<string, unknown>[]>(dataset.file, { raw: true });
   const { data: inventory } = useData<InventoryFile>("dataset_inventory.json");
 
   const matchedEntries = useMemo(() => {

@@ -27,6 +27,7 @@ import type { SOURCES } from "../lib/sources";
 import { computeGapStats, computeAverage, yearsWithCoverage, fmt, type Row } from "../lib/equity";
 import { MALAYSIA_STATES } from "../lib/geoConstants";
 import { isSmallCount, SMALL_COUNT_CAUTION_TEXT } from "../lib/reliability";
+import { kvLabel } from "../lib/klangValley";
 
 interface SocioeconomicRow {
   state: string;
@@ -97,7 +98,7 @@ const OUTCOME_INDICATORS: OutcomeIndicator[] = [
   },
   {
     id: "staff",
-    label: "Healthcare workforce availability (Klang Valley pooled)",
+    get label() { return kvLabel("Healthcare workforce availability"); },
     file: "healthcare_access_state.json",
     valueField: "staff_per_100k_pooled",
     countField: "staff_all",
@@ -109,7 +110,7 @@ const OUTCOME_INDICATORS: OutcomeIndicator[] = [
   },
   {
     id: "beds",
-    label: "Hospital bed availability (Klang Valley pooled)",
+    get label() { return kvLabel("Hospital bed availability"); },
     file: "healthcare_access_state.json",
     valueField: "beds_per_100k_pooled",
     countField: "hospital_beds",

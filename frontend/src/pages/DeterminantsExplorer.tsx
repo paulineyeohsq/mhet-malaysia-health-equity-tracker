@@ -21,6 +21,7 @@ import Term from "../components/Term";
 import DataTable, { type Column } from "../components/DataTable";
 import { toCSV, downloadCSV } from "../lib/csv";
 import { useData } from "../lib/useData";
+import { useKlangValleyMode } from "../lib/klangValley";
 import { computeAverage, isPooledField, type Row, type TrendPoint } from "../lib/equity";
 import { findBestYear, buildPairs, buildPooledPairs, findYearsWithPairs, computeCorrelationStats, interpretCorrelation, CORRELATION_MIN_PAIRS, CORRELATION_RELIABLE_MIN, type CorrelationPair } from "../lib/correlation";
 import { svgToPngDataUrl, downloadDataUrl } from "../lib/exportChart";
@@ -30,6 +31,7 @@ import { OUTCOME_FIELDS, DETERMINANT_FIELDS, NATIONAL_FIELDS, rowsForField, type
 type AnalysisMode = "cross-section" | "over-time";
 
 export default function DeterminantsExplorer() {
+  const [kvMode] = useKlangValleyMode();
   const { explain } = useChat();
   const { data: healthOutcomes } = useData<Row[]>("health_outcomes_state.json");
   const { data: healthcareAccess } = useData<Row[]>("healthcare_access_state.json");
@@ -600,7 +602,7 @@ export default function DeterminantsExplorer() {
                   is descriptive, not predictive or causal.
                 </p>
               </div>
-              {(isPooledField(determinant.field) || isPooledField(outcome.field)) && (
+              {kvMode === "pooled" && (isPooledField(determinant.field) || isPooledField(outcome.field)) && (
                 <p className="mt-2 text-xs text-ink-secondary">
                   Selangor, W.P. Kuala Lumpur and W.P. Putrajaya are left out of this correlation: the staff / bed rate
                   describes the pooled Klang Valley area as a whole, so it cannot be paired with any one of those
