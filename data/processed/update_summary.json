@@ -1,20 +1,6 @@
 {
- "generated_at": "2026-10-09T06:41:48Z",
+ "generated_at": "2026-10-09T07:14:56Z",
  "changed_files": [
-  {
-   "file": "population_state.json",
-   "rows_before": 0,
-   "rows_after": 336,
-   "latest_year_before": null,
-   "latest_year_after": 2026
-  },
-  {
-   "file": "healthcare_access_state.json",
-   "rows_before": 144,
-   "rows_after": 144,
-   "latest_year_before": 2022,
-   "latest_year_after": 2022
-  },
   {
    "file": "dataset_inventory.json"
   }

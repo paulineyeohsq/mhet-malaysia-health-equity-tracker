@@ -1,6 +1,6 @@
 # Data validation report index
 
-65 raw CSV files validated.
+66 raw CSV files validated.
 
 - [demography/census_district.csv](demography__census_district.md)
 - [demography/fertility_state.csv](demography__fertility_state.md)
@@ -9,6 +9,7 @@
 - [demography/population_district_full.csv](demography__population_district_full.md)
 - [demography/population_dun.csv](demography__population_dun.md)
 - [demography/population_parlimen.csv](demography__population_parlimen.md)
+- [demography/population_state.csv](demography__population_state.md)
 - [environment/air_pollution.csv](environment__air_pollution.md)
 - [environment/electricity_consumption.csv](environment__electricity_consumption.md)
 - [environment/electricity_supply.csv](environment__electricity_supply.md)

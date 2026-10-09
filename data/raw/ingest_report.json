@@ -1,8 +1,8 @@
 {
- "run_at": "2026-10-09T06:57:40Z",
+ "run_at": "2026-10-09T07:14:44Z",
  "summary": {
-  "ok": 9,
-  "unchanged": 49,
+  "ok": 0,
+  "unchanged": 58,
   "failed": 0,
   "refused": 0
  },
@@ -18,9 +18,13 @@
     "data_as_of": "2024",
     "last_updated": "2025-12-31 12:00",
     "next_update": "\u2014",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "hh_income",
+    "http_url": "https://storage.dosm.gov.my/hies/hh_income.csv",
+    "etag": "\"213a927f97255bd093a8c06a848d722a\"",
+    "last_modified": "Mon, 06 Jul 2026 01:07:02 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hh_income_state",
@@ -33,9 +37,13 @@
     "data_as_of": "2024",
     "last_updated": "2025-12-31 12:00",
     "next_update": "\u2014",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "hh_income_state",
+    "http_url": "https://storage.dosm.gov.my/hies/hh_income_state.csv",
+    "etag": "\"9c529cd9039db6e9b858defe1dc17912\"",
+    "last_modified": "Mon, 06 Jul 2026 01:07:01 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hh_income_district",
@@ -48,9 +56,13 @@
     "data_as_of": "2024",
     "last_updated": "2025-12-31 12:00",
     "next_update": "\u2014",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "hh_income_district",
+    "http_url": "https://storage.dosm.gov.my/hies/hh_income_district.csv",
+    "etag": "\"d3f33727b1a404986ef99a79ed2544f1\"",
+    "last_modified": "Mon, 06 Jul 2026 01:07:00 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hh_poverty",
@@ -63,9 +75,13 @@
     "data_as_of": "2024",
     "last_updated": "2025-12-31 12:00",
     "next_update": "\u2014",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "hh_poverty",
+    "http_url": "https://storage.dosm.gov.my/hies/hh_poverty.csv",
+    "etag": "\"f0c63e6d3faeb5aa8aa1ebc0755e5865\"",
+    "last_modified": "Mon, 06 Jul 2026 01:07:00 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hh_poverty_state",
@@ -78,9 +94,13 @@
     "data_as_of": "2024",
     "last_updated": "2025-12-31 12:00",
     "next_update": "\u2014",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "hh_poverty_state",
+    "http_url": "https://storage.dosm.gov.my/hies/hh_poverty_state.csv",
+    "etag": "\"8500025c8fc0b91906bd4d8b6201973a\"",
+    "last_modified": "Mon, 06 Jul 2026 01:07:02 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hh_poverty_district",
@@ -93,9 +113,13 @@
     "data_as_of": "2024",
     "last_updated": "2025-12-31 12:00",
     "next_update": "\u2014",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "hh_poverty_district",
+    "http_url": "https://storage.dosm.gov.my/hies/hh_poverty_district.csv",
+    "etag": "\"b6d9f4ac1fe1043f4479b793342526e1\"",
+    "last_modified": "Mon, 06 Jul 2026 01:07:00 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hh_inequality",
@@ -108,9 +132,13 @@
     "data_as_of": "2024",
     "last_updated": "2025-12-31 12:00",
     "next_update": "\u2014",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "hh_inequality",
+    "http_url": "https://storage.dosm.gov.my/hies/hh_inequality.csv",
+    "etag": "\"7e5f318254522d8afa7414a4de1343d1\"",
+    "last_modified": "Mon, 06 Jul 2026 01:07:03 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hh_inequality_state",
@@ -123,9 +151,13 @@
     "data_as_of": "2024",
     "last_updated": "2025-12-31 12:00",
     "next_update": "\u2014",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "hh_inequality_state",
+    "http_url": "https://storage.dosm.gov.my/hies/hh_inequality_state.csv",
+    "etag": "\"9192aa2dc30c96002898df231c7450d4\"",
+    "last_modified": "Mon, 06 Jul 2026 01:07:03 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hh_inequality_district",
@@ -138,9 +170,13 @@
     "data_as_of": "2024",
     "last_updated": "2025-12-31 12:00",
     "next_update": "\u2014",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "hh_inequality_district",
+    "http_url": "https://storage.dosm.gov.my/hies/hh_inequality_district.csv",
+    "etag": "\"842d50475afc6afc2484898e4627a4ca\"",
+    "last_modified": "Mon, 06 Jul 2026 01:07:01 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hh_access_amenities",
@@ -150,18 +186,13 @@
    "latest_year": 2024,
    "status": "unchanged",
    "source": {
-    "catalogue_id": "hh_access_amenities",
     "data_as_of": "2024",
     "last_updated": "2026-09-30 12:00",
     "next_update": "tbc",
-    "data_source": [
-     "DOSM"
-    ],
     "update_frequency": "YEARLY",
-    "total": 694,
-    "limit": 1000000
+    "api_id": "hh_access_amenities"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hies_2019_snapshot",
@@ -170,8 +201,11 @@
    "rows": 998,
    "latest_year": null,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://raw.githubusercontent.com/dosm-malaysia/data-open/main/datasets/economy/hies_2019.csv",
+    "etag": "\"530bc3ab229c144881aea7d25f79c2b58c79ab0842ea2057fffcb9648bd1123b\""
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "population_state",
@@ -179,14 +213,18 @@
    "method": "csv",
    "rows": 44688,
    "latest_year": 2026,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "data_as_of": "2023",
     "last_updated": "2023-07-31 12:00",
     "next_update": "2024-07-31 12:00",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "population_state",
+    "http_url": "https://storage.dosm.gov.my/population/population_state.csv",
+    "etag": "\"d225c47bd90095e892859ba04a30664f\"",
+    "last_modified": "Fri, 31 Jul 2026 04:48:25 GMT"
    },
-   "checked_at": "2026-10-09T06:41:18Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "census_district",
@@ -195,8 +233,11 @@
    "rows": 960,
    "latest_year": 2020,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://raw.githubusercontent.com/dosm-malaysia/data-open/main/datasets/census/census_district.csv",
+    "etag": "\"d0a5a47910ddf76a7a41d925079baa7c66c15d2b4e7fa0252fb740f678be525d\""
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "administrative_1_state",
@@ -205,8 +246,11 @@
    "rows": null,
    "latest_year": null,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://raw.githubusercontent.com/dosm-malaysia/data-open/main/datasets/geodata/administrative_1_state.geojson",
+    "etag": "\"af293ba68c1621fda09c0a0ca31445437413d2d413c098b218a29e5b4f5d0b74\""
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "administrative_2_district",
@@ -215,8 +259,11 @@
    "rows": null,
    "latest_year": null,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://raw.githubusercontent.com/dosm-malaysia/data-open/main/datasets/geodata/administrative_2_district.geojson",
+    "etag": "\"d0f620666861de875bb6eaf1d0417a91c896fe41e4247fdc6674979c8251097e\""
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hospital_beds_national",
@@ -229,9 +276,13 @@
     "data_as_of": "2022-12-31 23:59",
     "last_updated": "2024-09-01 12:00",
     "next_update": "tbc",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "hospital_beds",
+    "http_url": "https://storage.data.gov.my/healthcare/hospital_beds.csv",
+    "etag": "\"4dc75c75b3bc10193b770e57e7284a81\"",
+    "last_modified": "Fri, 27 Sep 2024 01:28:51 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hospital_beds_2022",
@@ -241,18 +292,13 @@
    "latest_year": 2022,
    "status": "unchanged",
    "source": {
-    "catalogue_id": "hospital_beds",
     "data_as_of": "2022-12-31 23:59",
     "last_updated": "2024-09-01 12:00",
     "next_update": "tbc",
-    "data_source": [
-     "MOH"
-    ],
     "update_frequency": "YEARLY",
-    "total": 5468,
-    "limit": 1000000
+    "api_id": "hospital_beds"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "healthcare_staff",
@@ -260,8 +306,7 @@
    "method": "api",
    "rows": 765,
    "latest_year": 2022,
-   "previous_rows": 765,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "data_as_of": "2022-12-31 23:59",
     "last_updated": "2024-09-01 12:00",
@@ -269,7 +314,7 @@
     "update_frequency": "YEARLY",
     "api_id": "healthcare_staff"
    },
-   "checked_at": "2026-10-09T06:57:40Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "death_state",
@@ -283,7 +328,7 @@
     "etag": "\"3996aa757c152d73b5a61768a7195092\"",
     "last_modified": "Tue, 07 Jul 2026 15:43:35 GMT"
    },
-   "checked_at": "2026-10-09T06:57:40Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "death_maternal_state",
@@ -292,8 +337,12 @@
    "rows": 390,
    "latest_year": 2024,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://storage.dosm.gov.my/demography/death_maternal_state.csv",
+    "etag": "\"40afba79ed6e54a599225a143327068d\"",
+    "last_modified": "Tue, 07 Jul 2026 15:43:40 GMT"
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "deaths_early_childhood_state",
@@ -303,19 +352,13 @@
    "latest_year": 2024,
    "status": "unchanged",
    "source": {
-    "catalogue_id": "deaths_early_childhood_state",
     "data_as_of": "2024",
     "last_updated": "2025-10-16 12:00",
     "next_update": "2026-10-15 12:30",
-    "data_source": [
-     "JPN",
-     "DOSM"
-    ],
     "update_frequency": "YEARLY",
-    "total": 1950,
-    "limit": 1000000
+    "api_id": "deaths_early_childhood_state"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "birth_state",
@@ -324,8 +367,12 @@
    "rows": 390,
    "latest_year": 2024,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://storage.dosm.gov.my/demography/birth_state.csv",
+    "etag": "\"408ad32b86b437533be25230818e8b33\"",
+    "last_modified": "Tue, 07 Jul 2026 15:43:36 GMT"
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "infant_immunisation",
@@ -338,9 +385,13 @@
     "data_as_of": "2023",
     "last_updated": "2024-11-20 12:00",
     "next_update": "2025-11-30 12:00",
-    "update_frequency": "ANNUAL"
+    "update_frequency": "ANNUAL",
+    "api_id": "infant_immunisation",
+    "http_url": "https://storage.data.gov.my/healthcare/infant_immunisation.csv",
+    "etag": "\"acaa006b6b94179611e5cf490b6dd491\"",
+    "last_modified": "Wed, 27 Nov 2024 10:33:49 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "nutrition_status_u5_sex",
@@ -349,8 +400,12 @@
    "rows": 30,
    "latest_year": 2019,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://storage.data.gov.my/healthcare/nutrition_status_u5_sex.csv",
+    "etag": "\"d9331eac1e0ad0666e7f44c19a850d2d\"",
+    "last_modified": "Mon, 16 Sep 2024 10:46:48 GMT"
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "std_state",
@@ -360,18 +415,13 @@
    "latest_year": 2022,
    "status": "unchanged",
    "source": {
-    "catalogue_id": "std_state",
     "data_as_of": "2022",
     "last_updated": "2024-09-01 12:00",
     "next_update": "tbc",
-    "data_source": [
-     "MOH"
-    ],
     "update_frequency": "YEARLY",
-    "total": 480,
-    "limit": 1000000
+    "api_id": "std_state"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "death_sex_ethnic_state",
@@ -380,8 +430,12 @@
    "rows": 8190,
    "latest_year": 2024,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://storage.dosm.gov.my/demography/death_sex_ethnic_state.csv",
+    "etag": "\"5204e8ec1979727fa4eb74f4d4287040\"",
+    "last_modified": "Tue, 07 Jul 2026 15:43:42 GMT"
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "death_district_sex",
@@ -390,8 +444,12 @@
    "rows": 2361,
    "latest_year": 2024,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://storage.dosm.gov.my/demography/death_district_sex.csv",
+    "etag": "\"5484e1c044403fe2cb5d53f5e0942802\"",
+    "last_modified": "Tue, 07 Jul 2026 15:43:41 GMT"
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "birth_district_sex",
@@ -400,8 +458,12 @@
    "rows": 2361,
    "latest_year": 2024,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://storage.dosm.gov.my/demography/birth_district_sex.csv",
+    "etag": "\"ddf8381c62272c008682b245a9454501\"",
+    "last_modified": "Tue, 07 Jul 2026 15:43:39 GMT"
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "stillbirth_state",
@@ -410,8 +472,12 @@
    "rows": 390,
    "latest_year": 2024,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://storage.dosm.gov.my/demography/stillbirth_state.csv",
+    "etag": "\"c273f96a29fc6e962e0fb2a80a0d92a3\"",
+    "last_modified": "Tue, 07 Jul 2026 15:50:43 GMT"
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "sdg_03-3-1",
@@ -424,9 +490,13 @@
     "data_as_of": "2022",
     "last_updated": "2024-09-01 12:00",
     "next_update": "tbc",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "sdg_03-3-1",
+    "http_url": "https://storage.dosm.gov.my/sdg/sdg_03-3-1.csv",
+    "etag": "\"966422691398f1c64da081bdf7cf1672\"",
+    "last_modified": "Fri, 27 Sep 2024 20:52:57 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "population_parlimen",
@@ -435,8 +505,12 @@
    "rows": 5550,
    "latest_year": 2024,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://storage.dosm.gov.my/population/population_parlimen.csv",
+    "etag": "\"34834c37032f938281206bfacacad945\"",
+    "last_modified": "Sun, 05 Jul 2026 22:39:19 GMT"
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "population_dun",
@@ -445,8 +519,12 @@
    "rows": 15000,
    "latest_year": 2024,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://storage.dosm.gov.my/population/population_dun.csv",
+    "etag": "\"9c3eac7da0f21fc76dcb4c1f90a0f005\"",
+    "last_modified": "Sun, 05 Jul 2026 22:39:19 GMT"
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "population_district_full",
@@ -454,15 +532,18 @@
    "method": "csv",
    "rows": 451668,
    "latest_year": 2026,
-   "previous_rows": 383040,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "data_as_of": "2026",
     "last_updated": "2026-10-07 13:00",
     "next_update": "2027-10-31 12:00",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "population_district",
+    "http_url": "https://storage.dosm.gov.my/population/population_district.csv",
+    "etag": "\"34596c61cdef428f56a3412c4be5a884-3\"",
+    "last_modified": "Wed, 07 Oct 2026 22:51:33 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "hies_malaysia_percentile",
@@ -475,9 +556,13 @@
     "data_as_of": "2024",
     "last_updated": "2025-10-08 12:00",
     "next_update": "TBC",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "hies_malaysia_percentile",
+    "http_url": "https://storage.dosm.gov.my/hies/hies_malaysia_percentile.csv",
+    "etag": "\"424aea87e862384ae76e31abcb2ff469\"",
+    "last_modified": "Thu, 09 Oct 2025 07:55:37 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "marriages",
@@ -490,9 +575,13 @@
     "data_as_of": "2022-12-31 23:59",
     "last_updated": "2023-11-23 12:00",
     "next_update": "2024-11-21 12:00",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "marriages",
+    "http_url": "https://storage.dosm.gov.my/demography/marriages.csv",
+    "etag": "\"8b728e0e645e7e6d89eedf2358c8a746\"",
+    "last_modified": "Wed, 25 Sep 2024 02:48:22 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "marriages_state",
@@ -505,9 +594,13 @@
     "data_as_of": "2022-12-31 23:59",
     "last_updated": "2023-11-23 12:00",
     "next_update": "2024-11-21 12:00",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "marriages_state",
+    "http_url": "https://storage.dosm.gov.my/demography/marriages_state.csv",
+    "etag": "\"a9239b3073edfb5640074f86b825b96a\"",
+    "last_modified": "Wed, 25 Sep 2024 02:48:26 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "fertility_state",
@@ -520,9 +613,13 @@
     "data_as_of": "2024",
     "last_updated": "2025-10-16 12:00",
     "next_update": "2026-10-15 12:30",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "fertility_state",
+    "http_url": "https://storage.dosm.gov.my/demography/fertility_state.csv",
+    "etag": "\"5c64a067d649e0d8010b613325189896\"",
+    "last_modified": "Tue, 07 Jul 2026 15:43:39 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "blood_donations_state",
@@ -530,15 +627,18 @@
    "method": "csv",
    "rows": 493090,
    "latest_year": 2026,
-   "previous_rows": 492505,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "data_as_of": "2026-10-08 23:59",
     "last_updated": "2026-10-09 10:00",
     "next_update": "2026-10-10 10:00",
-    "update_frequency": "DAILY"
+    "update_frequency": "DAILY",
+    "api_id": "blood_donations_state",
+    "http_url": "https://storage.data.gov.my/healthcare/blood_donations_state.csv",
+    "etag": "\"2f556ec699a361e19f7e8380913debe4-2\"",
+    "last_modified": "Fri, 09 Oct 2026 00:01:47 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "organ_pledges_state",
@@ -546,15 +646,18 @@
    "method": "csv",
    "rows": 103632,
    "latest_year": 2026,
-   "previous_rows": 103504,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "data_as_of": "2026-10-08 23:59",
     "last_updated": "2026-10-09 10:00",
     "next_update": "2026-10-10 10:00",
-    "update_frequency": "DAILY"
+    "update_frequency": "DAILY",
+    "api_id": "organ_pledges_state",
+    "http_url": "https://storage.data.gov.my/healthcare/organ_pledges_state.csv",
+    "etag": "\"7a13fa086926fa50c8882daee2848b30\"",
+    "last_modified": "Thu, 08 Oct 2026 20:00:37 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "pekab40_screenings_state",
@@ -562,8 +665,7 @@
    "method": "csv",
    "rows": 43728,
    "latest_year": 2026,
-   "previous_rows": 43728,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "data_as_of": "2026-10-05 23:59",
     "last_updated": "2026-10-06 10:00",
@@ -574,7 +676,7 @@
     "etag": "\"dba84a08f6677cf7bb2a74c7b4194326\"",
     "last_modified": "Fri, 09 Oct 2026 00:01:49 GMT"
    },
-   "checked_at": "2026-10-09T06:57:40Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "covid_cases",
@@ -587,9 +689,13 @@
     "data_as_of": "2025-05-31 23:59",
     "last_updated": "2025-06-01 12:00",
     "next_update": "\u2014",
-    "update_frequency": "DAILY"
+    "update_frequency": "DAILY",
+    "api_id": "covid_cases",
+    "http_url": "https://storage.data.gov.my/healthcare/covid_cases.csv",
+    "etag": "\"6b5ce459461b016ca7d835d35ce1872f\"",
+    "last_modified": "Thu, 06 Aug 2026 23:19:28 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "covid_cases_age",
@@ -602,9 +708,13 @@
     "data_as_of": "2025-05-31 23:59",
     "last_updated": "2025-06-01 12:00",
     "next_update": "\u2014",
-    "update_frequency": "DAILY"
+    "update_frequency": "DAILY",
+    "api_id": "covid_cases_age",
+    "http_url": "https://storage.data.gov.my/healthcare/covid_cases_age.csv",
+    "etag": "\"7f636ab50ddab64822e6d06dbdea9af0\"",
+    "last_modified": "Thu, 06 Aug 2026 23:19:33 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "covid_deaths_linelist",
@@ -613,8 +723,12 @@
    "rows": 37351,
    "latest_year": 2024,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://storage.data.gov.my/healthcare/covid_deaths_linelist.csv",
+    "etag": "\"62e9ddd3529800aa3ad529f0a603bcd5\"",
+    "last_modified": "Wed, 04 Jun 2025 03:46:32 GMT"
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "mnha",
@@ -627,9 +741,13 @@
     "data_as_of": "2022",
     "last_updated": "2024-11-11",
     "next_update": "-",
-    "update_frequency": "ANNUAL"
+    "update_frequency": "ANNUAL",
+    "api_id": "mnha",
+    "http_url": "https://storage.data.gov.my/healthcare/mnha.csv",
+    "etag": "\"b953496cb74df343c22bec6d792549c2\"",
+    "last_modified": "Mon, 11 Nov 2024 18:30:02 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "mnha_moh",
@@ -642,9 +760,13 @@
     "data_as_of": "2022",
     "last_updated": "2024-11-11",
     "next_update": "-",
-    "update_frequency": "ANNUAL"
+    "update_frequency": "ANNUAL",
+    "api_id": "mnha_moh",
+    "http_url": "https://storage.data.gov.my/healthcare/mnha_moh.csv",
+    "etag": "\"d044643dd4d5e52dcb8c79710fb6b431\"",
+    "last_modified": "Mon, 11 Nov 2024 18:30:04 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "sanitation_access",
@@ -657,9 +779,13 @@
     "data_as_of": "2022",
     "last_updated": "2024-09-01 12:00",
     "next_update": "tbc",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "sanitation_access",
+    "http_url": "https://storage.data.gov.my/healthcare/sanitation_access.csv",
+    "etag": "\"1cb266fa46438150aee6d655073566c3\"",
+    "last_modified": "Fri, 27 Sep 2024 04:51:00 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "water_access",
@@ -672,9 +798,13 @@
     "data_as_of": "2022-12-31 23:59",
     "last_updated": "2024-09-01 12:00",
     "next_update": "tbc",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "water_access",
+    "http_url": "https://storage.data.gov.my/water/water_access.csv",
+    "etag": "\"827df7c3af6426a337ed505d6df03e4e\"",
+    "last_modified": "Fri, 27 Sep 2024 04:50:58 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "electricity_access",
@@ -682,15 +812,18 @@
    "method": "csv",
    "rows": 56,
    "latest_year": 2024,
-   "previous_rows": 44,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "data_as_of": "2024",
     "last_updated": "2026-10-08 12:00",
     "next_update": "tbc",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "electricity_access",
+    "http_url": "https://storage.data.gov.my/energy/electricity_access.csv",
+    "etag": "\"290834d66c278573c7ddc476c3b88ff8\"",
+    "last_modified": "Wed, 07 Oct 2026 16:29:13 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "nutrition_children_strata",
@@ -699,8 +832,12 @@
    "rows": 30,
    "latest_year": 2019,
    "status": "unchanged",
-   "source": null,
-   "checked_at": "2026-10-09T03:56:53Z"
+   "source": {
+    "http_url": "https://storage.data.gov.my/healthcare/nutrition_status_u5_strata.csv",
+    "etag": "\"da97ef5c146acd12aecc6b5fe1f49b80\"",
+    "last_modified": "Mon, 16 Sep 2024 10:46:49 GMT"
+   },
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "forest_reserve",
@@ -713,9 +850,13 @@
     "data_as_of": "2022",
     "last_updated": "2026-09-30 12:00",
     "next_update": "tbc",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "forest_reserve",
+    "http_url": "https://storage.data.gov.my/environment/forest_reserve.csv",
+    "etag": "\"82af28a0a370a4b151951e6dd57763bc\"",
+    "last_modified": "Wed, 30 Sep 2026 07:14:47 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "forest_reserve_state",
@@ -728,9 +869,13 @@
     "data_as_of": "2022",
     "last_updated": "2026-09-30 12:00",
     "next_update": "tbc",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "forest_reserve_state",
+    "http_url": "https://storage.data.gov.my/environment/forest_reserve_state.csv",
+    "etag": "\"24563d0bf93c1e10e54e9438c8e3dd83\"",
+    "last_modified": "Wed, 30 Sep 2026 07:14:47 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "air_pollution",
@@ -743,9 +888,13 @@
     "data_as_of": "2024-12-31 23:59",
     "last_updated": "2026-09-30 12:00",
     "next_update": "tbc",
-    "update_frequency": "MONTHLY"
+    "update_frequency": "MONTHLY",
+    "api_id": "air_pollution",
+    "http_url": "https://storage.data.gov.my/environment/air_pollution.csv",
+    "etag": "\"38de3da6bfca9231670416c24add598c\"",
+    "last_modified": "Wed, 30 Sep 2026 07:14:47 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "ghg_emissions",
@@ -758,9 +907,13 @@
     "data_as_of": "2021",
     "last_updated": "2024-09-01",
     "next_update": "-",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "ghg_emissions",
+    "http_url": "https://storage.data.gov.my/environment/ghg_emissions.csv",
+    "etag": "\"51709b72584691a2607e0bbc4084f965\"",
+    "last_modified": "Thu, 12 Sep 2024 15:15:38 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "water_pollution_basin",
@@ -773,9 +926,13 @@
     "data_as_of": "2024",
     "last_updated": "2026-09-30 12:00",
     "next_update": "tbc",
-    "update_frequency": "YEARLY"
+    "update_frequency": "YEARLY",
+    "api_id": "water_pollution_basin",
+    "http_url": "https://storage.data.gov.my/environment/water_pollution_basin.csv",
+    "etag": "\"ac61ef5b8e2fea21687eaed8075d6063\"",
+    "last_modified": "Wed, 30 Sep 2026 07:14:49 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "water_consumption",
@@ -788,9 +945,13 @@
     "data_as_of": "2024-12-31 23:59",
     "last_updated": "2026-09-30 12:00",
     "next_update": "tbc",
-    "update_frequency": "ANNUAL"
+    "update_frequency": "ANNUAL",
+    "api_id": "water_consumption",
+    "http_url": "https://storage.data.gov.my/water/water_consumption.csv",
+    "etag": "\"caae089cb9a2107fc673883aa0fef5fa\"",
+    "last_modified": "Wed, 30 Sep 2026 07:14:48 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "water_production",
@@ -803,9 +964,13 @@
     "data_as_of": "2022-12-31 23:59",
     "last_updated": "2024-09-01 12:00",
     "next_update": "tbc",
-    "update_frequency": "ANNUAL"
+    "update_frequency": "ANNUAL",
+    "api_id": "water_production",
+    "http_url": "https://storage.data.gov.my/water/water_production.csv",
+    "etag": "\"5d7c8b2e1fe24ef6aa892fd898e7ab95\"",
+    "last_modified": "Sun, 22 Sep 2024 22:48:50 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "electricity_consumption",
@@ -813,15 +978,18 @@
    "method": "csv",
    "rows": 612,
    "latest_year": 2026,
-   "previous_rows": 468,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "data_as_of": "2026-06-30 23:59",
     "last_updated": "2026-10-08 12:00",
     "next_update": "tbc",
-    "update_frequency": "MONTHLY"
+    "update_frequency": "MONTHLY",
+    "api_id": "electricity_consumption",
+    "http_url": "https://storage.data.gov.my/energy/electricity_consumption.csv",
+    "etag": "\"99f4e95642207b31320e311faeec017a\"",
+    "last_modified": "Wed, 07 Oct 2026 16:10:06 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   },
   {
    "id": "electricity_supply",
@@ -829,15 +997,18 @@
    "method": "csv",
    "rows": 612,
    "latest_year": 2026,
-   "previous_rows": 468,
-   "status": "ok",
+   "status": "unchanged",
    "source": {
     "data_as_of": "2026-06-30 23:59",
     "last_updated": "2026-10-08 12:00",
     "next_update": "tbc",
-    "update_frequency": "MONTHLY"
+    "update_frequency": "MONTHLY",
+    "api_id": "electricity_supply",
+    "http_url": "https://storage.data.gov.my/energy/electricity_supply.csv",
+    "etag": "\"9406f77dfe9b90bc5fa8ad7b894fdf1e\"",
+    "last_modified": "Wed, 07 Oct 2026 16:10:05 GMT"
    },
-   "checked_at": "2026-10-09T03:56:53Z"
+   "checked_at": "2026-10-09T07:14:44Z"
   }
  ]
 }

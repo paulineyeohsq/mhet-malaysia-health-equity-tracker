@@ -304,3 +304,106 @@ Done. Transform log written to data\processed\transform_log.txt
 [2026-10-09T06:41:48Z] Update summary: 3 file(s) changed, 0 anomaly(ies), needs_review=False
 [2026-10-09T06:41:48Z] === update_database.py run finished successfully ===
 
+[2026-10-09T07:11:11Z] === update_database.py run started ===
+[2026-10-09T07:11:11Z] Backed up current frontend/public/data/ contents to frontend/public/data/.backup
+[2026-10-09T07:11:11Z] --- stage: ingest_data.py ---
+[2026-10-09T07:11:11Z]   running: /opt/hostedtoolcache/Python/3.11.17/x64/bin/python3 /home/runner/work/mhet-malaysia-health-equity-tracker/mhet-malaysia-health-equity-tracker/scripts/ingest_data.py
+[2026-10-09T07:14:44Z]   stdout (tail): thcare/water_access.csv  (method=csv)
+[2026-10-09T07:14:16Z]   unchanged since last run
+[2026-10-09T07:14:16Z] Ingesting electricity_access -> data/raw/healthcare/electricity_access.csv  (method=csv)
+[2026-10-09T07:14:18Z]   unchanged since last run
+[2026-10-09T07:14:18Z] Ingesting nutrition_children_strata -> data/raw/health_outcomes/nutrition_status_u5_strata.csv  (method=csv)
+[2026-10-09T07:14:28Z]   unchanged since last run
+[2026-10-09T07:14:28Z] Ingesting forest_reserve -> data/raw/environment/forest_reserve.csv  (method=csv)
+[2026-10-09T07:14:30Z]   unchanged since last run
+[2026-10-09T07:14:30Z] Ingesting forest_reserve_state -> data/raw/environment/forest_reserve_state.csv  (method=csv)
+[2026-10-09T07:14:31Z]   unchanged since last run
+[2026-10-09T07:14:32Z] Ingesting air_pollution -> data/raw/environment/air_pollution.csv  (method=csv)
+[2026-10-09T07:14:33Z]   unchanged since last run
+[2026-10-09T07:14:33Z] Ingesting ghg_emissions -> data/raw/environment/ghg_emissions.csv  (method=csv)
+[2026-10-09T07:14:34Z]   unchanged since last run
+[2026-10-09T07:14:35Z] Ingesting water_pollution_basin -> data/raw/environment/water_pollution_basin.csv  (method=csv)
+[2026-10-09T07:14:36Z]   unchanged since last run
+[2026-10-09T07:14:36Z] Ingesting water_consumption -> data/raw/environment/water_consumption.csv  (method=csv)
+[2026-10-09T07:14:38Z]   unchanged since last run
+[2026-10-09T07:14:38Z] Ingesting water_production -> data/raw/environment/water_production.csv  (method=csv)
+[2026-10-09T07:14:40Z]   unchanged since last run
+[2026-10-09T07:14:40Z] Ingesting electricity_consumption -> data/raw/environment/electricity_consumption.csv  (method=csv)
+[2026-10-09T07:14:41Z]   unchanged since last run
+[2026-10-09T07:14:42Z] Ingesting electricity_supply -> data/raw/environment/electricity_supply.csv  (method=csv)
+[2026-10-09T07:14:44Z]   unchanged since last run
+[2026-10-09T07:14:44Z] === ingest_data.py run finished: {'ok': 0, 'unchanged': 58, 'failed': 0, 'refused': 0} ===
+
+
+[2026-10-09T07:14:44Z]   OK
+[2026-10-09T07:14:44Z] --- stage: validate_data.py ---
+[2026-10-09T07:14:44Z]   running: /opt/hostedtoolcache/Python/3.11.17/x64/bin/python3 /home/runner/work/mhet-malaysia-health-equity-tracker/mhet-malaysia-health-equity-tracker/scripts/validate_data.py
+[2026-10-09T07:14:52Z]   stdout (tail): ata/validation_reports/healthcare__healthcare_staff.md
+Validated healthcare/hospital_beds_2022.csv -> data/validation_reports/healthcare__hospital_beds_2022.md
+Validated healthcare/hospital_beds_national.csv -> data/validation_reports/healthcare__hospital_beds_national.md
+Validated healthcare/mnha.csv -> data/validation_reports/healthcare__mnha.md
+Validated healthcare/mnha_moh.csv -> data/validation_reports/healthcare__mnha_moh.md
+Validated healthcare/sanitation_access.csv -> data/validation_reports/healthcare__sanitation_access.md
+Validated healthcare/water_access.csv -> data/validation_reports/healthcare__water_access.md
+Validated socioeconomic/hh_access_amenities.csv -> data/validation_reports/socioeconomic__hh_access_amenities.md
+Validated socioeconomic/hh_income.csv -> data/validation_reports/socioeconomic__hh_income.md
+Validated socioeconomic/hh_income_district.csv -> data/validation_reports/socioeconomic__hh_income_district.md
+Validated socioeconomic/hh_income_state.csv -> data/validation_reports/socioeconomic__hh_income_state.md
+Validated socioeconomic/hh_inequality.csv -> data/validation_reports/socioeconomic__hh_inequality.md
+Validated socioeconomic/hh_inequality_district.csv -> data/validation_reports/socioeconomic__hh_inequality_district.md
+Validated socioeconomic/hh_inequality_state.csv -> data/validation_reports/socioeconomic__hh_inequality_state.md
+Validated socioeconomic/hh_poverty.csv -> data/validation_reports/socioeconomic__hh_poverty.md
+Validated socioeconomic/hh_poverty_district.csv -> data/validation_reports/socioeconomic__hh_poverty_district.md
+Validated socioeconomic/hh_poverty_state.csv -> data/validation_reports/socioeconomic__hh_poverty_state.md
+Validated socioeconomic/hies_2019_snapshot.csv -> data/validation_reports/socioeconomic__hies_2019_snapshot.md
+Validated socioeconomic/hies_malaysia_percentile.csv -> data/validation_reports/socioeconomic__hies_malaysia_percentile.md
+
+Wrote 66 validation reports + index to data/validation_reports/
+
+[2026-10-09T07:14:52Z]   OK
+[2026-10-09T07:14:52Z] --- stage: transform_data.py ---
+[2026-10-09T07:14:52Z]   running: /opt/hostedtoolcache/Python/3.11.17/x64/bin/python3 /home/runner/work/mhet-malaysia-health-equity-tracker/mhet-malaysia-health-equity-tracker/scripts/transform_data.py
+[2026-10-09T07:14:56Z]   stdout (tail): city_state.json  (8190 records)
+Wrote data/processed/deaths_district_sex.json  (2361 records)
+Wrote data/processed/births_district_sex.json  (2361 records)
+Wrote data/processed/population_parlimen.json  (3330 records)
+Wrote data/processed/population_dun.json  (9000 records)
+Wrote data/processed/population_district_full.json  (3396 records)
+Wrote data/processed/hies_percentile_national.json  (1200 records)
+Wrote data/processed/marriages_national.json  (12 records)
+Wrote data/processed/marriages_state.json  (192 records)
+Wrote data/processed/fertility_state.json  (3000 records)
+Wrote data/processed/health_programmes_state.json  (327 records)
+Wrote data/processed/pekab40_screenings_daily_state.json  (5856 records)
+Wrote data/processed/pekab40_screenings_weekly_state.json  (6256 records)
+Wrote data/processed/covid_state.json  (96 records)
+Wrote data/processed/covid_national.json  (6 records)
+Wrote data/processed/mnha_national.json  (70 records)
+Wrote data/processed/sanitation_access_state.json  (286 records)
+Wrote data/processed/sanitation_access_national.json  (22 records)
+Wrote data/processed/water_access_state.json  (966 records)
+Wrote data/processed/water_access_national.json  (69 records)
+Wrote data/processed/electricity_access_region.json  (56 records)
+Wrote data/processed/nutrition_strata_national.json  (30 records)
+Wrote data/processed/forest_reserve_national.json  (20 records)
+Wrote data/processed/forest_reserve_state.json  (320 records)
+Wrote data/processed/water_consumption_state.json  (616 records)
+Wrote data/processed/water_production_state.json  (322 records)
+Wrote data/processed/air_pollution_national.json  (46 records)
+Wrote data/processed/ghg_emissions_national.json  (56 records)
+Wrote data/processed/water_pollution_basin_national.json  (225 records)
+Wrote data/processed/electricity_consumption_national.json  (54 records)
+Wrote data/processed/electricity_supply_national.json  (54 records)
+
+Done. Transform log written to data/processed/transform_log.txt
+
+[2026-10-09T07:14:56Z]   OK
+[2026-10-09T07:14:56Z] Stamped dataset_inventory.json last_refreshed = 2026-10-09
+[2026-10-09T07:14:56Z] Stamped dataset_inventory.json data_files for 46 files
+[2026-10-09T07:14:56Z] Stamped dataset_inventory.json source_status for 58 datasets
+[2026-10-09T07:14:56Z] Synced dataset counts into README/docs: {'ingested': 52, 'reference': 1, 'notingested': 8}
+[2026-10-09T07:14:56Z] --- stage: sync to frontend/public/data ---
+[2026-10-09T07:14:56Z]   OK — synced 51 files into frontend/public/data
+[2026-10-09T07:14:56Z] Update summary: 1 file(s) changed, 0 anomaly(ies), needs_review=False
+[2026-10-09T07:14:56Z] === update_database.py run finished successfully ===
+
