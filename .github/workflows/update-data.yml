@@ -8,11 +8,16 @@ name: Update data
 #
 #   * nothing changed .......................... does nothing
 #   * changed, and nothing looks wrong ......... commits straight to main and triggers the site deploy
-#                                                (no human step)
+#                                                (no human step). Publishing is automatic only because the gates
+#                                                above have already passed on exactly this data; the deploy then
+#                                                repeats them (deploy-pages.yml) before anything is published, and
+#                                                the Netlify build of main repeats lint and the unit tests
 #   * changed, but something looks wrong ....... opens a pull request instead, for a human to look at. "Wrong" means
 #                                                a dataset failed to refresh or was refused as truncated, a published
 #                                                file lost more than 10% of its rows, or a file's latest year went
-#                                                backwards (see data/processed/update_summary.json)
+#                                                backwards (see data/processed/update_summary.json). Nothing goes
+#                                                live until a person merges it; the home page says so ("Waiting for
+#                                                review") by looking for this pull request
 #   * the run itself fails ..................... leaves main and the live site untouched (update_database.py restores
 #                                                its own backup and every gate must pass before anything is committed)
 #                                                and opens / updates an issue; the issue closes itself on the next

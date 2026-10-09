@@ -59,7 +59,7 @@ export default function DataUpdateCard() {
     const finished = upd.status === "completed";
     if (finished && finishedSeenAt.current === null) finishedSeenAt.current = Date.now();
     if (!finished) finishedSeenAt.current = null;
-    const p = progressOf(s.update, s.deploy, finishedSeenAt.current === null ? 0 : Date.now() - finishedSeenAt.current);
+    const p = progressOf(s.update, s.deploy, finishedSeenAt.current === null ? 0 : Date.now() - finishedSeenAt.current, undefined, s.reviewPending);
     setProgress(p);
     return p;
   }
@@ -72,7 +72,7 @@ export default function DataUpdateCard() {
       checkForUpdates()
         .then((s) => {
           const p = observe(s);
-          if (p.phase === "done" || p.phase === "failed" || Date.now() - startedAt > GIVE_UP_MS) setWatching(false);
+          if (p.phase === "done" || p.phase === "failed" || p.phase === "review" || Date.now() - startedAt > GIVE_UP_MS) setWatching(false);
         })
         .catch(() => {
           /* a missed poll is fine; the next one tries again */
@@ -148,8 +148,10 @@ export default function DataUpdateCard() {
                 Last refreshed from the publishers on <span className="font-medium text-ink-primary">{inventory.last_refreshed}</span>.{" "}
               </>
             ) : null}
-            The dashboard re-fetches every source automatically each Monday (next: {when(next)}, Malaysia time). If a publisher
-            releases something in between, check here.
+            Each Monday (next: {when(next)}, Malaysia time) the dashboard re-fetches every source, runs its automated checks and,
+            if they all pass, publishes the new data by itself. Anything that looks unusual is held back for a person to
+            review, and the dashboard keeps its previous data until then. If a publisher releases something in between,
+            check here; an update started from this page goes through the same checks.
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -216,6 +218,16 @@ export default function DataUpdateCard() {
           </div>
         )}
 
+        {progress.phase === "idle" && state?.reviewPending && !running && (
+          <p className="text-ink-primary">
+            <span className="rounded bg-amber-100 px-1.5 py-0.5 text-xs font-semibold text-amber-900">Waiting for review</span>{" "}
+            A recent refresh looked unusual, so it has not gone live yet and the dashboard still shows its previous data.{" "}
+            <a href={state.reviewPending.url} target="_blank" rel="noreferrer" className="underline underline-offset-2">
+              See what is proposed
+            </a>
+          </p>
+        )}
+
         {progress.phase !== "idle" && (
           <p className={progress.phase === "failed" ? "text-status-critical" : "text-ink-primary"}>
             {running && <span aria-hidden="true">⏳ </span>}
@@ -226,6 +238,14 @@ export default function DataUpdateCard() {
                 {" "}
                 <a href={progress.url} target="_blank" rel="noreferrer" className="underline underline-offset-2">
                   See the run
+                </a>
+              </>
+            )}
+            {progress.phase === "review" && (
+              <>
+                {" "}
+                <a href={progress.url} target="_blank" rel="noreferrer" className="underline underline-offset-2">
+                  See what is proposed
                 </a>
               </>
             )}

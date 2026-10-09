@@ -19,6 +19,7 @@ import { allowedOrigin, REPO, siteUrl } from "./lib/config.ts";
 
 const UPDATE_WORKFLOW = "update-data.yml";
 const DEPLOY_WORKFLOW = "deploy-pages.yml";
+const REVIEW_BRANCH = "automated/data-refresh"; // the branch update-data.yml opens a pull request from when a refresh needs a look
 const CHECK_TTL_MS = 5 * 60_000; // many visitors clicking at once share one round of publisher requests
 const COOLDOWN_MS = 3 * 3_600_000; // at most one on-demand refresh per three hours
 const FETCH_TIMEOUT_MS = 8_000;
@@ -190,12 +191,25 @@ async function latestRun(workflow: string, token: string | undefined): Promise<R
   }
 }
 
+/** The open pull request, if any, holding a refresh that is waiting for a person before it goes live. */
+async function pendingReview(token: string | undefined): Promise<{ url: string; createdAt: string } | null> {
+  try {
+    const head = encodeURIComponent(`${REPO.split("/")[0]}:${REVIEW_BRANCH}`);
+    const res = await timed(`https://api.github.com/repos/${REPO}/pulls?state=open&head=${head}&per_page=1`, { headers: githubHeaders(token) });
+    if (!res.ok) return null;
+    const pr = ((await res.json()) as { html_url: string; created_at: string }[])[0];
+    return pr ? { url: pr.html_url, createdAt: pr.created_at } : null;
+  } catch {
+    return null;
+  }
+}
+
 const isActive = (r: RunInfo | null) => r !== null && (r.status === "queued" || r.status === "in_progress" || r.status === "waiting");
 
 async function state(token: string | undefined) {
-  const [update, deploy] = await Promise.all([latestRun(UPDATE_WORKFLOW, token), latestRun(DEPLOY_WORKFLOW, token)]);
+  const [update, deploy, reviewPending] = await Promise.all([latestRun(UPDATE_WORKFLOW, token), latestRun(DEPLOY_WORKFLOW, token), pendingReview(token)]);
   const cooldownUntil = update && Date.now() - Date.parse(update.createdAt) < COOLDOWN_MS ? new Date(Date.parse(update.createdAt) + COOLDOWN_MS).toISOString() : null;
-  return { update, deploy, cooldownUntil };
+  return { update, deploy, reviewPending, cooldownUntil };
 }
 
 async function handle(request: Request, context: Context, origin: string | null): Promise<Response> {
@@ -209,7 +223,7 @@ async function handle(request: Request, context: Context, origin: string | null)
     return json({ error: "Couldn't reach the data sources to check them. Please try again shortly." }, 502, origin);
   }
   const s = await state(token);
-  const base = { ...found, canUpdate: Boolean(token), update: s.update, deploy: s.deploy, cooldownUntil: s.cooldownUntil };
+  const base = { ...found, canUpdate: Boolean(token), update: s.update, deploy: s.deploy, reviewPending: s.reviewPending, cooldownUntil: s.cooldownUntil };
 
   if (request.method === "GET") return json(base, 200, origin);
 

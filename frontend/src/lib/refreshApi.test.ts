@@ -19,6 +19,24 @@ describe("nextScheduledRun", () => {
   });
 });
 
+describe("progressOf with a refresh held for review", () => {
+  const t0 = "2026-10-09T08:00:00Z";
+  const pr = { url: "https://github.com/x/pull/9", createdAt: "2026-10-09T08:25:00Z" };
+  it("says it is waiting for a person instead of claiming nothing needed publishing", () => {
+    const p = progressOf(run("completed", "success", t0), null, 200_000, 90_000, pr);
+    expect(p.phase).toBe("review");
+    expect("url" in p && p.url).toBe(pr.url);
+  });
+  it("ignores a review request that is older than the refresh being followed", () => {
+    const p = progressOf(run("completed", "success", t0), null, 200_000, 90_000, { ...pr, createdAt: "2026-10-01T08:00:00Z" });
+    expect(p.phase).toBe("done");
+  });
+  it("a deploy that followed the refresh still wins (the data did go live)", () => {
+    const p = progressOf(run("completed", "success", t0), run("completed", "success", "2026-10-09T08:30:00Z"), 0, 90_000, pr);
+    expect(p.phase).toBe("done");
+  });
+});
+
 describe("progressOf", () => {
   const t0 = "2026-10-09T08:00:00Z";
   it("is idle with no run", () => {

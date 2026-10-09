@@ -58,7 +58,8 @@ Used by the card on the dashboard's home page (`edge-functions/refresh.ts`).
 - `GET /refresh` asks every publisher whether it has released anything since the pipeline last ingested it (a HEAD
   request on each downloaded file and the data.gov.my catalogue metadata, compared with the baseline the pipeline
   stored in `dataset_inventory.json` > `source_status`), and returns the latest `update-data.yml` and `deploy-pages.yml`
-  runs so the page can show progress. Results are shared for 5 minutes.
+  runs so the page can show progress, plus `reviewPending` (the open `automated/data-refresh` pull request, if a refresh
+  was held for a person to approve). Results are shared for 5 minutes.
 - `POST /refresh` starts `update-data.yml` on `main`, **only if** something really is newer, no refresh is already running,
   and the last one started more than 3 hours ago. The workflow still has to pass lint, tests and the browser suite before
   anything is published.
