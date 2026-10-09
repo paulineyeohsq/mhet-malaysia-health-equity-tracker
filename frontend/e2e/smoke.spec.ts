@@ -129,3 +129,43 @@ test.describe("desktop navigation", () => {
     await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link")).toHaveCount(18);
   });
 });
+
+test("the Klang Valley toggle switches the staff headline between pooled and each territory on its own", async ({ page }) => {
+  // Relative on purpose: the exact ratios change whenever the publisher releases new data, but listing each territory
+  // on its own must always make the gap larger than pooling them (W.P. Putrajaya's rate is an artefact of its tiny population).
+  const ratio = async () => {
+    const tile = page.locator("main").getByText("Widest healthcare-staff ratio (public sector)").locator("xpath=ancestor::div[contains(@class,'rounded-lg')][1]");
+    const text = await tile.innerText();
+    return Number(/([\d.]+)×/.exec(text)?.[1]);
+  };
+  await page.goto("/#/");
+  await expect(page.getByLabel(/Pooled as one Klang Valley unit/)).toBeChecked();
+  const pooled = await ratio();
+  await page.getByLabel("Each territory on its own").check();
+  await expect(page.getByText("Showing each territory's own rate")).toBeVisible();
+  await expect.poll(ratio).toBeGreaterThan(pooled * 2);
+  // remembered across a reload
+  await page.reload();
+  await expect(page.getByLabel("Each territory on its own")).toBeChecked();
+  await page.getByLabel(/Pooled as one Klang Valley unit/).check();
+  await expect.poll(ratio).toBe(pooled);
+});
+
+test("Priority Areas explains its weights and equity gap, and scores every indicator it lists", async ({ page }) => {
+  await page.goto("/#/priority-areas");
+  await expect(page.getByText("Where do these weights come from?")).toBeVisible();
+  await expect(page.getByText("Where does the equity gap come from?")).toBeVisible();
+  for (const group of ["Health burden (proxy)", "Socioeconomic disadvantage", "Healthcare access gap", "Equity gap (inequality inside the state)"]) {
+    await expect(page.getByRole("heading", { name: group, level: 3 })).toBeVisible();
+  }
+  const boxes = page.locator('input[type="checkbox"]');
+  expect(await boxes.count()).toBeGreaterThanOrEqual(19);
+  const insight = page.getByText(/ranks as the top potential priority area/);
+  await expect(insight).toContainText("indicators across 4 components");
+  // untick one indicator: the count in the headline drops by one
+  const before = Number(/from (\d+) indicator/.exec(await insight.innerText())?.[1]);
+  await boxes.first().uncheck();
+  await expect.poll(async () => Number(/from (\d+) indicator/.exec(await insight.innerText())?.[1])).toBe(before - 1);
+  // every state has a rank range and the table has one row per state with a score
+  await expect(page.locator("table").first().locator("tbody tr")).toHaveCount(16);
+});

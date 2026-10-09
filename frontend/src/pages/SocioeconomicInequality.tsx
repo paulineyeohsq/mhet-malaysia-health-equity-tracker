@@ -647,7 +647,7 @@ export default function SocioeconomicInequality() {
             Basic amenities — longer annual trend
           </h2>
           <p className="mb-3 max-w-3xl text-sm text-ink-secondary">
-            A longer annual state-level series than the single-year (2022) district snapshot above, plus a national
+            A longer annual state-level series than the district amenities figures above (2019, 2022 and 2024 only), plus a national
             urban/rural breakdown for water access. Electricity access is shown separately below, since its source
             only reports 4 utility-operator regions rather than the 16-state schema used everywhere else.
           </p>

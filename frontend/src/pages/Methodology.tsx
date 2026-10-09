@@ -106,8 +106,8 @@ export default function Methodology() {
             {inventory?.last_refreshed && (
               <>
                 The data was last rebuilt from source on{" "}
-                <span className="font-medium text-ink-primary">{inventory.last_refreshed}</span> (refreshed monthly by an
-                automated workflow, each refresh reviewed before it is published).{" "}
+                <span className="font-medium text-ink-primary">{inventory.last_refreshed}</span> (checked every week by an
+                automated workflow that publishes new data only after its tests pass).{" "}
               </>
             )}
             As of this build, the project's{" "}
@@ -250,10 +250,10 @@ export default function Methodology() {
           <P>Two concrete examples of this policy in practice, visible elsewhere on this dashboard:</P>
           <ul className="mb-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink-secondary marker:text-series-1">
             <li>
-              District-level basic amenities data (piped water, electricity and sanitation access) was ingested
-              only for the 2022 cross-section, even though the source dataset spans 2016–2024. Earlier and later
-              years render as "No data" for district amenities rather than being estimated or carried forward from
-              the nearest available year.
+              District-level basic amenities data (piped water, electricity and sanitation access) is joined to the
+              district income and poverty rows for the same year (2019, 2022 and 2024). A few remote Sabah and Sarawak
+              districts are blank in the source itself and show "No data" rather than being estimated or carried
+              forward from another year.
             </li>
             <li>
               District-level hospital bed counts for 2022 are shown on the Healthcare Access page as an{" "}
@@ -369,8 +369,8 @@ export default function Methodology() {
               <span className="font-medium text-ink-primary">Single-snapshot-year datasets.</span> Several datasets
               were ingested for only one recent year rather than a full time series, because of sandboxed-environment
               data-fetch constraints encountered during this build (documented per-dataset in the inventory) —
-              notably district-level hospital beds and district-level basic amenities access, both ingested for
-              2022 only, even though longer series exist upstream at data.gov.my.
+              notably district-level hospital beds, ingested for the latest year the publisher has released (2022),
+              even though the publisher also holds earlier years.
             </li>
             <li>
               <span className="font-medium text-ink-primary">Ethnicity–health linkage: counts only, no rate.</span>{" "}
@@ -455,10 +455,14 @@ export default function Methodology() {
             </li>
           </ol>
           <P>
-            For ongoing, unattended updates as DOSM and MOH publish new data, a scheduled workflow under{" "}
-            <Code>.github/workflows/</Code> is part of the project's design, intended to run this same sequence of
-            scripts on a recurring schedule and open a pull request with the regenerated data files for review
-            before they are merged and deployed.
+            A scheduled workflow (<Code>.github/workflows/update-data.yml</Code>) runs this same sequence every Monday
+            with no manual step. It re-fetches every source, rebuilds the data, and only publishes if lint, the unit
+            and data-consistency tests, the build and the browser and accessibility tests all pass. A refresh that
+            looks wrong (a dataset failed to download or looks truncated, a file lost more than 10% of its rows, or a
+            latest year went backwards) is not published automatically but opened as a pull request for a person to
+            check, and a run that fails outright leaves the live data untouched and raises an issue. The data can only be
+            as new as its publisher makes it: some sources are updated yearly or less often, and each dataset's card
+            on the Data Explorer says what its publisher reports as its latest data and next update.
           </P>
         </section>
 

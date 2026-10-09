@@ -267,11 +267,12 @@ Concrete, real examples found while inspecting the processed JSON
 (cross-referenced against [`DATA_DICTIONARY.md`](DATA_DICTIONARY.md)):
 
 1. **`socioeconomic_district.json`: `sanitation_pct` / `electricity_pct` /
-   `piped_water_pct`.** Null for ~322–323 of 480 rows. The amenities source
-   (`hh_access_amenities_2022.csv`) was ingested for the 2022 cross-section
-   only, even though the underlying dataset spans 2016–2024, so every 2019
-   and 2024 district row is null for these three fields rather than
-   estimated from 2022 or any other year.
+   `piped_water_pct`.** Null for a few remote Sabah/Sarawak districts that
+   the source leaves blank (13-18 of 480 rows). The amenities source
+   (`hh_access_amenities.csv`) is ingested for every year it holds
+   (2016-2024) and joined to the district income/poverty rows by year, so
+   the 2019, 2022 and 2024 rows are populated; blanks are never estimated
+   from another year.
 2. **`healthcare_access_state.json`: `hospital_beds` / `beds_per_100k`.**
    Null for 128 of 144 rows. `hospital_beds_2022.csv` is a single-year
    snapshot, so these fields are populated only where `year == 2022`; years
@@ -386,10 +387,10 @@ than obscuring it behind a composite.
   Gini figures — is not run annually; district-level income, poverty and
   Gini are only available for three cross-sectional years (2019, 2022,
   2024). These years are never interpolated between.
-- **Single-snapshot-year datasets.** District-level hospital beds and
-  district-level basic amenities access were both ingested for 2022 only,
-  due to sandboxed-environment data-fetch constraints encountered during
-  this build, even though longer series exist upstream at data.gov.my.
+- **Single-snapshot-year datasets.** District-level hospital beds (and the
+  state-level bed counts) are ingested for the latest year the publisher has
+  released, 2022; the publisher also holds 2015-2021 state and district
+  figures, which this pipeline does not use yet.
 - **No ethnicity–health linkage.** Ethnicity composition data is available
   only at the district level, from historical census tables
   (`population_district.json`), with no matching health-outcome dataset
@@ -465,7 +466,11 @@ python3 scripts/update_database.py                # full refresh (needs internet
 python3 scripts/update_database.py --skip-ingest   # rebuild from existing data/raw/, no network needed
 ```
 
-A scheduled workflow at `.github/workflows/update-data.yml` exists to run
-this same sequence on a recurring schedule as DOSM and MOH publish new
-survey years, intended to open a pull request with the regenerated data
-files for review before they are merged and deployed.
+A scheduled workflow, `.github/workflows/update-data.yml`, runs this same
+sequence every Monday with no manual step. It publishes the refreshed data
+only if lint, the unit and data-consistency tests, the build and the browser
+and accessibility tests all pass. A refresh that looks wrong (a dataset
+failed to download or looks truncated, a published file lost more than 10% of
+its rows, a latest year went backwards) is opened as a pull request instead
+of being published, and a run that fails leaves the live data untouched and
+raises an issue. See the README ("Automatic data updates") for the details.
