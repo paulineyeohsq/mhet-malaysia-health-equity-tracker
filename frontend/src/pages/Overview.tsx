@@ -6,6 +6,7 @@ import LineChartCard from "../components/LineChartCard";
 import BarRankingCard from "../components/BarRankingCard";
 import EquityGapBanner from "../components/EquityGapBanner";
 import EntryPointCards from "../components/EntryPointCards";
+import DataUpdateCard from "../components/DataUpdateCard";
 import { useData } from "../lib/useData";
 import { inventoryCounts, type InventoryFile } from "../lib/inventoryMap";
 
@@ -103,6 +104,9 @@ export default function Overview() {
             <EntryPointCards />
           </div>
         </section>
+
+        {/* Is the data current? Check for newer publisher data / update on demand */}
+        <DataUpdateCard />
 
         {/* Equity gap snapshot */}
         <EquityGapBanner />

@@ -49,9 +49,28 @@ against it directly otherwise. Don't add a `scripts` field — an
 auto-detected build script that doesn't apply to this site is a separate
 way to break the same build stage.
 
+## `/refresh` - "Check for newer data" / "Update now"
+
+Used by the card on the dashboard's home page (`edge-functions/refresh.ts`).
+
+- `GET /refresh` asks every publisher whether it has released anything since the pipeline last ingested it (a HEAD
+  request on each downloaded file and the data.gov.my catalogue metadata, compared with the baseline the pipeline
+  stored in `dataset_inventory.json` > `source_status`), and returns the latest `update-data.yml` and `deploy-pages.yml`
+  runs so the page can show progress. Results are shared for 5 minutes.
+- `POST /refresh` starts `update-data.yml` on `main`, **only if** something really is newer, no refresh is already running,
+  and the last one started more than 3 hours ago. The workflow still has to pass lint, tests and the browser suite before
+  anything is published.
+
+To switch on the "Update the dashboard now" button, create a **fine-grained personal access token** (GitHub > Settings >
+Developer settings) restricted to the one repository `paulineyeohsq/mhet-malaysia-health-equity-tracker` with
+**Actions: Read and write** (and the default Metadata: Read), and add it to this Netlify site as the environment variable
+`GITHUB_DISPATCH_TOKEN` (scope: Functions / edge functions), then redeploy. The token never leaves the function. Without
+it the check still works and the page tells visitors the data refreshes itself every Monday. Set an expiry on the token
+and renew it; when it expires the button quietly falls back to that message.
+
 ## Tests
 
-`test/chat.test.ts` checks the function's behaviour (per-IP limit, the no-IP fingerprint bucket, the daily
+`test/chat.test.ts` and `test/refresh.test.ts` check the functions's behaviour (per-IP limit, the no-IP fingerprint bucket, the daily
 cap and its message, CORS, input validation, that rejected requests never reach Gemini) under
 [Deno](https://deno.com) with in-memory stand-ins for Netlify Blobs and the outbound calls, so it needs no
 network, API key or Netlify account:
@@ -59,6 +78,7 @@ network, API key or Netlify account:
 ```bash
 cd netlify-chat
 deno run -A --no-check --import-map=test/import_map.json test/chat.test.ts
+deno run -A --no-check --import-map=test/import_map.json test/refresh.test.ts
 ```
 
 It does not exercise Netlify's own runtime, so the deploy preview is still the final check.

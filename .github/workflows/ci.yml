@@ -70,3 +70,7 @@ jobs:
       - name: Chat function behaviour tests
         working-directory: netlify-chat
         run: deno run -A --no-check --import-map=test/import_map.json test/chat.test.ts
+
+      - name: Refresh function behaviour tests
+        working-directory: netlify-chat
+        run: deno run -A --no-check --import-map=test/import_map.json test/refresh.test.ts

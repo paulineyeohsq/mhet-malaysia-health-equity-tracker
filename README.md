@@ -192,6 +192,13 @@ demand (**Actions → Update data → Run workflow**). With no manual step it:
    opens a pull request instead; if the run fails it opens (or updates) an issue titled "Automated data refresh
    failed" and publishes nothing. The issue closes itself on the next clean run.
 
+**Between Mondays.** The home page has an "Is the data up to date?" card. *Check for newer data* asks the publishers (through
+the `/refresh` function in `netlify-chat/`) whether anything has been released since the last ingest; if so, *Update the
+dashboard now* starts this same workflow and the card follows it until the new data is published. The button only works
+when something is really newer, never while a refresh is running, and at most once every 3 hours; it needs the
+`GITHUB_DISPATCH_TOKEN` setup described in [`netlify-chat/README.md`](netlify-chat/README.md), and without it the card
+still reports what is newer and says the next Monday refresh will pick it up.
+
 Every run writes `data/raw/ingest_report.json` (per dataset: refreshed, unchanged, failed or refused, its latest year,
 and what the publisher says about its own `data_as_of` / `next_update`) and `data/processed/update_summary.json`.
 The data can only be as new as its publisher makes it: some sources are updated yearly or less often (hospital beds

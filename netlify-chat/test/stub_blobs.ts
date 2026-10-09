@@ -11,3 +11,8 @@ export function getStore(name: string) {
     },
   };
 }
+
+/** Test helper: forget everything stored so far. */
+export function __reset(): void {
+  stores.clear();
+}
