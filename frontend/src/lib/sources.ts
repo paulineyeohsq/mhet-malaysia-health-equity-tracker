@@ -283,6 +283,14 @@ export const SOURCES: Record<string, SourceInfo> = {
     unit: "count",
     lastUpdated: "2024",
   },
+  life_expectancy: {
+    label: "Life Expectancy at Birth",
+    org: "DOSM (Abridged Life Tables)",
+    url: "https://open.dosm.gov.my/dashboard/life-expectancy",
+    geography: "State (latest year) and national (since 1957)",
+    unit: "years",
+    lastUpdated: "2025",
+  },
   deaths_district: {
     label: "Deaths by District & Sex",
     org: "National Registration Department / DOSM",

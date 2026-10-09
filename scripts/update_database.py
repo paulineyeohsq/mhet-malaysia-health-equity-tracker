@@ -137,6 +137,8 @@ PUBLISHED_FILES = [
     ("data/processed/deaths_ethnicity_state.json", "deaths_ethnicity_state.json"),
     ("data/processed/deaths_district_sex.json", "deaths_district_sex.json"),
     ("data/processed/births_district_sex.json", "births_district_sex.json"),
+    ("data/processed/life_expectancy_state.json", "life_expectancy_state.json"),
+    ("data/processed/life_expectancy_national.json", "life_expectancy_national.json"),
 ]
 
 

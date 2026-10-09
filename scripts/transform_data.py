@@ -848,6 +848,37 @@ def build_deaths_ethnicity_state():
 
 
 # ---------------------------------------------------------------------------
+# 14d. Life expectancy at birth (DOSM). State values are for the latest year only (the dashboard publishes no state
+# history); the national series runs back to 1957 by sex and ethnic group. Life expectancy is a life-table result, not
+# a count over a population, so it cannot be pooled across Selangor / Kuala Lumpur / Putrajaya the way rates are:
+# the three are always shown as DOSM publishes them.
+# ---------------------------------------------------------------------------
+DOSM_STATE_CODES = {
+    "jhr": "Johor", "kdh": "Kedah", "ktn": "Kelantan", "mlk": "Melaka", "nsn": "Negeri Sembilan", "phg": "Pahang",
+    "prk": "Perak", "pls": "Perlis", "png": "Pulau Pinang", "sbh": "Sabah", "swk": "Sarawak", "sgr": "Selangor",
+    "trg": "Terengganu", "kul": "W.P. Kuala Lumpur", "lbn": "W.P. Labuan", "pjy": "W.P. Putrajaya",
+}
+
+
+def build_life_expectancy():
+    rows = json.loads((RAW / "health_outcomes" / "life_expectancy.json").read_text(encoding="utf-8"))
+    unknown = {r["area"] for r in rows if r["series"] == "state"} - set(DOSM_STATE_CODES) - {"mys"}
+    if unknown:
+        raise ValueError(f"life expectancy: unrecognised DOSM area codes {sorted(unknown)}")
+    state = [
+        {"state": canonical_state(DOSM_STATE_CODES[r["area"]]), "year": r["year"], "sex": r["sex"], "life_expectancy": r["life_expectancy"]}
+        for r in rows if r["series"] == "state" and r["area"] != "mys"
+    ]
+    national = [
+        {"year": r["year"], "sex": r["sex"], "ethnicity": r["group"], "life_expectancy": r["life_expectancy"]}
+        for r in rows if r["series"] == "national"
+    ]
+    national.sort(key=lambda r: (r["ethnicity"], r["sex"], r["year"]))
+    write_json("life_expectancy_state.json", state)
+    write_json("life_expectancy_national.json", national)
+
+
+# ---------------------------------------------------------------------------
 # 14c. Deaths and births by district + sex — district-resolution upgrade of
 # death_state.csv/birth_state.csv (which are state-only). Long format
 # (one row per district/year/sex), matching marriages_state.json's shape.
@@ -1266,6 +1297,7 @@ def main():
     build_nhms_adolescent_mental_health()
     build_deaths_ethnicity_state()
     build_district_vital_stats()
+    build_life_expectancy()
     build_population_electoral()
     build_population_district_full()
     build_hies_percentile()

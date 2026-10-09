@@ -377,6 +377,28 @@ const DATASETS: DatasetDef[] = [
     ],
   },
   {
+    id: "life_expectancy_state",
+    label: "Life Expectancy at Birth — State",
+    file: "life_expectancy_state.json",
+    columns: [
+      { key: "state", label: "State" },
+      { key: "year", label: "Year", numeric: true },
+      { key: "sex", label: "Sex" },
+      { key: "life_expectancy", label: "Life expectancy (years)", numeric: true },
+    ],
+  },
+  {
+    id: "life_expectancy_national",
+    label: "Life Expectancy at Birth — National, by Ethnic Group",
+    file: "life_expectancy_national.json",
+    columns: [
+      { key: "year", label: "Year", numeric: true },
+      { key: "sex", label: "Sex" },
+      { key: "ethnicity", label: "Ethnic group" },
+      { key: "life_expectancy", label: "Life expectancy (years)", numeric: true },
+    ],
+  },
+  {
     id: "deaths_district_sex",
     label: "Deaths by District & Sex",
     file: "deaths_district_sex.json",

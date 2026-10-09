@@ -49,7 +49,7 @@ import json
 import re
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 from urllib.request import urlopen, Request
@@ -126,6 +126,9 @@ DATASETS = [
      "note": "Direct CSV fetch observed to fail (binary-data error); JSON API paginated by year works reliably."},
 
     # -- Health outcomes ----------------------------------------------------------
+    {"id": "life_expectancy", "category": "health_outcomes", "filename": "life_expectancy.json",
+     "method": "dosm_dashboard", "url": "https://open.dosm.gov.my/dashboard/life-expectancy",
+     "note": "Published only as an OpenDOSM dashboard (no catalogue CSV/API): latest year by state and sex, and a national series by sex and ethnic group back to 1957. Read from the JSON the page renders; the fetch is strict about the page's shape and keeps the previous file if it ever changes."},
     {"id": "death_state", "category": "health_outcomes", "filename": "death_state.csv",
      "method": "csv", "url": "https://storage.dosm.gov.my/demography/death_state.csv"},
     {"id": "death_maternal_state", "category": "health_outcomes", "filename": "death_maternal_state.csv",
@@ -405,11 +408,75 @@ def fetch_api_json_raw(ds: dict) -> tuple[bytes, dict | None]:
     return json.dumps(rows, indent=1).encode("utf-8"), meta
 
 
+EPOCH = datetime(1970, 1, 1)  # the page stores years as epoch milliseconds, negative before 1970 (datetime.fromtimestamp fails on Windows there)
+
+
+def fetch_dosm_dashboard(ds: dict) -> tuple[bytes, dict | None]:
+    """Life expectancy: DOSM publishes it only inside its OpenDOSM dashboard page (no data-catalogue CSV or API exists),
+    as the JSON that page renders from (the `__NEXT_DATA__` block). These are the publisher's own figures, read as the
+    page serves them - nothing is estimated. Because it depends on the page's layout, the shape is checked strictly:
+    if DOSM restructures the page the fetch FAILS and the previous file stays in place (never silently wrong data).
+
+    Output is a flat list of rows: series ("state" | "national"), area (DOSM state code, or "mys"), group (ethnic group,
+    national series only), sex (both | male | female), year, life_expectancy."""
+    content, _headers = _http_get_with_headers(ds["url"])
+    m = re.search(rb'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', content, re.S)
+    if not m:
+        raise IngestError("the dashboard page has no embedded data block (layout changed?)")
+    try:
+        props = json.loads(m.group(1))["props"]["pageProps"]
+        state = props["choropleth"]["state"]
+        ts = props["timeseries"]
+    except (KeyError, TypeError, json.JSONDecodeError) as e:
+        raise IngestError(f"unexpected dashboard layout ({e!r})")
+
+    sex_of = {"overall": "both", "male": "male", "female": "female"}
+    rows: list[dict] = []
+    codes = state["data"]["x"]
+    state_year = _year_of(state.get("data_as_of"))
+    if state_year is None or len(codes) < 16:
+        raise IngestError("the state block is missing its year or has too few areas")
+    for dosm_sex, sex in sex_of.items():
+        values = state["data"]["y"].get(dosm_sex)
+        if not values or len(values) != len(codes):
+            raise IngestError(f"state values for {dosm_sex!r} do not line up with the area list")
+        for code, v in zip(codes, values):
+            rows.append({"series": "state", "area": code, "group": "", "sex": sex, "year": state_year, "life_expectancy": v})
+
+    ts_year = _year_of(ts.get("data_as_of"))
+    for dosm_sex, sex in sex_of.items():
+        block = ts["data"].get(dosm_sex)
+        if not block or "x" not in block:
+            raise IngestError(f"time series for {dosm_sex!r} is missing")
+        years = [(EPOCH + timedelta(milliseconds=ms)).year for ms in block["x"]]
+        for group, values in block.items():
+            if group == "x":
+                continue
+            if len(values) != len(years):
+                raise IngestError(f"time series {dosm_sex}/{group} does not line up with its years")
+            for y, v in zip(years, values):
+                if v is not None:
+                    rows.append({"series": "national", "area": "mys", "group": group, "sex": sex, "year": y, "life_expectancy": v})
+
+    values = [r["life_expectancy"] for r in rows]
+    if not all(isinstance(v, (int, float)) and 40 <= v <= 100 for v in values):
+        raise IngestError("a life expectancy value is outside the plausible 40-100 year range")
+    if max(r["year"] for r in rows if r["series"] == "national") != ts_year:
+        raise IngestError("the time series does not end in the year the page says it is current to")
+
+    meta = {"data_as_of": str(state_year)}
+    for key in ("last_updated", "next_update"):
+        if props.get(key):
+            meta[key] = props[key]
+    return json.dumps(rows, separators=(",", ":")).encode("utf-8"), meta
+
+
 FETCHERS = {
     "csv": fetch_csv,
     "github": fetch_github,
     "api": fetch_api,
     "api_json_raw": fetch_api_json_raw,
+    "dosm_dashboard": fetch_dosm_dashboard,
 }
 
 
