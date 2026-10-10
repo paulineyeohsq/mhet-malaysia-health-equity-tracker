@@ -784,6 +784,14 @@ def build_population_electoral():
         for r in dun if r.get("age") == "overall" and r.get("ethnicity") == "overall"
     ]
     write_json("population_dun.json", dun_out)
+
+    # What the Population page shows: each constituency's latest year, both sexes. The full files above hold every
+    # year and sex (the Data Explorer reads them); these small slices of the SAME rows keep the page from downloading
+    # about 1.4 MB for a chart that uses a few dozen.
+    for name, rows in (("population_parlimen_latest.json", parlimen_out), ("population_dun_latest.json", dun_out)):
+        years = [r["year"] for r in rows if r["year"] is not None]
+        latest = max(years) if years else None
+        write_json(name, [r for r in rows if r["year"] == latest and r["sex"] == "both"])
     return parlimen_out, dun_out
 
 

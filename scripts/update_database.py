@@ -107,6 +107,8 @@ PUBLISHED_FILES = [
     ("data/processed/nhms_adolescent_mental_health_national.json", "nhms_adolescent_mental_health_national.json"),
     ("data/processed/population_parlimen.json", "population_parlimen.json"),
     ("data/processed/population_dun.json", "population_dun.json"),
+    ("data/processed/population_parlimen_latest.json", "population_parlimen_latest.json"),
+    ("data/processed/population_dun_latest.json", "population_dun_latest.json"),
     ("data/processed/population_district_full.json", "population_district_full.json"),
     ("data/processed/hies_percentile_national.json", "hies_percentile_national.json"),
     ("data/processed/marriages_national.json", "marriages_national.json"),

@@ -21,6 +21,7 @@ import { toCSV } from "../lib/csv";
 import InsufficientData from "../components/InsufficientData";
 import ChartToolbar from "../components/ChartToolbar";
 import { useData } from "../lib/useData";
+import { useNearViewport } from "../lib/useNearViewport";
 import { computeGroupMeanGap, fmt, type Row } from "../lib/equity";
 import { MALAYSIA_STATES, EAST_MALAYSIA_STATES, PENINSULAR_STATES } from "../lib/geoConstants";
 import { useChat, buildExplainPrompt } from "../lib/chatCore";
@@ -112,9 +113,13 @@ export default function PopulationEquity() {
   const { data: popDistrict } = useData<PopDistrictRow[]>("population_district.json");
   const { data: nutrition } = useData<NutritionRow[]>("nutrition_national.json");
   const { data: marriagesNational } = useData<MarriageNationalRow[]>("marriages_national.json");
-  const { data: fertilityState } = useData<FertilityStateRow[]>("fertility_state.json");
-  const { data: popParlimen } = useData<ParlimenRow[]>("population_parlimen.json");
-  const { data: popDun } = useData<DunRow[]>("population_dun.json");
+  // The fertility and electoral-constituency files feed sections far down the page, so they are fetched only when the
+  // visitor is about to reach those sections. The electoral section reads small latest-year slices of the full files.
+  const [fertilityRef, fertilityNear] = useNearViewport<HTMLElement>();
+  const [electoralRef, electoralNear] = useNearViewport<HTMLElement>();
+  const { data: fertilityState } = useData<FertilityStateRow[]>(fertilityNear ? "fertility_state.json" : null);
+  const { data: popParlimen } = useData<ParlimenRow[]>(electoralNear ? "population_parlimen_latest.json" : null);
+  const { data: popDun } = useData<DunRow[]>(electoralNear ? "population_dun_latest.json" : null);
 
   // ---- Derived year lists ----
   const stateYears = useMemo(
@@ -642,7 +647,7 @@ export default function PopulationEquity() {
         </section>
 
         {/* Marriages & fertility */}
-        <section aria-labelledby="pop-marriages">
+        <section aria-labelledby="pop-marriages" ref={fertilityRef}>
           <h2 id="pop-marriages" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
             Marriages and fertility
           </h2>
@@ -1055,7 +1060,7 @@ export default function PopulationEquity() {
         </section>
 
         {/* Electoral geography — table only, no boundary map exists */}
-        <section aria-labelledby="pop-electoral">
+        <section aria-labelledby="pop-electoral" ref={electoralRef}>
           <h2 id="pop-electoral" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
             Population by electoral geography
           </h2>

@@ -82,8 +82,10 @@ export default function HealthEquityMap() {
   const dataFile = usesDistrictFile ? "socioeconomic_district.json" : geography === "district" && indicator.file.includes("healthcare") ? "healthcare_access_district_2022.json" : indicator.file;
 
   const { data: rawRows } = useData<Record<string, unknown>[]>(dataFile);
-  const { data: stateGeo } = useData<GeoJSON.FeatureCollection>("geo/state.geojson");
-  const { data: districtGeo } = useData<GeoJSON.FeatureCollection>("geo/district.geojson");
+  // Only the boundary file for the geography on screen is fetched (the district one is ~0.9 MB): the other is loaded
+  // the first time it is chosen, and kept after that.
+  const { data: stateGeo } = useData<GeoJSON.FeatureCollection>(geography === "state" ? "geo/state.geojson" : null);
+  const { data: districtGeo } = useData<GeoJSON.FeatureCollection>(geography === "district" ? "geo/district.geojson" : null);
 
   // Some data files (e.g. fertility_state.json) have more than one row per
   // state+year — filterField/filterValue narrows to the row this indicator

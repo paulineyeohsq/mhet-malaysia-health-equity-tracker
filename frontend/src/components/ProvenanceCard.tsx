@@ -1,13 +1,13 @@
 import { useData } from "../lib/useData";
 import type { InventoryDataset, InventoryFile } from "../lib/inventoryMap";
 
-export default function ProvenanceCard({ entry }: { entry: InventoryDataset }) {
+export default function ProvenanceCard({ entry, hideTitle = false }: { entry: InventoryDataset; hideTitle?: boolean }) {
   const { data: inventory } = useData<InventoryFile>("dataset_inventory.json");
   const status = inventory?.source_status?.[entry.id];
   return (
     <div className="rounded-lg border border-line-grid bg-surface p-4">
       <div className="flex items-start justify-between gap-2">
-        <h3 className="text-sm font-semibold text-ink-primary">{entry.name}</h3>
+        {hideTitle ? <span /> : <h3 className="text-sm font-semibold text-ink-primary">{entry.name}</h3>}
         <a
           href={entry.url}
           target="_blank"

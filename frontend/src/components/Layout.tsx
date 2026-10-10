@@ -130,9 +130,10 @@ function MobileBar() {
   return (
     <div className="sticky top-0 z-40 border-b border-line-grid bg-surface lg:hidden">
       <div className="flex h-14 items-center justify-between px-4">
-        <NavLink to="/" className="flex items-center gap-2" aria-label={`${LOGO_ALT} — home`}>
-          <img src={`${import.meta.env.BASE_URL}logo.png`} alt="" className="h-9 w-9 object-contain" />
-          <span className="text-sm font-semibold text-ink-primary">MY-HEO</span>
+        {/* A wordmark, not the logo: the logo carries its name in tiny type, which is unreadable at bar height. */}
+        <NavLink to="/" className="flex min-w-0 flex-col leading-tight" aria-label={`${LOGO_ALT} — home`}>
+          <span className="text-lg font-bold tracking-tight text-series-1">MY-HEO</span>
+          <span className="truncate text-[11px] font-medium text-ink-secondary">Health Equity Observatory</span>
         </NavLink>
         <div className="flex items-center gap-2">
         <ChatLauncher variant="bar" />
