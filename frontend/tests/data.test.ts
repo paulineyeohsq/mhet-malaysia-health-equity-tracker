@@ -144,6 +144,14 @@ describe("Population page slices of the electoral files", () => {
   }
 });
 
+describe("Published inventory", () => {
+  it("does not ship a list of datasets the dashboard does not have", () => {
+    const inv = readJson<Record<string, unknown>>("dataset_inventory.json");
+    expect(Object.keys(inv)).not.toContain("identified_but_not_yet_ingested");
+    expect(JSON.stringify(inv)).not.toMatch(/identified_not_ingested/);
+  });
+});
+
 describe("Public clinic counts (MOH facility registry)", () => {
   interface ClinicState {
     state: string; year: number; as_of: string; clinics_total: number; health_clinics: number; rural_clinics: number;

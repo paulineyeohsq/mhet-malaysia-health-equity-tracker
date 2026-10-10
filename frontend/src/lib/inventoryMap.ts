@@ -24,12 +24,6 @@ export interface InventoryDataset {
   status: string;
 }
 
-export interface NotIngestedDataset {
-  id: string;
-  name: string;
-  reason: string;
-}
-
 export interface InventoryFile {
   generated: string;
   /** Date the data pipeline last successfully rebuilt the data from source (set by scripts/update_database.py). */
@@ -41,21 +35,17 @@ export interface InventoryFile {
   source_catalogue: string;
   note: string;
   datasets: InventoryDataset[];
-  identified_but_not_yet_ingested: NotIngestedDataset[];
 }
 
 /**
- * Dataset counts for display. Must match inventory_counts() in scripts/update_database.py
- * (which keeps the README/docs numbers in step): "not ingested" is the separate
- * identified_but_not_yet_ingested list PLUS any dataset entry whose own status is
- * "identified_not_ingested".
+ * Dataset counts for display. Must match inventory_counts() in scripts/update_database.py (which keeps the
+ * README/docs numbers in step). Datasets that could not be added are not in the inventory at all (see
+ * docs/DATA_BACKLOG.md).
  */
-export function inventoryCounts(inv: InventoryFile): { ingested: number; referenceOnly: number; notIngested: number } {
+export function inventoryCounts(inv: InventoryFile): { ingested: number; referenceOnly: number } {
   return {
     ingested: inv.datasets.filter((d) => d.status === "ingested").length,
     referenceOnly: inv.datasets.filter((d) => d.status === "ingested_reference_only").length,
-    notIngested:
-      inv.identified_but_not_yet_ingested.length + inv.datasets.filter((d) => d.status === "identified_not_ingested").length,
   };
 }
 

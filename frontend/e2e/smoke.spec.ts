@@ -153,32 +153,25 @@ test("Map page: only the boundary file for the chosen geography is fetched", asy
   expect(Array.from(new Set(geo)).sort()).toEqual(["district", "state"]);
 });
 
-test("Data Gaps: grouped and searchable, with every dataset still reachable", async ({ page }) => {
+test("Data Gaps: only the datasets the dashboard uses, grouped and searchable, every one still reachable", async ({ page }) => {
   await page.goto("/#/data-gaps");
-  const groups = page.locator("#limitations-heading").locator("xpath=ancestor::section").locator(":scope > div > details");
-  await expect(groups).toHaveCount(6);
-  await expect(page.getByRole("status")).toContainText(/datasets in 6 groups, and 3 known gaps/);
+  const status = page.getByRole("status").filter({ hasText: /datasets/ });
+  await expect(status).toContainText(/[1-9]\d* datasets in 6 groups\./);
+  // nothing about datasets the dashboard does not have
+  await expect(page.getByText("Confirmed to exist")).toHaveCount(0);
+  await expect(page.getByText(/known gaps?/i)).toHaveCount(0);
+  const section = page.locator("#limitations-heading").locator("xpath=ancestor::section");
+  await expect(section.locator(":scope > div > details")).toHaveCount(6);
   // nothing is lost: opening every group shows every dataset (the number the status line reports)
   await page.getByRole("button", { name: "Open all groups" }).click();
-  const total = Number((await page.getByRole("status").innerText()).match(/(\d+) datasets in/)![1]);
-  await expect(page.locator("#limitations-heading").locator("xpath=ancestor::section").locator("li")).toHaveCount(total);
-  // searching narrows both the datasets and the gaps
-  await page.getByLabel("Search the gaps and datasets").fill("life expectancy");
-  await expect(page.getByRole("status")).toContainText(/\d+ of \d+ datasets match/);
-  await expect(page.locator("#limitations-heading").locator("xpath=ancestor::section").locator("li")).toHaveCount(1);
-  await page.getByLabel("Search the gaps and datasets").fill("causes of death");
-  await expect(page.locator("#not-ingested-heading + div li")).toHaveCount(1);
-  await page.getByLabel("Search the gaps and datasets").fill("zzzz");
+  const total = Number((await status.innerText()).match(/(\d+) datasets in/)![1]);
+  await expect(section.locator("li")).toHaveCount(total);
+  // searching narrows the datasets
+  await page.getByLabel("Search the datasets and their limitations").fill("life expectancy");
+  await expect(status).toContainText(/\d+ of \d+ datasets match/);
+  await expect(section.locator("li")).toHaveCount(1);
+  await page.getByLabel("Search the datasets and their limitations").fill("zzzz");
   await expect(page.getByText(/No dataset matches/)).toBeVisible();
-});
-
-test("Data Gaps lists only what has no machine-readable source", async ({ page }) => {
-  await page.goto("/#/data-gaps");
-  const list = page.locator("#not-ingested-heading + div li");
-  await expect(list).toHaveCount(3);
-  await expect(list.filter({ hasText: "Life Expectancy" })).toHaveCount(0);
-  await expect(list.filter({ hasText: "Number of Healthcare Clinics" })).toHaveCount(0);
-  await expect(list.filter({ hasText: "Causes of Death" })).toContainText("Re-checked 2026-10-09");
 });
 
 test("Research Opportunities makes no AI request until a button is clicked", async ({ page }) => {

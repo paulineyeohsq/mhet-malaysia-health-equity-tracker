@@ -33,7 +33,6 @@ export default function DataGovernance() {
   const { data: inventory } = useData<InventoryFile>("dataset_inventory.json");
   const counts = inventory ? inventoryCounts(inventory) : null;
   const ingestedCount = counts?.ingested ?? null;
-  const notIngestedCount = counts?.notIngested ?? null;
 
   return (
     <div>
@@ -102,11 +101,10 @@ export default function DataGovernance() {
               </>
             )}
             The dashboard currently uses{" "}
-            <span className="font-medium text-ink-primary">{ingestedCount ?? "…"} datasets</span>, and a further{" "}
-            <span className="font-medium text-ink-primary">{notIngestedCount ?? "…"} datasets</span> are known to exist
-            but are not included yet (for example causes of death, divorce statistics and disability
-            statistics, for which no machine-readable source is published). Every dataset, with its source link, date
-            range, geographic resolution, known missingness and stated limitations, is itemised on the{" "}
+            <span className="font-medium text-ink-primary">{ingestedCount ?? "…"} datasets</span>. Some topics are not
+            covered because no usable machine-readable source is published (for example causes of death by state,
+            divorce statistics and disability statistics). Every dataset, with its source link, date range, geographic
+            resolution, known missingness and stated limitations, is itemised on the{" "}
             <a href="#/explorer" className="text-series-1 underline underline-offset-2">
               Data Explorer
             </a>{" "}

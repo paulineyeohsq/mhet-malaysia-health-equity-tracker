@@ -253,8 +253,8 @@ map tiles. See the Privacy section of the Data Governance & Terms page.
 - [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) — field-by-field reference
   for every processed JSON/CSV file the frontend reads.
 - [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md) — the full catalogue of all
-  <!--count:ingested-->55<!--/count--> ingested and <!--count:notingested-->3<!--/count--> identified-but-not-ingested
-  source datasets (counts kept current automatically by `scripts/update_database.py`).
+  <!--count:ingested-->55<!--/count--> source datasets (the count is kept current automatically by
+  `scripts/update_database.py`); datasets that could not be added are in [`docs/DATA_BACKLOG.md`](docs/DATA_BACKLOG.md).
 - [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md) — pipeline methodology: architecture,
   geographic harmonisation, missing-data policy, inequality statistics and known limitations.
 

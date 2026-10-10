@@ -1,12 +1,8 @@
 {
- "generated_at": "2026-10-10T05:23:00Z",
+ "generated_at": "2026-10-10T05:28:56Z",
  "changed_files": [
   {
-   "file": "clinics_state.json",
-   "rows_before": 16,
-   "rows_after": 16,
-   "latest_year_before": 2025,
-   "latest_year_after": 2025
+   "file": "dataset_inventory.json"
   }
  ],
  "anomalies": [],

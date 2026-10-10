@@ -211,18 +211,14 @@ def _write_exact(path: Path, text: str) -> None:
 
 
 def inventory_counts(inventory_path: Path = INVENTORY_PATH) -> dict[str, int]:
-    """Dataset counts, computed the same way the frontend does (lib/inventoryMap.ts
-    inventoryCounts): ingested = status "ingested"; reference-only = status
-    "ingested_reference_only"; not ingested = everything in the separate
-    identified_but_not_yet_ingested list PLUS any dataset entry whose own status
-    is "identified_not_ingested" (none at present)."""
+    """Dataset counts, computed the same way the frontend does (lib/inventoryMap.ts inventoryCounts): ingested =
+    status "ingested"; reference-only = status "ingested_reference_only". Datasets that could not be added are not in
+    the inventory (see docs/DATA_BACKLOG.md)."""
     inv = json.loads(_read_exact(inventory_path))
     datasets = inv["datasets"]
     return {
         "ingested": sum(1 for d in datasets if d.get("status") == "ingested"),
         "reference": sum(1 for d in datasets if d.get("status") == "ingested_reference_only"),
-        "notingested": len(inv.get("identified_but_not_yet_ingested", []))
-        + sum(1 for d in datasets if d.get("status") == "identified_not_ingested"),
     }
 
 
@@ -399,7 +395,7 @@ def write_update_summary() -> dict:
     return summary
 
 
-COUNT_MARKER = re.compile(r"(<!--count:(ingested|reference|notingested)-->)[^<]*(<!--/count-->)")
+COUNT_MARKER = re.compile(r"(<!--count:(ingested|reference)-->)[^<]*(<!--/count-->)")
 
 
 def sync_doc_counts(files: list[Path] = DOC_COUNT_FILES, inventory_path: Path = INVENTORY_PATH) -> dict[str, int]:

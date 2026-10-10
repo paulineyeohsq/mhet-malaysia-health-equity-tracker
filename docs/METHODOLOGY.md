@@ -280,9 +280,9 @@ Concrete, real examples found while inspecting the processed JSON
 3. **`healthcare_access_district_2022.json`.** This file deliberately
    contains **no per-capita rate field at all** — only the absolute
    `hospital_beds` count — because no 2022 district-level population
-   denominator exists anywhere in this pipeline (the live 2020–2024
-   district population series is one of the identified-but-not-ingested
-   datasets). Computing a rate against the 2020 census denominator instead
+   denominator exists anywhere in this pipeline (the 2020 onward
+   district population estimates are kept as a separate file and were not
+   combined with this snapshot). Computing a rate against the 2020 census denominator instead
    would silently mix a 2022 numerator with a 2020 denominator; the
    pipeline's `note` field on every row states this explicitly rather than
    compute a misleading number.
