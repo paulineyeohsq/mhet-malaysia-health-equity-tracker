@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import type { Row } from "./equity";
-import { applyKlangValleyMode, HEALTHCARE_ACCESS_FILE, useKlangValleyMode } from "./klangValley";
+import { applyKlangValleyMode, KLANG_VALLEY_FILES, useKlangValleyMode } from "./klangValley";
 
 const cache = new Map<string, unknown>();
 
@@ -52,7 +52,7 @@ export function useData<T = unknown>(
   const base: T | null = name === null ? null : cache.has(name) ? (cache.get(name) as T) : (mine?.data ?? null);
   const raw = options?.raw === true;
   const data = useMemo(
-    () => (name === HEALTHCARE_ACCESS_FILE && !raw && Array.isArray(base) ? (applyKlangValleyMode(base as Row[], kvMode) as T) : base),
+    () => (name !== null && KLANG_VALLEY_FILES.includes(name) && !raw && Array.isArray(base) ? (applyKlangValleyMode(base as Row[], kvMode) as T) : base),
     [name, raw, base, kvMode]
   );
 

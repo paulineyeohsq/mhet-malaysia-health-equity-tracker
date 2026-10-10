@@ -69,6 +69,20 @@ interface EthnicityDeathRow {
   deaths_abs: number | null;
 }
 
+interface OlderPersonsRow {
+  year: number;
+  table: string;
+  indicator: string;
+  dimension: string;
+  category: string;
+  n: number | null;
+  estimated_population: number | null;
+  prevalence_pct: number | null;
+  ci_lower: number | null;
+  ci_upper: number | null;
+  suppressed: boolean;
+}
+
 interface LifeExpStateRow {
   state: string;
   year: number;
@@ -124,7 +138,7 @@ const PEKA_RANGE_OPTIONS = [
   { id: "all", label: "All time, weekly totals (since 2019-04-15)", days: null as number | null },
 ];
 
-type Category = "mortality" | "std" | "immunisation" | "nutrition" | "covid" | "programmes" | "ethnicity" | "lifeexp";
+type Category = "mortality" | "std" | "immunisation" | "nutrition" | "covid" | "programmes" | "ethnicity" | "lifeexp" | "older";
 
 const CATEGORY_LABELS: Record<Category, string> = {
   mortality: "Mortality & Births",
@@ -135,6 +149,7 @@ const CATEGORY_LABELS: Record<Category, string> = {
   programmes: "Health Programme Participation",
   ethnicity: "Deaths by Ethnicity",
   lifeexp: "Life Expectancy at Birth",
+  older: "Older Persons (NHMS 2025)",
 };
 
 const SEX_LABELS: Record<string, string> = { both: "Both sexes", male: "Male", female: "Female" };
@@ -244,6 +259,8 @@ export default function HealthOutcomes() {
   const { data: lifeExpNational } = useData<LifeExpNationalRow[]>("life_expectancy_national.json");
 
   const [category, setCategory] = useState<Category>("mortality");
+  // the older-persons file is only fetched when its view is opened
+  const { data: olderData } = useData<OlderPersonsRow[]>(category === "older" ? "nhms_older_persons_2025_national.json" : null);
   const [pekaRangeId, setPekaRangeId] = useState("90");
   // The daily file holds only the most recent 366 days (~340 KB); the weekly file covers the whole history and is
   // fetched only for the "all time" range. Neither is fetched until the Health Programme Participation view opens.
@@ -259,6 +276,8 @@ export default function HealthOutcomes() {
   const [covidMetricId, setCovidMetricId] = useState(COVID_METRICS[0].id);
   const [programmeMetricId, setProgrammeMetricId] = useState(PROGRAMME_METRICS[0].id);
   const [sex, setSex] = useState<string>("both");
+  const [olderIndicator, setOlderIndicator] = useState<string | null>(null);
+  const [olderDimension, setOlderDimension] = useState<string>("Location");
 
   // Ask MY-HEO: pre-apply a filter passed via router location state, once on mount.
   const location = useLocation();
@@ -436,6 +455,24 @@ export default function HealthOutcomes() {
       });
     return Array.from(byYear.values()).sort((a, b) => (a.year as number) - (b.year as number));
   }, [lifeExpNational, lifeExpSex]);
+
+  // ---- Older persons (NHMS 2025, national only) ----
+  const olderIndicators = useMemo(() => Array.from(new Set((olderData ?? []).map((r) => r.indicator))), [olderData]);
+  const olderSelected = olderIndicator && olderIndicators.includes(olderIndicator) ? olderIndicator : olderIndicators[0] ?? null;
+  const olderRows = useMemo(() => (olderData ?? []).filter((r) => r.indicator === olderSelected), [olderData, olderSelected]);
+  const olderDimensions = useMemo(
+    () => Array.from(new Set(olderRows.filter((r) => r.dimension !== "All older persons").map((r) => r.dimension))),
+    [olderRows]
+  );
+  const olderDim = olderDimensions.includes(olderDimension) ? olderDimension : olderDimensions[0] ?? null;
+  const olderTotal = olderRows.find((r) => r.dimension === "All older persons") ?? null;
+  const olderBars = useMemo(
+    () =>
+      olderRows
+        .filter((r) => r.dimension === olderDim && r.prevalence_pct !== null)
+        .map((r) => ({ group: r.category, value: r.prevalence_pct as number })),
+    [olderRows, olderDim]
+  );
 
   const stdSnapshot = useMemo(() => {
     if (!stateOutcomes || effectiveYear === null) return [];
@@ -725,6 +762,17 @@ export default function HealthOutcomes() {
         { key: "life_expectancy", label: "Life expectancy (years)", numeric: true },
       ];
     }
+    if (category === "older") {
+      return [
+        { key: "dimension", label: "Breakdown" },
+        { key: "category", label: "Group" },
+        { key: "n", label: "Respondents", numeric: true },
+        { key: "estimated_population", label: "Estimated people", numeric: true },
+        { key: "prevalence_pct", label: "Prevalence (%)", numeric: true },
+        { key: "ci_lower", label: "95% CI lower", numeric: true },
+        { key: "ci_upper", label: "95% CI upper", numeric: true },
+      ];
+    }
     return [
       { key: "year", label: "Year", numeric: true },
       { key: "sex", label: "Sex" },
@@ -745,8 +793,9 @@ export default function HealthOutcomes() {
     if (category === "programmes" && programmes) return programmes as unknown as Record<string, unknown>[];
     if (category === "ethnicity" && ethnicityDeaths) return ethnicityDeaths.filter((r) => r.state === state) as unknown as Record<string, unknown>[];
     if (category === "lifeexp" && lifeExpState) return lifeExpState as unknown as Record<string, unknown>[];
+    if (category === "older") return olderRows as unknown as Record<string, unknown>[];
     return [];
-  }, [category, stateOutcomes, immunisation, nutrition, covid, programmes, ethnicityDeaths, lifeExpState, state]);
+  }, [category, stateOutcomes, immunisation, nutrition, covid, programmes, ethnicityDeaths, lifeExpState, olderRows, state]);
 
   const tableSourceKey =
     category === "mortality"
@@ -763,13 +812,15 @@ export default function HealthOutcomes() {
                 ? "deaths_ethnicity"
                 : category === "lifeexp"
                   ? "life_expectancy"
-                  : "nutrition";
+                  : category === "older"
+                    ? "nhms_older_persons"
+                    : "nutrition";
 
   return (
     <div>
       <PageHeader
         title="Health Outcomes Explorer"
-        subtitle="Mortality, life expectancy, maternal/infant/child health, STD incidence, immunisation coverage and child nutrition — across states and over time, exactly as published by MOH/DOSM."
+        subtitle="Mortality, life expectancy, older persons' health, maternal/infant/child health, STD incidence, immunisation coverage and child nutrition — across states and over time, exactly as published by MOH/DOSM."
       />
       <div className="space-y-8 p-6 lg:p-10">
         {/* Filters */}
@@ -892,6 +943,45 @@ export default function HealthOutcomes() {
             </div>
           )}
 
+          {category === "older" && (
+            <>
+              <div>
+                <label htmlFor="older-indicator-select" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                  Indicator
+                </label>
+                <select
+                  id="older-indicator-select"
+                  value={olderSelected ?? ""}
+                  onChange={(e) => setOlderIndicator(e.target.value)}
+                  className="mt-1 max-w-xs rounded-md border border-line-axis px-2 py-1.5 text-sm"
+                >
+                  {olderIndicators.map((i) => (
+                    <option key={i} value={i}>
+                      {i.charAt(0).toUpperCase() + i.slice(1)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label htmlFor="older-dimension-select" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
+                  Compare by
+                </label>
+                <select
+                  id="older-dimension-select"
+                  value={olderDim ?? ""}
+                  onChange={(e) => setOlderDimension(e.target.value)}
+                  className="mt-1 rounded-md border border-line-axis px-2 py-1.5 text-sm"
+                >
+                  {olderDimensions.map((d) => (
+                    <option key={d} value={d}>
+                      {d}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </>
+          )}
+
           {category === "nutrition" && nutritionSexes.length > 1 && (
             <div>
               <label htmlFor="sex-select" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
@@ -912,7 +1002,7 @@ export default function HealthOutcomes() {
             </div>
           )}
 
-          {category !== "nutrition" && yearsForCategory.length > 0 && (
+          {category !== "nutrition" && category !== "older" && yearsForCategory.length > 0 && (
             <div>
               <label htmlFor="year-select" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
                 Year
@@ -947,6 +1037,8 @@ export default function HealthOutcomes() {
               "Aggregated from daily participation counts to annual state totals — each indicator starts in a different year and the latest year is partial."}
             {category === "lifeexp" &&
               "DOSM publishes state life expectancy for the latest year only, so there is no state trend. Selangor, Kuala Lumpur and Putrajaya are shown separately, as published."}
+            {category === "older" &&
+              "National figures for people aged 60 and over, from the 2025 National Health and Morbidity Survey. The report gives no state breakdown, so there is no state comparison here."}
             {category === "ethnicity" &&
               "Raw death counts by ethnicity, not rates — this project has no state-level population-by-ethnicity dataset to normalise against, so ethnic groups' absolute counts are not directly comparable (larger groups will show larger counts regardless of relative risk)."}
           </p>
@@ -1395,6 +1487,47 @@ export default function HealthOutcomes() {
                 a health advantage. The two Bumiputera sub-groups (Malay, other) are in the Data Explorer.
               </p>
               <SourceNote sourceKey="life_expectancy" />
+            </section>
+          </>
+        )}
+
+        {/* ---------------- Older persons (NHMS 2025) ---------------- */}
+        {category === "older" && (
+          <>
+            <section>
+              <KPISummarySection
+                title={`${olderSelected ? olderSelected.charAt(0).toUpperCase() + olderSelected.slice(1) : "Older persons"} — Malaysia, 2025`}
+                headingId="older-kpis"
+                columns={3}
+                items={[
+                  { label: "Prevalence among people aged 60+", value: fmt(olderTotal?.prevalence_pct, 1), unit: "%" },
+                  {
+                    label: "95% confidence interval",
+                    value: olderTotal && olderTotal.ci_lower !== null ? `${fmt(olderTotal.ci_lower, 1)}–${fmt(olderTotal.ci_upper, 1)}` : "—",
+                    unit: "%",
+                  },
+                  { label: "Respondents with this measure", value: fmt(olderTotal?.n, 0), unit: "people" },
+                ]}
+              />
+              <SourceNote sourceKey="nhms_older_persons" year={2025} />
+            </section>
+
+            <section aria-labelledby="older-breakdown">
+              <h2 id="older-breakdown" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+                By {olderDim ? olderDim.toLowerCase() : "group"} — {olderSelected ?? ""}
+              </h2>
+              {olderBars.length > 0 ? (
+                <BarRankingCard title="Prevalence (%)" data={olderBars} nameKey="group" valueKey="value" unit="%" color="#7a4fb5" />
+              ) : (
+                <InsufficientData reason="No figures are published for this breakdown." />
+              )}
+              <p className="mt-2 max-w-3xl text-xs text-ink-muted">
+                Each bar is the report's own estimate; the confidence interval for every group is in the table below. Groups
+                the report suppresses because too few people answered are left out, not estimated. These are screening and
+                survey measures ("probable" conditions are not diagnoses), differences between groups are not shown to be
+                causal, and the survey reports no state figures.
+              </p>
+              <SourceNote sourceKey="nhms_older_persons" year={2025} />
             </section>
           </>
         )}

@@ -144,6 +144,97 @@ describe("Population page slices of the electoral files", () => {
   }
 });
 
+describe("Public clinic counts (MOH facility registry)", () => {
+  interface ClinicState {
+    state: string; year: number; as_of: string; clinics_total: number; health_clinics: number; rural_clinics: number;
+    community_clinics: number; mch_clinics: number; dental_clinics_total: number; population_used_for_rate: number | null;
+    clinics_per_100k: number | null; clinics_per_100k_pooled: number | null; pool_label: string | null;
+  }
+  interface ClinicDistrict { state: string; district: string; clinics_total: number; dental_clinics_total: number }
+  const states = readJson<ClinicState[]>("clinics_state.json");
+  const districts = readJson<ClinicDistrict[]>("clinics_district.json");
+  const KV = ["Selangor", "W.P. Kuala Lumpur", "W.P. Putrajaya"];
+
+  it("has all 16 states, one snapshot year and the registry's own as-of date", () => {
+    expect(states).toHaveLength(16);
+    expect(new Set(states.map((r) => r.year)).size).toBe(1);
+    expect(states[0].as_of.startsWith(String(states[0].year))).toBe(true);
+  });
+
+  it("district counts add up to the state counts, and the types add up to the clinics", () => {
+    for (const s of states) {
+      const d = districts.filter((x) => x.state === s.state);
+      expect(d.reduce((a, x) => a + x.clinics_total, 0)).toBe(s.clinics_total);
+      expect(d.reduce((a, x) => a + x.dental_clinics_total, 0)).toBe(s.dental_clinics_total);
+      expect(s.health_clinics + s.rural_clinics + s.community_clinics + s.mch_clinics).toBe(s.clinics_total);
+    }
+  });
+
+  it("per-100,000 rates are the count over the state population, and the Klang Valley three are pooled", () => {
+    for (const s of states) {
+      if (s.population_used_for_rate) {
+        expect(s.clinics_per_100k).toBeCloseTo((s.clinics_total / s.population_used_for_rate) * 100000, 1);
+      }
+    }
+    const kv = states.filter((s) => KV.includes(s.state));
+    expect(new Set(kv.map((s) => s.clinics_per_100k_pooled)).size).toBe(1);
+    expect(kv.every((s) => s.pool_label !== null)).toBe(true);
+    const others = states.filter((s) => !KV.includes(s.state));
+    expect(others.every((s) => s.pool_label === null && s.clinics_per_100k_pooled === s.clinics_per_100k)).toBe(true);
+  });
+});
+
+describe("NHMS 2011 in the state panel", () => {
+  interface Row { state: string; year: number; overall_diabetes_prevalence_pct: number | null; [k: string]: unknown }
+  const rows = readJson<Row[]>("nhms_ncd_state.json");
+
+  it("adds 2011 for 14 states, leaving Sabah and W.P. Labuan empty (the survey reports them combined)", () => {
+    const r2011 = rows.filter((r) => r.year === 2011);
+    expect(r2011).toHaveLength(14);
+    expect(r2011.map((r) => r.state)).not.toContain("Sabah");
+    expect(r2011.map((r) => r.state)).not.toContain("W.P. Labuan");
+  });
+
+  it("carries values the report states in its own text", () => {
+    const get = (s: string) => rows.find((r) => r.state === s && r.year === 2011)!;
+    expect(get("Perlis").overall_diabetes_prevalence_pct).toBe(24.8);
+    expect(get("Kedah").overall_diabetes_prevalence_pct).toBe(22.5);
+    expect(get("W.P. Putrajaya").overall_diabetes_prevalence_pct).toBe(8.8);
+  });
+
+  it("leaves every value of the earlier survey years exactly as before", () => {
+    const johor2019 = rows.find((r) => r.state === "Johor" && r.year === 2019)!;
+    expect(johor2019["raised_blood_glucose_prevalence_pct"]).toBe(19.7);
+    expect(rows.filter((r) => r.year === 2015).length).toBeGreaterThan(10);
+    expect(rows.filter((r) => r.year === 2023).length).toBe(16);
+  });
+});
+
+describe("NHMS 2025 older persons (national)", () => {
+  interface Row { table: string; indicator: string; dimension: string; category: string; n: number | null; prevalence_pct: number | null; ci_lower: number | null; ci_upper: number | null; suppressed: boolean }
+  const rows = readJson<Row[]>("nhms_older_persons_2025_national.json");
+
+  it("has a Malaysia-level row for every indicator and no state breakdown", () => {
+    const indicators = Array.from(new Set(rows.map((r) => r.indicator)));
+    expect(indicators.length).toBeGreaterThanOrEqual(20);
+    for (const i of indicators) {
+      expect(rows.filter((r) => r.indicator === i && r.dimension === "All older persons")).toHaveLength(1);
+    }
+    expect(rows.some((r) => /state|negeri/i.test(r.dimension))).toBe(false);
+  });
+
+  it("keeps every published prevalence inside its own interval, and suppressed cells empty", () => {
+    for (const r of rows) {
+      if (r.prevalence_pct === null) {
+        expect(r.suppressed).toBe(true);
+        continue;
+      }
+      expect(r.ci_lower!).toBeLessThanOrEqual(r.prevalence_pct + 0.051);
+      expect(r.ci_upper!).toBeGreaterThanOrEqual(r.prevalence_pct - 0.051);
+    }
+  });
+});
+
 describe("PeKa B40 files", () => {
   interface Daily { state: string; date: string; screenings: number | null }
   interface Weekly { state: string; week_start: string; days: number; screenings: number | null }

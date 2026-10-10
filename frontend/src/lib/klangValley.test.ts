@@ -12,6 +12,17 @@ const rows: Row[] = [
 
 afterEach(() => setKlangValleyMode("pooled"));
 
+describe("applyKlangValleyMode on other files", () => {
+  it("also resets the clinic rates, whatever the file, by the *_per_100k_pooled naming rule", () => {
+    const rows = [{ state: "W.P. Putrajaya", pool_label: "KV", clinics_per_100k: 3.3, clinics_per_100k_pooled: 2.7, dental_clinics_per_100k: 5, dental_clinics_per_100k_pooled: 4 }];
+    const sep = applyKlangValleyMode(rows, "separate")[0];
+    expect(sep.clinics_per_100k_pooled).toBe(3.3);
+    expect(sep.dental_clinics_per_100k_pooled).toBe(5);
+    expect(sep.pool_label).toBeNull();
+    expect(rows[0].clinics_per_100k_pooled).toBe(2.7);
+  });
+});
+
 describe("applyKlangValleyMode", () => {
   it("returns the published rows untouched while pooled", () => {
     expect(applyKlangValleyMode(rows, "pooled")).toBe(rows);

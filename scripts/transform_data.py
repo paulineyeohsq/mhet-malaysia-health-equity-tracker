@@ -33,6 +33,7 @@ from collections import defaultdict
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from geo_utils import canonical_state, canonical_district  # noqa: E402
+import nhms_pdf  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"
@@ -664,6 +665,19 @@ def build_nhms_ncd():
         for ind, st, yr, v in load_indicator_rows(path, indicator_col, fixed_indicator):
             combined[ind][(st, yr)] = v
 
+    # NHMS 2011 (Vol. II), read from the report text by scripts/nhms_pdf.py (see the notes in that module for the
+    # checks every table must pass). Only the indicators whose definition matches the ones already published for
+    # 2015-2023, plus overall diabetes (known + undiagnosed), which has no earlier counterpart here. Sabah and
+    # W.P. Labuan are one combined estimate in this survey, so both are left without a 2011 value, exactly as for 2015.
+    text_2011 = (RAW / "health_outcomes" / "nhms_2011_vol2.txt").read_text(encoding="utf-8")
+    for ind, tbl in nhms_pdf.parse_2011(text_2011).items():
+        def cell(r):
+            return {"n": r["n"], "estimated_population": r["estimated_population"], "prevalence_pct": r["prevalence_pct"],
+                    "ci_lower": r["ci_lower"], "ci_upper": r["ci_upper"], "unreliable": None}
+        combined[ind][("Malaysia", 2011)] = cell(tbl["malaysia"])
+        for st, r in tbl["states"].items():
+            combined[ind][(canonical_state(st), 2011)] = cell(r)
+
     all_state_years = set()
     for by_key in combined.values():
         all_state_years |= set(by_key.keys())
@@ -688,6 +702,149 @@ def build_nhms_ncd():
     national_out = [row_for("Malaysia", yr) for yr in national_years]
     write_json("nhms_ncd_national.json", national_out)
     return state_out, national_out
+
+
+# ---------------------------------------------------------------------------
+# 10b. NHMS 2025 Volume 2 - Older Persons Health Findings (national level only)
+#
+# The report publishes prevalence by sociodemographic characteristics (location, sex, age group, ethnicity, marital
+# status, education, occupation, household income) for the whole country - no state or district breakdown - so this
+# is a national table, kept in its own file and never joined to the state panel. Read from the report text by
+# scripts/nhms_pdf.py; every table must pass its checks or this raises and the previous file is kept.
+# ---------------------------------------------------------------------------
+_OLDER_TITLE = __import__("re").compile(
+    r"^The prevalence of (?P<what>.+?) among older persons? (?:aged )?60 years and above in Malaysia by sociodemographic characteristics"
+)
+
+
+def build_nhms_older_persons_2025():
+    text = (RAW / "health_outcomes" / "nhms_2025_vol2.txt").read_text(encoding="utf-8")
+    out = []
+    for table in nhms_pdf.parse_2025(text):
+        m = _OLDER_TITLE.match(table["title"])
+        if not m:
+            raise ValueError(f"NHMS 2025 table {table['table']}: unrecognised title {table['title']!r}")
+        what = m.group("what")
+        for b, measure in enumerate(table["measures"]):
+            indicator = what if len(table["measures"]) == 1 else measure
+            for r in table["rows"]:
+                v = r["values"][b]
+                out.append({
+                    "year": 2025,
+                    "table": table["table"],
+                    "indicator": indicator,
+                    "dimension": "All older persons" if r["section"] is None else r["section"],
+                    "category": r["label"] if r["section"] is not None else "Malaysia",
+                    "n": v["n"],
+                    "estimated_population": v["estimated_population"],
+                    "prevalence_pct": v["prevalence_pct"],
+                    "ci_lower": v["ci_lower"],
+                    "ci_upper": v["ci_upper"],
+                    "suppressed": v["prevalence_pct"] is None,
+                })
+    write_json("nhms_older_persons_2025_national.json", out)
+    return out
+
+
+# ---------------------------------------------------------------------------
+# 10c. Public health clinics (MOH facility registry)
+#
+# MOH's registry of public health facilities (github.com/MoH-Malaysia/data-resources-public, facilities_master.csv):
+# one row per facility with state and district. Counted here by type. IMPORTANT: public sector only (Ministry of Health
+# 5,145, universities 10, armed forces 5 in the version this was built from); private clinics are not in the registry,
+# so a low count is "few public clinics", not "few clinics". One snapshot; the date comes from the registry's own README
+# ("as registered on ..."), and this raises if it cannot be read rather than guessing one.
+# ---------------------------------------------------------------------------
+_CLINIC_TYPES = {
+    "KLINIK KESIHATAN": "health_clinics",
+    "KLINIK DESA": "rural_clinics",
+    "KLINIK KOMUNITI": "community_clinics",
+    "KLINIK KESIHATAN IBU DAN ANAK": "mch_clinics",
+}
+_SCHOOL_DENTAL = ("KLINIK PERGIGIAN SEKOLAH RENDAH", "KLINIK PERGIGIAN SEKOLAH MENENGAH", "KLINIK PERGIGIAN SEKOLAH (PUSAT PERGIGIAN SEKOLAH)")
+_CLINIC_FIELDS = ["clinics_total", "health_clinics", "rural_clinics", "community_clinics", "mch_clinics", "dental_clinics_total", "dental_clinics_school"]
+
+
+def _registry_date():
+    import re
+    from datetime import datetime
+    readme = (RAW / "healthcare" / "facilities_master_README.md").read_text(encoding="utf-8", errors="replace")
+    m = re.search(r"as registered on\s+(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})", readme)
+    if not m:
+        raise ValueError("facilities registry README no longer states the date it is 'as registered on'; not guessing one")
+    return datetime.strptime(" ".join(m.groups()), "%d %B %Y").date()
+
+
+def _clinic_counts(rows):
+    c = dict.fromkeys(_CLINIC_FIELDS, 0)
+    for r in rows:
+        cat, kind = r["KATEGORI_FASILITI"], r["JENIS_FASILITI"]
+        if cat == "KLINIK":
+            c["clinics_total"] += 1
+            if kind in _CLINIC_TYPES:
+                c[_CLINIC_TYPES[kind]] += 1
+        elif cat == "KLINIK PERGIGIAN":
+            c["dental_clinics_total"] += 1
+            if kind in _SCHOOL_DENTAL:
+                c["dental_clinics_school"] += 1
+    return c
+
+
+def build_clinics(pop_lookup):
+    rows = read_csv(RAW / "healthcare" / "facilities_master.csv")
+    as_of = _registry_date()
+    year = as_of.year
+    if any(r.get("STATUS") != "BUKA" for r in rows):
+        # the registry says every row is open; a closed facility must not be counted without a decision
+        raise ValueError("facilities registry contains rows that are not open (STATUS != BUKA)")
+    rows = [r for r in rows if r["KATEGORI_FASILITI"] in ("KLINIK", "KLINIK PERGIGIAN")]
+
+    by_state = defaultdict(list)
+    by_district = defaultdict(list)
+    for r in rows:
+        st = canonical_state(r["NEGERI"])
+        by_state[st].append(r)
+        by_district[(st, canonical_district(st, r["DAERAH"]))].append(r)
+
+    states = sorted({s for (s, y) in pop_lookup if y == year and s != "Malaysia"} | set(by_state))
+    state_out = []
+    for st in states:
+        counts = _clinic_counts(by_state.get(st, []))
+        pop = pop_lookup.get((st, year))
+        pop = round(pop) if pop else None  # population_thousands x 1000 leaves float noise (2075199.9999999998)
+        row = {"state": st, "year": year, "as_of": as_of.isoformat(), **counts, "population_used_for_rate": pop}
+        row["clinics_per_100k"] = round(counts["clinics_total"] / pop * 100000, 1) if pop else None
+        row["dental_clinics_per_100k"] = round(counts["dental_clinics_total"] / pop * 100000, 1) if pop else None
+        state_out.append(row)
+
+    # same Klang Valley convention as staff and beds: the three units pooled for comparisons, each still available
+    members = [r for r in state_out if r["state"] in KLANG_VALLEY_UNITS]
+    complete = len(members) == len(KLANG_VALLEY_UNITS) and all(m["population_used_for_rate"] for m in members)
+    pool_pop = sum(m["population_used_for_rate"] for m in members) if complete else None
+    pool_clin = sum(m["clinics_total"] for m in members) if complete else None
+    pool_dent = sum(m["dental_clinics_total"] for m in members) if complete else None
+    for r in state_out:
+        if r["state"] in KLANG_VALLEY_UNITS:
+            r["pool_label"] = KLANG_VALLEY_LABEL
+            r["pool_population"] = pool_pop
+            r["pool_clinics_total"] = pool_clin
+            r["pool_dental_clinics_total"] = pool_dent
+            r["clinics_per_100k_pooled"] = round(pool_clin / pool_pop * 100000, 1) if pool_pop else None
+            r["dental_clinics_per_100k_pooled"] = round(pool_dent / pool_pop * 100000, 1) if pool_pop else None
+        else:
+            r["pool_label"] = None
+            r["pool_population"] = None
+            r["pool_clinics_total"] = None
+            r["pool_dental_clinics_total"] = None
+            r["clinics_per_100k_pooled"] = r["clinics_per_100k"]
+            r["dental_clinics_per_100k_pooled"] = r["dental_clinics_per_100k"]
+    write_json("clinics_state.json", state_out)
+
+    district_out = []
+    for (st, dist), rs in sorted(by_district.items()):
+        district_out.append({"state": st, "district": dist, "year": year, "as_of": as_of.isoformat(), **_clinic_counts(rs)})
+    write_json("clinics_district.json", district_out)
+    return state_out, district_out
 
 
 # ---------------------------------------------------------------------------
@@ -1302,6 +1459,8 @@ def main():
     build_health_outcomes_state(pop_lookup)
     build_health_outcomes_national()
     build_nhms_ncd()
+    build_nhms_older_persons_2025()
+    build_clinics(pop_lookup)
     build_nhms_adolescent_mental_health()
     build_deaths_ethnicity_state()
     build_district_vital_stats()

@@ -70,8 +70,16 @@ jobs:
       - name: Install Python dependencies
         run: pip install shapely
 
+      # The NHMS report tables are read from the published PDFs (pdftotext -raw); without the tool that fetch fails
+      # and the previous text is kept, which then shows up in the run summary as a dataset that did not refresh.
+      - name: Install the PDF text tool
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+
       - name: Run the full data pipeline (ingest, validate, transform, sync)
         run: python3 scripts/update_database.py
+
+      - name: Report-table extraction tests
+        run: python3 -m unittest scripts/test_nhms_pdf.py
 
       - name: Rebuild the geographic lookup table
         run: python3 scripts/build_geo_lookup.py
@@ -180,6 +188,33 @@ jobs:
           labels: |
             automated
             data-refresh
+
+      # Datasets that could not be added yet (docs/DATA_BACKLOG.md). This only looks; it never changes the site. A
+      # hit opens one issue per item (never a second one, even if the first was closed) so a person can check whether
+      # a usable machine-readable source now exists.
+      - name: Watch the data backlog
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          python3 scripts/watch_backlog.py > "$RUNNER_TEMP/watch.json" || { echo "The backlog watcher failed; skipping."; exit 0; }
+          python3 - <<'PY' > "$RUNNER_TEMP/triggered.txt"
+          import json, os
+          report = json.load(open(os.environ["RUNNER_TEMP"] + "/watch.json"))
+          for item in report["items"]:
+              if item["status"] == "triggered":
+                  print("|".join([item["id"], item["title"], json.dumps(item["signals"])]))
+          PY
+          while IFS='|' read -r id title signals; do
+            [ -z "$id" ] && continue
+            issue_title="Data watch: $title may now be available"
+            existing=$(gh issue list --state all --search "in:title \"$issue_title\"" --json number -q '.[0].number // empty')
+            if [ -z "$existing" ]; then
+              body="The weekly check noticed a change that may make **$title** (\`$id\` in docs/DATA_BACKLOG.md) available. Nothing has been changed on the site.\n\nSignals: \`$signals\`\n\nWhat to do: open the source in the backlog entry and check whether it now has a machine-readable table at state or district level. If it does, the hard rules apply (official source, read by the pipeline, never typed in). If it does not, close this issue."
+              gh issue create --title "$issue_title" --body "$(printf '%b' "$body")"
+            fi
+          done < "$RUNNER_TEMP/triggered.txt"
 
       - name: Close the failure issue after a clean run
         if: success()

@@ -19,6 +19,8 @@ export interface InventoryDataset {
   joinable_with?: string[];
   recommended_use?: string;
   limitations: string;
+  /** The data terms the publisher states (or that none were found), where checked. */
+  licence?: string;
   status: string;
 }
 
@@ -102,6 +104,9 @@ export const INVENTORY_MAP: Record<string, string[]> = {
   "population_dun.json": ["population_dun"],
   "population_parlimen_latest.json": ["population_parlimen"],
   "population_dun_latest.json": ["population_dun"],
+  "clinics_state.json": ["facilities_master"],
+  "clinics_district.json": ["facilities_master"],
+  "nhms_older_persons_2025_national.json": ["nhms_older_persons_2025"],
   "population_district_full.json": ["population_district_full"],
   "hies_percentile_national.json": ["hies_malaysia_percentile"],
   "marriages_national.json": ["marriages"],

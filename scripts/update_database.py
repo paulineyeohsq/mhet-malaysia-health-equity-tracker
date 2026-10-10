@@ -140,6 +140,9 @@ PUBLISHED_FILES = [
     ("data/processed/deaths_district_sex.json", "deaths_district_sex.json"),
     ("data/processed/births_district_sex.json", "births_district_sex.json"),
     ("data/processed/life_expectancy_state.json", "life_expectancy_state.json"),
+    ("data/processed/nhms_older_persons_2025_national.json", "nhms_older_persons_2025_national.json"),
+    ("data/processed/clinics_state.json", "clinics_state.json"),
+    ("data/processed/clinics_district.json", "clinics_district.json"),
     ("data/processed/life_expectancy_national.json", "life_expectancy_national.json"),
 ]
 

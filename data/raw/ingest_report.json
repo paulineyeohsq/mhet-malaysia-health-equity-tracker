@@ -1,7 +1,7 @@
 {
- "run_at": "2026-10-09T13:44:07Z",
+ "run_at": "2026-10-10T05:17:49Z",
  "summary": {
-  "ok": 1,
+  "ok": 5,
   "unchanged": 58,
   "failed": 0,
   "refused": 0
@@ -266,6 +266,32 @@
    "checked_at": "2026-10-09T07:14:44Z"
   },
   {
+   "id": "facilities_readme",
+   "file": "data/raw/healthcare/facilities_master_README.md",
+   "method": "github",
+   "rows": 92,
+   "latest_year": null,
+   "status": "ok",
+   "source": {
+    "http_url": "https://raw.githubusercontent.com/MoH-Malaysia/data-resources-public/main/README.md",
+    "etag": "\"d6870a948a771ca9fadfd454a78520b969a6dfdccfe9c3815bc4ed4d56d27fc2\""
+   },
+   "checked_at": "2026-10-10T05:17:49Z"
+  },
+  {
+   "id": "facilities_master",
+   "file": "data/raw/healthcare/facilities_master.csv",
+   "method": "csv",
+   "rows": 5160,
+   "latest_year": null,
+   "status": "ok",
+   "source": {
+    "http_url": "https://raw.githubusercontent.com/MoH-Malaysia/data-resources-public/main/facilities_master.csv",
+    "etag": "\"5c4c2da2db376f90eb4556afaf41972e8636d42a7171371a3fb71c9519459090\""
+   },
+   "checked_at": "2026-10-10T05:16:42Z"
+  },
+  {
    "id": "hospital_beds_national",
    "file": "data/raw/healthcare/hospital_beds_national.csv",
    "method": "csv",
@@ -315,6 +341,34 @@
     "api_id": "healthcare_staff"
    },
    "checked_at": "2026-10-09T07:14:44Z"
+  },
+  {
+   "id": "nhms_2011_vol2",
+   "file": "data/raw/health_outcomes/nhms_2011_vol2.txt",
+   "method": "pdf_text",
+   "rows": 5459,
+   "latest_year": null,
+   "status": "ok",
+   "source": {
+    "http_url": "https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2011-VolumeII.pdf",
+    "etag": "\"1143ff0-5ab7a3c06ed40\"",
+    "last_modified": "Tue, 28 Jul 2020 06:06:05 GMT"
+   },
+   "checked_at": "2026-10-10T05:16:42Z"
+  },
+  {
+   "id": "nhms_2025_vol2",
+   "file": "data/raw/health_outcomes/nhms_2025_vol2.txt",
+   "method": "pdf_text",
+   "rows": 5133,
+   "latest_year": null,
+   "status": "ok",
+   "source": {
+    "http_url": "https://iku.nih.gov.my/images/nhms-2025/nhms-2025-volume-2.pdf",
+    "etag": "\"2587e4-65b7fa772373a\"",
+    "last_modified": "Tue, 15 Sep 2026 06:28:08 GMT"
+   },
+   "checked_at": "2026-10-10T05:16:42Z"
   },
   {
    "id": "life_expectancy",

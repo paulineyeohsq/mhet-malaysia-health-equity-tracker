@@ -53,6 +53,37 @@ interface DistrictRow {
   [key: string]: unknown;
 }
 
+interface ClinicStateRow {
+  state: string;
+  year: number;
+  as_of: string;
+  clinics_total: number;
+  health_clinics: number;
+  rural_clinics: number;
+  community_clinics: number;
+  mch_clinics: number;
+  dental_clinics_total: number;
+  dental_clinics_school: number;
+  population_used_for_rate: number | null;
+  clinics_per_100k: number | null;
+  clinics_per_100k_pooled: number | null;
+  dental_clinics_per_100k: number | null;
+  dental_clinics_per_100k_pooled: number | null;
+  pool_label: string | null;
+  [key: string]: unknown;
+}
+
+interface ClinicDistrictRow {
+  state: string;
+  district: string;
+  year: number;
+  clinics_total: number;
+  health_clinics: number;
+  rural_clinics: number;
+  dental_clinics_total: number;
+  [key: string]: unknown;
+}
+
 interface PopStateRow {
   state: string;
   year: number;
@@ -75,6 +106,8 @@ export default function HealthcareAccess() {
   const { data: stateData } = useData<StateRow[]>("healthcare_access_state.json");
   const { data: districtData } = useData<DistrictRow[]>("healthcare_access_district_2022.json");
   const { data: popState } = useData<PopStateRow[]>("population_state.json");
+  const { data: clinicState } = useData<ClinicStateRow[]>("clinics_state.json");
+  const { data: clinicDistrict } = useData<ClinicDistrictRow[]>("clinics_district.json");
 
   const latestNational = useMemo(() => {
     if (!national) return null;
@@ -154,6 +187,39 @@ export default function HealthcareAccess() {
     { key: "hospital_beds", label: "Hospital beds", numeric: true },
     { key: "beds_per_100k", label: "Beds per 100,000 (own state)", numeric: true },
     ...(kvMode === "pooled" ? [{ key: "beds_per_100k_pooled", label: "Beds per 100,000 (Klang Valley pooled)", numeric: true }] : []),
+  ];
+
+  const clinicTotals = useMemo(() => {
+    if (!clinicState || clinicState.length === 0) return null;
+    const sum = (k: keyof ClinicStateRow) => clinicState.reduce((s, r) => s + (Number(r[k]) || 0), 0);
+    return {
+      year: clinicState[0].year,
+      asOf: clinicState[0].as_of,
+      clinics: sum("clinics_total"),
+      rural: sum("rural_clinics"),
+      health: sum("health_clinics"),
+      dental: sum("dental_clinics_total"),
+    };
+  }, [clinicState]);
+  const clinicColumns: Column[] = [
+    { key: "state", label: "State" },
+    { key: "health_clinics", label: "Health clinics (klinik kesihatan)", numeric: true },
+    { key: "rural_clinics", label: "Rural clinics (klinik desa)", numeric: true },
+    { key: "community_clinics", label: "Community clinics", numeric: true },
+    { key: "mch_clinics", label: "Maternal & child health clinics", numeric: true },
+    { key: "clinics_total", label: "All clinics", numeric: true },
+    { key: "dental_clinics_total", label: "Dental clinics", numeric: true },
+    { key: "population_used_for_rate", label: "Population (rate denominator)", numeric: true },
+    { key: "clinics_per_100k", label: "Clinics per 100,000 (own state)", numeric: true },
+    ...(kvMode === "pooled" ? [{ key: "clinics_per_100k_pooled", label: "Clinics per 100,000 (Klang Valley pooled)", numeric: true }] : []),
+  ];
+  const clinicDistrictColumns: Column[] = [
+    { key: "state", label: "State" },
+    { key: "district", label: "District" },
+    { key: "clinics_total", label: "All clinics", numeric: true },
+    { key: "health_clinics", label: "Health clinics", numeric: true },
+    { key: "rural_clinics", label: "Rural clinics", numeric: true },
+    { key: "dental_clinics_total", label: "Dental clinics", numeric: true },
   ];
 
   const districtColumns: Column[] = [
@@ -400,6 +466,67 @@ export default function HealthcareAccess() {
             <DataTable columns={stateColumns} rows={stateSnapshot} pageSize={16} />
           </div>
           <SourceNote sourceKey="healthcare_staff" year={effectiveStateYear ?? undefined} extra="Population denominator: DOSM state population estimates" />
+        </section>
+
+        {/* Public clinics (MOH facility registry) */}
+        <section aria-labelledby="clinics">
+          <h2 id="clinics" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
+            Public health clinics{clinicTotals ? ` — registered ${clinicTotals.asOf}` : ""}
+          </h2>
+          <p className="mb-3 max-w-3xl text-sm text-ink-secondary">
+            Clinics run by the Ministry of Health, counted by state and district from the Ministry's facility registry.
+            <strong className="text-ink-primary"> Public sector only</strong>: private clinics and pharmacies are not
+            in the registry, so a low figure means few <em>public</em> clinics, not few clinics. It counts facilities,
+            not their size or staff, and it is a single snapshot.
+          </p>
+          {clinicTotals ? (
+            <>
+              <KPISummarySection
+                title={`Public clinics — ${clinicTotals.year}`}
+                headingId="clinics-kpis"
+                columns={4}
+                items={[
+                  { label: "All public clinics", value: fmtInt(clinicTotals.clinics), unit: "clinics" },
+                  { label: "Health clinics", value: fmtInt(clinicTotals.health), unit: "klinik kesihatan" },
+                  { label: "Rural clinics", value: fmtInt(clinicTotals.rural), unit: "klinik desa" },
+                  { label: "Dental clinics", value: fmtInt(clinicTotals.dental), unit: "incl. school clinics" },
+                ]}
+              />
+              <div className="mt-4 grid gap-4 lg:grid-cols-2">
+                <BarRankingCard
+                  title={`Public clinics per 100,000 population by state — ${clinicTotals.year}${kvSuffix}`}
+                  data={collapsePooledRows(clinicState as unknown as Row[], "clinics_per_100k_pooled").filter((r) => r.clinics_per_100k_pooled !== null)}
+                  nameKey="state"
+                  valueKey="clinics_per_100k_pooled"
+                  unit="per 100k"
+                  color="#19a472"
+                />
+                <BarRankingCard
+                  title={`Public clinics by state (count) — ${clinicTotals.year}`}
+                  data={(clinicState ?? []).map((r) => ({ state: r.state, clinics_total: r.clinics_total }))}
+                  nameKey="state"
+                  valueKey="clinics_total"
+                  unit="clinics"
+                  color="#3a7173"
+                />
+              </div>
+              <div className="mt-4">
+                <h3 className="mb-2 text-sm font-medium text-ink-primary">Clinics by type and state — {clinicTotals.year}</h3>
+                <DataTable columns={clinicColumns} rows={(clinicState ?? []) as unknown as Record<string, unknown>[]} pageSize={16} />
+              </div>
+              <Disclosure
+                className="mt-4 rounded-lg border border-line-grid bg-surface p-3 text-sm text-ink-secondary"
+                summaryClassName="font-medium text-ink-primary"
+                summary={`Clinics by district (${(clinicDistrict ?? []).length} districts, counts only)`}
+              >
+                <p className="mb-2 text-xs">Counts only: a district rate would need a matching district population estimate.</p>
+                <DataTable columns={clinicDistrictColumns} rows={(clinicDistrict ?? []) as unknown as Record<string, unknown>[]} pageSize={20} />
+              </Disclosure>
+            </>
+          ) : (
+            <InsufficientData reason="Clinic counts are not available." />
+          )}
+          <SourceNote sourceKey="clinics" year={clinicTotals?.year} extra="Population denominator: DOSM state population estimates" />
         </section>
 
         {/* District-level section */}

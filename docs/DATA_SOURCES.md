@@ -3,11 +3,11 @@
 This is the human-readable companion to the machine-readable catalogue at
 [`data/inventory/dataset_inventory.json`](../data/inventory/dataset_inventory.json).
 That file documents every dataset examined during the Phase 1/2 audit of
-[data.gov.my](https://data.gov.my/data-catalogue): **<!--count:ingested-->53<!--/count--> datasets with
+[data.gov.my](https://data.gov.my/data-catalogue): **<!--count:ingested-->55<!--/count--> datasets with
 `status: ingested`** have raw files under `data/raw/` and processed outputs
 under `data/processed/` (produced by `scripts/transform_data.py`), plus
 **<!--count:reference-->1<!--/count--> dataset ingested for cross-validation only** (`hies_2019_snapshot`, not
-loaded into the dashboard), and **<!--count:notingested-->6<!--/count--> datasets identified and schema-verified
+loaded into the dashboard), and **<!--count:notingested-->3<!--/count--> datasets identified and schema-verified
 but not yet ingested** into this build. (These counts are rewritten from the
 inventory by `scripts/update_database.py` on every successful run.)
 
@@ -232,6 +232,20 @@ All from the Household Income and Expenditure Survey (HIES), an irregular
 - District-resolution upgrade of "Annual Live Births by State" above (added 2026-08-14) — live birth counts and rate by district and sex.
 - **Limitations:** Shorter time range (2020–2024) than the state-level series — a resolution upgrade, not a full historical replacement.
 
+### Public Health Clinics by State and District
+- **URL:** https://github.com/MoH-Malaysia/data-resources-public (file `facilities_master.csv`)
+- **Source org:** Ministry of Health Malaysia
+- **Date range:** one snapshot, as registered on 31 December 2025 (stated in the registry's README) · **Geographic resolution:** state and district · **Update frequency:** not stated
+- MOH's registry of public health facilities, one row per facility. The dashboard counts clinics by type (health clinics, rural clinics, community clinics, maternal and child health clinics, dental clinics) and gives a per-100,000 rate using DOSM's population estimate for the same year. Added 2026-10-10.
+- **Limitations:** public sector only (private clinics are not in it); it counts facilities, not capacity; a single snapshot; not in the data.gov.my catalogue (a GitHub file). The repository carries no licence file; its README asks for attribution to the Ministry of Health Malaysia.
+
+### NHMS 2025 Volume 2: Older Persons Health Findings
+- **URL:** https://iku.nih.gov.my/nhms2025 (report PDF `nhms-2025-volume-2.pdf`, posted September 2026)
+- **Source org:** Institute for Public Health, National Institutes of Health, Ministry of Health Malaysia
+- **Date range:** 2025 · **Geographic resolution:** national only · **Update frequency:** per survey cycle
+- 19 prevalence tables for people aged 60 and over (ageing well, cognition, dementia, depression, daily-living limitations, falls, vision and hearing, activity and sleep, raised blood glucose / pressure / cholesterol overall, known and undiagnosed, sarcopenia, frailty), each by location, sex, age group, ethnicity, marital status, education, occupation and household income. Read from the PDF by `scripts/nhms_pdf.py` (`pdftotext -raw`); each table must add up to its own totals or the update stops. Added 2026-10-10.
+- **Limitations:** national only (no state breakdown is published); one survey year; "probable" conditions are screening results. No open licence or reuse terms were found; the NIH site states copyright.
+
 ### Life Expectancy at Birth by State, Sex & Ethnicity
 - **URL:** https://open.dosm.gov.my/dashboard/life-expectancy
 - **Source org:** DOSM (Abridged Life Tables)
@@ -252,6 +266,9 @@ across every page.
 ---
 
 ## Identified but not yet ingested
+
+(The clinic counts and the NHMS 2011 and 2025 tables that were here on 2026-10-09 are now in the dashboard; see above and
+`docs/DATA_BACKLOG.md`, which also records why the remaining ones could not be added.)
 
 Re-audited 2026-10-09 against both catalogues (OpenDOSM: 185 datasets; data.gov.my: 297). Everything that earlier
 versions of this page listed here (parliamentary and state-assembly population, income percentiles, marriage and

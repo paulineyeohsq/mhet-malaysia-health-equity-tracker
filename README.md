@@ -188,6 +188,13 @@ demand (**Actions → Update data → Run workflow**). With no manual step it:
    opens a pull request instead; if the run fails it opens (or updates) an issue titled "Automated data refresh
    failed" and publishes nothing. The issue closes itself on the next clean run.
 
+**Reading report tables.** The NHMS state and national tables that are published only as PDF reports are read by the
+pipeline itself (`scripts/nhms_pdf.py`, using `pdftotext -raw`): nothing is typed in. Each table must have a MALAYSIA row,
+every prevalence inside its own confidence interval, and every breakdown adding up to the report's totals, or the whole
+update stops and keeps the previous data. `python3 -m unittest scripts/test_nhms_pdf.py` runs these checks against the
+stored report text. Datasets that could not be added yet are in [`docs/DATA_BACKLOG.md`](docs/DATA_BACKLOG.md); the weekly
+run watches for them and opens an issue, never changing the site.
+
 **Publishing is automatic when the checks pass; unusual changes wait for a person.** That is a deliberate choice: a
 clean refresh needs no approval, and a refresh that looks wrong never goes live until someone merges its pull request.
 The home page card says exactly this, and shows "Waiting for review" (with a link) while such a pull request is open.
@@ -246,7 +253,7 @@ map tiles. See the Privacy section of the Data Governance & Terms page.
 - [`docs/DATA_DICTIONARY.md`](docs/DATA_DICTIONARY.md) — field-by-field reference
   for every processed JSON/CSV file the frontend reads.
 - [`docs/DATA_SOURCES.md`](docs/DATA_SOURCES.md) — the full catalogue of all
-  <!--count:ingested-->53<!--/count--> ingested and <!--count:notingested-->6<!--/count--> identified-but-not-ingested
+  <!--count:ingested-->55<!--/count--> ingested and <!--count:notingested-->3<!--/count--> identified-but-not-ingested
   source datasets (counts kept current automatically by `scripts/update_database.py`).
 - [`docs/METHODOLOGY.md`](docs/METHODOLOGY.md) — pipeline methodology: architecture,
   geographic harmonisation, missing-data policy, inequality statistics and known limitations.
