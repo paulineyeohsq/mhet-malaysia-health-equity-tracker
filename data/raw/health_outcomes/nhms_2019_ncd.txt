@@ -1,0 +1,1944 @@
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+006
+List of Tables
+Table 2.1: Distribution of Sample by State, NHMS 2019
+Table 2.2: Questionnaire Used for NCD Component,
+NHMS 2019
+017
+018
+Table 3.1: Response Rate by Living Quarters and Individual
+by State, NHMS 2019
+Table 3.2: Socio-Demographic Characteristics of Sample,
+NHMS 2019
+022
+023
+Table 4.1: Non-Communicable Diseases Trend in Malaysia
+Table 4.2: Prevalence of Overall Raised Blood Glucose
+Among Adults Aged 18 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 4.3: Prevalence of Known Diabetes Among
+Adults Aged 18 Years and Above in Malaysia by Socio-
+Demographic Characteristics
+Table 4.4: Prevalence of Raised Blood Glucose Amongst
+Those Not Known to Have Diabetes Among Adults Aged
+18 Years and Above in Malaysia by Socio-Demographic
+Characteristics
+Table 4.5: Prevalence of Overall Raised Blood Pressure
+Among Adults Aged 18 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 4.6: Prevalence of Known Hypertension Among
+Adults Aged 18 Years and Above in Malaysia by Socio-
+Demographic Characteristics
+Table 4.7: Prevalence of Raised Blood Pressure Amongst
+Those Not Known to Have Hypertension Among
+Adults Aged 18 Years and Above in Malaysia by Socio-
+Demographic Characteristics
+Table 4.8: Prevalence of Overall Raised Blood Cholesterol
+Among Adults Aged 18 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 4.9: Prevalence of Known Hypercholesterolemia
+Among Adults Aged 18 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 4.10: Prevalence of Raised Total Cholesterol
+Amongst Those Not Known to Have Hypercholesterolemia
+Among Adults Aged 18 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+031
+032
+036
+040
+044
+048
+052
+056
+060
+064
+Table 5.1: Physical Inactivity Trend in Malaysia
+Table 5.2: Prevalence of Physically Inactivity Among
+Respondents Aged 16 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 5.3: Prevalence of Physical Inactivity in Travel
+Domain Among Respondents Aged 16 Years and Above in
+Malaysia by Socio-Demographic Characteristics
+071
+072
+073
+Table 5.4: Prevalence of Exposure to Physical Activity
+Information Disseminated Through Various Mass Media
+Channels Among Respondents Aged 16 Years and Above in
+Malaysia by Socio-Demographic Characteristics
+074
+Table 6.1: Smoking Trend in Malaysia
+Table 6.2: Prevalence of Smokers Among Respondents
+Aged 15 Years and Above in Malaysia by Socio-
+Demographic Characteristics
+Table 6.3: Prevalence of Smokeless Tobacco and
+E-cigarettes / Vape Use Among Respondents Aged 15
+Years and Above in Malaysia by Socio-Demographic
+Characteristics
+Table 6.4: Prevalence of Any Tobacco Product Use Among
+Respondents Aged 15 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 6.5: Cigarettes Smoked Per Day Among Daily
+Cigarette Smokers Among Respondents Aged 15 Years and
+Above in Malaysia by Socio-Demographic Characteristics
+Table 6.6: Prevalence of Exposure to Secondhand Smoke
+at Home and Work Among Respondents Aged 15 Years and
+Above in Malaysia by Socio-Demographic Characteristics
+Table 6.7: Prevalence of Exposure to Secondhand Smoke
+at Eateries Among Respondents Aged 15 Years and Above
+in Malaysia by Socio-Demographic Characteristics
+Table 6.8: Current Smokers Who Made a Quit Attempt
+in The Past 12 Months Among Respondents Aged 15
+Years and Above in Malaysia by Socio-Demographic
+Characteristics
+Table 6.9: Prevalence of Noticing Anti-Cigarette
+Information in Newspapers/Magazines and Television in
+The Past 30 days Among Respondents Aged 15 Years and
+Above in Malaysia by Socio-Demographic Characteristics
+Table 6.10: Prevalence of Noticing Cigarette
+Advertisement and Promotion Among Respondents Aged
+15 Years and Above in Malaysia
+083
+084
+086
+088
+090
+094
+096
+098
+099
+101
+Table 7.1: Inadequate Fruit and / or Vegetable Intake Trend
+in Malaysia
+Table 7.2: Prevalence of at Least Once in A Week Intake of
+Commercially Packed Ready to Drink (CPRD) Beverages,
+Proportion of Daily Intake of at Least One Type of CPRD
+Beverages and The Amount of Sugar Intake Per Day
+Among the Respondents Consuming CPRD Beverages
+Daily Among Adults Aged 18 Years and Above in Malaysia
+by Socio-Demographic Characteristics
+Table 7.3: Prevalence of at Least Once in A Week Intake
+of Premixed Drinks, Proportion of Daily Intake of at Least
+One Type of Premixed Beverages and The Amount of
+Sugar Intake Per Day Among the Respondents Consuming
+Premixed Beverages Daily Among Adults Aged 18 Years and
+Above in Malaysia by Socio-Demographic Characteristics
+109
+110
+114
+Non-Communicable Diseases:
+Risk Factors and other Health Problems
+007
+Table 7.4: Prevalence of at Least Once in A Week Intake of
+Sugar Added Self-Prepared Beverages, Proportion of Daily
+Intake of at Least One Type of Self-Prepared Beverages
+and The Amount of Sugar Intake Per Day Among the
+Respondents Consuming Self-Prepared Beverages Daily
+Among Adults Aged 18 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 7.5: Prevalence of Inadequate Intake of Fruit,
+Vegetable and Fruit and / or Vegetable Among Adults
+Aged 18 Years and Above in Malaysia by Socio-
+Demographic Characteristics
+Table 7.6: Prevalence of Adequate and Inadequate Plain
+Water Intake in A Day Among Adults Aged 18 Years and
+Above in Malaysia by Socio-Demographic Characteristics
+Table 7.7: Prevalence of Awareness of Healthy Plate
+Concept Among Adults Aged 18 Years and Above in
+Malaysia by Socio-Demographic Characteristics
+Table 7.8: Prevalence of Adequate Knowledge and Practice
+of Healthy Plate Concept Among Those with Awareness
+Among Adults Aged 18 Years and Above in Malaysia
+118
+122
+126
+128
+129
+Table 8.1: Prevalence of Undergoing Any Health Screening
+/ Medical Check Up in The Past 12 Months Among
+Adults Aged 18 Years and Above in Malaysia by Socio-
+Demographic Characteristics
+Table 8.2: Prevalence of Breast Self-Examination in The
+Past 12 Months Among Females Aged 18 Years and Above
+in Malaysia by Socio-Demographic Characteristics
+Table 8.3: Prevalence of Mammogram Examination (In
+The Past 3 Years and Ever Done) Among Females Aged
+40 Years and Above in Malaysia by Socio-Demographic
+Characteristics
+Table 8.4: Prevalence of Pap Smear Examination in The
+Last 3 Years and, Awareness and Interest to Use Self-
+Sampling Screening (HPV Screening) Among Female Aged
+20 Years and Above in Malaysia by Socio-Demographic
+Characteristics
+Table 8.5: Prevalence of Faecal Occult Blood Test Among
+Adults Aged 50 Years and Above in Malaysia by Socio-
+Demographic Characteristics
+136
+137
+138
+140
+144
+Table 9.1: Harmful Alcohol Consumption Trend in Malaysia
+Table 9.2: Prevalence of Current Drinkers Among
+Adults Aged 18 Years and Above in Malaysia by Socio-
+Demographic Characteristics
+Table 9.3: Prevalence of Current Drinkers Among
+Respondents Aged 13 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 9.4: Proportion of Binge Drinkers Among Current
+Drinkers Among Adults Aged 18 Years and Above in
+Malaysia by Socio-Demographic Characteristics
+148
+149
+150
+151
+Table 9.5: Proportion of Heavy Episodic Drinkers Among
+Current Drinkers Among Adults Aged 18 Years and Above
+in Malaysia by Socio-Demographic Characteristics
+Table 9.6: Proportion of AUDIT Risk Stratification Score
+Among Current Drinkers Aged 18 Years and Above in
+Malaysia
+152
+153
+Table 10.1: Prevalence of Ever and Current Drug Use
+Among Adults Aged 18 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 10.2: Prevalence of Drug Use by Types Among
+Adults Aged 18 Years and Above in Malaysia
+Table 10.3: Proportion of Age of Initiation and Types of
+First Started Drug by Respondents with Ever Drug Use
+Among Adults Aged 18 Years and Above in Malaysia
+Table 10.4: Proportion of Sources of Obtaining Drugs by
+Respondents with Current Drug Use Among Adults Aged
+18 Years and Above in Malaysia
+158
+159
+159
+159
+Table 11.1: Prevalence of Probable Benign Prostatic
+Hyperplasia (BPH) Among Males Aged 40 Years and Above
+in Malaysia by Socio-Demographic Characteristics
+Table 11.2: Association Between BPH Status and Quality of
+Life (QoL) Due to Urinary Symptom Among Males Aged 40
+Years and Above in Malaysia
+164
+165
+Table 12.1: Prevalence of Probable Erectile Dysfunction
+(ED) Among Sexually Active Males Aged 18 Years and
+Above in Malaysia by Socio-Demographic Characteristics
+170
+Table 13.1: Anaemia Trend in Malaysia
+Table 13.2: Prevalence of Anaemia Among Respondents
+Aged 15 Years and Above in Malaysia by Socio-
+Demographic Characteristics
+Table 13.3: Prevalence of Anaemia Level Among
+Respondents Aged 15 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 13.4: Prevalence of Anaemia Among Women of
+Reproductive Age Group (15-49 years) in Malaysia by
+Socio-Demographic Characteristics
+Table 13.5: Prevalence of Anaemia Level Among Women
+of Reproductive Age Group (15-49 years) in Malaysia by
+Socio-Demographic Characteristics
+175
+176
+177
+179
+180
+Table 14.1: Nutritional Status (Adults) Trend in Malaysia
+Table 14.2: Prevalence of Underweight Among Adults Aged
+18 Years and Above in Malaysia by Socio-Demographic
+Characteristics
+Table 14.3: Prevalence of Normal BMI Among Adults Aged
+18 Years and Above in Malaysia by Socio-Demographic
+Characteristics
+Table 14.4: Prevalence of Overweight Among Adults Aged
+18 Years and Above in Malaysia by Socio-Demographic
+Characteristics
+186
+187
+188
+190
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+008
+Table 14.5: Prevalence of Obesity Among Adults Aged
+18 Years and Above in Malaysia by Socio-Demographic
+Characteristics
+Table 14.6: Prevalence of Obesity I to III (WHO 1998)
+Among Adults Aged 18 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 14.7: Prevalence of Obesity I to III (CPG 2004)
+Among Adults Aged 18 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 14.8: Prevalence of Abdominal Obesity (WHO 2000)
+Among Adults Aged 18 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 14.9: Mean Weight by BMI Category Among Adults
+Aged 18 Years and Above in Malaysia
+192
+194
+198
+202
+203
+Table 15.1: Nutritional Status (Children Under 5 Years of
+Age) Trend in Malaysia
+Table 15.2: Nutritional Status (Children 5 – 17 Years of Age)
+Trend in Malaysia
+Table 15.3: Prevalence of Nutritional Status Among
+Children Below 5 Years Old in Malaysia
+Table 15.4: Prevalence of Nutritional Status Among
+Children Aged 5-17 Years Old in Malaysia
+Table 15.5: Prevalence of Weight-for-Age Among Children
+Below 5 Years Old in Malaysia by Socio-Demographic
+Characteristics
+Table 15.6: Prevalence of Height-for-Age Among Children
+Below 5 Years Old in Malaysia by Socio-Demographic
+Characteristics
+Table 15.7: Prevalence of Weight-for-Height Among
+Children Below 5 Years Old in Malaysia by Socio-
+Demographic Characteristics
+Table 15.8: Prevalence of BMI-for-Age Among Children
+Below 5 Years Old in Malaysia by Socio-Demographic
+Characteristics
+Table 15.9: Prevalence of Weight-for-Age Among Children
+Aged 5-10 Years Old in Malaysia by Socio-Demographic
+Characteristics
+Table 15.10: Prevalence of Height-for-Age Among Children
+Aged 5-17 Years Old in Malaysia by Socio-Demographic
+Characteristics
+Table 15.11: Prevalence of BMI-for-Age Among Children
+Aged 5-17 Years Old in Malaysia by Socio-Demographic
+Characteristics
+207
+209
+209
+210
+210
+212
+214
+216
+218
+220
+222
+Table 16.1: Mental Health (Children) Trend in Malaysia
+Table 16.2: Prevalence of Mental Health Problems
+Among Children Aged 5 - 15 Years in Malaysia by Socio-
+Demographic Characteristics
+Table 16.3: Prevalence of Emotional Health Problems
+Among Children Aged 5 - 15 Years in Malaysia by Socio-
+Demographic Characteristics
+227
+228
+229
+Table 16.4: Prevalence of Conduct Problems Among
+Children Aged 5 - 15 Years in Malaysia by Socio-
+Demographic Characteristics
+Table 16.5: Prevalence of Hyperactivity Problems
+Among Children Aged 5 -15 years in Malaysia by Socio-
+Demographic Characteristics
+Table 16.6: Prevalence of Peer Problems Among Children
+Aged 5 - 15 Years in Malaysia by Socio-Demographic
+Characteristics
+Table 16.7: Prevalence of Pro-Social Skills Among Children
+Aged 5 - 15 Years in Malaysia by Socio-Demographic
+Characteristics
+230
+231
+232
+233
+Table 17.1: Disability (Adult) Trend in Malaysia
+Table 17.2: Prevalence of Overall Difficulty Among
+Adults Aged 18 Years and Above in Malaysia by Socio-
+Demographic Characteristics
+Table 17.3: Prevalence of Difficulty by Domains Among
+Adults Aged 18 Years and Above in Malaysia by Socio-
+Demographic Characteristics
+Table 17.4: Prevalence of Overall Disability Among
+Adults Aged 18 Years and Above in Malaysia by Socio-
+Demographic Characteristics
+Table 17.5: Use of Assistive Device Among Adults with
+Overall Difficulty Aged 18 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+238
+239
+240
+244
+245
+Table 18.1: Prevalence of Overall Functional Difficulty (At
+Least One Domain) Among Children Aged 2-17 Years in
+Malaysia by Socio-Demographic Characteristics
+Table 18.2: Prevalence of Use of Assistive Devices Among
+Children Aged 2-17 Years in Malaysia
+250
+250
+Table 19.1: Prevalence of Suspected Epilepsy (Preliminary
+Results Based on Initial Screening) in Malaysia by Socio-
+Demographic Characteristics
+254
+Table 20.1: Prevalence of Depression Among Adults Aged
+18 Years and Above in Malaysia by Socio-Demographic
+Characteristics
+258
+Table 21.1: Prevalence of Total Health Literacy Level
+Among Adults Aged 18 Years and Above in Malaysia by
+Socio-Demographic Characteristics
+Table 21.2: Prevalence of Health Literacy Level for
+Healthcare Domain Among Adults Aged 18 Years and
+Above in Malaysia by Socio-Demographic Characteristics
+Table 21.3: Prevalence of Health Literacy Level for Disease
+Prevention Domain Among Adults Aged 18 Years and
+Above in Malaysia by Socio-Demographic Characteristics
+Table 21.4: Prevalence of Health Literacy Level for Health
+Promotion Domain Among Adults Aged 18 Years and
+Above in Malaysia by Socio-Demographic Characteristics
+264
+268
+272
+276
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+032
+Table 4.2: Prevalence of Overall Raised Blood Glucose Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics
+(n=10,464)
+Sociodemographic
+Characteristics
+Overall Raised Blood Glucose Male
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+MALAYSIA 2,629 3,891,965 18.3 17.08 19.58 1,191 1,991,247 18.2 16.63 19.90
+State
+Johor 217 477,575 19.7 15.92 24.16 95 259,559 20.5 15.12 27.28
+Kedah 159 319,229 24.9 20.71 29.58 79 163,414 24.9 19.50 31.25
+Kelantan 147 219,012 19.5 15.37 24.54 59 94,306 17.1 12.41 23.15
+Melaka 151 101,214 17.0 12.48 22.64 67 46,708 16.4 9.96 25.92
+Negeri Sembilan 235 234,203 33.2 25.06 42.54 108 124,986 35.1 25.54 46.06
+Pahang 196 262,249 25.7 21.11 30.99 95 131,636 24.7 19.03 31.37
+Pulau Pinang 178 228,349 18.2 12.48 25.76 84 131,655 20.5 13.33 30.29
+Perak 128 272,611 17.6 14.14 21.77 59 163,927 20.8 15.18 27.79
+Perlis 221 52,184 32.6 25.97 40.09 84 20,453 26.4 19.36 34.80
+Selangor 264 824,168 18.0 14.81 21.67 115 407,918 17.0 13.50 21.19
+Terengganu 178 152,036 20.5 16.99 24.60 77 69,322 18.6 13.82 24.52
+Sabah 121 252,422 9.8 7.40 12.91 58 131,803 9.7 6.57 14.10
+Sarawak 124 242,395 13.1 10.58 16.13 57 124,646 13.2 9.77 17.60
+WP Kuala Lumpur 120 233,230 18.0 13.88 22.91 54 110,225 16.9 11.75 23.69
+WP Labuan 69 7,992 12.6 8.57 18.19 33 4,147 13.2 8.88 19.11
+WP Putrajaya 121 13,095 22.9 18.80 27.54 67 6,544 25.8 19.22 33.77
+Location
+Urban 1,519 3,036,491 18.3 16.83 19.84 698 1,572,736 18.5 16.57 20.52
+Rural 1,110 855,474 18.3 16.48 20.36 493 418,511 17.3 14.89 20.02
+Age Group
+18-19 24 38,232 4.3 2.48 7.42 13 19,181 3.9* 1.85 8.06
+20-24 50 155,085 5.4 3.66 7.91 25 97,686 6.5 3.59 11.57
+25-29 71 203,573 6.8 4.80 9.53 38 119,216 7.5 4.75 11.70
+30-34 132 300,307 11.3 8.55 14.76 61 146,749 10.4 7.21 14.76
+35-39 161 288,418 12.2 9.73 15.11 79 168,417 13.8 10.15 18.47
+40-44 186 316,161 17.3 14.28 20.69 89 154,943 16.1 12.18 20.86
+45-49 248 410,130 24.7 20.81 29.00 100 199,236 24.2 18.54 30.87
+50-54 330 467,184 30.4 26.41 34.78 154 235,039 31.0 25.27 37.34
+55-59 365 418,253 31.3 26.88 36.04 167 218,454 32.5 26.20 39.46
+60-64 359 468,937 42.4 37.18 47.78 143 222,537 40.5 33.16 48.30
+65-69 289 349,022 43.4 37.37 49.65 124 182,846 46.5 37.71 55.54
+70-74 204 223,736 40.6 34.99 46.57 97 113,076 43.7 35.77 52.01
+75 & above 210 252,927 38.4 33.15 44.02 101 113,868 37.0 29.12 45.61
+Ethnicity
+Malaya 1,868 2,346,041 21.6 20.02 23.17 817 1,120,888 20.7 18.67 22.82
+Chinese 276 689,024 15.1 12.52 18.08 154 421,065 17.9 14.22 22.39
+Indian 250 389,730 31.4 25.85 37.53 117 196,881 33.1 26.17 40.86
+Bumiputera Sabah 90 153,066 11.2 7.90 15.54 38 69,427 10.2 6.26 16.15
+Bumiputera Sarawak 70 116,887 12.3 8.88 16.68 30 55,497 11.4 7.37 17.35
+Others 75 197,216 8.8 6.21 12.21 35 127,490 9.1 5.53 14.55
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+034
+Table 4.2: Prevalence of Overall Raised Blood Glucose Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics
+(n=10,464) (cont’d)
+Sociodemographic
+Characteristics
+Overall Raised Blood Glucose Male
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+Marital Status
+Single 195 467,040 7.7 6.27 9.53 112 303,274 8.2 6.25 10.68
+Married 1,975 2,923,144 21.3 19.74 22.94 1,002 1,592,385 23.0 20.93 25.26
+Widow(er)/Divorcee 459 501,781 33.2 29.27 37.30 77 95,588 30.1 22.03 39.57
+Education Level
+No Formal Education 231 311,796 28.7 23.10 34.94 54 99,792 24.3 15.47 36.01
+Primary Education 795 981,513 23.9 21.14 26.98 347 489,715 21.8 18.15 26.03
+Secondary Education 1,196 1,874,850 18.1 16.59 19.77 579 986,825 18.0 15.95 20.27
+Tertiary Education 399 710,280 12.7 10.76 14.85 206 411,035 15.1 12.20 18.59
+Occupation
+Government Employee 223 271,526 17.4 14.01 21.29 131 171,007 20.2 15.47 25.95
+Private Employee 484 1,044,006 12.7 11.06 14.59 320 708,844 13.5 11.45 15.78
+Self Employed 459 634,186 17.1 14.84 19.73 296 431,411 16.7 13.92 19.95
+Unpaid Worker/Homemaker 580 752,145 21.1 18.83 23.60 28 58,460 35.1* 17.50 57.97
+Retiree 232 364,022 45.8 40.26 51.37 167 286,117 49.3 42.38 56.26
+Student 22 39,419 5.4 3.06 9.21 12 23,579 7.5* 3.40 15.54
+Not Workingb 627 783,431 29.1 26.46 31.84 235 308,600 26.3 22.56 30.47
+Household Income Group
+Less than RM 1,000 344 434,946 25.4 21.80 29.29 114 165,146 24.2 18.46 30.95
+RM 1,000 - RM 1,999 552 756,067 18.5 16.16 21.10 231 359,988 16.4 13.39 19.90
+RM 2,000 - RM 3,999 747 1,120,606 17.5 15.38 19.95 369 624,868 17.9 15.01 21.20
+RM 4,000 - RM 5,999 360 536,658 16.1 13.59 18.99 185 297,858 16.6 13.43 20.29
+RM 6,000 - RM 7,999 202 385,450 19.7 16.05 23.83 99 212,968 20.4 15.49 26.45
+RM 8,000 - RM 9,999 82 146,052 16.3 11.47 22.55 39 68,602 15.1 9.84 22.36
+RM 10,000 and above 136 219,704 13.7 10.44 17.66 76 140,398 15.6 11.53 20.74
+Household Income Quintile
+Quintile 1 663 875,284 23.0 20.48 25.83 241 374,777 21.5 17.84 25.65
+Quintile 2 485 698,828 17.2 14.73 20.05 230 371,151 16.1 12.76 20.06
+Quintile 3 457 657,388 16.5 14.11 19.21 222 353,169 16.6 13.31 20.54
+Quintile 4 398 616,776 16.8 14.29 19.57 206 348,763 17.5 14.34 21.26
+Quintile 5 420 751,206 16.8 14.37 19.57 214 421,969 17.6 14.37 21.36
+Household Income Category
+Bottom 40% 1,729 2,406,324 18.5 17.02 20.10 761 1,185,576 17.4 15.43 19.66
+Middle 40% 536 910,352 17.6 15.37 20.17 266 503,301 18.4 15.33 21.87
+Top 20% 158 282,806 15.5 12.33 19.27 86 180,952 17.6 13.84 22.01
+*Prevalence with high RSE, interpret with caution
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+036
+Table 4.3: Prevalence of Known Diabetes Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics (n=10,464)
+Sociodemographic
+Characteristics
+Known Diabetes Male
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+MALAYSIA 1,403 1,999,450 9.4 8.66 10.20 607 986,574 9.0 8.01 10.15
+State
+Johor 114 211,468 8.7 7.05 10.77 40 90,575 7.2 5.05 10.09
+Kedah 79 165,203 12.9 10.20 16.12 45 89,698 13.7 9.85 18.68
+Kelantan 83 108,518 9.7 8.10 11.55 30 36,182 6.6 4.49 9.51
+Melaka 107 81,897 13.7 10.10 18.38 46 40,218 14.2 8.26 23.20
+Negeri Sembilan 114 89,439 12.7 9.63 16.54 47 41,239 11.6 8.03 16.44
+Pahang 78 97,036 9.5 7.05 12.76 38 52,238 9.8 6.28 14.97
+Pulau Pinang 66 110,854 8.8 5.37 14.19 31 67,488 10.5 6.13 17.51
+Perak 108 235,785 15.2 12.12 19.00 48 141,118 17.9 12.41 25.10
+Perlis 107 21,502 13.5 10.80 16.64 35 6,887 8.9 5.83 13.29
+Selangor 153 408,113 8.9 6.98 11.29 67 200,838 8.4 6.09 11.40
+Terengganu 92 77,506 10.5 8.11 13.41 36 33,424 9.0 5.82 13.55
+Sabah 56 105,240 4.1 2.51 6.60 25 53,625 3.9* 2.14 7.16
+Sarawak 75 141,915 7.7 6.15 9.55 31 62,251 6.6 4.86 8.88
+WP Kuala Lumpur 75 133,647 10.3 7.91 13.29 35 64,600 9.9 6.74 14.32
+WP Labuan 43 5,214 8.2 5.25 12.66 23 2,843 9.0 6.22 12.94
+WP Putrajaya 53 6,110 10.7 8.20 13.78 30 3,350 13.2 8.95 19.11
+Location
+Urban 860 1,617,782 9.7 8.83 10.74 388 822,189 9.7 8.40 11.07
+Rural 543 381,668 8.2 7.27 9.19 219 164,385 6.8 5.63 8.18
+Age Group
+18-19 0 - - - - 0 - - - -
+20-24 6 16,470 0.6* 0.20 1.60 2 4,392 0.3* 0.05 1.89
+25-29 10 24,019 0.8* 0.33 1.94 3 7,392 0.5* 0.12 1.86
+30-34 29 51,697 1.9 1.13 3.33 10 12,187 0.9* 0.4 2.1
+35-39 46 107,435 4.5 3.04 6.71 22 63,887 5.2 2.9 9.3
+40-44 71 117,413 6.4 4.74 8.60 31 58,870 6.1 3.87 9.47
+45-49 103 174,400 10.5 7.84 13.91 43 89,679 10.9 7.29 15.93
+50-54 170 287,593 18.7 15.42 22.56 77 146,659 19.3 14.52 25.27
+55-59 223 271,943 20.3 16.96 24.19 102 144,330 21.5 16.64 27.22
+60-64 252 325,535 29.4 24.86 34.45 98 154,781 28.2 21.15 36.45
+65-69 210 275,763 34.3 28.59 40.50 85 138,756 35.3 26.90 44.70
+70-74 138 158,703 28.8 23.65 34.65 63 76,504 29.6 22.17 38.25
+75 & above 145 188,480 28.6 23.86 33.97 71 89,137 29.0 21.68 37.50
+Ethnicity
+Malaya 971 1,196,386 11.0 10.10 11.95 397 547,881 10.1 8.85 11.51
+Chinese 163 387,092 8.5 6.69 10.69 93 242,750 10.3 7.66 13.83
+Indian 157 229,152 18.5 15.12 22.34 73 113,792 19.1 14.50 24.82
+Bumiputera Sabah 46 64,951 4.7 2.46 8.93 21 32,627 4.8 2.02 10.92
+Bumiputera Sarawak 42 75,829 7.9 5.24 11.89 18 35,039 7.2 4.30 11.89
+Others 24 46,040 2.0 1.19 3.48 5 14,483 1.0 0.39 2.70
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+038
+Table 4.3: Prevalence of Known Diabetes Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics (n=10,464) (cont’d)
+Sociodemographic
+Characteristics
+Known Diabetes Male
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+Marital Status
+Single 43 93,130 1.5 0.98 2.43 22 49,693 1.3 0.80 2.23
+Married 1,071 1,590,721 11.6 10.60 12.66 544 878,346 12.7 11.23 14.33
+Widow(er)/Divorcee 289 315,599 20.9 17.99 24.05 41 58,534 18.4 11.91 27.38
+Education Level
+No Formal Education 145 196,035 18.0 13.84 23.12 28 53,025 12.9 7.32 21.77
+Primary Education 478 571,624 13.9 11.93 16.22 200 268,803 12.0 9.22 15.43
+Secondary Education 588 903,413 8.7 7.77 9.80 276 468,380 8.5 7.24 10.07
+Tertiary Education 187 315,734 5.6 4.49 7.04 101 193,371 7.1 5.30 9.48
+Occupation
+Government Employee 98 128,700 8.2 6.03 11.12 58 81,941 9.7 6.43 14.32
+Private Employee 181 364,666 4.4 3.60 5.47 123 245,114 4.7 3.63 5.96
+Self Employed 200 280,526 7.6 6.23 9.20 131 193,906 7.5 5.83 9.64
+Unpaid Worker/Homemaker 321 418,443 11.7 9.92 13.87 15 43,817 26.3* 10.62 51.76
+Retiree 162 261,626 32.9 27.32 38.98 113 198,315 34.2 27.40 41.67
+Student 2 6,146 0.8 0.2 3.7 2 6,146 1.9* 0.43 8.26
+Not Workingb 438 537,965 20.0 17.76 22.38 164 215,956 18.4 15.16 22.20
+Household Income Group
+Less than RM 1,000 205 268,356 15.6 12.80 18.99 67 109,345 16.0 10.96 22.76
+RM 1,000 - RM 1,999 286 377,866 9.2 7.75 11.00 115 166,676 7.6 5.77 9.92
+RM 2,000 - RM 3,999 391 543,101 8.5 7.21 10.01 179 283,280 8.1 6.37 10.29
+RM 4,000 - RM 5,999 167 233,787 7.0 5.54 8.85 83 123,028 6.8 5.01 9.28
+RM 6,000 - RM 7,999 105 200,952 10.2 7.66 13.57 48 111,391 10.7 7.52 14.97
+RM 8,000 - RM 9,999 38 69,358 7.7 4.81 12.18 16 41,873 9.2 5.27 15.54
+RM 10,000 and above 68 95,925 6.0 3.91 8.98 37 55,294 6.1 3.70 10.03
+Household Income Quintile
+Quintile 1 367 482,336 12.7 10.88 14.77 125 198,494 11.4 8.70 14.75
+Quintile 2 255 334,124 8.2 6.74 10.02 111 154,607 6.7 4.91 9.07
+Quintile 3 239 331,562 8.3 6.74 10.23 113 179,593 8.4 6.13 11.52
+Quintile 4 188 275,089 7.5 5.88 9.46 95 149,635 7.5 5.54 10.13
+Quintile 5 211 366,235 8.2 6.61 10.12 101 208,557 8.7 6.62 11.35
+Household Income Category
+Bottom 40% 915 1,196,718 9.2 8.33 10.17 376 546,212 8.0 6.88 9.36
+Middle 40% 266 462,053 9.0 7.31 10.93 134 272,725 10.0 7.70 12.78
+Top 20% 79 130,575 7.1 4.99 10.15 35 71,950 7.0 4.54 10.59
+*Prevalence with high RSE, interpret with caution
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+044
+Table 4.5: Prevalence of Overall Raised Blood Pressure Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics
+(n=10,463)
+Sociodemographic
+Characteristics
+Overall Raised Blood Pressure Male
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+MALAYSIA 4,056 6,382,865 30.0 28.57 31.50 1,823 3,315,008 30.3 28.22 32.50
+State
+Johor 327 662,983 27.4 23.25 31.92 134 335,081 26.5 21.10 32.75
+Kedah 196 362,563 28.3 23.52 33.53 95 182,245 27.8 21.90 34.56
+Kelantan 274 415,624 37.1 33.26 41.11 108 182,038 33.0 28.55 37.88
+Melaka 271 191,255 32.1 28.27 36.09 114 77,174 27.2 20.14 35.53
+Negeri Sembilan 229 222,546 31.6 26.65 36.95 91 109,135 30.7 23.79 38.51
+Pahang 229 303,347 29.9 25.07 35.13 115 163,133 30.7 24.17 38.19
+Pulau Pinang 225 314,504 25.1 19.04 32.24 109 181,098 28.3 19.19 39.52
+Perak 276 548,853 35.5 30.14 41.23 112 264,746 33.6 26.11 41.96
+Perlis 226 47,794 29.9 25.87 34.26 91 22,290 28.7 24.41 33.47
+Selangor 417 1,269,300 27.7 24.11 31.60 197 692,073 28.8 23.15 35.29
+Terengganu 257 250,881 33.9 30.31 37.66 111 124,127 33.3 28.60 38.30
+Sabah 314 653,566 25.4 20.94 30.46 144 349,453 25.7 19.76 32.73
+Sarawak 340 749,251 40.5 35.54 45.72 158 417,259 44.2 38.20 50.34
+WP Kuala Lumpur 185 358,004 27.6 23.10 32.54 91 197,963 30.3 23.94 37.60
+WP Labuan 170 18,239 28.8 24.20 33.85 89 10,018 31.8 25.58 38.81
+WP Putrajaya 120 14,154 24.7 20.61 29.36 64 7,177 28.3 22.71 34.71
+Location
+Urban 2,316 4,854,219 29.2 27.57 30.97 1,071 2,582,271 30.3 27.83 32.94
+Rural 1,740 1,528,646 32.8 30.03 35.63 752 732,737 30.3 26.87 33.95
+Age Group
+18-19 18 60,095 6.8* 3.33 13.35 15 51,211 10.4* 4.65 21.78
+20-24 71 162,822 5.7 4.09 7.82 50 129,177 8.7 5.98 12.36
+25-29 98 304,754 10.2 7.69 13.34 63 224,104 14.1 10.00 19.60
+30-34 163 426,074 16.0 13.02 19.54 92 255,293 18.1 13.60 23.62
+35-39 230 523,693 22.1 18.84 25.72 119 312,024 25.6 20.88 30.86
+40-44 265 525,172 28.7 24.72 32.96 116 264,141 27.4 21.72 33.84
+45-49 383 677,854 40.8 35.84 45.93 158 340,751 41.3 34.06 49.03
+50-54 473 717,053 46.7 42.06 51.41 205 333,317 43.9 37.51 50.58
+55-59 560 741,478 55.5 50.74 60.06 237 369,010 54.9 48.27 61.28
+60-64 567 725,754 65.6 61.36 69.63 234 351,633 64.0 56.70 70.70
+65-69 455 558,702 69.5 63.59 74.82 185 239,496 60.9 51.64 69.48
+70-74 360 422,048 76.7 70.36 82.00 161 201,365 77.9 69.17 84.65
+75 & above 413 537,366 81.7 77.03 85.55 188 243,488 79.1 71.39 85.14
+Ethnicity
+Malaya 2,655 3,507,041 32.2 30.58 33.92 1,154 1,729,178 31.9 29.82 34.04
+Chinese 534 1,282,726 28.1 24.51 31.99 275 709,193 30.2 24.31 36.88
+Indian 261 379,677 30.6 25.73 35.91 121 191,639 32.2 25.25 40.10
+Bumiputera Sabah 249 424,839 31.0 25.19 37.40 117 225,120 33.0 24.55 42.76
+Bumiputera Sarawak 208 446,833 46.8 39.65 54.16 91 249,445 51.4 43.11 59.67
+Others 149 341,749 15.2 11.29 20.09 65 210,434 15.0 9.74 22.36
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+046
+Table 4.5: Prevalence of Overall Raised Blood Pressure Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics
+(n=10,463) (cont’d)
+Sociodemographic
+Characteristics
+Overall Raised Blood Pressure Male
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+Marital Status
+Single 342 814,816 13.5 11.55 15.76 227 619,904 16.8 13.76 20.26
+Married 2,950 4,621,633 33.7 31.81 35.59 1,471 2,504,476 36.2 33.56 38.95
+Widow(er)/Divorcee 764 946,416 62.5 57.83 67.04 125 190,629 60.0 49.06 69.99
+Education Level
+No Formal Education 404 529,950 48.7 40.90 56.58 86 137,060 33.4 23.13 45.47
+Primary Education 1,345 1,812,266 44.2 40.15 48.33 564 870,059 38.8 33.37 44.51
+Secondary Education 1,752 3,036,298 29.4 27.65 31.12 843 1,621,265 29.6 27.17 32.16
+Tertiary Education 540 974,917 17.4 15.08 19.94 321 666,942 24.5 20.62 28.92
+Occupation
+Government Employee 308 460,708 29.4 25.35 33.89 188 311,106 36.8 31.06 42.86
+Private Employee 702 1,544,023 18.8 16.84 20.96 493 1,162,677 22.1 19.30 25.16
+Self Employed 715 1,136,018 30.7 27.48 34.20 452 753,238 29.2 25.01 33.80
+Unpaid Worker/Homemaker 922 1,236,244 34.7 31.63 37.93 32 78,884 47.4 27.51 68.10
+Retiree 351 532,236 66.9 60.44 72.79 256 392,291 67.6 59.73 74.60
+Student 18 37,306 5.1* 2.69 9.34 12 25,456 8.0* 3.58 17.07
+Not Workingb 1,038 1,433,673 53.2 49.48 56.91 388 588,697 50.2 44.80 55.63
+Household Income Group
+Less than RM 1,000 595 837,205 48.8 43.82 53.85 218 324,945 47.5 40.59 54.58
+RM 1,000 - RM 1,999 882 1,247,594 30.5 27.48 33.77 385 626,545 28.5 24.57 32.83
+RM 2,000 - RM 3,999 1,105 1,795,296 28.1 25.76 30.59 532 1,019,507 29.2 25.94 32.70
+RM 4,000 - RM 5,999 485 787,573 23.7 20.79 26.78 234 432,875 24.1 20.25 28.48
+RM 6,000 - RM 7,999 268 508,634 25.9 22.15 30.11 137 306,700 29.4 23.04 36.72
+RM 8,000 - RM 9,999 121 220,230 24.5 18.07 32.38 66 133,100 29.2 20.47 39.82
+RM 10,000 and above 221 379,995 23.6 18.11 30.16 124 237,257 26.3 17.54 37.56
+Household Income Quintile
+Quintile 1 1,098 1,532,914 40.4 36.82 44.00 433 664,832 38.1 33.65 42.80
+Quintile 2 756 1,114,026 27.5 24.38 30.77 342 596,810 25.9 21.88 30.27
+Quintile 3 668 1,107,380 27.8 24.90 30.89 329 627,520 29.5 25.29 34.12
+Quintile 4 545 913,347 24.8 22.06 27.85 265 514,710 25.9 22.06 30.15
+Quintile 5 610 1,108,859 24.8 21.90 27.97 327 677,057 28.2 23.60 33.36
+Household Income Category
+Bottom 40% 2,694 3,999,606 30.8 28.97 32.61 1,198 2,034,112 29.9 27.53 32.44
+Middle 40% 739 1,361,608 26.4 24.02 28.93 365 801,564 29.3 25.49 33.40
+Top 20% 244 415,313 22.7 18.10 28.16 133 245,252 23.8 17.86 30.96
+*Prevalence with high RSE, interpret with caution
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+048
+Table 4.6: Prevalence of Known Hypertension Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics (n=10,463)
+Sociodemographic
+Characteristics
+Known Hypertension Male
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+MALAYSIA 2,394 3,378,796 15.9 14.79 17.05 965 1,541,569 14.1 12.74 15.58
+State
+Johor 201 359,725 14.9 11.90 18.38 71 143,978 11.4 8.84 14.58
+Kedah 131 238,007 18.6 14.14 23.96 62 108,862 16.6 11.64 23.11
+Kelantan 137 176,320 15.7 12.58 19.51 46 60,710 11.0 7.95 15.08
+Melaka 173 111,916 18.8 15.63 22.34 72 45,089 15.9 11.00 22.36
+Negeri Sembilan 166 139,558 19.8 14.58 26.31 54 50,064 14.1 8.52 22.34
+Pahang 123 154,826 15.2 11.88 19.34 56 77,485 14.6 10.10 20.65
+Pulau Pinang 143 200,588 16.0 11.20 22.31 59 101,738 15.9 10.50 23.29
+Perak 168 351,031 22.7 16.74 30.02 62 151,332 19.2 12.12 29.01
+Perlis 149 28,292 17.7 14.43 21.52 47 10,223 13.2 9.05 18.79
+Selangor 219 582,509 12.7 10.61 15.16 98 301,635 12.6 9.80 15.99
+Terengganu 124 110,687 15.0 11.41 19.35 44 43,990 11.8 7.51 18.03
+Sabah 188 345,837 13.4 10.44 17.14 81 173,598 12.8 8.62 18.53
+Sarawak 190 361,448 19.6 16.07 23.58 77 165,118 17.5 13.48 22.37
+WP Kuala Lumpur 122 199,927 15.4 12.54 18.77 56 98,696 15.1 11.03 20.39
+WP Labuan 95 10,290 16.2 12.85 20.32 46 5,269 16.7 12.45 22.14
+WP Putrajaya 65 7,836 13.7 10.42 17.78 34 3,782 14.9 10.61 20.60
+Location
+Urban 1,358 2,574,453 15.5 14.21 16.89 565 1,210,622 14.2 12.61 16.00
+Rural 1,036 804,343 17.2 15.37 19.29 400 330,948 13.7 11.48 16.23
+Age Group
+18-19 1 1,317 0.2* 0.02 1.06 0 - - - -
+20-24 13 30,704 1.1* 0.50 2.28 9 24,694 1.7* 0.71 3.78
+25-29 19 43,315 1.5 0.83 2.51 14 30,363 1.9* 1.02 3.57
+30-34 37 77,124 2.9 1.88 4.45 15 34,927 2.5* 1.22 4.93
+35-39 72 163,408 6.9 5.01 9.42 35 89,886 7.4 4.65 11.46
+40-44 112 206,794 11.3 8.81 14.35 47 106,261 11.0 7.24 16.39
+45-49 176 302,126 18.2 14.92 21.97 64 135,179 16.4 11.99 22.03
+50-54 263 404,514 26.4 22.70 30.36 100 165,169 21.8 16.86 27.63
+55-59 360 468,347 35.0 30.95 39.32 143 221,368 32.9 27.27 39.08
+60-64 395 479,014 43.3 38.71 48.02 153 226,422 41.2 33.63 49.23
+65-69 357 444,236 55.3 49.37 61.00 137 179,947 45.8 37.95 53.80
+70-74 270 330,566 60.1 53.31 66.45 111 142,041 54.9 45.59 63.92
+75 & above 319 427,332 65.0 59.27 70.23 137 185,315 60.2 51.59 68.21
+Ethnicity
+Malaya 1,548 1,804,092 16.6 15.35 17.88 585 758,222 14.0 12.55 15.56
+Chinese 359 812,444 17.8 14.83 21.21 180 429,043 18.3 14.45 22.86
+Indian 178 242,935 19.6 16.16 23.50 79 117,994 19.8 15.36 25.24
+Bumiputera Sabah 142 234,432 17.1 13.43 21.50 60 120,723 17.7 12.34 24.75
+Bumiputera Sarawak 115 203,336 21.3 16.28 27.40 45 87,986 18.1 12.43 25.70
+Others 52 81,558 3.6 2.36 5.51 16 27,600 1.2* 0.85 4.49
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+050
+Table 4.6: Prevalence of Known Hypertension Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics (n=10,463) (cont’d)
+Sociodemographic
+Characteristics
+Known Hypertension Male
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+Marital Status
+Single 101 185,321 3.1 2.34 4.03 54 114,529 3.1 2.18 4.38
+Married 1,739 2,507,704 18.3 16.77 19.88 835 1,304,062 18.9 16.84 21.05
+Widow(er)/Divorcee 554 685,771 45.3 41.12 49.59 76 122,978 38.7 29.02 49.35
+Education Level
+No Formal Education 293 371,015 34.1 27.83 40.98 53 77,031 18.8 11.86 28.36
+Primary Education 873 1,095,106 26.7 23.72 29.92 339 464,603 20.7 17.22 24.71
+Secondary Education 952 1,472,233 14.2 12.93 15.64 409 718,390 13.1 11.34 15.13
+Tertiary Education 270 431,592 7.7 6.26 9.42 161 276,766 10.2 7.98 12.91
+Occupation
+Government Employee 146 204,366 13.1 10.17 16.62 88 126,212 14.9 10.91 20.06
+Private Employee 297 542,916 6.6 5.60 7.80 193 358,396 6.8 5.55 8.33
+Self Employed 340 482,914 13.1 11.18 15.21 218 335,845 13.0 10.63 15.87
+Unpaid Worker/Homemaker 576 707,317 19.9 17.54 22.40 22 55,527 33.3* 16.05 56.68
+Retiree 259 384,603 48.3 41.90 54.85 176 262,653 45.3 38.06 52.67
+Student 18 37,306 5.1* 2.69 9.34 12 25,456 8.0* 3.58 17.07
+Not Workingb 1,038 1,433,673 53.2 49.48 56.91 388 588,697 50.2 44.80 55.63
+Household Income Group
+Less than RM 1,000 595 837,205 48.8 43.82 53.85 218 324,945 47.5 40.59 54.58
+RM 1,000 - RM 1,999 882 1,247,594 30.5 27.48 33.77 385 626,545 28.5 24.57 32.83
+RM 2,000 - RM 3,999 1,105 1,795,296 28.1 25.76 30.59 532 1,019,507 29.2 25.94 32.70
+RM 4,000 - RM 5,999 485 787,573 23.7 20.79 26.78 234 432,875 24.1 20.25 28.48
+RM 6,000 - RM 7,999 268 508,634 25.9 22.15 30.11 137 306,700 29.4 23.04 36.72
+RM 8,000 - RM 9,999 121 220,230 24.5 18.07 32.38 66 133,100 29.2 20.47 39.82
+RM 10,000 and above 221 379,995 23.6 18.11 30.16 124 237,257 26.3 17.54 37.56
+Household Income Quintile
+Quintile 1 1,098 1,532,914 40.4 36.82 44.00 433 664,832 38.1 33.65 42.80
+Quintile 2 756 1,114,026 27.5 24.38 30.77 342 596,810 25.9 21.88 30.27
+Quintile 3 668 1,107,380 27.8 24.90 30.89 329 627,520 29.5 25.29 34.12
+Quintile 4 545 913,347 24.8 22.06 27.85 265 514,710 25.9 22.06 30.15
+Quintile 5 610 1,108,859 24.8 21.90 27.97 327 677,057 28.2 23.60 33.36
+Household Income Category
+Bottom 40% 2,694 3,999,606 30.8 28.97 32.61 1,198 2,034,112 29.9 27.53 32.44
+Middle 40% 739 1,361,608 26.4 24.02 28.93 365 801,564 29.3 25.49 33.40
+Top 20% 244 415,313 22.7 18.10 28.16 133 245,252 23.8 17.86 30.96
+*Prevalence with high RSE, interpret with caution
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+056
+Table 4.8: Prevalence of Overall Raised Blood Cholesterol Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics
+(n=10,466)
+Sociodemographic
+Characteristics
+Overall Raised Blood Cholesterol Male
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+MALAYSIA 4,809 8,097,170 38.1 36.15 40.00 1,860 3,501,615 32.0 29.73 34.36
+State
+Johor 307 701,750 28.9 23.40 35.08 100 267,263 21.0 15.87 27.34
+Kedah 306 628,508 48.9 40.66 57.22 134 277,568 42.3 33.55 51.60
+Kelantan 326 572,470 51.1 44.58 57.58 119 245,482 44.6 34.75 54.83
+Melaka 290 237,087 39.7 31.34 48.79 106 106,563 37.5 28.14 47.90
+Negeri Sembilan 288 340,342 48.3 41.27 55.37 104 144,036 40.5 30.30 51.52
+Pahang 290 410,824 40.3 35.12 45.76 111 169,768 31.8 24.52 40.17
+Pulau Pinang 319 525,070 41.8 33.85 50.30 126 231,674 36.2 26.41 47.18
+Perak 313 714,671 46.2 39.02 53.58 118 311,085 39.4 30.15 49.58
+Perlis 306 75,386 47.2 39.54 54.91 118 34,407 44.3 33.70 55.53
+Selangor 482 1,637,703 35.7 30.89 40.90 202 751,336 31.3 25.59 37.67
+Terengganu 298 302,973 40.9 35.61 46.46 107 122,341 32.8 27.33 38.76
+Sabah 336 768,392 29.9 25.48 34.66 117 295,120 21.7 17.13 27.12
+Sarawak 319 664,065 35.9 30.22 42.04 127 314,668 33.3 25.08 42.72
+WP Kuala Lumpur 229 473,337 36.4 29.19 44.39 94 212,265 32.5 26.79 38.85
+WP Labuan 168 18,738 29.6 25.58 33.91 71 8,008 25.4 20.03 31.75
+WP Putrajaya 232 25,855 45.3 39.42 51.22 106 10,030 39.6 33.07 46.50
+Location
+Urban 2,870 6,315,713 38.0 35.71 40.39 1,128 2,732,778 32.1 29.32 34.93
+Rural 1,939 1,781,457 38.2 35.47 40.95 732 768,837 31.8 28.40 35.38
+Age Group
+18-19 43 121,415 13.6 9.25 19.58 15 42,450 8.5* 4.59 15.33
+20-24 179 485,017 16.9 13.78 20.54 58 185,129 12.4 8.77 17.18
+25-29 227 658,806 22.0 18.45 25.99 99 308,448 19.5 14.90 24.99
+30-34 308 742,225 27.9 23.43 32.85 118 299,721 21.2 16.25 27.22
+35-39 373 796,221 33.6 29.28 38.18 155 347,941 28.5 23.19 34.46
+40-44 391 804,458 43.9 39.03 48.89 152 390,588 40.5 33.99 47.29
+45-49 489 829,036 49.9 44.72 55.00 187 368,130 44.7 37.12 52.47
+50-54 592 921,120 60.0 55.22 64.59 234 392,994 51.8 45.40 58.15
+55-59 633 842,962 63.0 58.36 67.39 245 390,502 58.1 50.58 65.18
+60-64 544 694,474 62.8 57.75 67.55 196 295,144 53.7 46.31 60.96
+65-69 433 495,042 61.6 54.95 67.79 166 201,437 51.2 42.39 60.01
+70-74 301 348,726 63.4 56.57 69.65 118 138,555 53.6 44.69 62.24
+75 & above 296 357,669 54.4 47.54 61.02 117 140,575 45.7 36.73 54.88
+Ethnicity
+Malaya 3,319 4,736,501 43.5 41.46 45.57 1,293 2,062,786 38.0 35.34 40.80
+Chinese 584 1,605,094 35.1 30.39 40.14 226 645,486 27.4 22.47 33.01
+Indian 302 472,642 38.1 32.85 43.58 116 186,583 31.4 25.48 37.94
+Bumiputera Sabah 237 460,149 33.5 29.29 38.07 82 176,990 26.0 20.30 32.55
+Bumiputera Sarawak 162 325,250 34.1 26.70 42.36 63 170,699 35.2 24.20 48.02
+Others 205 497,534 22.1 17.64 27.30 80 259,071 18.5 13.37 24.91
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+058
+Table 4.8: Prevalence of Overall Raised Blood Cholesterol Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics
+(n=10,466) (cont’d)
+Sociodemographic
+Characteristics
+Overall Raised Blood Cholesterol Male
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+Marital Status
+Single 564 1,452,287 24.0 21.52 26.78 234 702,098 18.9 15.83 22.47
+Married 3,522 5,759,957 42.0 39.60 44.36 1,533 2,666,152 38.5 35.52 41.67
+Widow(er)/Divorcee 723 884,927 58.5 54.26 62.59 93 133,365 42.0 31.95 52.68
+Education Level
+No Formal Education 352 448,292 41.2 34.02 48.78 65 92,191 22.4 15.03 32.14
+Primary Education 1,315 1,787,095 43.6 39.64 47.59 483 751,639 33.5 29.00 38.35
+Secondary Education 2,180 3,898,971 37.7 35.51 39.86 912 1,785,581 32.5 29.71 35.52
+Tertiary Education 942 1,925,173 34.3 30.65 38.19 389 846,942 31.2 26.73 35.96
+Occupation
+Government Employee 470 671,123 42.9 38.16 47.76 241 368,783 43.6 37.13 50.26
+Private Employee 1,016 2,416,399 29.4 26.85 32.18 565 1,395,037 26.5 23.48 29.78
+Self Employed 861 1,399,471 37.8 34.07 41.76 493 841,699 32.6 28.34 37.20
+Unpaid Worker/
+Homemaker
+1,131 1,685,193 47.3 43.84 50.77 31 87,364 52.5 31.95 72.17
+Retiree 328 496,863 62.5 55.40 69.02 222 346,140 59.7 51.70 67.12
+Student 51 122,604 16.5 11.67 22.82 11 29,089 9.0* 4.44 17.38
+Not Workingb 947 1,298,273 48.2 44.46 51.93 294 426,857 36.4 30.78 42.44
+Household Income Group
+Less than RM 1,000 611 854,186 49.8 45.29 54.28 184 281,482 41.2 34.27 48.45
+RM 1,000 - RM 1,999 959 1,464,829 35.8 32.23 39.63 363 616,660 28.1 23.89 32.68
+RM 2,000 - RM 3,999 1,348 2,308,805 36.1 33.44 38.88 542 1,095,728 31.3 27.97 34.89
+RM 4,000 - RM 5,999 649 1,121,009 33.6 29.86 37.65 286 551,296 30.7 26.07 35.71
+RM 6,000 - RM 7,999 390 728,008 37.1 32.03 42.51 176 347,041 33.3 27.10 40.12
+RM 8,000 - RM 9,999 176 404,292 45.0 36.93 53.39 75 174,548 38.3 29.00 48.56
+RM 10,000 and above 324 616,429 38.3 32.38 44.59 143 286,367 31.8 25.03 39.44
+Household Income Quintile
+Quintile 1 1,145 1,644,758 43.3 39.59 47.07 387 619,395 35.5 30.74 40.59
+Quintile 2 881 1,429,113 35.2 31.62 38.99 343 643,668 27.9 23.83 32.34
+Quintile 3 818 1,420,376 35.6 32.52 38.77 329 675,391 31.7 27.48 36.17
+Quintile 4 723 1,254,582 34.1 30.61 37.77 316 606,712 30.5 26.18 35.18
+Quintile 5 890 1,748,729 39.1 35.20 43.21 394 807,956 33.7 29.44 38.21
+Household Income Category
+Bottom 40% 3,067 4,696,463 36.1 33.82 38.44 1,169 2,035,184 29.9 27.29 32.68
+Middle 40% 1,036 2,085,888 40.4 37.11 43.84 448 982,435 35.9 31.83 40.11
+Top 20% 354 715,207 39.2 33.72 44.88 152 335,503 32.5 26.26 39.53
+*Prevalence with high RSE, interpret with caution
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+060
+Table 4.9: Prevalence of Known Hypercholesterolaemia Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics
+(n=10,466)
+Sociodemographic
+Characteristics
+Known Hypercholesterolaemia Male
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+MALAYSIA 2,015 2,868,124 13.5 12.51 14.51 806 1,304,685 11.9 10.61 13.38
+State
+Johor 142 258,212 10.6 8.62 13.05 48 101,088 8.0 6.20 10.15
+Kedah 117 216,000 16.8 13.02 21.43 53 100,867 15.4 9.89 23.12
+Kelantan 93 119,012 10.6 9.27 12.15 23 29,187 5.3 3.68 7.58
+Melaka 139 91,977 15.4 12.05 19.51 53 35,010 12.3 8.79 17.01
+Negeri Sembilan 136 132,201 18.8 13.66 25.20 44 54,893 15.4 8.52 26.30
+Pahang 85 114,424 11.2 8.79 14.25 33 43,874 8.2 5.16 12.88
+Pulau Pinang 134 231,596 18.5 13.72 24.36 57 107,485 16.8 10.48 25.76
+Perak 150 312,701 20.2 15.79 25.53 58 139,686 17.7 11.38 26.52
+Perlis 144 28,232 17.7 14.22 21.72 46 10,016 12.9 9.24 17.75
+Selangor 203 549,486 12.0 9.54 14.96 93 295,746 12.3 8.88 16.86
+Terengganu 114 95,911 13.0 10.47 15.92 40 32,744 8.8 6.16 12.35
+Sabah 121 215,148 8.4 6.35 10.95 53 112,179 8.3 5.71 11.79
+Sarawak 155 285,551 15.4 12.62 18.77 66 133,426 14.1 10.75 18.36
+WP Kuala Lumpur 112 199,910 15.4 12.23 19.19 52 99,639 15.3 11.17 20.53
+WP Labuan 93 9,417 14.9 12.08 18.16 39 4,284 13.6 9.77 18.65
+WP Putrajaya 77 8,347 14.6 11.29 18.70 48 4,563 18.0 12.52 25.21
+Location
+Urban 1,198 2,282,784 13.7 12.59 14.98 495 1,063,948 12.5 10.88 14.28
+Rural 817 585,340 12.5 11.04 14.22 311 240,737 10.0 8.16 12.09
+Age Group
+18-19 0 - - - - 0 - - -
+20-24 7 40,571 1.4* 0.55 3.59 5 30,190 2.0* 0.63 6.30
+25-29 16 31,612 1.1* 0.54 2.04 7 10,335 0.7* 0.20 2.12
+30-34 44 74,116 2.8 1.77 4.35 22 42,988 3.0* 1.59 5.75
+35-39 66 161,756 6.8 4.80 9.62 23 60,344 4.9* 2.33 10.17
+40-44 120 208,568 11.4 9.10 14.14 54 104,640 10.8 7.85 14.79
+45-49 163 297,467 17.9 14.55 21.80 63 130,791 15.9 11.13 22.12
+50-54 238 368,438 24.0 20.22 28.23 109 183,842 24.2 19.10 30.23
+55-59 334 427,510 31.9 27.76 36.44 137 213,558 31.7 26.12 37.97
+60-64 330 424,542 38.4 33.88 43.08 118 189,759 34.5 27.19 42.71
+65-69 273 318,424 39.6 34.27 45.20 99 131,005 33.3 26.43 41.02
+70-74 210 250,607 45.5 39.02 52.20 77 91,438 35.4 27.03 44.68
+75 & above 214 264,512 40.2 34.23 46.48 92 115,796 37.6 28.79 47.33
+Ethnicity
+Malaya 1340 1,606,177 14.8 13.72 15.85 533 725,052 13.4 11.89 15.00
+Chinese 288 644,135 14.1 11.54 17.09 118 282,825 12.0 8.87 16.08
+Indian 158 234,576 18.9 15.18 23.28 67 105,086 17.7 13.10 23.40
+Bumiputera Sabah 100 148,551 10.8 8.17 14.22 40 78,548 11.5 8.08 16.17
+Bumiputera Sarawak 85 147,103 15.4 11.42 20.50 35 69,416 14.3 9.45 21.08
+Others 44 87,582 3.9 2.32 6.46 13 43,758 3.1* 1.22 7.72
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+062
+Table 4.9: Prevalence of Known Hypercholesterolaemia Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics
+(n=10,466) (cont’d)
+Sociodemographic
+Characteristics
+Known Hypercholesterolaemia Male
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+Marital Status
+Single 85 186,114 3.1 2.20 4.30 32 93,367 2.5 1.53 4.11
+Married 1,498 2,165,911 15.8 14.46 17.19 716 1,127,567 16.3 14.45 18.34
+Widow(er)/Divorcee 432 516,099 34.1 30.23 38.21 58 83,751 26.4 18.47 36.11
+Education Level
+No Formal Education 199 236,420 21.7 16.70 27.77 31 44,090 10.7 6.01 18.45
+Primary Education 674 787,547 19.2 16.84 21.80 242 293,880 13.1 10.55 16.17
+Secondary Education 842 1,303,211 12.6 11.43 13.85 369 645,642 11.8 10.10 13.67
+Tertiary Education 293 532,804 9.5 7.79 11.53 161 317,794 11.7 9.03 15.00
+Occupation
+Government Employee 174 250,878 16.0 12.60 20.19 111 155,506 18.4 13.76 24.11
+Private Employee 265 545,119 6.6 5.46 8.06 161 338,236 6.4 5.05 8.15
+Self Employed 303 446,134 12.1 10.23 14.18 181 276,648 10.7 8.67 13.18
+Unpaid Worker/Homemaker 481 590,924 16.6 14.48 18.92 18 56,535 33.9* 16.51 57.18
+Retiree 218 334,027 42.0 35.56 48.70 147 235,665 40.6 33.28 48.38
+Student 4 18,154 2.4* 0.83 6.96 2 7,773 2.4* 0.50 10.73
+Not Workingb 569 681,509 25.3 22.55 28.25 185 232,942 19.9 16.37 23.91
+Household Income Group
+Less than RM 1,000 309 395,875 23.1 20.02 26.43 100 134,866 19.7 15.45 24.84
+RM 1,000 - RM 1,999 407 531,225 13.0 11.02 15.27 155 246,569 11.2 8.55 14.60
+RM 2,000 - RM 3,999 517 702,236 11.0 9.55 12.60 217 344,599 9.9 8.02 12.05
+RM 4,000 - RM 5,999 231 357,108 10.7 8.78 13.01 110 179,749 10.0 7.47 13.27
+RM 6,000 - RM 7,999 150 278,423 14.2 11.44 17.48 71 141,278 13.6 10.16 17.85
+RM 8,000 - RM 9,999 66 123,285 13.7 9.38 19.65 28 77,391 17.0 9.76 27.92
+RM 10,000 and above 128 189,967 11.8 8.53 16.11 65 89,960 10.0 6.65 14.74
+Household Income Quintile
+Quintile 1 541 694,218 18.3 16.01 20.78 184 280,416 16.1 12.91 19.85
+Quintile 2 351 436,777 10.8 9.05 12.75 141 185,471 8.0 6.10 10.52
+Quintile 3 316 459,923 11.5 9.55 13.84 137 238,562 11.2 8.59 14.43
+Quintile 4 256 395,525 10.7 8.92 12.90 120 201,334 10.1 7.72 13.15
+Quintile 5 344 591,676 13.2 11.18 15.62 164 308,629 12.9 10.23 16.06
+Household Income Category
+Bottom 40% 1,291 1,659,905 12.8 11.57 14.05 514 741,452 10.9 9.39 12.62
+Middle 40% 381 681,190 13.2 11.47 15.15 171 366,818 13.4 10.97 16.25
+Top 20% 136 237,025 13.0 9.78 17.02 61 106,142 10.3 6.92 15.06
+*Prevalence with high RSE, interpret with caution
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+072
+Table 5.2: Prevalence of Physical Inactivity Among Respondents Aged 16 Years
+and Above in Malaysia by Socio-Demographic Characteristics (n=10,767)
+Sociodemographic
+Characteristics
+Inactive
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 2,820 5,574,818 25.1 23.77 26.56
+State
+Johor 194 509,772 20.5 16.21 25.46
+Kedah 71 168,405 12.5 9.33 16.61
+Kelantan 191 340,438 28.4 23.57 33.75
+Melaka 212 197,414 33.2 28.17 38.68
+Negeri Sembilan 150 221,486 30.5 23.79 38.18
+Pahang 168 265,754 25.0 20.62 29.87
+Pulau Pinang 179 341,751 26.7 22.11 31.75
+Perak 223 676,269 41.6 36.07 47.43
+Perlis 141 40,253 23.8 18.44 30.22
+Selangor 282 1,160,563 24.2 21.12 27.59
+Terengganu 186 231,224 29.5 25.84 33.48
+Sabah 149 439,229 16.0 12.30 20.47
+Sarawak 196 517,986 27.4 23.32 31.82
+WP Kuala Lumpur 180 426,899 32.1 26.23 38.60
+WP Labuan 111 14,847 22.6 17.51 28.58
+WP Putrajaya 187 22,527 36.8 31.04 42.91
+Location
+Urban 1,843 4,577,603 26.5 24.92 28.21
+Rural 977 997,215 20.3 18.00 22.72
+Sex
+Male 1,175 2,496,904 22.1 20.41 23.96
+Female 1,645 3,077,914 28.2 26.35 30.23
+Age Group (Years)
+15-19 272 737,941 36.2 31.47 41.17
+20-24 287 767,217 26.8 22.98 31.04
+25-29 245 634,458 21.4 17.93 25.25
+30-34 223 538,504 20.7 16.84 25.08
+35-39 209 518,566 22.3 18.04 27.19
+40-44 154 291,567 16.1 12.94 19.83
+45-49 175 336,231 20.4 16.92 24.48
+50-54 171 283,468 18.6 15.46 22.15
+55-59 198 287,625 21.9 17.83 26.70
+60-64 207 310,649 28.4 23.68 33.55
+65-69 204 284,265 35.8 30.07 42.03
+70-74 180 203,733 37.5 31.68 43.80
+75 & above 295 380,594 58.9 52.18 65.29
+Ethnicity
+Malaya 1,910 2,951,439 25.7 24.15 27.41
+Chinese 422 1,503,578 32.5 29.02 36.27
+Indian 184 328,070 25.0 20.54 30.17
+Bumiputera Sabah 122 288,718 20.2 16.25 24.93
+Sociodemographic
+Characteristics
+Inactive
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+Bumiputera Sarawak 99 244,395 24.8 19.60 30.86
+Others 83 258,618 10.9 7.57 15.49
+Marital Status
+Single 802 2,105,150 29.6 27.11 32.23
+Married 1,630 3,004,578 22.1 20.50 23.87
+Widow(er)/Divorcee 388 465,090 31.1 27.47 35.06
+Education Level
+No Formal Education 235 316,454 29.4 24.21 35.18
+Primary Education 656 1,032,864 24.9 21.85 28.26
+Secondary Education 1,243 2,624,921 23.3 21.65 25.06
+Tertiary Education 668 1,564,012 28.1 25.45 30.89
+Occupation
+Government
+Employee
+248 343,433 22.2 17.93 27.16
+Private Employee 624 1,696,054 20.8 18.48 23.31
+Self Employed 288 593,306 16.3 13.58 19.35
+Unpaid Worker/
+Homemaker
+475 874,021 24.0 20.60 27.70
+Retiree 150 233,252 29.8 24.04 36.35
+Student 244 656,320 38.9 33.94 44.12
+Not Workingb 790 1,175,015 43.6 39.93 47.27
+Household Income Group
+Less than RM 1,000 328 548,803 31.0 26.71 35.56
+RM 1,000 - RM 1,999 502 923,956 21.4 18.81 24.31
+RM 2,000 - RM 3,999 766 1,520,049 22.8 20.62 25.09
+RM 4,000 - RM 5,999 393 887,847 25.4 22.48 28.64
+RM 6,000 - RM 7,999 257 528,132 26.5 21.94 31.59
+RM 8,000 - RM 9,999 119 241,568 26.2 20.05 33.51
+RM 10,000 and above 218 491,758 29.6 23.73 36.12
+Household Income Quintile
+Quintile 1 612 1,078,990 27.0 23.99 30.19
+Quintile 2 466 810,541 19.2 16.64 22.09
+Quintile 3 483 1,026,975 24.6 21.70 27.82
+Quintile 4 428 964,149 25.0 22.20 27.97
+Quintile 5 594 1,261,459 27.5 24.20 31.17
+Household Income Category
+Bottom 40% 1,746 3,200,414 23.6 22.00 25.31
+Middle 40% 606 1,369,494 25.3 22.68 28.15
+Top 20% 231 572,206 30.7 25.04 36.97
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+084
+Table 6.2: Prevalence of Smokers Among Respondents Aged 15 Years and Above in Malaysia by Socio-Demographic Characteristics (n=11,058)
+Sociodemographic
+Characteristics
+Current Smokers Current Cigarette Smokers
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+MALAYSIA 2,064 4,877,697 21.3 19.86 22.75 2,016 4,776,548 20.8 19.43 22.30
+State
+Johor 163 566,904 21.9 17.45 27.19 156 540,042 20.9 16.67 25.87
+Kedah 148 391,658 27.6 23.44 32.24 144 376,678 26.6 22.25 31.39
+Kelantan 75 185,593 15.1 11.75 19.19 73 182,286 14.8 11.59 18.77
+Melaka 99 93,976 14.9 10.63 20.49 93 89,336 14.2 9.74 20.16
+Negeri Sembilan 99 150,934 20.2 14.83 26.85 94 144,228 19.3 14.26 25.54
+Pahang 152 255,537 23.1 18.45 28.40 150 253,726 22.9 18.24 28.31
+Pulau Pinang 127 238,811 18.3 13.09 25.07 127 238,811 18.3 13.09 25.07
+Perak 124 398,269 23.8 18.64 29.81 122 391,908 23.4 18.35 29.32
+Perlis 109 35,398 20.6 16.83 24.89 106 33,714 19.6 15.94 23.83
+Selangor 206 902,041 18.5 15.27 22.22 205 896,337 18.4 15.15 22.11
+Terengganu 155 194,709 23.9 20.37 27.82 153 192,583 23.6 20.04 27.65
+Sabah 174 729,360 25.3 20.02 31.45 171 725,720 25.2 19.89 31.34
+Sarawak 152 444,764 22.2 18.62 26.28 147 424,697 21.2 17.94 24.89
+WP Kuala Lumpur 92 268,416 19.8 15.44 24.93 89 265,416 19.5 15.16 24.82
+WP Labuan 73 7,677 12.2 9.91 14.97 70 7,417 11.8 9.48 14.60
+WP Putrajaya 116 13,650 20.3 15.63 26.06 116 13,650 20.3 15.63 26.06
+Location
+Urban 1,172 3,569,016 20.1 18.47 21.77 1,143 3,494,313 19.6 18.07 21.33
+Rural 892 1,308,682 25.4 22.55 28.54 873 1,282,235 24.9 22.07 28.00
+Sex
+Male 2,007 4,742,418 40.5 37.90 43.06 1,961 4,642,861 39.6 37.08 42.19
+Female 57 135,280 1.2 0.85 1.70 55 133,687 1.2 0.84 1.69
+Age Group (Years)
+15-19 111 323,110 12.3 9.72 15.46 106 303,831 11.6 9.12 14.58
+20-24 202 726,574 25.5 20.12 31.77 195 708,892 24.9 19.49 31.20
+25-29 228 737,504 24.7 20.82 29.02 223 721,048 24.1 20.26 28.50
+30-34 232 718,979 27.1 23.01 31.61 227 708,883 26.7 22.64 31.22
+35-39 254 567,510 24.0 20.63 27.71 252 561,424 23.7 20.43 27.39
+40-44 199 470,340 25.7 21.67 30.12 197 467,773 25.5 21.52 29.99
+45-49 175 380,829 22.9 19.21 27.12 171 370,447 22.3 18.62 26.48
+50-54 206 348,327 22.7 19.24 26.61 203 346,587 22.6 19.12 26.50
+55-59 154 232,558 17.6 14.33 21.50 148 228,541 17.3 14.03 21.21
+60-64 129 1,649,230 14.9 11.91 18.50 124 158,443 14.3 11.43 17.80
+65-69 77 99,319 12.4 9.19 16.58 75 97,236 12.2 8.96 16.30
+70-74 51 58,729 10.7 7.46 15.04 49 54,454 9.9 6.82 14.15
+75 & above 46 48,989 7.5 5.20 10.74 46 48,989 7.5 5.20 10.74
+Ethnicity
+Malaya 1,428 2,676,767 22.6 21.23 24.00 1,396 2,622,955 22.1 20.77 23.55
+Chinese 161 653,557 13.7 10.62 17.55 155 628,247 13.2 10.20 16.89
+Indian 83 155,188 11.5 8.50 15.41 79 151,268 11.2 8.24 15.11
+Non-Communicable Diseases:
+Risk Factors and other Health Problems
+085
+Table 6.2: Prevalence of Smokers Among Respondents Aged 15 Years and Above in Malaysia by Socio-Demographic Characteristics (n=11,058) (cont’d)
+Sociodemographic
+Characteristics
+Current Smokers Current Cigarette Smokers
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+Bumiputera Sabah 139 325,858 21.7 17.24 26.88 136 322,118 21.4 16.95 26.70
+Bumiputera Sarawak 85 256,776 24.5 19.64 30.08 83 242,909 23.2 19.35 27.47
+Others 168 809,552 33.5 26.96 40.70 167 809,052 33.5 26.94 40.68
+Marital Status
+Single 585 1,774,258 22.9 20.37 25.70 568 1,727,603 22.3 19.78 25.08
+Married 1,386 2,977,006 21.7 19.97 23.63 1,355 2,922,512 21.3 19.60 3.21
+Widow(er)/Divorcee 93 126,433 8.4 6.01 11.63 93 126,433 8.4 6.01 11.63
+Education Level
+No Formal Education 72 169,992 15.7 10.99 21.96 71 168,752 15.6 10.87 21.87
+Primary Education 455 1,104,878 24.3 20.71 28.27 448 1,097,834 24.1 20.57 28.10
+Secondary Education 1,207 2,844,505 24.6 22.65 26.59 1,180 2,779,935 24.0 22.12 26.00
+Tertiary Education 317 727,219 13.0 11.10 15.16 304 698,923 12.5 10.62 14.63
+Occupation
+Government Employee 185 283,434 18.2 14.68 22.27 182 280,146 18.0 14.49 22.04
+Private Employee 874 2,469,707 30.1 27.39 32.99 858 2,432,678 29.7 26.95 32.54
+Self Employed 575 1,263,487 33.7 29.38 38.31 558 1,229,649 32.8 28.52 37.38
+Unpaid Worker/Homemaker 39 84,767 2.3 1.40 3.82 39 84,768 2.3 1.40 3.82
+Retiree 96 142,215 17.9 13.53 23.33 92 135,676 17.1 12.78 22.48
+Student 58 179,863 8.0 5.98 10.61 52 159,521 7.1 5.21 9.57
+Not Workingb 234 448,149 16.5 13.87 19.52 232 448,035 16.5 13.87 19.52
+Household Income Group
+Less than RM 1,000 172 321,336 17.3 14.25 20.83 170 315,306 17.0 13.93 20.52
+RM 1,000 - RM 1,999 508 1,202,476 26.8 23.75 30.18 500 1,185,418 26.5 23.37 29.81
+RM 2,000 - RM 3,999 649 1,577,120 22.8 20.32 25.50 633 1,543,258 22.3 19.85 24.98
+RM 4,000 - RM 5,999 335 794,897 22.0 18.86 25.59 327 780,872 21.7 18.47 25.22
+RM 6,000 - RM 7,999 193 521,632 25.5 20.53 31.11 185 496,757 24.2 19.31 29.98
+RM 8,000 - RM 9,999 59 139,802 14.8 9.75 21.70 56 135,545 14.3 9.34 21.28
+RM 10,000 and above 102 220,837 12.9 9.33 17.56 101 220,337 12.9 9.30 17.54
+Household Income Quintile
+Quintile 1 433 955,640 22.9 20.24 25.71 426 939,104 22.5 19.85 25.32
+Quintile 2 455 1,104,348 25.3 21.78 29.15 448 1,086,272 24.9 21.38 28.73
+Quintile 3 398 950,099 22.0 19.48 24.69 386 927,763 21.5 18.97 24.17
+Quintile 4 378 885,741 22.2 19.20 25.54 370 871,716 21.9 18.84 25.20
+Quintile 5 354 882,270 18.7 15.72 22.18 342 852,638 18.1 15.12 21.54
+Household Income Category
+Bottom 40% 1,430 3,283,476 23.4 21.61 25.20 1,403 3,228,671 23.0 21.23 24.80
+Middle 40% 466 1,180,945 21.2 18.44 24.28 450 1,139,860 20.5 17.74 23.51
+Top 20% 122 313,679 16.2 12.36 20.84 119 308,962 15.9 12.13 20.60
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age
+Non-Communicable Diseases:
+Risk Factors and other Health Problems
+149
+Table 9.2: Prevalence of Current Drinkers Among Adults Aged 18 Years and
+Above in Malaysia by Socio-Demographic Characteristics (n=9,818)
+Sociodemographic
+Characteristics
+Current Drinkers (18 Years and Above)
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 780 2,511,485 11.8 10.04 13.81
+State
+Johor 48 207,793 8.6 5.78 12.49
+Kedah 23 59,611 4.6* 2.30 9.15
+Kelantan 6 9,248 0.8* 0.21 3.19
+Melaka 10 16,542 2.8* 0.84 8.72
+Negeri Sembilan 24 31,516 4.5 2.47 7.97
+Pahang 22 31,904 3.1* 1.59 6.08
+Pulau Pinang 43 175,958 14.0* 6.72 26.97
+Perak 37 142,501 9.2 5.22 15.76
+Perlis 5 775 0.5* 0.14 1.70
+Selangor 72 456,211 10.0 6.02 16.02
+Terengganu 3 950 0.1* 0.03 0.62
+Sabah 143 517,407 20.1 13.35 29.15
+Sarawak 196 601,692 32.5 25.81 39.90
+WP Kuala Lumpur 83 251,082 19.3 11.65 30.35
+WP Labuan 63 8,060 12.7 8.15 19.32
+WP Putrajaya 2 237 0.4* 0.07 2.37
+Location
+Urban 522 2,013,021 12.1 10.03 14.56
+Rural 258 498,465 10.7 8.09 13.96
+Sex
+Male 553 1,854,109 16.9 14.41 19.82
+Female 227 657,376 6.4 4.95 8.13
+Age Group (Years)
+18-19 25 91,665 10.2 6.03 16.68
+20-24 76 395,327 13.8 8.85 20.80
+25-29 89 398,940 13.3 10.00 17.51
+30-34 94 310,974 11.7 8.70 15.53
+35-39 100 348,000 14.7 10.98 19.35
+40-44 72 242,089 13.2 9.70 17.75
+45-49 81 236,638 14.2 10.47 19.06
+50-54 60 128,499 8.4 6.14 11.31
+55-59 66 166,243 12.4 9.44 16.18
+60-64 55 88,689 8.0 5.79 11.00
+65-69 30 53,660 6.7 4.10 10.68
+70-74 12 20,646 3.8* 1.83 7.52
+75 & above 20 30,114 4.6 2.68 7.70
+Ethnicity
+Malaya 36 79,151 0.7 0.45 1.18
+Chinese 299 1,207,545 26.4 21.98 31.37
+Indian 115 224,949 18.1 14.05 23.05
+Bumiputera Sabah 133 302,883 22.1 13.30 34.35
+Sociodemographic
+Characteristics
+Current Drinkers (18 Years and Above)
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+Bumiputera Sarawak 145 420,982 43.9 35.59 52.59
+Others 52 275,975 12.3 7.05 20.46
+Marital Status
+Single 229 946,993 15.7 12.25 19.80
+Married 512 1,494,696 10.9 9.20 12.84
+Widow(er)/Divorcee 39 69,796 4.6 2.79 7.53
+Education Level
+No Formal Education 37 69,818 6.4 4.16 9.77
+Primary Education 155 512,325 12.5 9.12 16.88
+Secondary Education 368 1,159,521 11.2 9.15 13.61
+Tertiary Education 217 767,026 13.7 10.81 17.15
+Occupation
+Government
+Employee
+50 137,615 8.8 6.30 12.16
+Private Employee 353 1,312,918 16.0 13.03 19.48
+Self Employed 179 582,563 15.8 11.92 20.53
+Unpaid Worker/
+Homemaker
+80 180,076 5.1 3.58 7.09
+Retiree 31 70,541 8.9 5.90 13.13
+Student 14 43,967 5.9* 3.05 10.95
+Not Workingb 73 183,806 6.8 5.06 9.13
+Household Income Group
+Less than RM 1,000 66 132,850 7.7 5.24 11.29
+RM 1,000 - RM 1,999 146 390,694 9.6 7.17 12.62
+RM 2,000 - RM 3,999 231 747,109 11.7 9.11 14.85
+RM 4,000 - RM 5,999 103 361,470 10.8 7.74 15.00
+RM 6,000 - RM 7,999 71 326,983 16.7 11.47 23.60
+RM 8,000 - RM 9,999 27 102,000 11.4 6.28 19.68
+RM 10,000 and above 106 386,288 24.0 16.45 33.63
+Household Income Quintile
+Quintile 1 130 298,871 7.9 5.83 10.51
+Quintile 2 156 512,391 12.6 9.22 17.01
+Quintile 3 141 422,708 10.6 8.08 13.76
+Quintile 4 119 398,153 10.8 7.90 14.65
+Quintile 5 204 815,271 18.2 14.03 23.37
+Household Income Category
+Bottom 40% 473 1,410,538 10.8 9.10 12.85
+Middle 40% 173 711,705 13.8 10.17 18.45
+Top 20% 104 325,149 17.8 13.20 23.58
+*Prevalence with high RSE, interpret with caution
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age
+Non-Communicable Diseases:
+Risk Factors and other Health Problems
+187
+Table 14.2: Prevalence of Underweight Among Adults Aged 18 Years and
+Above in Malaysia by Socio-Demographic Characteristics (n=9,811)
+Sociodemographic
+Characteristics Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 536 1,301,375 6.5 5.71 7.45
+State
+Johor 41 130,367 6.0 4.28 8.30
+Kedah 20 48,952 4.0 2.56 6.24
+Kelantan 35 79,721 7.5 5.34 10.53
+Melaka 40 53,014 9.3 5.58 15.18
+Negeri Sembilan 22 41,154 6.3 3.81 10.35
+Pahang 32 56,479 5.7 3.48 9.20
+Pulau Pinang 55 118,970 9.8 6.50 14.56
+Perak 22 76,543 5.1* 1.96 12.76
+Perlis 19 6,756 4.5 2.74 7.22
+Selangor 50 209,569 5.0 3.49 7.15
+Terengganu 39 53,128 7.5 5.23 10.51
+Sabah 51 208,391 8.6 5.67 12.75
+Sarawak 49 145,768 8.3 5.97 11.39
+WP Kuala Lumpur 19 67,913 5.6 3.56 8.72
+WP Labuan 32 3,386 5.6 3.55 8.76
+WP Putrajaya 10 1,263 2.3 1.28 4.09
+Location
+Urban 300 926,737 6.0 5.08 7.00
+Rural 236 374,638 8.5 6.74 10.68
+Sex
+Male 276 757,933 7.3 6.05 8.70
+Female 260 543,442 5.7 4.78 6.83
+Age Group (Years)
+18-19 75 197,383 22.9 17.38 29.64
+20-24 131 380,609 14.1 11.26 17.49
+25-29 72 270,157 9.5 7.18 12.53
+30-34 32 72,617 2.9 1.77 4.87
+35-39 34 78,282 3.5 2.30 5.36
+40-44 21 61,313 3.5* 1.62 7.39
+45-49 16 32,317 2.0* 0.85 4.71
+50-54 20 22,831 1.6* 0.80 3.04
+55-59 13 22,905 1.8* 0.82 3.94
+60-64 30 35,326 3.4 2.02 5.57
+65-69 25 42,385 5.7* 2.40 13.07
+70-74 25 34,626 6.9 4.37 10.65
+75 & above 42 50,624 10.5 6.62 16.21
+Ethnicity
+Malaya 362 667,543 6.5 5.63 7.50
+Chinese 68 275,004 6.7 4.50 9.78
+Indian 19 40,388 3.4* 1.72 6.79
+Bumiputera Sabah 36 76,046 5.9 3.27 10.33
+Sociodemographic
+Characteristics Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+Bumiputera Sarawak 24 71,903 7.9 5.54 11.05
+Others 27 170,490 7.9 4.77 12.72
+Marital Status
+Single 267 743,387 12.7 10.68 15.05
+Married 218 466,755 3.7 2.89 4.65
+Widow(er)/Divorcee 51 91,233 6.6 4.16 10.46
+Education Level
+No Formal Education 51 101,586 10.7 6.82 16.51
+Primary Education 93 197,392 5.2 3.55 7.58
+Secondary Education 270 661,983 6.7 5.66 7.99
+Tertiary Education 119 330,915 6.3 4.86 8.13
+Occupation
+Government
+Employee
+28 53,623 3.6 2.18 5.78
+Private Employee 168 556,923 7.1 5.80 8.73
+Self Employed 85 191,149 5.3 3.80 7.36
+Unpaid Worker/
+Homemaker
+57 95,111 2.9 2.00 4.28
+Retiree 18 35,926 4.8* 1.67 12.83
+Student 46 108,213 15.2 11.04 20.59
+Not Workingb 134 260,429 11.3 9.01 14.20
+Household Income Group
+Less than RM 1,000 60 122,473 7.8 5.24 11.52
+RM 1,000 - RM 1,999 121 272,008 7.0 5.35 9.19
+RM 2,000 - RM 3,999 165 463,482 7.6 6.01 9.67
+RM 4,000 - RM 5,999 77 180,702 5.8 4.20 7.97
+RM 6,000 - RM 7,999 43 120,537 6.5 4.25 9.67
+RM 8,000 - RM 9,999 18 42,185 4.9* 2.22 10.46
+RM 10,000 and above 20 54,323 3.6* 1.91 6.77
+Household Income Quintile
+Quintile 1 123 276,887 7.9 6.00 10.33
+Quintile 2 102 214,191 5.5 4.21 7.23
+Quintile 3 109 342,779 9.0 6.83 11.89
+Quintile 4 89 204,807 5.9 4.42 7.93
+Quintile 5 81 217,046 5.1 3.69 7.10
+Household Income Category
+Bottom 40% 355 858,358 7.0 6.00 8.26
+Middle 40% 120 299,324 6.1 4.71 7.80
+Top 20% 29 98,028 5.7 3.49 9.04
+CPG 2004 (BMI < 18.5 kg/m²) & WHO 1998 (BMI < 18.5 kg/m²)
+*Prevalence with high RSE, interpret with caution
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+190
+Table 14.4: Prevalence of Overweight Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics (n=9,811)
+Sociodemographic
+Characteristics
+Overweight (BMI 23.0 - 27.5 kg/m²) Overweight (BMI 25.0 - 30.0 kg/m²)
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+MALAYSIA 3,310 6,448,586 32.3 30.95 33.78 3,263 6,066,191 30.4 29.00 31.90
+State
+Johor 254 639,974 29.4 25.92 33.10 242 625,158 28.7 24.58 33.21
+Kedah 188 420,669 34.5 29.32 40.11 193 418,622 34.3 29.31 39.76
+Kelantan 172 305,970 28.9 25.01 33.18 167 301,105 28.5 24.64 32.63
+Melaka 187 180,475 31.7 25.36 38.90 200 161,990 28.5 23.04 34.66
+Negeri Sembilan 172 235,969 36.3 31.59 41.28 163 224,634 34.6 28.46 41.20
+Pahang 228 345,109 34.8 27.57 42.90 206 304,009 30.7 26.95 34.71
+Pulau Pinang 186 374,335 30.9 25.98 36.25 187 383,638 31.6 25.74 38.20
+Perak 188 487,974 32.7 28.50 37.14 164 376,278 25.2 19.34 32.10
+Perlis 172 44,786 29.6 25.58 34.07 174 48,184 31.9 26.40 37.90
+Selangor 350 1,355,700 32.4 28.53 36.55 345 1,207,216 28.9 25.10 32.90
+Terengganu 208 241,678 33.9 31.66 36.24 201 217,835 30.6 26.30 35.20
+Sabah 272 787,926 32.4 27.87 37.27 279 787,525 32.4 28.10 36.90
+Sarawak 243 566,269 32.2 28.93 35.65 249 601,398 34.2 30.50 38.10
+WP Kuala Lumpur 167 423,374 34.9 29.23 41.10 155 368,195 30.4 25.00 36.30
+WP Labuan 165 20,574 34.1 30.14 38.33 159 19,660 32.6 27.60 38.00
+WP Putrajaya 158 17,806 32.3 26.95 38.21 179 20,742 37.7 32.40 43.20
+Location
+Urban 2,058 5,086,880 32.8 31.07 34.49 2,016 4,757,879 30.6 28.90 32.43
+Rural 1,252 1,361,706 30.9 28.84 33.06 1,247 1,308,312 29.7 27.60 31.90
+Sex
+Male 1,662 3,665,736 35.1 32.98 37.33 1,558 3,212,349 30.8 28.80 32.80
+Female 1,648 2,782,850 29.3 27.54 31.12 1,705 2,853,841 30.0 28.30 31.90
+Age Group
+18-19 52 151,292 17.6 12.73 23.77 55 131,984 15.3 10.70 21.40
+20-24 198 596,743 22.1 18.46 26.20 197 533,363 19.7 16.30 23.70
+25-29 277 802,490 28.3 23.81 33.25 241 700,137 24.7 21.10 28.70
+30-34 306 774,327 31.4 26.79 36.47 313 801,564 32.5 27.80 37.70
+35-39 331 760,849 34.2 30.26 38.38 328 696,575 31.3 27.30 35.60
+40-44 294 615,985 35.1 30.50 40.02 322 630,226 35.9 31.20 40.90
+45-49 323 633,915 39.6 34.59 44.93 361 633,036 39.6 34.80 44.60
+50-54 341 549,346 37.7 33.82 41.85 353 543,500 37.3 33.30 41.60
+55-59 332 487,028 38.4 34.20 42.83 345 493,797 39.0 35.10 42.90
+60-64 328 407,759 38.9 34.16 43.92 307 383,492 36.6 32.20 41.30
+65-69 232 294,367 39.8 34.25 45.71 208 231,597 31.3 25.90 37.30
+70-74 169 197,662 39.2 33.44 45.37 138 164,789 32.7 26.80 39.20
+75 & above 127 176,823 36.6 29.81 43.99 95 122,132 25.3 19.30 32.50
+Ethnicity
+Malaya 2,074 3,219,951 31.4 29.77 33.01 2,100 3,176,561 30.9 29.47 32.46
+Chinese 453 1,437,228 34.9 30.96 38.98 383 1,135,236 27.5 23.61 31.85
+Indian 220 401,974 34.3 28.43 40.61 226 405,776 34.6 30.18 39.28
+Bumiputera Sabah 205 438,130 33.8 28.02 40.19 209 457,265 35.3 30.83 40.08
+Non-Communicable Diseases:
+Risk Factors and other Health Problems
+191
+Table 14.4: Prevalence of Overweight Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics (n=9,811) (cont’d)
+Sociodemographic
+Characteristics
+Overweight (BMI 23.0 - 27.5 kg/m²) Overweight (BMI 25.0 - 30.0 kg/m²)
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+Bumiputera Sarawak 140 305,682 33.4 27.49 39.94 144 314,795 34.4 28.51 40.87
+Others 218 645,621 29.8 24.25 36.06 201 576,559 26.6 22.01 31.83
+Marital Status
+Single 541 1,505,005 25.7 23.28 28.33 514 1,332,404 22.8 20.50 25.20
+Married 2,415 4,496,028 35.4 33.52 37.26 2,402 4,308,261 33.9 32.00 35.80
+Widow(er)/Divorcee 354 447,553 32.6 28.43 37.09 347 425,526 31.0 27.40 34.90
+Education Level
+No Formal Education 192 318,219 33.6 27.91 39.88 161 245,210 25.9 20.70 31.90
+Primary Education 799 1,277,816 33.7 30.27 37.40 787 1,192,029 31.5 28.30 34.80
+Secondary Education 1,512 3,108,896 31.6 29.92 33.37 1,541 2,973,190 30.2 28.40 32.10
+Tertiary Education 781 1,688,491 32.2 29.27 35.18 757 1,618,914 30.8 28.00 33.80
+Occupation
+Government Employee 347 531,456 35.4 31.31 39.63 368 594,097 39.5 34.70 44.50
+Private Employee 972 2,591,044 33.1 30.68 35.71 915 2,236,434 28.6 26.50 30.80
+Self Employed 665 1,156,760 32.1 28.68 35.70 641 1,093,853 30.3 26.90 34.00
+Unpaid Worker/Homemaker 606 1,012,569 31.2 28.04 34.63 680 1,079,569 33.3 30.00 36.80
+Retiree 194 293,284 38.9 32.80 45.32 183 285,270 37.8 32.40 43.60
+Student 55 155,268 21.8 16.29 28.59 63 156,999 22.1 16.80 28.40
+Not Workingb 468 702,978 30.6 27.32 34.15 410 615,207 26.8 23.60 30.30
+Household Income Group
+Less than RM 1,000 321 483,580 30.9 27.31 34.72 278 434,017 27.7 24.10 31.70
+RM 1,000 - RM 1,999 708 1,238,972 32.0 28.82 35.38 655 1,166,316 30.1 27.10 33.40
+RM 2,000 - RM 3,999 947 1,860,331 30.7 28.20 33.23 971 1,777,931 29.3 26.80 31.90
+RM 4,000 - RM 5,999 466 1,005,343 32.3 28.54 36.31 469 904,375 29.1 25.50 32.90
+RM 6,000 - RM 7,999 291 606,420 32.5 27.41 37.95 326 623,449 33.4 29.80 37.10
+RM 8,000 - RM 9,999 133 302,171 35.1 28.24 42.60 134 257,948 29.9 23.60 37.20
+RM 10,000 and above 265 585,041 39.0 34.72 43.50 234 62,388 33.2 28.50 38.20
+Household Income Quintile
+Quintile 1 705 1,104,006 31.5 28.72 34.43 611 971,049 27.7 24.80 30.80
+Quintile 2 655 1,307,271 33.8 30.06 37.65 661 1,274,113 32.9 29.40 36.60
+Quintile 3 573 1,075,275 28.4 25.78 31.13 589 1,044,990 27.6 24.60 30.80
+Quintile 4 509 1,101,675 31.9 28.46 35.63 589 992,487 28.8 25.30 32.50
+Quintile 5 689 1,493,633 35.3 32.26 38.50 694 1,378,739 32.6 30.10 35.20
+Household Income Category
+Bottom 40% 2,124 3,877,550 31.8 29.98 33.75 2,071 3,628,389 29.8 27.90 31.70
+Middle 40% 707 1,528,434 31.0 28.42 33.71 730 1,477,585 30.0 27.50 32.60
+Top 20% 300 675,876 39.0 34.84 43.27 266 555,404 32.0 27.50 36.90
+CPG 2004 (BMI 23.0 - 27.5 kg/m²) & WHO 1998 (BMI 25.0 - 30.0 kg/m²)
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+192
+Table 14.5: Prevalence of Obesity Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics (n=9,811)
+Sociodemographic
+Characteristics
+Obese (BMI ≥ 27.5 kg/m²) Obese (BMI ≥ 30.0 kg/m²)
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+MALAYSIA 3,636 6,711,363 33.7 31.95 35.43 2,147 3,936,088 19.7 18.43 21.13
+State
+Johor 288 775,610 35.6 31.81 39.59 178 476,094 21.9 18.26 25.94
+Kedah 192 439,902 36.1 30.56 42.02 110 268,555 22.0 17.55 27.28
+Kelantan 197 384,695 36.4 30.86 42.26 117 236,802 22.4 18.55 26.76
+Melaka 256 213,908 37.6 30.98 44.78 149 132,418 23.3 16.99 31.05
+Negeri Sembilan 208 243,797 37.5 31.15 44.31 137 149,242 23.0 17.25 29.87
+Pahang 201 308,228 31.1 25.44 37.43 112 167,392 16.9 12.92 21.80
+Pulau Pinang 216 389,428 32.1 25.01 40.17 137 225,034 18.6 12.65 26.40
+Perak 203 506,109 33.9 26.12 42.63 124 320,614 21.5 15.22 29.39
+Perlis 206 62,484 41.4 37.76 45.06 132 41,566 27.5 24.43 30.83
+Selangor 389 1,367,580 32.7 27.77 38.03 228 808,850 19.3 16.03 23.15
+Terengganu 216 229,054 32.1 29.52 34.88 125 131,203 18.4 15.14 22.21
+Sabah 277 755,159 31.0 26.39 36.12 147 381,781 15.7 12.92 18.93
+Sarawak 244 611,121 34.7 30.97 38.73 138 339,839 19.3 16.21 22.86
+WP Kuala Lumpur 150 379,025 31.3 25.01 38.30 88 230,781 19.0 14.36 24.82
+WP Labuan 169 20,053 33.3 27.73 39.28 97 11,831 19.6 15.32 24.77
+WP Putrajaya 224 25,210 45.8 39.08 52.60 128 14,087 25.6 20.15 31.87
+Location
+Urban 2,211 5,252,981 33.8 31.74 35.97 1,282 3,065,097 19.7 18.14 21.43
+Rural 1,425 1,458,382 33.1 30.63 35.68 865 870,991 19.8 17.90 21.79
+Sex
+Male 1,454 3,024,308 29.0 26.85 31.20 759 1,591,901 15.3 13.63 17.03
+Female 2,182 3,687,055 38.8 36.60 41.08 1,388 2,344,187 24.7 22.86 26.59
+Age Group
+18-19 73 201,170 23.4 16.97 31.30 42 139,232 16.2 10.23 24.64
+20-24 230 583,219 21.6 18.07 25.58 135 310,620 11.5 9.16 14.34
+25-29 297 849,166 29.9 25.38 34.93 187 576,907 20.3 16.57 24.72
+30-34 390 978,910 39.7 34.46 45.25 223 545,005 22.1 18.10 26.74
+35-39 421 874,617 39.3 34.97 43.84 276 563,509 25.3 21.80 29.23
+40-44 378 721,838 41.1 36.63 45.82 225 427,355 24.4 20.63 28.52
+45-49 385 602,866 37.7 33.19 42.44 210 310,920 19.4 16.16 23.21
+50-54 393 561,484 38.6 34.13 43.23 233 320,889 22.1 18.98 25.46
+55-59 391 505,523 39.9 35.90 44.01 243 277,815 21.9 18.75 25.45
+60-64 296 395,173 37.7 33.02 42.68 172 232,580 22.2 18.33 26.63
+65-69 214 225,621 30.5 25.63 35.93 114 121,319 16.4 12.82 20.78
+70-74 105 140,975 28.0 22.38 34.38 58 81,707 16.2 11.57 22.27
+75 & above 63 70,799 14.7 10.29 20.46 29 28,230 5.8 3.52 9.56
+Ethnicity
+Malaya 2,499 3,814,554 37.2 35.37 38.98 1,519 2,334,699 22.7 21.30 24.25
+Chinese 313 999,065 24.2 20.06 28.96 155 534,369 13.0 9.89 16.81
+Indian 272 529,218 45.1 38.38 52.03 170 343,460 29.3 23.40 35.93
+Bumiputera Sabah 231 486,307 37.6 31.99 43.48 125 252,576 19.5 15.43 24.35
+Non-Communicable Diseases:
+Risk Factors and other Health Problems
+193
+Table 14.5: Prevalence of Obesity Among Adults Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics (n=9,811) (cont’d)
+Sociodemographic
+Characteristics
+Obese (BMI ≥ 27.5 kg/m²) Obese (BMI ≥ 30.0 kg/m²)
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper Lower Upper
+Bumiputera Sarawak 151 330,906 36.2 30.01 42.85 91 189,843 20.8 16.35 26.00
+Others 170 551,312 25.5 20.31 31.42 87 281,140 13.0 9.40 17.67
+Marital Status
+Single 615 1,541,045 26.3 23.64 29.23 374 950,845 16.3 13.92 18.89
+Married 2,649 4,690,414 36.9 34.84 39.00 1,555 2,695,363 21.2 19.67 22.82
+Widow(er)/Divorcee 372 479,904 35.0 31.21 38.93 218 289,880 21.1 17.77 24.92
+Education Level
+No Formal Education 175 265,054 28.0 23.10 33.52 109 164,225 17.4 13.82 21.57
+Primary Education 762 1,209,094 31.9 28.73 35.30 425 661,971 17.5 14.86 20.45
+Secondary Education 1,840 3,481,652 35.4 33.34 37.53 1,102 2,081,412 21.2 19.54 22.89
+Tertiary Education 853 1,738,666 33.1 29.93 36.45 507 1,018,013 19.4 17.05 21.96
+Occupation
+Government Employee 439 622,496 41.4 36.96 46.01 245 312,959 20.8 17.81 24.20
+Private Employee 980 2,317,314 29.6 27.16 32.27 571 1,353,347 17.3 15.31 19.52
+Self Employed 661 1,240,854 34.4 30.69 38.35 396 762,437 21.1 18.34 24.26
+Unpaid Worker/Homemaker 899 1,429,557 44.1 40.42 47.86 559 859,353 26.5 23.69 29.55
+Retiree 181 279,987 37.1 31.02 43.65 99 151,030 20.0 15.14 25.99
+Student 64 174,490 24.5 17.56 33.14 29 96,477 13.6 7.55 23.16
+Not Workingb 411 646,599 28.2 24.43 32.24 248 400,484 17.4 14.44 20.93
+Household Income Group
+Less than RM 1,000 324 490,802 31.4 27.05 36.00 202 292,494 18.7 15.39 22.50
+RM 1,000 - RM 1,999 681 1,206,980 31.2 28.15 34.40 416 702,439 18.2 15.91 20.63
+RM 2,000 - RM 3,999 1,114 2,098,244 34.6 31.54 37.74 643 1,260,103 20.8 18.19 23.59
+RM 4,000 - RM 5,999 574 1,115,416 35.8 31.63 40.28 358 730,927 23.5 20.17 27.16
+RM 6,000 - RM 7,999 330 644,416 34.5 29.12 40.28 167 359,964 19.3 14.91 24.52
+RM 8,000 - RM 9,999 151 283,989 33.0 24.72 42.42 94 170,539 19.8 13.37 28.31
+RM 10,000 and above 239 444,981 29.7 25.06 34.75 142 219,807 14.7 11.13 19.07
+Household Income Quintile
+Quintile 1 663 1,092,665 31.2 28.04 34.50 415 673,873 19.2 16.87 21.82
+Quintile 2 696 1,208,646 31.2 27.68 34.97 398 659,416 17.0 14.76 19.56
+Quintile 3 699 1,381,232 36.5 32.63 40.45 408 845,132 22.3 18.99 26.01
+Quintile 4 635 1,228,899 35.6 31.73 39.74 398 807,541 23.4 20.24 26.92
+Quintile 5 720 1,373,386 32.5 29.20 35.93 403 750,309 17.7 15.08 20.76
+Household Income Category
+Bottom 40% 2,315 4,046,437 33.2 31.27 35.23 1,380 2,422,844 19.9 18.41 21.46
+Middle 40% 838 1,720,698 34.9 31.47 38.50 490 1,059,544 21.5 18.53 24.79
+Top 20% 260 517,692 29.9 25.59 34.50 152 253,883 14.6 11.44 18.55
+CPG 2004 (BMI ≥ 27.5 kg/m²) & WHO 1998 (BMI ≥ 30.0 kg/m²)
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age
+National Health and Morbidity Survey 2019
+Technical Report − Volume I
+202
+Table 14.8: Prevalence of Abdominal Obesity (WHO 2000) Among Adults
+Aged 18 Years and Above in Malaysia by Socio-Demographic Characteristics
+(n=9,755)
+Sociodemographic
+Characteristics
+Abdominal Obesity
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 5,756 10,387,112 52.6 50.54 54.58
+State
+Johor 465 1,124,490 53.4 47.23 59.40
+Kedah 307 671,363 54.5 48.03 60.78
+Kelantan 326 583,392 54.9 50.11 59.56
+Melaka 339 284,418 50.7 43.33 58.13
+Negeri Sembilan 345 402,882 61.5 51.58 70.55
+Pahang 341 507,764 51.0 44.46 57.49
+Pulau Pinang 390 663,586 55.0 46.21 63.43
+Perak 330 792,001 53.4 44.61 61.99
+Perlis 308 86,629 57.4 52.38 62.30
+Selangor 596 2,045,049 48.7 43.14 54.34
+Terengganu 310 320,342 45.1 41.55 48.64
+Sabah 425 1,159,499 47.9 41.71 54.07
+Sarawak 443 1,047,039 59.7 55.58 63.70
+WP Kuala Lumpur 270 634,794 57.4 49.98 64.46
+WP Labuan 266 31,637 52.6 47.41 57.83
+WP Putrajaya 295 32,226 58.9 51.53 65.82
+Location
+Urban 3,502 8,152,975 53.1 50.65 55.54
+Rural 2,254 2,234,138 50.7 47.50 53.89
+Sex
+Male 2,079 4,269,195 41.4 38.77 44.01
+Female 3,677 6,117,917 64.8 62.62 66.94
+Age Group (Years)
+18-19 102 286,341 34.0 26.98 41.81
+20-24 306 804,010 30.0 25.75 34.65
+25-29 396 1,133,755 40.4 35.52 45.53
+30-34 519 1,280,873 52.8 47.15 58.35
+35-39 600 1,231,061 55.7 51.36 60.03
+40-44 529 1,000,740 57.6 52.91 62.24
+45-49 600 1,014,531 64.1 59.17 68.68
+50-54 624 929,037 64.9 60.51 69.06
+55-59 641 853,859 68.2 63.41 72.62
+60-64 559 745,119 71.5 66.59 75.96
+65-69 408 494,376 66.9 59.39 73.56
+70-74 261 319,011 63.6 57.03 69.73
+75 & above 211 294,401 57.3 49.58 64.74
+Ethnicity
+Malaya 3,807 5,622,269 54.8 53.11 56.57
+Chinese 646 1,948,953 48.6 43.48 53.69
+Indian 444 778,548 68.3 60.95 74.80
+Sociodemographic
+Characteristics
+Abdominal Obesity
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+Bumiputera Sabah 320 672,282 52.3 46.20 58.28
+Bumiputera Sarawak 263 568,618 62.5 55.85 68.77
+Others 276 796,443 36.9 29.86 44.45
+Marital Status
+Single 824 2,075,100 35.9 32.78 39.19
+Married 4,204 7,370,611 58.5 56.15 60.85
+Widow(er)/Divorcee 728 941,401 67.8 62.73 72.52
+Education Level
+No Formal Education 357 568,427 59.0 51.74 65.89
+Primary Education 1,375 2,007,568 53.2 48.38 57.93
+Secondary Education 2,760 5,232,507 53.6 51.32 55.80
+Tertiary Education 1,249 2,544,883 49.6 45.96 53.19
+Occupation
+Government
+Employee
+616 849,477 57.2 51.94 62.22
+Private Employee 1,422 3,363,535 43.6 40.56 46.77
+Self Employed 1,033 1,859,265 52.0 47.28 56.67
+Unpaid Worker/
+Homemaker
+1,435 2,238,829 69.3 65.90 72.42
+Retiree 321 515,435 69.1 62.83 74.78
+Student 86 243,709 35.0 26.82 44.26
+Not Workingb 840 1,312,917 56.9 52.89 60.91
+Household Income Group
+Less than RM 1,000 573 850,943 53.9 48.97 58.66
+RM 1,000 - RM 1,999 1,138 1,924,168 49.7 45.55 53.90
+RM 2,000 - RM 3,999 1,690 3,083,923 51.2 47.76 54.53
+RM 4,000 - RM 5,999 848 1,685,419 54.2 49.89 58.54
+RM 6,000 - RM 7,999 512 1,009,867 54.7 49.02 60.25
+RM 8,000 - RM 9,999 221 409,059 47.9 38.99 57.04
+RM 10,000 and above 379 706,011 50.0 41.88 58.19
+Household Income Quintile
+Quintile 1 1,170 1,858,979 52.7 49.03 56.29
+Quintile 2 1,102 1,889,721 49.1 44.60 53.57
+Quintile 3 1,040 1,926,069 51.3 46.76 55.72
+Quintile 4 937 1,869,685 54.2 50.03 58.39
+Quintile 5 1,112 2,124,937 51.7 47.37 55.99
+Household Income Category
+Bottom 40% 3,666 6,237,654 51.3 49.00 53.69
+Middle 40% 1,276 2,602,637 53.4 49.62 57.14
+Top 20% 419 829,101 49.5 42.64 56.48
+WHO 2000 (Waist circumference for Men ≥90, Women ≥80)
+*Prevalence with high RSE, interpret with caution
+a - Malay includes Orang Asli
+b - Not working includes Unemployed, and Old Age

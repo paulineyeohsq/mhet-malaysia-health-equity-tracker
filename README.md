@@ -191,8 +191,8 @@ demand (**Actions → Update data → Run workflow**). With no manual step it:
 **Reading report tables.** The NHMS state and national tables that are published only as PDF reports are read by the
 pipeline itself (`scripts/nhms_pdf.py`, using `pdftotext -raw`): nothing is typed in. Each table must have a MALAYSIA row,
 every prevalence inside its own confidence interval, and every breakdown adding up to the report's totals, or the whole
-update stops and keeps the previous data. `python3 -m unittest scripts/test_nhms_pdf.py` runs these checks against the
-stored report text. Datasets that could not be added yet are in [`docs/DATA_BACKLOG.md`](docs/DATA_BACKLOG.md); the weekly
+update stops and keeps the previous data. `python3 -m unittest scripts/test_nhms_pdf.py scripts/test_nhms_legacy.py` runs these checks against the
+stored report text; the second also proves the 2015-2023 tables, which were once typed in by hand, read back identically. Datasets that could not be added yet are in [`docs/DATA_BACKLOG.md`](docs/DATA_BACKLOG.md); the weekly
 run watches for them and opens an issue, never changing the site.
 
 **Publishing is automatic when the checks pass; unusual changes wait for a person.** That is a deliberate choice: a

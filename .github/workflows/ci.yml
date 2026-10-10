@@ -68,10 +68,10 @@ jobs:
           python-version: "3.11"
 
       - name: Report-table extraction tests (run against the stored report text, no network)
-        run: python3 -m unittest scripts/test_nhms_pdf.py
+        run: python3 -m unittest scripts/test_nhms_pdf.py scripts/test_nhms_legacy.py
 
       - name: The pipeline scripts at least compile
-        run: python3 -m py_compile scripts/ingest_data.py scripts/transform_data.py scripts/update_database.py scripts/nhms_pdf.py scripts/watch_backlog.py
+        run: python3 -m py_compile scripts/ingest_data.py scripts/transform_data.py scripts/update_database.py scripts/nhms_pdf.py scripts/nhms_legacy.py scripts/watch_backlog.py
 
   chat-function:
     runs-on: ubuntu-latest

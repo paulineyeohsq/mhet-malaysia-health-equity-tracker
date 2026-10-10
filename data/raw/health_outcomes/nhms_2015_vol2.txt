@@ -1,0 +1,878 @@
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+8
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+LIST OF TABLES
+CARDIOVASCULAR DISEASES
+Table 1.1.1 Prevalence of overall diabetes by socio-demographic characteristics 25
+Table 1.1.2 Prevalence of known diabetes by socio-demographic characteristics 27
+Table 1.1.3 Prevalence of undiagnosed diabetes by socio-demographic
+characteristics
+29
+Table 1.1.4 Prevalence of impaired fasting glucose by socio-demographic
+characteristics
+31
+Table 1.2.1 Prevalence of overall hypertension by socio-demographic characteristics 33
+Table 1.2.2 Prevalence of known hypertension by socio-demographic characteristics 35
+Table 1.2.3 Prevalence of undiagnosed hypertension by socio-demographic
+characteristics
+37
+Table 1.3.1 Prevalence of overall hypercholesterolemia by socio-demographic
+characteristics
+39
+Table 1.3.2 Prevalence of known hypercholesterolemia by socio-demographic
+characteristics
+41
+Table 1.3.3 Prevalence of undiagnosed hypercholesterolemia by socio-demographic
+characteristics
+43
+NUTRITIONAL STATUS OF MALAYSIAN ADULTS (AGED ≥ 18 YEARS OLD)
+Table 2.1.1 Prevalence of underweight BMI among adults (aged≥ 18 years old) by
+socio-demographic characteristics
+51
+Table 2.1.2 Prevalence of normal BMI among adults (aged≥ 18 years old) by socio-
+demographic characteristics
+53
+Table 2.1.3 Prevalence of overweight among adults (aged≥ 18 years old) by socio-
+demographic characteristics
+56
+Table 2.1.4 Prevalence of obesity among adults (aged≥ 18 years old) by socio-
+demographic characteristics
+59
+Table 2.1.5 Prevalence of obesity I to III (WHO 1998) among adults (aged ≥18 years
+old) by socio- demographic characteristics
+62
+Table 2.1.6 Prevalence of obesity I to III (CPG 2004) among adults (aged ≥18 years
+old) by socio-demographic characteristics
+65
+Table 2.1.7 Prevalence of abdominal obesity (WHO 1998) among adults (aged ≥18
+years old) by socio-demographic characteristic
+68
+Table 2.1.8 Prevalence of abdominal obesity (WHO 2000) among adults (aged ≥18
+years old) by socio-demographic characteristic
+70
+Table 2.1.9 Prevalence of muscle wasting among elderly (aged 60 years and above)
+by socio-demographics
+72
+NUTRITIONAL STATUS OF CHILDREN (AGED < 18 YEARS OLD)
+Table 2.2.1 Prevalence of Body Mass Index (BMI) for age status based on WHO
+2006 among children (aged <18 years old) by socio-demographic
+characteristics
+78
+Table 2.2.2 Prevalence of weight for age status based on WHO 2006 among children
+(aged <18 years old) by socio-demographic characteristics
+70
+Table 2.2.3 Prevalence of height for age status based on WHO 2006 among children
+(aged <18 years old) by socio-demographic characteristics
+80
+Table 2.2.4 Prevalence of weight for height status based on WHO 2006 among
+children (aged <6 years old) by socio-demographic characteristics 81
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+9
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+TOBACCO USE
+Table 3.1.1 Prevalence of current tobacco smoker by socio-demographic
+characteristics
+92
+Table 3.1.2 Current smokers of any smoked tobacco product by socio-demographic
+characteristics
+94
+Table 3.1.3 Current smokers of any cigarette by socio-demographic characteristics 96
+Table 3.1.4 Current smokers of manufactured cigarette by socio-demographic
+characteristics
+98
+Table 3.1.5 Current smokers of hand-rolled cigarette by socio-demographic
+characteristics
+100
+Table 3.1.6 Current smokers of kretek by socio-demographic characteristics 102
+Table 3.1.7 Current smokers of other tobacco product by socio-demographic
+characteristics
+104
+Table 3.1.8 Cigarette smoked per day among daily cigarette smokers by socio-
+demographic characteristics
+106
+Table 3.1.9 Prevalence of smokeless tobacco used by socio-demographic
+characteristics
+112
+Table 3.1.10 Exposure to second-hand smoke at home among all respondents by
+socio-demographic characteristics
+114
+Table 3.1.11 Exposure to second-hand smoke at home among non-smokers by
+socio-demographic characteristics
+116
+Table 3.1.12 Exposure to second-hand smoke at work among all respondents by
+socio-demographic characteristics
+118
+Table 3.1.13 Exposure to second-hand smoke at home among non-smokers by
+socio-demographic characteristics
+120
+Table 3.1.14 Current smokers who made a quit attempt in the past 12 months by
+socio-demographic characteristics
+122
+Table 3.1.15 Current smokers who visited a healthcare provider in the past 12 months
+by socio-demographic characteristics
+124
+Table 3.1.16 Current smokers who advised to quit smoking by a healthcare provider
+in the past 12 months by socio-demographic characteristics
+126
+Table 3.1.17 Noticing anti-cigarette smoking information during the last 30 days in
+newspapers or magazine by socio-demographic characteristics
+128
+Table 3.1.18 Noticing anti-cigarette smoking information during the last 30 days on
+television by socio-demographic characteristics
+131
+Table 3.1.19 Current smokers who noticed health warning on cigarette package
+during the last 30 days by socio-demographic characteristics
+134
+Table 3.1.20 Current smokers who considered quitting because of the warnings
+during the last 30 days by socio-demographic characteristics
+136
+Table 3.1.21 Noticing cigarette advertising during the last 30 days in stores by socio-
+demographic characteristics
+138
+Table 3.1.22 Noticing cigarette promotion (free sample) during the last 30 days by
+socio-demographic characteristics
+140
+Table 3.1.23 Noticing cigarette promotion (cigarette at sales prices) during the last 30
+days by socio-demographic characteristics
+142
+Table 3.1.24 Noticing cigarette promotion (coupons for cigarette) during the last 30
+days by socio-demographic characteristics
+144
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+10
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 3.1.25 Noticing cigarette promotion (free gifts/discount on other products)
+during the last 30 days by socio-demographic characteristics
+146
+Table 3.1.26 Noticing cigarette promotion (clothing/item with brand name or logo)
+during the last 30 days by socio-demographic characteristics
+148
+Table 3.1.27 Noticing cigarette promotion (mail promoting cigarette) during the last 30
+days by socio-demographic characteristics
+150
+ALCOHOL CONSUMPTION
+Table 4.1.1 Prevalence of current drinker (≥13 years old) by socio-demographic
+characteristics
+157
+Table 4.1.2 Prevalence of current drinker (≥18 years old) by socio-demographic
+characteristics
+159
+Table 4.1.3 Prevalence of binge drinker among current drinker (≥18 years old) by
+socio-demographic characteristic
+161
+Table 4.1.4 Risk related to pattern of drinking (≥18 years old) 161
+PHYSICAL ACTIVITY
+Table 5.1.1 Prevalence of physically active by socio-demographic characteristics 166
+Table 5.1.2 Level of physical activity by socio-demographic characteristics 168
+DIETARY PRACTICE
+Table 6.1.1 Intake of fruit and/or vegetables by socio-demographic characteristics 175
+Table 6.1.2 Adequate intake of fruits (≥ 2 servings) by socio-demographic
+characteristics
+177
+Table 6.1.3 Adequate intake of vegetables (≥ 3 servings) by socio-demographic
+characteristics
+179
+Table 6.1.4 Adequate intake of plain water (≥6 glasses) by socio-demographic
+characteristics
+181
+MENTAL HEALTH PROBLEMS OF ADULTS
+Table 7.1.1 Prevalence of Adult Mental Health problems by socio-demographic
+characteristics
+187
+MENTAL HEALTH PROBLEMS OF CHILDREN
+Table 8.1.1 Prevalence of mental health problems among children 5-15 years old by
+socio-demographic characteristics
+193
+Table 8.1.2 Prevalence of emotional problems among children 5-15 years old by
+socio-demographic characteristics
+195
+Table 8.1.3 Prevalence of conduct problems among children 5-15 years old by
+socio-demographic characteristics
+197
+Table 8.1.4 Prevalence of hyperactivity problems among children 5-15 years old by
+socio-demographic characteristics
+199
+Table 8.1.5 Prevalence of peer problems among children 5-15 years old by socio-
+demographic characteristics
+201
+Table 8.1.6 Prevalence of pro-social skills among children 5-15 years old by socio-
+demographic characteristics
+203
+ANAEMIA
+Table 9.1.1 Prevalence of anaemia by socio-demographic characteristics 209
+Table 9.1.2 Prevalence of anaemia level by socio-demographic characteristics 211
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+25
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 1.1.1: Prevalence of overall diabetes by socio-demographic characteristics
+Sociodemographic
+Characteristics
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 4,229 3,529,804 17.5 16.6 18.3
+State
+Johor 421 472,454 19.8 16.8 23.3
+Kedah 336 334,370 25.4 21.0 30.3
+Kelantan 256 185,828 18.5 15.9 21.3
+Melaka 251 95,518 16.7 13.5 20.6
+Negeri Sembilan 306 131,288 19.3 16.6 22.4
+Pahang 219 147,676 14.8 12.4 17.6
+Penang 288 218,925 18.1 14.0 23.2
+Perak 323 320,042 19.4 17.1 21.9
+Perlis 370 33,090 20.6 18.0 23.5
+Selangor 483 649,586 15.5 13.8 17.4
+Terengganu 257 127,439 18.6 16.1 21.3
+Sabah & WP
+Labuan
+272 326,590 14.2 12.2 16.4
+Sarawak 216 260,126 14.8 12.1 18.2
+WP Kuala Lumpur 136 217,512 17.4 14.3 21.1
+WP Putrajaya 95 9,362 19.2 15.8 23.3
+Location
+Urban 2,368 2,728,211 17.7 16.7 18.8
+Rural 1,861 801,593 16.7 15.4 18.1
+Sex
+Male 1,908 1,741,166 16.7 15.7 17.8
+Female 2,321 1,788,638 18.3 17.2 19.4
+Age Group
+18-19 47 52,477 5.5 3.9 7.7
+20-24 129 167,775 5.9 4.7 7.3
+25-29 202 247,025 8.9 7.5 10.5
+30-34 218 278,454 10.6 8.9 12.6
+35-39 252 267,966 12.9 11.1 15.0
+40-44 340 331,893 17.9 15.5 20.6
+45-49 438 367,890 22.0 19.6 24.6
+50-54 564 407,145 27.0 24.4 29.7
+55-59 576 416,832 32.9 30.1 35.9
+60-64 514 358,827 38.3 34.8 41.9
+65-69 403 263,755 38.0 33.7 42.4
+70-74 276 158,149 39.1 33.6 44.9
+75+ 270 211,617 37.0 32.6 41.7
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+27
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 1.1.2: Prevalence of known diabetes by socio-demographic characteristics
+Sociodemographic
+Characteristics
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 2,126 1,678,680 8.3 7.8 8.8
+State
+Johor 198 210,510 8.8 7.3 10.7
+Kedah 142 122,462 9.3 7.8 11.1
+Kelantan 112 71,799 7.1 6.1 8.4
+Melaka 140 47,535 8.3 6.7 10.4
+Negeri Sembilan 174 71,451 10.5 8.5 12.9
+Pahang 98 62,338 6.3 4.9 7.9
+Penang 141 109,040 9.0 7.3 11.1
+Perak 192 197,158 11.9 9.9 14.3
+Perlis 206 17,555 10.9 9.3 12.7
+Selangor 266 325,876 7.8 6.6 9.1
+Terengganu 127 59,422 8.7 7.0 10.7
+Sabah & WP
+Labuan
+122 134,998 5.9 4.7 7.4
+Sarawak 117 144,868 8.3 6.3 10.8
+WP Kuala Lumpur 67 101,090 8.1 6.1 10.7
+WP Putrajaya 24 2,578 5.3 3.3 8.5
+Location
+Urban 1,209 1,332,094 8.7 8.0 9.3
+Rural 917 346,586 7.2 6.6 7.9
+Sex
+Male 905 792,152 7.6 7.0 8.3
+Female 1,221 886,529 9.1 8.4 9.8
+Age Group
+18-19 1 240 0.0 0.0 0.2
+20-24 12 19,282 0.7 0.3 1.5
+25-29 31 40,024 1.4 1.0 2.2
+30-34 50 89,377 3.4 2.4 4.8
+35-39 71 71,473 3.4 2.6 4.5
+40-44 133 128,803 6.9 5.6 8.6
+45-49 199 175,193 10.5 8.9 12.2
+50-54 301 223,644 14.8 12.8 17.1
+55-59 351 260,301 20.6 18.2 23.2
+60-64 337 248,462 26.5 23.3 30.0
+65-69 268 169,304 24.4 21.0 28.1
+70-74 194 113,024 27.9 22.7 33.9
+75+ 178 139,554 24.4 20.5 28.8
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+29
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 1.1.3: Prevalence of undiagnosed diabetes by socio-demographic characteristics
+Sociodemographic
+Characteristics
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 2,103 1,851,124 9.2 8.5 9.9
+State
+Johor 223 261,944 11.0 8.8 13.7
+Kedah 194 211,908 16.1 12.3 20.7
+Kelantan 144 114,029 11.3 9.2 13.9
+Melaka 111 47,982 8.4 6.0 11.7
+Negeri Sembilan 132 59,837 8.8 7.2 10.8
+Pahang 121 85,338 8.6 6.4 11.3
+Penang 147 109,885 9.1 5.9 13.9
+Perak 131 122,884 7.4 6.2 8.9
+Perlis 164 15,535 9.7 7.8 11.9
+Selangor 217 323,710 7.7 6.4 9.3
+Terengganu 130 68,017 9.9 7.6 12.9
+Sabah & WP
+Labuan
+150 191,592 8.3 6.7 10.3
+Sarawak 99 115,258 6.6 5.1 8.5
+WP Kuala
+Lumpur
+69 116,422 9.3 6.9 12.5
+WP Putrajaya 71 6,784 13.9 11.1 17.4
+Location
+Urban 1,159 1,396,116 9.1 8.3 9.9
+Rural 944 455,007 9.5 8.5 10.6
+Sex
+Male 1,003 949,015 9.1 8.3 10.0
+Female 1,100 902,109 9.2 8.4 10.1
+Age Group
+18-19 46 52,237 5.5 3.9 7.7
+20-24 117 148,493 5.2 4.1 6.5
+25-29 171 207,001 7.4 6.1 9.0
+30-34 168 189,077 7.2 5.8 8.9
+35-39 181 196,494 9.5 7.9 11.3
+40-44 207 203,091 11.0 8.9 13.5
+45-49 239 192,697 11.5 9.7 13.6
+50-54 263 183,500 12.2 10.4 14.2
+55-59 225 156,531 12.4 10.5 14.5
+60-64 177 110,365 11.8 9.7 14.2
+65-69 135 94,451 13.6 10.7 17.1
+70-74 82 45,126 11.2 8.3 14.8
+75+ 92 72,063 12.6 10.1 15.7
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+33
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 1.2.1 Prevalence of overall hypertension by socio-demographic characteristics
+Sociodemographic
+Characteristics
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 7,225 6,114,113 30.3 29.3 31.2
+State
+Johor 592 653,917 27.4 24.6 30.4
+Kedah 547 494,177 37.5 33.5 41.6
+Kelantan 480 340,387 33.8 30.1 37.7
+Melaka 388 147,020 25.8 21.8 30.2
+Negeri Sembilan 493 221,205 32.5 28.2 37.2
+Pahang 426 284,288 28.5 25.2 32.1
+Penang 503 360,082 29.8 26.0 33.9
+Perak 610 601,255 36.4 33.2 39.8
+Perlis 591 56,859 35.4 31.9 38.9
+Selangor 789 1,065,750 25.5 23.4 27.7
+Terengganu 380 184,419 26.9 23.7 30.3
+Sabah & WP
+Labuan
+556 617,197 26.8 23.8 30.0
+Sarawak 502 653,885 37.3 33.7 41.1
+WP Kuala Lumpur 248 421,947 33.8 29.7 38.2
+WP Putrajaya 120 11,724 24.1 19.0 30.0
+Location
+Urban 3,833 4,505,574 29.3 28.2 30.4
+Rural 3,392 1,608,540 33.5 31.6 35.4
+Sex
+Male 3,323 3,213,932 30.8 29.5 32.2
+Female 3,902 2,900,181 29.7 28.5 30.9
+Age Group
+18-19 54 63,732 6.7 4.7 9.4
+20-24 186 268,463 9.4 7.8 11.3
+25-29 269 367,953 13.2 11.4 15.3
+30-34 325 417,736 15.9 13.9 18.2
+35-39 473 496,833 23.9 21.7 26.3
+40-44 595 596,853 32.2 29.4 35.1
+45-49 757 650,697 38.8 36.1 41.7
+50-54 965 744,734 49.3 46.3 52.4
+55-59 972 702,392 55.5 52.6 58.4
+60-64 865 609,317 65.0 61.4 68.4
+65-69 714 471,292 67.8 63.7 71.7
+70-74 514 304,943 75.4 70.5 79.7
+75+ 536 419,168 73.4 68.9 77.4
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+35
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 1.2.2: Prevalence of known hypertension by socio-demographic characteristics
+Sociodemographic
+Characteristics
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 3,255 2,642,628 13.1 12.4 13.8
+State
+Johor 253 268,154 11.2 9.6 13.2
+Kedah 204 188,525 14.3 11.7 17.3
+Kelantan 165 106,753 10.6 8.7 12.8
+Melaka 209 74,672 13.1 10.7 15.9
+Negeri Sembilan 239 109,757 16.1 12.8 20.2
+Pahang 168 106,969 10.7 8.5 13.4
+Penang 232 151,684 12.6 9.9 15.8
+Perak 274 285,468 17.3 14.8 20.1
+Perlis 280 22,876 14.2 11.9 16.9
+Selangor 398 517,517 12.4 11.1 13.8
+Terengganu 173 79,147 11.5 9.4 14.1
+Sabah & WP
+Labuan
+286 296,594 12.9 11.0 15.1
+Sarawak 237 289,551 16.5 14.1 19.3
+WP Kuala Lumpur 90 140,115 11.2 8.8 14.2
+WP Putrajaya 47 4,847 10.0 6.8 14.3
+Location
+Urban 1,780 2,028,909 13.2 12.4 14.0
+Rural 1,475 613,719 12.8 11.7 13.9
+Sex
+Male 1,371 1,271,271 12.2 11.3 13.1
+Female 1,884 1,371,357 14.0 13.2 14.9
+Age Group
+18-19 5 6,327 0.7 0.2 1.8
+20-24 31 55,123 1.9 1.3 2.9
+25-29 57 78,776 2.8 2.1 3.8
+30-34 72 101,890 3.9 2.8 5.3
+35-39 119 121,144 5.8 4.7 7.3
+40-44 193 221,442 11.9 10.1 14.0
+45-49 295 251,104 15.0 13.2 17.0
+50-54 442 349,282 23.1 20.7 25.8
+55-59 507 371,004 29.3 26.6 32.2
+60-64 479 347,488 37.1 33.5 40.8
+65-69 400 271,970 39.1 35.3 43.1
+70-74 328 203,824 50.4 44.7 56.1
+75+ 327 263,254 46.1 41.5 50.8
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+37
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 1.2.3: Prevalence of undiagnosed hypertension by socio-demographic characteristics
+Sociodemographic
+Characteristics
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 3,970 3,471,485 17.2 16.4 18.0
+State
+Johor 339 385,762 16.2 14.2 18.3
+Kedah 343 305,652 23.2 19.7 27.1
+Kelantan 315 233,634 23.2 20.1 26.6
+Melaka 179 72,348 12.7 9.6 16.5
+Negeri Sembilan 254 111,448 16.4 13.8 19.3
+Pahang 258 177,320 17.8 15.4 20.4
+Penang 271 208,398 17.2 14.0 21.1
+Perak 336 315,786 19.1 16.6 22.0
+Perlis 311 33,983 21.1 18.6 23.9
+Selangor 391 548,233 13.1 11.4 15.0
+Terengganu 207 105,273 15.3 13.0 18.1
+Sabah & WP
+Labuan
+270 320,603 13.9 11.8 16.3
+Sarawak 265 364,334 20.8 17.8 24.2
+WP Kuala Lumpur 158 281,832 22.6 19.0 26.7
+WP Putrajaya 73 6,878 14.1 10.4 18.9
+Location
+Urban 2,053 2,476,665 16.1 15.2 17.0
+Rural 1,917 994,820 20.7 19.3 22.2
+Sex
+Male 1,952 1,942,662 18.6 17.5 19.8
+Female 2,018 1,528,824 15.6 14.7 16.6
+Age Group
+15-19 49 57,405 6.0 4.1 8.7
+20-24 155 213,340 7.5 6.1 9.1
+25-29 212 289,178 10.4 8.7 12.3
+30-34 253 315,846 12.0 10.2 14.1
+35-39 354 375,689 18.1 16.0 20.4
+40-44 402 375,412 20.3 18.1 22.6
+45-49 462 399,592 23.8 21.5 26.3
+50-54 523 395,453 26.2 23.6 29.0
+55-59 465 331,388 26.2 23.9 28.7
+60-64 386 261,829 27.9 24.9 31.2
+65-69 314 199,321 28.7 25.1 32.6
+70-74 186 101,119 25.0 21.0 29.5
+75+ 209 155,913 27.3 23.6 31.3
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+39
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 1.3.1: Prevalence of overall hypercholesterolemia by socio-demographic characteristics
+Sociodemographic
+Characteristics
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 10,514 9,641,343 47.7 46.5 48.9
+State
+Johor 910 1,091,941 45.8 42.1 49.5
+Kedah 717 705,235 53.5 48.5 58.4
+Kelantan 676 520,761 51.7 47.8 55.7
+Melaka 619 265,922 46.6 41.1 52.2
+Negeri Sembilan 716 336,687 49.5 45.0 54.1
+Pahang 720 560,480 56.2 52.2 60.3
+Penang 799 631,103 52.2 47.4 57.0
+Perak 758 798,247 48.3 44.9 51.7
+Perlis 718 75,533 47.0 41.3 52.7
+Selangor 1,244 1,820,676 43.5 40.5 46.6
+Terengganu 655 357,821 52.1 47.6 56.6
+Sabah & WP
+Labuan
+723 942,277 40.9 36.9 45.0
+Sarawak 657 851,642 48.6 44.8 52.4
+WP Kuala Lumpur 378 660,428 52.9 47.7 58.1
+WP Putrajaya 224 22,590 46.4 40.2 52.7
+Location
+Urban 5,943 7,350,547 47.7 46.3 49.2
+Rural 4,571 2,290,796 47.7 45.6 49.7
+Sex
+Male 4,518 4,539,770 43.5 42.0 45.1
+Female 5,996 5,101,573 52.2 50.7 53.7
+Age Group
+18-19 175 210,467 22.0 18.8 25.7
+20-24 527 754,047 26.5 24.1 29.0
+25-29 756 937,153 33.7 31.2 36.3
+30-34 946 1,155,728 44.0 41.2 46.8
+35-39 983 1,031,248 49.7 46.7 52.6
+40-44 1,069 1,060,619 57.2 53.7 60.6
+45-49 1,157 1,006,778 60.1 57.0 63.1
+50-54 1,275 988,530 65.5 62.4 68.5
+55-59 1,160 869,987 68.8 65.9 71.5
+60-64 909 611,599 65.3 61.7 68.7
+65-69 665 428,277 61.6 57.4 65.8
+70-74 438 253,677 62.7 57.2 67.9
+75+ 454 333,233 58.3 53.2 63.2
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+41
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 1.3.2: Prevalence of known hypercholesterolemia by socio-demographic characteristics
+Sociodemographic
+Characteristics
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 2,223 1,839,960 9.1 8.6 9.7
+State
+Johor 152 167,178 7.0 5.7 8.6
+Kedah 119 97,794 7.4 5.7 9.6
+Kelantan 77 52,942 5.3 4.0 6.9
+Melaka 132 48,196 8.4 6.4 11.0
+Negeri Sembilan 173 75,903 11.2 9.0 13.7
+Pahang 96 60,703 6.1 4.4 8.4
+Penang 206 146,852 12.2 9.5 15.4
+Perak 179 195,432 11.8 9.7 14.4
+Perlis 249 22,275 13.8 11.7 16.3
+Selangor 301 398,926 9.5 8.3 11.0
+Terengganu 103 52,851 7.7 6.0 9.9
+Sabah & WP Labuan 175 190,635 8.3 6.8 10.0
+Sarawak 161 220,108 12.6 10.0 15.6
+WP Kuala Lumpur 67 106,711 8.6 6.7 10.9
+WP Putrajaya 33 3,452 7.1 4.3 11.5
+Location
+Urban 1,316 1,497,821 9.7 9.0 10.5
+Rural 907 342,139 7.1 6.4 8.0
+Sex
+Male 949 885,356 8.5 7.7 9.3
+Female 1,274 954,604 9.8 9.0 10.6
+Age Group
+18-19 3 1,517 0.2 0.0 0.7
+20-24 16 24,040 0.8 0.5 1.5
+25-29 47 62,293 2.2 1.6 3.2
+30-34 75 109,239 4.2 3.2 5.4
+35-39 100 112,983 5.4 4.2 7.0
+40-44 171 181,856 9.8 8.2 11.8
+45-49 220 203,818 12.2 10.3 14.4
+50-54 334 262,835 17.4 15.2 19.8
+55-59 343 255,914 20.2 17.8 22.9
+60-64 335 236,465 25.2 22.1 28.7
+65-69 248 163,334 23.5 19.8 27.6
+70-74 168 98,376 24.3 20.2 29.0
+75+ 163 127,291 22.3 18.5 26.7
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+43
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 1.3.3: Prevalence of undiagnosed hypercholesterolemia by socio-demographic
+characteristics
+Sociodemographic
+Characteristics
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 8,291 7,801,383 38.6 37.4 39.8
+State
+Johor 758 924,763 38.8 35.5 42.2
+Kedah 598 607,441 46.1 41.1 51.1
+Kelantan 599 467,819 46.5 42.4 50.6
+Melaka 487 217,726 38.1 32.6 44.0
+Negeri Sembilan 543 260,784 38.4 34.2 42.7
+Pahang 624 499,776 50.2 46.5 53.8
+Penang 593 484,252 40.1 36.0 44.3
+Perak 579 602,815 36.5 33.0 40.1
+Perlis 469 53,258 33.1 28.5 38.1
+Selangor 943 1,421,750 34.0 30.9 37.2
+Terengganu 552 304,970 44.4 40.0 48.9
+Sabah & WP Labuan 548 751,641 32.6 28.7 36.8
+Sarawak 496 631,533 36.1 32.5 39.8
+WP Kuala Lumpur 311 553,717 44.4 39.7 49.2
+WP Putrajaya 191 19,138 39.3 34.0 44.9
+Location
+Urban 4,627 5,852,726 38.0 36.6 39.4
+Rural 3,664 1,948,657 40.5 38.5 42.6
+Sex
+Male 3,569 3,654,414 35.0 33.6 36.5
+Female 4,722 4,146,969 42.4 41.0 43.9
+Age Group
+18-19 172 208,950 21.9 18.6 25.6
+20-24 511 730,008 25.6 23.3 28.1
+25-29 709 874,860 31.4 28.9 34.0
+30-34 871 1,046,489 39.8 37.1 42.7
+35-39 883 918,264 44.2 41.3 47.2
+40-44 898 878,763 47.4 44.1 50.8
+45-49 937 802,961 47.9 44.9 51.0
+50-54 941 725,694 48.1 45.1 51.1
+55-59 817 614,073 48.5 45.3 51.8
+60-64 574 375,134 40.0 36.5 43.7
+65-69 417 264,943 38.1 34.1 42.3
+70-74 270 155,301 38.4 33.2 43.9
+75+ 291 205,942 36.0 31.7 40.6
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+52
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 2.1.1: Prevalence of underweight BMI among adults (aged≥ 18 years old)
+by socio-demographic characteristics
+Sociodemographic
+Characteristics
+CPG 2004 (BMI <18.5 kg/m2) &
+WHO 1998 (BMI <18.5 kg/m2)
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 1,107 1,259,017 6.7 6.2 7.3
+State
+Johor 88 131,205 6.0 4.7 7.7
+Kedah 78 101,024 8.2 5.9 11.4
+Kelantan 81 80,629 8.4 6.5 10.8
+Melaka 52 20,566 4.3 2.7 6.8
+Negeri Sembilan 63 48,414 8.1 4.8 13.2
+Pahang 68 67,195 7.1 5.5 9.2
+Penang 78 79,623 7.0 4.8 10.2
+Perak 75 98,475 6.3 4.6 8.7
+Perlis 76 11,289 7.5 5.3 10.4
+Selangor 149 248,160 6.6 5.3 8.2
+Terengganu 91 53,938 8.3 6.7 10.2
+Sabah & WP Labuan 77 129,598 5.9 4.4 7.8
+Sarawak 82 121,450 7.2 5.8 8.9
+WP Kuala Lumpur 36 66,070 5.7 4.0 8.0
+WP Putrajaya 13 1,382 3.0 1.6 5.6
+Location
+Urban 605 935,621 6.6 5.9 7.3
+Rural 502 323,396 7.1 6.3 8.1
+Sex
+Male 545 609,227 6.2 5.5 6.9
+Female 562 649,791 7.3 6.5 8.2
+Age Group
+18-19 153 172,409 18.7 15.5 22.3
+20-24 248 369,720 14.0 12.0 16.2
+25-29 176 221,212 8.7 7.3 10.4
+30-34 95 117,244 4.9 3.8 6.3
+35-39 64 68,748 3.6 2.6 4.8
+40-44 60 78,331 4.4 3.2 6.2
+45-49 49 45,490 2.8 2.1 3.9
+50-54 40 35,935 2.5 1.7 3.7
+55-59 31 20,192 1.7 1.1 2.6
+60-64 40 32,553 3.7 2.4 5.5
+65-69 37 26,269 4.1 2.8 6.2
+70-74 43 21,055 5.8 3.6 9.0
+75+ 71 49,860 10.9 8.1 14.4
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+71
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 2.1.8: Prevalence of abdominal obesity (WHO 2000) among adults (aged ≥18 years old) by
+socio-demographic characteristic
+Sociodemographic
+Characteristics
+WHO 2000 (Men >90, Women >80)
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 9,930 9,077,326 48.6 47.4 49.9
+State
+Johor 957 1,145,259 52.8 48.6 57.0
+Kedah 611 583,813 47.4 42.4 52.4
+Kelantan 486 373,974 39.0 35.2 43.0
+Melaka 574 256,710 54.2 49.1 59.2
+Negeri Sembilan 621 270,998 45.7 41.3 50.2
+Pahang 621 459,739 48.8 44.6 53.1
+Penang 763 642,243 56.8 51.1 62.3
+Perak 709 754,682 48.6 44.7 52.5
+Perlis 677 78,105 51.6 47.9 55.4
+Selangor 1,272 1,746,818 47.2 43.9 50.5
+Terengganu 575 304,112 46.5 42.9 50.1
+Sabah & WP Labuan 791 1,018,826 46.4 42.6 50.2
+Sarawak 631 811,382 48.0 43.3 52.6
+WP Kuala Lumpur 362 602,705 51.8 46.3 57.2
+WP Putrajaya 280 27,962 61.3 57.2 65.3
+Location
+Urban 5,711 6,988,879 49.4 47.9 51.0
+Rural 4,219 2,088,447 46.2 44.0 48.4
+Sex
+Male 3,679 3,748,754 38.2 36.6 39.9
+Female 6,251 5,328,572 60.2 58.5 61.8
+Age Group
+18-19 173 206,111 22.7 19.3 26.6
+20-24 518 741,768 28.3 25.8 31.1
+25-29 819 1,004,419 39.6 36.7 42.5
+30-34 938 1,120,011 47.1 44.2 50.1
+35-39 956 960,333 50.3 47.1 53.6
+40-44 1,032 979,329 55.8 52.3 59.3
+45-49 1,073 907,007 56.7 53.5 59.9
+50-54 1,207 901,404 63.4 60.3 66.4
+55-59 1,075 781,294 65.4 61.9 68.8
+60-64 846 588,212 66.4 62.7 69.9
+65-69 606 407,442 64.2 59.8 68.4
+70-74 364 218,746 60.6 55.0 66.1
+75+ 323 261,250 56.6 51.6 61.5
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+93
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 3.1.1: Prevalence of current tobacco smoker by socio-demographic characteristics
+\ Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 4,477 4,991,458 22.8 21.9 23.8
+State
+Johor 398 568,564 22.2 19.7 24.9
+Kedah 372 387,009 26.5 23.1 30.2
+Kelantan 300 277,239 24.6 21.5 28.0
+Melaka 219 105,392 16.9 13.4 20.9
+Negeri Sembilan 276 154,271 20.9 17.9 24.3
+Pahang 309 280,754 25.5 21.8 29.6
+Penang 263 247,268 19.2 14.7 24.6
+Perak 285 377,070 21.0 17.8 24.5
+Perlis 291 38,869 22.2 19.1 25.7
+Selangor 593 928,163 20.9 18.7 23.3
+Terengganu 281 170,088 22.2 19.4 25.3
+Sabah & WP
+Labuan
+412 720,933 28.4 25.2 31.9
+Sarawak 283 476,672 25.4 21.9 29.2
+WP Kuala
+Lumpur
+128 252,646 19.1 15.6 23.2
+WP Putrajaya 67 6,520 12.4 9.8 15.7
+Location
+Urban 2,373 3,515,923 21.2 20.1 22.4
+Rural 2,104 1,475,534 27.9 26.3 29.6
+Sex
+Male 4,351 4,847,892 43.0 41.4 44.6
+Female 126 143,566 1.4 1.1 1.8
+Age Group
+18-19
+293 348,771 13.2 11.5 15.2
+20-24 500 720,131 25.3 22.8 28.0
+25-29 552 771,403 27.7 25.3 30.2
+30-34 567 770,177 29.3 26.8 32.0
+35-39 481 616,993 29.7 27.1 32.4
+40-44 425 488,095 26.3 23.8 29.0
+45-49 424 399,155 23.8 21.7 26.2
+50-54 385 333,147 22.1 19.7 24.7
+55-59 302 220,189 17.4 15.3 19.7
+60-64 214 132,518 14.2 11.9 16.7
+65-69 165 93,369 13.5 11.0 16.5
+70-74 88 44,940 11.2 8.2 15.0
+75+ 81 52,569 9.2 7.0 12.1
+NATIONAL HEALTH AND MORBIDITY SURVEY 2015 MINISTRY OF HEALTH MALAYSIA
+167
+Non-Communicable Diseases, Risk Factors & Other Health Problems Volume II
+Table 5.1.1: Prevalence of physically active by socio-demographic characteristics
+Sociodemographic
+Characteristics
+Count
+Estimated
+Population
+Prevalence
+(%)
+95% CI
+Lower Upper
+MALAYSIA 13,872 13,992,650 66.5 65.5 67.6
+State
+Johor 1,222 1,638,675 67.1 64.3 69.8
+Kedah 869 934,896 66.4 62.4 70.2
+Kelantan 918 788,083 74.2 70.6 77.6
+Melaka 754 369,265 62.2 56.0 68.0
+Negeri Sembilan 858 473,601 66.3 62.8 69.7
+Pahang 960 792,966 74.0 70.6 77.1
+Penang 1,013 911,657 74.5 70.3 78.3
+Perak 1,035 1,244,131 71.9 66.9 76.4
+Perlis 923 120,465 72.2 67.7 76.4
+Selangor 1,722 2,607,624 60.1 57.6 62.5
+Terengganu 878 509,922 69.3 63.7 74.4
+Sabah & WP Labuan 1,181 1,688,571 69.9 66.9 72.9
+Sarawak 750 1,056,728 59.2 54.7 63.6
+WP Kuala Lumpur 446 821,029 63.6 58.3 68.5
+WP Putrajaya 343 35,036 67.5 59.8 74.4
+Location
+Urban 7,766 10,400,386 65.0 63.7 66.3
+Rural 6,106 3,592,264 71.3 69.6 73.0
+Sex
+Male 7,015 7,685,647 71.1 69.7 72.4
+Female 6,857 6,307,003 61.7 60.3 63.2
+Age Group
+18-19 1,084 1,232,221 61.0 58.1 63.9
+20-24 1,300 1,891,506 67.9 65.1 70.5
+25-29 1,483 1,879,345 68.1 65.4 70.6
+30-34 1,457 1,803,479 69.3 66.7 71.8
+35-39 1,380 1,451,548 70.8 68.1 73.4
+40-44 1,342 1,340,796 73.4 70.6 76.1
+45-49 1,383 1,199,260 72.4 69.6 75.1
+50-54 1,368 1,080,950 72.3 69.4 74.9
+55-59 1,096 792,736 63.3 60.1 66.3
+60-64 841 565,941 60.9 57.0 64.6
+65-69 591 393,183 57.4 53.0 61.7
+70-74 328 192,114 48.1 42.4 53.9
+75+ 219 169,571 30.0 25.9 34.4

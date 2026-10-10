@@ -79,7 +79,7 @@ jobs:
         run: python3 scripts/update_database.py
 
       - name: Report-table extraction tests
-        run: python3 -m unittest scripts/test_nhms_pdf.py
+        run: python3 -m unittest scripts/test_nhms_pdf.py scripts/test_nhms_legacy.py
 
       - name: Rebuild the geographic lookup table
         run: python3 scripts/build_geo_lookup.py

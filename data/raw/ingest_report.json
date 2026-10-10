@@ -1,7 +1,7 @@
 {
- "run_at": "2026-10-10T05:17:49Z",
+ "run_at": "2026-10-10T06:50:57Z",
  "summary": {
-  "ok": 5,
+  "ok": 9,
   "unchanged": 58,
   "failed": 0,
   "refused": 0
@@ -341,6 +341,62 @@
     "api_id": "healthcare_staff"
    },
    "checked_at": "2026-10-09T07:14:44Z"
+  },
+  {
+   "id": "nhms_2019_ncd",
+   "file": "data/raw/health_outcomes/nhms_2019_ncd.txt",
+   "method": "pdf_text",
+   "rows": 1968,
+   "latest_year": null,
+   "status": "ok",
+   "source": {
+    "http_url": "https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2019/Report_NHMS2019-NCD.pdf",
+    "etag": "\"172f4f3-5ac9116b8d2c0\"",
+    "last_modified": "Tue, 11 Aug 2020 02:47:15 GMT"
+   },
+   "checked_at": "2026-10-10T06:50:48Z"
+  },
+  {
+   "id": "nhms_2015_vol2",
+   "file": "data/raw/health_outcomes/nhms_2015_vol2.txt",
+   "method": "pdf_text",
+   "rows": 893,
+   "latest_year": null,
+   "status": "ok",
+   "source": {
+    "http_url": "https://iku.nih.gov.my/images/IKU/Document/REPORT/nhmsreport2015vol2.pdf",
+    "etag": "\"801c3b-5ab7a3cebcf00\"",
+    "last_modified": "Tue, 28 Jul 2020 06:06:20 GMT"
+   },
+   "checked_at": "2026-10-10T06:50:57Z"
+  },
+  {
+   "id": "nhms_2023_report",
+   "file": "data/raw/health_outcomes/nhms_2023_report.txt",
+   "method": "pdf_text",
+   "rows": 205,
+   "latest_year": null,
+   "status": "ok",
+   "source": {
+    "http_url": "https://iku.nih.gov.my/images/nhms2023/report-nhms-2023.pdf",
+    "etag": "\"14c4452-6296cf0842f35\"",
+    "last_modified": "Tue, 17 Dec 2024 01:08:48 GMT"
+   },
+   "checked_at": "2026-10-10T06:50:48Z"
+  },
+  {
+   "id": "nhms_2017_adolescent",
+   "file": "data/raw/health_outcomes/nhms_2017_adolescent.txt",
+   "method": "pdf_text",
+   "rows": 196,
+   "latest_year": null,
+   "status": "ok",
+   "source": {
+    "http_url": "https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2017/MHSReportNHMS2017.pdf",
+    "etag": "\"1a0c2f5-5ab7a3c904180\"",
+    "last_modified": "Tue, 28 Jul 2020 06:06:14 GMT"
+   },
+   "checked_at": "2026-10-10T06:50:48Z"
   },
   {
    "id": "nhms_2011_vol2",
