@@ -67,7 +67,7 @@ test("a page whose code fails to load shows the friendly fallback, and the nav s
   await expect(page.getByRole("heading", { name: "Data Governance & Terms", level: 1 })).toBeVisible();
 });
 
-test("Data Governance & Terms has six numbered sections and the project contact", async ({ page }) => {
+test("Data Governance & Terms has seven numbered sections, the licence wording and the project contact", async ({ page }) => {
   await page.goto("/#/methodology");
   await expect(page.getByRole("heading", { name: "Data Governance & Terms", level: 1 })).toBeVisible();
   await expect(page.locator("main section h2")).toHaveText([
@@ -75,11 +75,16 @@ test("Data Governance & Terms has six numbered sections and the project contact"
     "2. Data sources",
     "3. Limitations",
     "4. Privacy",
-    "5. Contact & Feedback",
-    "6. Glossary",
+    "5. Licence and attribution",
+    "6. Contact & Feedback",
+    "7. Glossary",
   ]);
   await expect(page.getByRole("link", { name: "pauline.yeoh@monash.edu" })).toHaveAttribute("href", "mailto:pauline.yeoh@monash.edu");
   await expect(page.getByText("Developed as part of the MERCi initiative.")).toBeVisible();
+  await expect(page.getByText("The dashboard's source code is open source under the MIT licence", { exact: false })).toBeVisible();
+  await expect(page.getByRole("link", { name: "project repository" })).toHaveAttribute("href", /\/blob\/main\/LICENSE$/);
+  await expect(page.getByText("the MIT licence does not cover them", { exact: false })).toBeVisible();
+  await expect(page.getByText(/not covered by the MIT licence and may not be used to present a\s+modified version as the official observatory/)).toBeVisible();
   // on phones the navigation sits behind the Menu button, so check the link only where it is always shown
   if ((page.viewportSize()?.width ?? 0) >= 1024) {
     await expect(page.getByRole("navigation", { name: "Primary" }).getByRole("link", { name: "Data Governance & Terms" })).toBeVisible();

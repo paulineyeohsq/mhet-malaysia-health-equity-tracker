@@ -1,0 +1,18 @@
+The documentation in this directory (the methodology, data dictionary, data
+sources and related notes) and the text of the "Data Governance & Terms" page of
+the MY-HEO dashboard are licensed under the Creative Commons Attribution 4.0
+International License (CC BY 4.0):
+
+    https://creativecommons.org/licenses/by/4.0/
+
+Copyright (c) 2026 Pauline Yeoh. You may share and adapt this text, including
+commercially, if you give appropriate credit, link to the licence and say if you
+made changes.
+
+This notice does not cover:
+- the names "Malaysia Health Equity Observatory" and "MY-HEO" and the logo (see
+  the NOTICE file at the repository root);
+- descriptions, figures and other material taken from the data publishers
+  (DOSM, MOH, NRD and others), which stay under the publishers' own terms (see
+  the "Licence and attribution" section of the root README.md);
+- the code, which is under the MIT License (see the LICENSE file at the root).

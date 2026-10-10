@@ -263,20 +263,38 @@ Data Gaps page for the full, itemised list.
 
 ## Licence and attribution
 
-**Code.** A licence for this repository's code has not been chosen yet, so until a
-`LICENSE` file is added the code is "all rights reserved" by default.
+This repository holds four kinds of material, each licensed differently.
 
-**Data.** All underlying data comes from DOSM, MOH, the Institute for Public Health
-and NRD via data.gov.my and the official `dosm-malaysia/data-open` GitHub mirror.
-DOSM's Open Data Licence (a copy for the boundary files is in
-`data/raw/geo/DOSM_DATA_OPEN_LICENSE.md`) lets you copy, publish, distribute, adapt
-and exploit the data commercially and non-commercially, provided you do not suggest
-official status or endorsement by DOSM or any agency; it does not cover personal data,
-third-party rights, patents, trademarks or design rights. Datasets remain the
-intellectual property of DOSM unless stated otherwise, and each dataset's own terms on
-its data.gov.my catalogue page apply. Please cite the original agency and dataset
-(each chart carries a source note) in addition to MY-HEO.
+| Material | Terms |
+|---|---|
+| **Code** (`frontend/`, `netlify-chat/`, `scripts/`, the workflows) | MIT License, see [`LICENSE`](LICENSE). Copyright (c) 2026 Pauline Yeoh. |
+| **Data** (every dataset shown or processed here) | The publishers' own terms, below. The MIT licence does **not** cover the data. |
+| **Documentation and methodology text** (`docs/` and the text of the Data Governance & Terms page) | Creative Commons Attribution 4.0 International (CC BY 4.0), see [`docs/LICENSE`](docs/LICENSE). |
+| **Name and logo** | Not licensed: see below and [`NOTICE`](NOTICE). |
 
-MY-HEO is an independent research and public-interest project. It is **not** an
-official product of DOSM, MOH or the Government of Malaysia, and is not for clinical or
-individual-level decision-making.
+### Data: the publishers' terms
+
+Every dataset remains under the terms of its publisher (DOSM, data.gov.my, MOH and the other agencies). Terms below
+were read on the publishers' own pages and files on 2026-10-10; where none could be found, that is said.
+
+| Source (what it is used for) | Terms as published | What to give when you reuse it |
+|---|---|---|
+| **Datasets from the data.gov.my / OpenDOSM catalogue** (DOSM, MOH, NRD and other agencies: income, poverty, population, hospital beds, healthcare staff, births, deaths, immunisation, nutrition, environment and more; 41 catalogue datasets in use) | Each dataset's catalogue page states: "This data is made open under the Creative Commons Attribution 4.0 International License (CC BY 4.0)", linking to <https://creativecommons.org/licenses/by/4.0/>. | CC BY 4.0, section 3(a): name the creator (the agency), keep any copyright and licence notices, link to the data and to the licence, **say that you changed it** (MY-HEO aggregates, pools and reformats the data, and says so beside each chart), and do not suggest the agency endorses you. |
+| **DOSM open-data GitHub mirror** (`dosm-malaysia/data-open`: state and district boundaries, census district table, HIES 2019 snapshot) | DOSM Open Data Licence, copied in [`data/raw/geo/DOSM_DATA_OPEN_LICENSE.md`](data/raw/geo/DOSM_DATA_OPEN_LICENSE.md): you may copy, publish, distribute, transmit, adapt and exploit the data commercially and non-commercially; it does not cover personal data, third-party rights, patents, trademarks or design rights; you must not suggest official status or agency endorsement; datasets are DOSM's intellectual property. | The licence text has no attribution clause, but credit DOSM, and do not suggest official status or endorsement. |
+| **NHMS survey figures** (adult NCD risk factors 2015, 2019, 2023; adolescent mental health 2017) | **No open licence or reuse terms were found.** The figures were transcribed from the NHMS technical reports of the Institute for Public Health, National Institutes of Health, Ministry of Health Malaysia. The NIH site (iku.nih.gov.my) carries "Copyright 2020 National Institutes of Health, Ministry of Health Malaysia" and a liability disclaimer. | Cite the report. Ask NIH / IPH before reusing these figures beyond what the dashboard shows. |
+| **Life expectancy** (OpenDOSM dashboard) | The dashboard page itself states no licence. The OpenDOSM catalogue pages state CC BY 4.0, but that statement was not found on the dashboard. | Credit DOSM; treat as DOSM data. |
+
+MY-HEO is an independent research and public-interest project. It is **not** an official product of DOSM, MOH or the
+Government of Malaysia, and is not for clinical or individual-level decision-making.
+
+### Name and logo
+
+The names "Malaysia Health Equity Observatory" and "MY-HEO" and the logo files (`frontend/public/logo.png`,
+`favicon.png`, `og-image.png`, and any source artwork) are **not** covered by the MIT licence and may not be used to
+present a modified version as the official observatory. Forks should use their own name and logo. See [`NOTICE`](NOTICE).
+
+### Third-party software
+
+Dependencies keep their own licences (nearly all MIT, ISC, BSD or Apache-2.0). `react-leaflet` and
+`@react-leaflet/core`, used for the maps, are under the Hippocratic License 2.1, which is not a standard permissive
+licence; see [`NOTICE`](NOTICE).

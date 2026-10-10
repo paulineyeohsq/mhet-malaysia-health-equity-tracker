@@ -215,9 +215,53 @@ export default function DataGovernance() {
           </ul>
         </section>
 
-        {/* 5. Contact & feedback */}
+        {/* 5. Licence and attribution */}
+        <section aria-labelledby="m-licence">
+          <H2 id="m-licence">5. Licence and attribution</H2>
+          <ul className="mb-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink-secondary marker:text-series-1">
+            <li>
+              <span className="font-medium text-ink-primary">Code.</span> The dashboard's source code is open source under
+              the MIT licence, with the licence file in the{" "}
+              <ExtLink href="https://github.com/paulineyeohsq/mhet-malaysia-health-equity-tracker/blob/main/LICENSE">
+                project repository
+              </ExtLink>
+              .
+            </li>
+            <li>
+              <span className="font-medium text-ink-primary">Data.</span> The figures belong to their publishers and stay
+              under the publishers' own terms; the MIT licence does not cover them. The datasets from the data.gov.my and
+              OpenDOSM catalogue state that they are open under the Creative Commons Attribution 4.0 licence (CC BY 4.0),
+              which asks you to credit the agency, link to the licence, say if you changed the data, and not suggest the
+              agency endorses you. This dashboard aggregates, pools and reformats the data and says so beside each
+              chart. The boundary and census files come from DOSM's open-data repository under DOSM's Open Data
+              Licence, which also asks that you do not suggest official status or endorsement.
+            </li>
+            <li>
+              <span className="font-medium text-ink-primary">Survey reports.</span> The National Health and Morbidity
+              Survey figures are taken from reports published by the National Institutes of Health, Ministry of Health
+              Malaysia, whose site states that it holds the copyright; no open licence was found for them. They are
+              credited to their source here and are not re-licensed. Please ask NIH before reusing them.
+            </li>
+            <li>
+              <span className="font-medium text-ink-primary">Name and logo.</span> The names "Malaysia Health Equity
+              Observatory" and "MY-HEO" and the logo are not covered by the MIT licence and may not be used to present a
+              modified version as the official observatory.
+            </li>
+            <li>
+              <span className="font-medium text-ink-primary">This page and the documentation.</span> The text of this
+              page and of the methodology documents may be shared and adapted under{" "}
+              <ExtLink href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</ExtLink>, with credit.
+            </li>
+          </ul>
+          <P>
+            MY-HEO is an independent research project. It is not an official product of DOSM, the Ministry of Health or
+            the Government of Malaysia.
+          </P>
+        </section>
+
+        {/* 6. Contact & feedback */}
         <section aria-labelledby="m-contact">
-          <H2 id="m-contact">5. Contact &amp; Feedback</H2>
+          <H2 id="m-contact">6. Contact &amp; Feedback</H2>
           <dl className="mb-4 space-y-4 text-sm leading-relaxed text-ink-secondary">
             <div>
               <dt className="font-medium text-ink-primary">Principal Investigator</dt>
@@ -248,9 +292,9 @@ export default function DataGovernance() {
           </P>
         </section>
 
-        {/* 6. Glossary */}
+        {/* 7. Glossary */}
         <section aria-labelledby="m-glossary">
-          <H2 id="m-glossary">6. Glossary</H2>
+          <H2 id="m-glossary">7. Glossary</H2>
           <P>
             Quick definitions for terms used across this dashboard's charts and KPI tiles. Hovering (or tapping, on
             touch devices) a dotted-underlined term anywhere on the site links back to its entry here.
