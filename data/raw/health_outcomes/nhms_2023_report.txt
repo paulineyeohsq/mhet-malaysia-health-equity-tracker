@@ -1,0 +1,202 @@
+Non-communicable Diseases and Healthcare Demand | v
+LIST OF TABLES
+Table 1.1 Specific objectives for non-communicable diseases (NCDs) and healthcare
+demand (HCD), NHMS 2023
+7
+Table 2.1
+Table 2.2
+Table 2.3
+Distribution of sample by states, NHMS 2023
+Modules, Instruments, methods of data collection and target age groups, NHMS
+2023
+Clinical assessments and blood investigations, NHMS 2023
+11
+13
+14
+Table 3.1
+Table 3.2
+Response rate by living quarters and individuals by states, NHMS 2023
+Sociodemographic characteristics of respondents, NHMS 2023
+22
+23
+Table 4.1
+Table 4.1.1
+Table 4.1.2
+Table 4.1.3
+Table 4.1.4
+Table 4.2.1
+Table 4.2.2
+Table 4.2.3
+Table 4.2.4
+Table 4.3.1
+Table 4.3.2
+Table 4.3.3
+Table 4.3.4
+Table 4.3.5
+Table 4.3.6
+Table 4.4.1
+Table 4.4.2
+Table 4.4.3
+Table 4.4.4
+Table 4.4.5
+Table 4.5.1
+Table 4.5.2
+Table 4.6.1
+Table 4.6.2
+Trends in the prevalence of non-communicable diseases, 2011-2023
+Prevalence of overall raised blood glucose among those aged 18 years old and
+above in Malaysia by sociodemographic characteristics (n=10,853)
+Prevalence of known diabetes among those aged 18 years old and above in
+Malaysia by sociodemographic characteristics (n=10,853)
+Prevalence of raised blood glucose among those not known to have diabetes
+aged 18 years old and above in Malaysia by sociodemographic characteristics
+(n=10,853)
+Age-standardised prevalence of diabetes by states in Malaysia
+Prevalence of overall raised blood pressure among those aged 18 years old and
+above in Malaysia by sociodemographic characteristics (n=11,335)
+Prevalence of known hypertension among those aged 18 years old and above in
+Malaysia by sociodemographic characteristics (n=11,335)
+Prevalence of raised blood pressure among those not known to have hypertension
+aged 18 years old and above in Malaysia by sociodemographic characteristics
+(n=11,335)
+Age-standardised prevalence of hypertension by states in Malaysia
+Prevalence of overall raised total cholesterol among those aged 18 years old and
+above in Malaysia by sociodemographic characteristics (n=10,852)
+Prevalence of known hypercholesterolaemia among those aged 18 years and
+above in Malaysia by sociodemographic characteristics old (n=10,852)
+Prevalence of raised total cholesterol among those not known to have
+hypercholesterolaemia aged 18 years old and above in Malaysia by
+sociodemographic characteristics (n=10,852)
+Prevalence of overall raised low-density lipoprotein (LDL) among those aged 18
+years old and above in Malaysia by sociodemographic characteristics (n=10,852)
+Prevalence of lipid profile by gender in Malaysia (n=10,852)
+Age-standardised prevalence of hypercholesterolemia by states in Malaysia
+(n=10,852)
+Trends in the prevalence of overweight and obesity among those aged 18 years
+and above in Malaysia, 2011-2023
+Prevalence of overweight among those aged 18 years old and above in Malaysia
+by sociodemographic characteristics (n=10,130)
+Prevalence of obesity among those aged 18 years old and above in Malaysia by
+sociodemographic characteristics (n=10,130)
+Prevalence of obesity I to III (WHO 1998 Classification) among those aged 18
+years old and above in Malaysia by sociodemographic characteristics (n =10,130)
+Prevalence of obesity I to III (CPG 2023 Classification) among those aged 18 years
+old and above in Malaysia by sociodemographic characteristics (n=10,130)
+Trend in the prevalence of abdominal obesity among those aged 18 and above in
+Malaysia, 2011-2023
+Prevalence of abdominal obesity (WHO 2000 Classification) among those aged 18
+years old and above in Malaysia by sociodemographic characteristics (n=10,106)
+Trend in the prevalence of underweight among those aged 18 and above in
+Malaysia, 2011-2023
+Prevalence of underweight among those aged 18 years old and above in Malaysia
+by sociodemographic characteristics (n=10,130)
+34
+36
+38
+40
+42
+43
+45
+47
+49
+50
+52
+54
+56
+58
+59
+61
+63
+65
+67
+69
+72
+73
+76
+77
+42 | NHMS 2023 Technical Report
+Table 4.1.4 : Age-standardised prevalence of diabetes by states in Malaysia
+NO STATE
+OVERALL RAISED
+BLOOD GLUCOSE (%)
+KNOWN DIABETES (%)
+RAISED BLOOD
+GLUCOSE AMONG
+THOSE NOT KNOWN TO
+HAVE DIABETES (%)
+1 Johor 18.0 8.7 9.4
+2 Kedah 17.1 10.0 7.0
+3 Kelantan 15.6 9.5 6.1
+4 Melaka 20.5 13.4 7.1
+5 Negeri Sembilan 14.0 8.9 5.1
+6 Pahang 24.7 13.3 11.4
+7 Pulau Pinang 18.4 11.3 7.1
+8 Perak 16.8 11.4 5.4
+9 Perlis 19.4 12.6 6.8
+10 Selangor 11.3 8.4 2.9
+11 Terengganu 15.9 10.9 5.0
+12 Sabah 9.5 4.8 4.6
+13 Sarawak 13.4 8.6 4.8
+14 WP Kuala Lumpur 10.5 8.3 2.2
+15 WP Labuan 18.1 5.6 12.5
+16 WP Putrajaya 12.0 9.2 2.8
+Non-communicable Diseases and Healthcare Demand | 49
+Table 4.2.4: Age-standardised prevalence of hypertension by states in Malaysia
+NO STATE
+OVERALL RAISED
+BLOOD PRESSURE
+(%)
+KNOWN
+HYPERTENSION (%)
+RAISED BLOOD
+PRESSURE AMONG
+THOSE NOT KNOWN TO
+HAVE HYPERTENSION
+(%)
+1 Johor 29.4 14.7 14.7
+2 Kedah 28.7 17.4 11.3
+3 Kelantan 26.4 14.3 12.1
+4 Melaka 30.9 20.9 10.0
+5 Negeri Sembilan 20.7 13.9 6.7
+6 Pahang 35.1 16.2 18.9
+7 Pulau Pinang 31.3 18.4 13.0
+8 Perak 31.6 18.3 13.4
+9 Perlis 36.9 19.0 17.9
+10 Selangor 22.3 15.0 7.3
+11 Terengganu 24.0 13.6 10.4
+12 Sabah 27.9 15.2 12.7
+13 Sarawak 36.8 21.2 15.7
+14 WP Kuala Lumpur 21.3 15.1 6.2
+15 WP Labuan 30.0 15.3 14.7
+16 WP Putrajaya 27.2 19.5 7.7
+Non-communicable Diseases and Healthcare Demand | 59
+Table 4.3.6: Age-standardised prevalence of hypercholesterolaemia by states in Malaysia (n=10,852)
+NO STATE
+OVERALL
+RAISED TOTAL
+CHOLESTEROL (%)
+KNOWN
+HYPERCHOLESTEROLAEMIA
+(%)
+RAISED TOTAL
+CHOLESTEROL AMONG
+THOSE WHO WERE
+NOT KNOWN TO HAVE
+HYPERCHOLESTEROLAEMIA
+(%)
+1 Johor 31.4 12.9 18.5
+2 Kedah 34.2 16.2 18.0
+3 Kelantan 33.3 12.6 20.7
+4 Melaka 33.5 21.0 12.5
+5 Negeri Sembilan 23.9 13.7 10.3
+6 Pahang 41.8 13.2 28.5
+7 Pulau Pinang 34.0 18.1 15.9
+8 Perak 33.3 17.5 15.8
+9 Perlis 39.0 21.1 17.8
+10 Selangor 27.9 13.5 14.5
+11 Terengganu 34.2 13.2 21.0
+12 Sabah 33.1 10.5 22.6
+13 Sarawak 36.1 16.2 19.9
+14 WP Kuala Lumpur 23.3 12.8 10.5
+15 WP Labuan 28.0 13.0 15.1
+16 WP Putrajaya 34.5 17.9 16.6

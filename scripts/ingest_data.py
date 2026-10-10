@@ -137,6 +137,30 @@ DATASETS = [
      "note": "Direct CSV fetch observed to fail (binary-data error); JSON API paginated by year works reliably."},
 
     # -- Health outcomes ----------------------------------------------------------
+    {"id": "nhms_2019_ncd", "category": "health_outcomes", "filename": "nhms_2019_ncd.txt",
+     "method": "pdf_text", "url": "https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2019/Report_NHMS2019-NCD.pdf",
+     "expect": ["National Health and Morbidity Survey 2019", "Table 4.3: Prevalence of Known Diabetes"],
+     "keep_tables": ["4.2", "4.3", "4.5", "4.6", "4.8", "4.9", "5.2", "6.2", "9.2", "14.2", "14.4", "14.5", "14.8"],
+     "min_bytes": 50000,
+     "note": "NHMS 2019 Technical Report Volume I (NCDs). State tables for 13 indicators, read by scripts/nhms_legacy.py; only the pages that hold them are stored."},
+    {"id": "nhms_2015_vol2", "category": "health_outcomes", "filename": "nhms_2015_vol2.txt",
+     "method": "pdf_text", "url": "https://iku.nih.gov.my/images/IKU/Document/REPORT/nhmsreport2015vol2.pdf",
+     "expect": ["Table 1.1.1: Prevalence of overall diabetes"],
+     "keep_tables": ["1.1.1", "1.1.2", "1.1.3", "1.2.1", "1.2.2", "1.2.3", "1.3.1", "1.3.2", "1.3.3", "2.1.1", "2.1.8", "3.1.1", "5.1.1"],
+     "min_bytes": 10000,
+     "note": "NHMS 2015 Volume II (NCDs, risk factors and other health problems). State tables for 13 indicators, read by scripts/nhms_legacy.py."},
+    {"id": "nhms_2023_report", "category": "health_outcomes", "filename": "nhms_2023_report.txt",
+     "method": "pdf_text", "url": "https://iku.nih.gov.my/images/nhms2023/report-nhms-2023.pdf",
+     "expect": ["Table 4.1.4 : Age-standardised prevalence of diabetes by states"],
+     "keep_tables": ["4.1.4", "4.2.4", "4.3.6"],
+     "min_bytes": 3000,
+     "note": "NHMS 2023 Technical Report (Non-Communicable Diseases and Healthcare Demand). The three age-standardised state tables, read by scripts/nhms_legacy.py."},
+    {"id": "nhms_2017_adolescent", "category": "health_outcomes", "filename": "nhms_2017_adolescent.txt",
+     "method": "pdf_text", "url": "https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2017/MHSReportNHMS2017.pdf",
+     "expect": ["ADOLESCENT MENTAL HEALTH (DASS-21)", "Table 3.3.1 Prevalence of depression by socio-demography"],
+     "keep_tables": ["3.3.1", "3.4.1", "3.5.1"],
+     "min_bytes": 3000,
+     "note": "NHMS 2017 Adolescent Mental Health (DASS-21) report: depression, anxiety and stress by state, read by scripts/nhms_legacy.py."},
     {"id": "nhms_2011_vol2", "category": "health_outcomes", "filename": "nhms_2011_vol2.txt",
      "method": "pdf_text", "url": "https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2011-VolumeII.pdf",
      "expect": ["National Health and Morbidity Survey 2011", "Table 1.1.1 Prevalence of overall diabetes", "Table 2.1.9"],
@@ -452,6 +476,18 @@ def fetch_pdf_text(ds: dict) -> tuple[bytes, dict | None]:
     for needle in ds.get("expect", []):
         if needle not in text:
             raise IngestError(f"the extracted text no longer contains {needle!r}; the report may have been replaced")
+    keep = ds.get("keep_tables")
+    if keep:
+        # large reports: store only the pages that carry the tables the pipeline reads (page breaks are kept, so
+        # the parsers see the same page structure), and refuse the report if any of those tables is gone
+        pattern = re.compile(r"^Table\s+(?:%s)(?![\d.])" % "|".join(re.escape(t) for t in keep), re.M)
+        pages = text.split("\f")
+        kept = [p for p in pages if pattern.search(p)]
+        found = {m.group(1) for p in kept for m in re.finditer(r"^Table\s+(\d+(?:\.\d+)*)(?![\d.])", p, re.M)}
+        missing = sorted(set(keep) - found)
+        if missing:
+            raise IngestError(f"tables {missing} are no longer in the report text; the report may have been replaced")
+        text = "\f".join(kept)
     return text.encode("utf-8"), {"_http": _http_signature(ds["url"], headers)}
 
 

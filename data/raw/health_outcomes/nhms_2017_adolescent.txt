@@ -1,0 +1,193 @@
+NATIONAL HEALTH AND MORBIDITY SURVEY 2017
+ADOLESCENT MENTAL HEALTH (DASS-21)
+LIST OF TABLES
+METHODOLOGY___________________________________________________________
+2.1 Distribu f Sec ar h ls Sample by State, NHMS 2017
+GENERAL FINDINGS___________________________________________________________
+3.1.1 Resp se Rat at Stu e t Level b State, NHMS 2017
+3.1.2 C mparis betwee NHMS 2017 sample a t e r me t fr m Mi ist
+f E ca 2017
+DEPRESSION, ANXIETY AND STRESS ____________________________________________
+Table 3.2.1 Prevale ce epressi a xiety a stress
+DEPRESSION ____________________________________________
+Table 3.3.1 Prevale ce epressi b - em raphy
+Table 3.3.2 Me tal Health issues am Stu e ts with Depressive Sympt ms
+Table 3.3.3 T bacc Alc h l a Dru Use, Sexual, Physical Ac t Obesity am
+Stu e ts with Depressive Sympt ms
+Table 3.3.4 Sch l a H me E vir Fact r ully a Abuse am Stu e t
+with Depressive Sympt ms
+ANXIETY _________________________________________________________
+Table 3.4.1 Prevale ce a xiet by - em raphy
+Table 3.4.2 Me tal Health issues am Stu e ts with A xiet pt ms
+Table 3.4.3 T bacc Alc h l a Dru Use, Sexual, Physical Ac t Obesity am
+Stu e ts with A xiet ympt ms
+Table 3.4.4 Sch l a H me E vir Fact r ully a Abuse am Stu e t
+with A xiet pt ms
+STRESS___________________________________________________________________
+Table 3.5.1 Prevale ce tress b s - em raphy
+vi
+NATIONAL HEALTH AND MORBIDITY SURVEY 2017
+ADOLESCENT MENTAL HEALTH (DASS-21) 22
+Table 3.3.1 Prevalence of depression by socio-demography
+Unweighted
+Count
+Es mated
+Popula on
+Percentage
+(%)
+95% CI
+Lower Upper
+MALAYSIA 4783 382418 18.3 17.20 19.38
+STATES
+Johor 251 39599 14.6 11.61 18.14
+Kedah 218 19585 13.1 11.07 15.53
+Kelantan 236 18668 16.0 12.95 19.60
+Melaka 287 10161 15.4 13.00 18.13
+Negeri Sembilan 263 14189 16.4 13.14 20.28
+Pahang 348 21174 21.0 16.57 26.26
+Pulau Pinang 318 20853 18.8 14.95 23.36
+Perak 324 33577 18.8 15.30 22.99
+Perlis 291 4744 17.9 15.21 21.02
+Selangor 356 86059 22.6 18.83 26.95
+Terengganu 255 15373 16.0 13.72 18.66
+Sabah 350 42316 21.9 18.59 25.63
+Sarawak 259 29844 15.4 13.51 17.54
+WP Kuala Lumpur 375 23620 21.3 18.77 24.06
+WP Labuan 350 1120 20.7 17.10 24.92
+WP Putrajaya 302 1535 18.5 15.35 22.02
+STRATA OF THE SCHOOL
+Urban 2894 227741 19.2 17.55 20.91
+Rural 1889 154677 17.1 15.72 18.52
+SEX
+Male 2333 195650 18.9 17.59 20.24
+Female 2450 186768 17.7 16.22 19.21
+FORM
+1 1146 93764 21.4 19.12 23.97
+2 941 72463 17.4 15.61 19.30
+3 913 66837 15.8 14.16 17.68
+4 1002 77955 19.2 17.44 21.20
+5 781 71398 17.3 15.36 19.45
+ETHNIC
+Malay 2898 204325 15.5 14.47 16.49
+Chinese 841 74659 21.2 18.83 23.81
+Indian 408 47655 33.1 29.12 37.25
+Bumiputra Sabah 360 32072 22.1 18.71 26.00
+Bumiputra Sarawak 154 15674 16.5 14.14 19.24
+Others 122 8033 22.2 17.98 27.05
+PARENTS MARITAL STATUS
+Married and living together 3670 291925 17.0 15.98 18.10
+Married and living apart 206 17357 24.2 20.66 28.10
+Divorced 357 27222 21.8 19.14 24.70
+Widow /widower 258 21595 21.6 18.50 24.98
+Separated 109 9510 30.1 24.65 36.28
+Unknown 161 12305 29.3 24.37 34.69
+NATIONAL HEALTH AND MORBIDITY SURVEY 2017
+ADOLESCENT MENTAL HEALTH (DASS-21) 26
+Table 3.4.1: Prevalence of anxiety by socio-demography
+Unweighted
+Count
+Es mated
+Popula on
+Percentage
+(%)
+95% CI
+Lower Upper
+MALAYSIA 10540 832181 39.7 38.39 41.06
+STATES
+Johor 630 100217 37.0 31.59 42.83
+Kedah 572 51847 34.8 31.16 38.70
+Kelantan 571 42623 36.8 33.62 40.09
+Melaka 677 24719 37.2 34.66 39.79
+Negeri Sembilan 652 33191 38.1 33.06 43.42
+Pahang 737 43013 42.4 38.33 46.48
+Pulau Pinang 648 41655 37.6 32.89 42.50
+Perak 690 72090 40.4 36.92 44.03
+Perlis 629 10072 38.1 34.13 42.15
+Selangor 691 164774 43.2 39.22 47.24
+Terengganu 612 37148 38.7 35.27 42.33
+Sabah 759 90322 46.8 43.01 50.68
+Sarawak 606 69849 36.1 31.68 40.75
+WP Kuala Lumpur 719 45111 40.4 37.23 43.72
+WP Labuan 671 2121 39.5 36.06 43.02
+WP Putrajaya 676 3431 41.2 36.52 46.14
+STRATA OF THE SCHOOL
+Urban 6166 476966 40.1 38.02 42.25
+Rural 4374 355215 39.2 37.64 40.78
+SEX
+Male 4612 384684 37.1 35.31 38.86
+Female 5928 447498 42.3 40.66 44.01
+FORM
+1 2310 183707 41.9 39.23 44.62
+2 1939 153654 36.8 34.62 38.96
+3 2090 156003 36.9 34.73 39.13
+4 2227 167235 41.4 39.17 43.68
+5 1974 171582 41.6 39.20 44.11
+ETHNIC
+Malay 7139 516594 39.1 37.62 40.55
+Chinese 1410 125499 35.6 32.82 38.45
+Indian 629 68291 47.1 43.04 51.21
+Bumiputra Sabah 789 68590 47.3 42.66 52.05
+Bumiputra Sarawak 343 37478 39.6 35.03 44.43
+Others 230 15730 43.8 37.28 50.49
+PARENTS MARITAL STATUS
+Married and living together 8487 666407 38.8 37.49 40.15
+Married and living apart 397 31223 43.6 39.30 48.04
+Divorced 708 54981 43.6 40.50 46.77
+Widow /widower 493 41244 41.3 37.83 44.86
+Separated 187 15917 50.1 43.19 57.03
+Unknown 234 19285 46.4 39.80 53.04
+NATIONAL HEALTH AND MORBIDITY SURVEY 2017
+ADOLESCENT MENTAL HEALTH (DASS-21) 30
+Table 3.5.1: Prevalence of Stress by socio-demography
+Unweighted
+Count
+Es mated
+Popula on
+Percentage
+(%)
+95% CI
+Lower Upper
+MALAYSIA 2487 200999 9.6 9.03 10.25
+STATES
+Johor 160 25206 9.3 7.85 10.95
+Kedah 102 9402 6.3 4.79 8.27
+Kelantan 108 8143 7.0 5.14 9.38
+Melaka 159 5624 8.5 7.27 9.95
+Negeri Sembilan 141 7126 8.2 6.35 10.59
+Pahang 182 10531 10.4 8.99 11.96
+Pulau Pinang 154 10121 9.2 7.18 11.70
+Perak 144 15185 8.5 6.85 10.60
+Perlis 112 1750 6.6 5.21 8.40
+Selangor 189 47393 12.5 10.36 15.05
+Terengganu 125 7324 7.6 6.35 9.15
+Sabah 190 23427 12.3 10.88 13.85
+Sarawak 145 15951 8.3 6.82 9.98
+WP Kuala Lumpur 191 12225 11.0 9.59 12.63
+WP Labuan 204 648 12.1 10.74 13.60
+WP Putrajaya 181 944 11.4 9.14 14.02
+STRATA OF THE SCHOOL
+Urban 1546 121607 10.3 9.32 11.27
+Rural 941 79392 8.8 8.14 9.50
+SEX
+Male 1095 92556 8.9 8.18 9.78
+Female 1392 108443 10.3 9.46 11.17
+FORM
+1 575 48099 11.0 9.59 12.59
+2 452 34622 8.3 7.33 9.45
+3 493 37586 8.9 7.74 10.22
+4 497 37106 9.2 8.07 10.52
+5 470 43586 10.6 9.19 12.20
+ETHNIC
+Malay 1557 112335 8.5 7.71 9.40
+Chinese 392 34803 9.9 8.44 11.57
+Indian 186 22187 15.3 12.91 18.12
+Bumiputra Sabah 208 18544 13.0 11.11 15.09
+Bumiputra Sarawak 88 9096 9.6 7.66 12.04
+Others 56 4032 11.3 8.15 15.55
+PARENTS MARITAL STATUS
+Married and living together 1921 156169 9.1 8.51 9.77
+Married and living apart 104 8196 11.5 9.07 14.54
+Divorced 196 14320 11.5 9.45 13.83
+Widow /widower 129 10472 10.5 8.48 12.98
+Separated 56 4688 14.9 11.20 19.65
+Unknown 71 5844 14.0 10.66 18.26

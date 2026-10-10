@@ -33,6 +33,7 @@ from collections import defaultdict
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from geo_utils import canonical_state, canonical_district  # noqa: E402
+import nhms_legacy  # noqa: E402
 import nhms_pdf  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -530,6 +531,12 @@ def build_health_outcomes_national():
 # ---------------------------------------------------------------------------
 # 10. NHMS 2019 NCD prevalence — state level (diabetes, hypertension)
 #
+# UPDATE 2026-10-10: the NHMS tables described below (2015, 2017, 2019, 2023) are no longer typed in. Where this
+# block says "transcribed", read "was transcribed until 2026-10-10": they are now read from the published report
+# text by scripts/nhms_legacy.py (see its docstring), from the pages stored in data/raw/health_outcomes/nhms_*.txt,
+# and every value was compared with the typed one and found identical (scripts/test_nhms_legacy.py keeps that
+# proof). The table numbers, report URLs and cautions below still apply. The typed CSVs were removed.
+#
 # Unlike every other raw file in this pipeline, these two CSVs were NOT
 # fetched from a data.gov.my/DOSM endpoint — data.gov.my does not publish
 # NHMS survey results as open/structured data. They were manually
@@ -648,22 +655,43 @@ def load_indicator_rows(path, indicator_col=None, fixed_indicator=None):
         }
 
 
+def _legacy_cells(rows, no_flag_column=()):
+    """Extracted report rows in the (indicator, state, year, values) shape the panel is built from.
+
+    `unreliable` is the report's own '*' flag. For the two 2019 tables listed in `no_flag_column` the panel has never
+    carried an unreliable field when nothing was flagged, so an unflagged value stays None there (a flagged one is
+    still marked), which keeps the published file exactly as it was."""
+    for r in rows:
+        flag = r["unreliable"]
+        if r["indicator"] in no_flag_column and r["year"] == 2019 and not flag:
+            flag = None
+        def whole(v):  # same convention as num(): an exact integer is written as an integer (37.0 -> 37)
+            return int(v) if isinstance(v, float) and v.is_integer() else v
+
+        yield r["indicator"], r["state"], r["year"], {
+            "n": r["n"],
+            "estimated_population": r["estimated_population"],
+            "prevalence_pct": whole(r["prevalence_pct"]),
+            "ci_lower": whole(r["ci_lower"]),
+            "ci_upper": whole(r["ci_upper"]),
+            "unreliable": flag,
+        }
+
+
 def build_nhms_ncd():
-    SOURCES = [
-        (RAW / "health_outcomes" / "nhms_diabetes_state_2019.csv", None, "known_diabetes"),
-        (RAW / "health_outcomes" / "nhms_hypertension_state_2019.csv", None, "known_hypertension"),
-        (RAW / "health_outcomes" / "nhms_metabolic_state_2019.csv", "indicator", None),
-        (RAW / "health_outcomes" / "nhms_lifestyle_state_2019.csv", "indicator", None),
-        (RAW / "health_outcomes" / "nhms_nutrition_bmi_state_2019.csv", "indicator", None),
-        (RAW / "health_outcomes" / "nhms_metabolic_state_2023.csv", "indicator", None),
-        (RAW / "health_outcomes" / "nhms_metabolic_state_2015.csv", "indicator", None),
-        (RAW / "health_outcomes" / "nhms_nutrition_lifestyle_state_2015.csv", "indicator", None),
-    ]
+    # 2015, 2019 and 2023 are read from the published reports by scripts/nhms_legacy.py (they used to be typed into
+    # data/raw/health_outcomes/nhms_*.csv by hand; the extracted values were compared with those, value for value,
+    # and are identical - see scripts/test_nhms_legacy.py). 2011 is read from its report by scripts/nhms_pdf.py.
+    health = RAW / "health_outcomes"
+    legacy_rows = (
+        nhms_legacy.read_2019((health / "nhms_2019_ncd.txt").read_text(encoding="utf-8"))
+        + nhms_legacy.read_2023((health / "nhms_2023_report.txt").read_text(encoding="utf-8"))
+        + nhms_legacy.read_2015((health / "nhms_2015_vol2.txt").read_text(encoding="utf-8"))
+    )
 
     combined = defaultdict(dict)  # indicator -> (state, year) -> {...}
-    for path, indicator_col, fixed_indicator in SOURCES:
-        for ind, st, yr, v in load_indicator_rows(path, indicator_col, fixed_indicator):
-            combined[ind][(st, yr)] = v
+    for ind, st, yr, v in _legacy_cells(legacy_rows, no_flag_column=("known_diabetes", "known_hypertension")):
+        combined[ind][(st, yr)] = v
 
     # NHMS 2011 (Vol. II), read from the report text by scripts/nhms_pdf.py (see the notes in that module for the
     # checks every table must pass). Only the indicators whose definition matches the ones already published for
@@ -874,9 +902,7 @@ def build_clinics(pop_lookup):
 # 95% CI and unweighted sample count, no missing states this survey.
 # ---------------------------------------------------------------------------
 def build_nhms_adolescent_mental_health():
-    rows = list(load_indicator_rows(
-        RAW / "health_outcomes" / "nhms_adolescent_mental_health_state_2017.csv", "indicator", None
-    ))
+    rows = list(_legacy_cells(nhms_legacy.read_2017((RAW / "health_outcomes" / "nhms_2017_adolescent.txt").read_text(encoding="utf-8"))))
     combined = defaultdict(dict)
     for ind, st, yr, v in rows:
         combined[ind][(st, yr)] = v

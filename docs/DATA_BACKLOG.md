@@ -53,9 +53,11 @@ Last re-checked against the official sources: **2026-10-10**.
 | NHMS 2011 NCD indicators | NHMS 2011 Volume II (PDF, read by `scripts/nhms_pdf.py`) | Overall diabetes, underweight, abdominal obesity. Other 2011 tables are page images with no readable text. Sabah and W.P. Labuan are one combined estimate in 2011 and are left empty. |
 | Life expectancy | OpenDOSM dashboard | Added earlier. |
 
-## Not changed, but you should know
+## Hand-typed NHMS files: replaced (2026-10-10)
 
-The NHMS 2015, 2019 and 2023 state tables and the NHMS 2017 adolescent tables already in the dashboard were transcribed
-by hand from the PDFs into `data/raw/health_outcomes/nhms_*.csv` in earlier work. They are not produced by the pipeline.
-The new extraction in `scripts/nhms_pdf.py` could reproduce them from the reports and check them value for value;
-that has not been done because it would touch existing published numbers, which needs a decision first.
+The NHMS 2015, 2017, 2019 and 2023 state tables were once typed in by hand from the PDFs into
+`data/raw/health_outcomes/nhms_*.csv`. They are now read by the pipeline from the published reports
+(`scripts/nhms_legacy.py`, text stored in `data/raw/health_outcomes/nhms_*.txt`). All 611 rows were compared with the typed
+values, field by field, and were identical; the published JSON files are byte-for-byte unchanged. The comparison is kept
+as a permanent test (`scripts/test_nhms_legacy.py`, against `scripts/fixtures/`). The typed CSVs and their validation
+reports were removed.
