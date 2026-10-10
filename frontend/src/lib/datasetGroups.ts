@@ -25,7 +25,7 @@ export const DATASET_GROUPS: { id: string; label: string; ids: string[] }[] = [
   {
     id: "health-system",
     label: "Healthcare resources, spending and programmes",
-    ids: ["hospital_beds", "healthcare_staff", "mnha", "health_programmes_state", "pekab40_screenings_daily"],
+    ids: ["hospital_beds", "healthcare_staff", "facilities_master", "mnha", "health_programmes_state", "pekab40_screenings_daily"],
   },
   {
     id: "outcomes",
@@ -34,7 +34,7 @@ export const DATASET_GROUPS: { id: string; label: string; ids: string[] }[] = [
       "life_expectancy", "death_state", "death_maternal_state", "deaths_early_childhood_state", "death_sex_ethnic_state",
       "death_district_sex", "birth_state", "birth_district_sex", "stillbirth_state", "std_state", "sdg_03-3-1",
       "infant_immunisation", "nutrition_status_u5_sex", "nutrition_children_strata", "nhms_ncd_2019",
-      "nhms_adolescent_mental_health_2017", "covid_cases",
+      "nhms_adolescent_mental_health_2017", "nhms_older_persons_2025", "covid_cases",
     ],
   },
   {

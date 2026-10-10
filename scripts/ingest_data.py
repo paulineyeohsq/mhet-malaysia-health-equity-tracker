@@ -47,7 +47,10 @@ import csv
 import io
 import json
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 import time
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -115,6 +118,14 @@ DATASETS = [
      "min_bytes": 1000},
 
     # -- Healthcare resources ---------------------------------------------------
+    {"id": "facilities_readme", "category": "healthcare", "filename": "facilities_master_README.md",
+     "method": "github", "url": "https://raw.githubusercontent.com/MoH-Malaysia/data-resources-public/main/README.md",
+     "min_bytes": 500,
+     "note": "The registry's own README: it states the date the facility list is as registered on, which the CSV does not carry."},
+    {"id": "facilities_master", "category": "healthcare", "filename": "facilities_master.csv",
+     "method": "csv", "url": "https://raw.githubusercontent.com/MoH-Malaysia/data-resources-public/main/facilities_master.csv",
+     "min_bytes": 500000,
+     "note": "MOH registry of public health facilities (hospitals, clinics, dental clinics, health offices ...) with state and district, as registered on 31 Dec 2025. Public sector only. Not in the data.gov.my catalogue."},
     {"id": "hospital_beds_national", "category": "healthcare", "filename": "hospital_beds_national.csv",
      "method": "csv", "url": "https://storage.data.gov.my/healthcare/hospital_beds.csv",
      "note": "National time series by bed type. If the direct CSV fails, fall back to method='api' with api_id='hospital_beds' and filter=[('type','all')] etc."},
@@ -126,6 +137,16 @@ DATASETS = [
      "note": "Direct CSV fetch observed to fail (binary-data error); JSON API paginated by year works reliably."},
 
     # -- Health outcomes ----------------------------------------------------------
+    {"id": "nhms_2011_vol2", "category": "health_outcomes", "filename": "nhms_2011_vol2.txt",
+     "method": "pdf_text", "url": "https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2011-VolumeII.pdf",
+     "expect": ["National Health and Morbidity Survey 2011", "Table 1.1.1 Prevalence of overall diabetes", "Table 2.1.9"],
+     "min_bytes": 100000, "allow_shrink": False,
+     "note": "NHMS 2011 Volume II (Institute for Public Health, MOH). The extracted text is parsed by scripts/nhms_pdf.py for state-level overall diabetes, underweight and abdominal obesity."},
+    {"id": "nhms_2025_vol2", "category": "health_outcomes", "filename": "nhms_2025_vol2.txt",
+     "method": "pdf_text", "url": "https://iku.nih.gov.my/images/nhms-2025/nhms-2025-volume-2.pdf",
+     "expect": ["Older Persons Health", "The prevalence of probable dementia"],
+     "min_bytes": 100000,
+     "note": "NHMS 2025 Volume 2, Older Persons Health Findings (Institute for Public Health, MOH). Prevalence tables by sociodemographic characteristics, national level only."},
     {"id": "life_expectancy", "category": "health_outcomes", "filename": "life_expectancy.json",
      "method": "dosm_dashboard", "url": "https://open.dosm.gov.my/dashboard/life-expectancy",
      "note": "Published only as an OpenDOSM dashboard (no catalogue CSV/API): latest year by state and sex, and a national series by sex and ethnic group back to 1957. Read from the JSON the page renders; the fetch is strict about the page's shape and keeps the previous file if it ever changes."},
@@ -314,6 +335,8 @@ def _rows_of(content: bytes, ds: dict) -> list[dict]:
         return data if isinstance(data, list) else []
     if ds["filename"].endswith(".geojson"):
         return []
+    if ds["filename"].endswith(".txt"):
+        return [{"line": l} for l in content.decode("utf-8", "replace").splitlines()]
     return list(csv.DictReader(io.StringIO(content.decode("utf-8-sig", "replace"))))
 
 
@@ -408,6 +431,30 @@ def fetch_api_json_raw(ds: dict) -> tuple[bytes, dict | None]:
     return json.dumps(rows, indent=1).encode("utf-8"), meta
 
 
+def fetch_pdf_text(ds: dict) -> tuple[bytes, dict | None]:
+    """A published report PDF, as text. `pdftotext -raw` keeps each table row on one line (the default layout mode
+    scrambles the NHMS tables); the text is what gets stored and parsed (scripts/nhms_pdf.py), so the pipeline never
+    needs a person to type a value in. The tool is required: without it this fetch fails and the previous file stays.
+    `expect` lists strings the text must contain, so a replaced or reorganised report is refused rather than parsed."""
+    tool = shutil.which("pdftotext")
+    if not tool:
+        raise IngestError("pdftotext (poppler-utils) is not installed, so the report cannot be read")
+    content, headers = _http_get_with_headers(ds["url"], timeout=180)
+    if not content.startswith(b"%PDF"):
+        raise IngestError("the report address did not return a PDF")
+    with tempfile.TemporaryDirectory() as d:
+        pdf = Path(d) / "report.pdf"
+        pdf.write_bytes(content)
+        proc = subprocess.run([tool, "-raw", "-enc", "UTF-8", str(pdf), "-"], capture_output=True, timeout=300)
+    if proc.returncode != 0:
+        raise IngestError(f"pdftotext failed ({proc.returncode}): {proc.stderr.decode('utf-8', 'replace')[:200]}")
+    text = proc.stdout.decode("utf-8", "replace").replace("\r\n", "\n")
+    for needle in ds.get("expect", []):
+        if needle not in text:
+            raise IngestError(f"the extracted text no longer contains {needle!r}; the report may have been replaced")
+    return text.encode("utf-8"), {"_http": _http_signature(ds["url"], headers)}
+
+
 EPOCH = datetime(1970, 1, 1)  # the page stores years as epoch milliseconds, negative before 1970 (datetime.fromtimestamp fails on Windows there)
 
 
@@ -477,6 +524,7 @@ FETCHERS = {
     "api": fetch_api,
     "api_json_raw": fetch_api_json_raw,
     "dosm_dashboard": fetch_dosm_dashboard,
+    "pdf_text": fetch_pdf_text,
 }
 
 

@@ -53,6 +53,12 @@ export default function ProvenanceCard({ entry, hideTitle = false }: { entry: In
           year this dashboard shows, the next automatic refresh will pick it up.
         </p>
       )}
+      {entry.licence && (
+        <p className="mt-3 border-t border-line-grid pt-2 text-xs text-ink-secondary">
+          <span className="font-medium text-ink-primary">Terms: </span>
+          {entry.licence}
+        </p>
+      )}
       <p className="mt-3 border-t border-line-grid pt-2 text-xs text-ink-secondary">
         <span className="font-medium text-ink-primary">Limitations: </span>
         {entry.limitations}

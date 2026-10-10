@@ -1,10 +1,12 @@
 {
   "generated": "2026-08-12",
-  "last_refreshed": "2026-10-09",
+  "last_refreshed": "2026-10-10",
   "data_files": {
 
     "air_pollution_national.json": 2024,
     "births_district_sex.json": 2024,
+    "clinics_district.json": 2025,
+    "clinics_state.json": 2025,
     "covid_national.json": 2025,
     "covid_state.json": 2025,
     "deaths_district_sex.json": 2024,
@@ -33,6 +35,7 @@
     "nhms_adolescent_mental_health_state.json": 2017,
     "nhms_ncd_national.json": 2019,
     "nhms_ncd_state.json": 2023,
+    "nhms_older_persons_2025_national.json": 2025,
     "nutrition_national.json": 2019,
     "nutrition_strata_national.json": 2019,
     "pekab40_screenings_daily_state.json": 2026,
@@ -73,6 +76,8 @@
     "electricity_access": {"data_as_of": "2024", "last_updated": "2026-10-08 12:00", "next_update": "tbc", "update_frequency": "YEARLY", "api_id": "electricity_access", "http_url": "https://storage.data.gov.my/energy/electricity_access.csv", "etag": "\"290834d66c278573c7ddc476c3b88ff8\"", "last_modified": "Wed, 07 Oct 2026 16:29:13 GMT"},
     "electricity_consumption": {"data_as_of": "2026-06-30 23:59", "last_updated": "2026-10-08 12:00", "next_update": "tbc", "update_frequency": "MONTHLY", "api_id": "electricity_consumption", "http_url": "https://storage.data.gov.my/energy/electricity_consumption.csv", "etag": "\"99f4e95642207b31320e311faeec017a\"", "last_modified": "Wed, 07 Oct 2026 16:10:06 GMT"},
     "electricity_supply": {"data_as_of": "2026-06-30 23:59", "last_updated": "2026-10-08 12:00", "next_update": "tbc", "update_frequency": "MONTHLY", "api_id": "electricity_supply", "http_url": "https://storage.data.gov.my/energy/electricity_supply.csv", "etag": "\"9406f77dfe9b90bc5fa8ad7b894fdf1e\"", "last_modified": "Wed, 07 Oct 2026 16:10:05 GMT"},
+    "facilities_master": {"http_url": "https://raw.githubusercontent.com/MoH-Malaysia/data-resources-public/main/facilities_master.csv", "etag": "\"5c4c2da2db376f90eb4556afaf41972e8636d42a7171371a3fb71c9519459090\""},
+    "facilities_readme": {"http_url": "https://raw.githubusercontent.com/MoH-Malaysia/data-resources-public/main/README.md", "etag": "\"d6870a948a771ca9fadfd454a78520b969a6dfdccfe9c3815bc4ed4d56d27fc2\""},
     "fertility_state": {"data_as_of": "2024", "last_updated": "2025-10-16 12:00", "next_update": "2026-10-15 12:30", "update_frequency": "YEARLY", "api_id": "fertility_state", "http_url": "https://storage.dosm.gov.my/demography/fertility_state.csv", "etag": "\"5c64a067d649e0d8010b613325189896\"", "last_modified": "Tue, 07 Jul 2026 15:43:39 GMT"},
     "forest_reserve": {"data_as_of": "2022", "last_updated": "2026-09-30 12:00", "next_update": "tbc", "update_frequency": "YEARLY", "api_id": "forest_reserve", "http_url": "https://storage.data.gov.my/environment/forest_reserve.csv", "etag": "\"82af28a0a370a4b151951e6dd57763bc\"", "last_modified": "Wed, 30 Sep 2026 07:14:47 GMT"},
     "forest_reserve_state": {"data_as_of": "2022", "last_updated": "2026-09-30 12:00", "next_update": "tbc", "update_frequency": "YEARLY", "api_id": "forest_reserve_state", "http_url": "https://storage.data.gov.my/environment/forest_reserve_state.csv", "etag": "\"24563d0bf93c1e10e54e9438c8e3dd83\"", "last_modified": "Wed, 30 Sep 2026 07:14:47 GMT"},
@@ -98,6 +103,8 @@
     "marriages_state": {"data_as_of": "2022-12-31 23:59", "last_updated": "2023-11-23 12:00", "next_update": "2024-11-21 12:00", "update_frequency": "YEARLY", "api_id": "marriages_state", "http_url": "https://storage.dosm.gov.my/demography/marriages_state.csv", "etag": "\"a9239b3073edfb5640074f86b825b96a\"", "last_modified": "Wed, 25 Sep 2024 02:48:26 GMT"},
     "mnha": {"data_as_of": "2022", "last_updated": "2024-11-11", "next_update": "-", "update_frequency": "ANNUAL", "api_id": "mnha", "http_url": "https://storage.data.gov.my/healthcare/mnha.csv", "etag": "\"b953496cb74df343c22bec6d792549c2\"", "last_modified": "Mon, 11 Nov 2024 18:30:02 GMT"},
     "mnha_moh": {"data_as_of": "2022", "last_updated": "2024-11-11", "next_update": "-", "update_frequency": "ANNUAL", "api_id": "mnha_moh", "http_url": "https://storage.data.gov.my/healthcare/mnha_moh.csv", "etag": "\"d044643dd4d5e52dcb8c79710fb6b431\"", "last_modified": "Mon, 11 Nov 2024 18:30:04 GMT"},
+    "nhms_2011_vol2": {"http_url": "https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2011-VolumeII.pdf", "etag": "\"1143ff0-5ab7a3c06ed40\"", "last_modified": "Tue, 28 Jul 2020 06:06:05 GMT"},
+    "nhms_2025_vol2": {"http_url": "https://iku.nih.gov.my/images/nhms-2025/nhms-2025-volume-2.pdf", "etag": "\"2587e4-65b7fa772373a\"", "last_modified": "Tue, 15 Sep 2026 06:28:08 GMT"},
     "nutrition_children_strata": {"http_url": "https://storage.data.gov.my/healthcare/nutrition_status_u5_strata.csv", "etag": "\"da97ef5c146acd12aecc6b5fe1f49b80\"", "last_modified": "Mon, 16 Sep 2024 10:46:49 GMT"},
     "nutrition_status_u5_sex": {"http_url": "https://storage.data.gov.my/healthcare/nutrition_status_u5_sex.csv", "etag": "\"d9331eac1e0ad0666e7f44c19a850d2d\"", "last_modified": "Mon, 16 Sep 2024 10:46:48 GMT"},
     "organ_pledges_state": {"data_as_of": "2026-10-08 23:59", "last_updated": "2026-10-09 10:00", "next_update": "2026-10-10 10:00", "update_frequency": "DAILY", "api_id": "organ_pledges_state", "http_url": "https://storage.data.gov.my/healthcare/organ_pledges_state.csv", "etag": "\"7a13fa086926fa50c8882daee2848b30\"", "last_modified": "Thu, 08 Oct 2026 20:00:37 GMT"},
@@ -872,14 +879,14 @@
     },
     {
       "id": "nhms_ncd_2019",
-      "name": "NCD Risk Factor Prevalence by State (NHMS 2015 + NHMS 2019 + NHMS 2023)",
+      "name": "NCD Risk Factor Prevalence by State (NHMS 2011 + NHMS 2015 + NHMS 2019 + NHMS 2023)",
       "url": "https://iku.nih.gov.my/nhms",
       "endpoint_csv": "https://iku.nih.gov.my/images/IKU/Document/REPORT/nhmsreport2015vol2.pdf (2015); https://iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2019/Report_NHMS2019-NCD.pdf (2019); https://iku.nih.gov.my/images/nhms2023/report-nhms-2023.pdf (2023)",
-      "description": "Prevalence of non-communicable-disease risk factors among adults, national and by state, across 3 survey cycles. 2015: 11 indicators (overall/known/undiagnosed diabetes, hypertension and hypercholesterolaemia, underweight, abdominal obesity, current smoking, physically active), crude prevalence, Sabah+W.P. Labuan reported as one combined unit. 2019: 13 indicators (adds overweight, obesity, current drinking, physical inactivity in place of physically-active), crude prevalence, full 16 states. 2023: 9 indicators (diabetes/hypertension/hypercholesterolaemia trio each split into overall/known/undiagnosed), age-standardised prevalence, full 16 states.",
+      "description": "Prevalence of non-communicable-disease risk factors among adults, national and by state, across 4 survey cycles. 2011: 3 indicators (overall diabetes, known plus undiagnosed; underweight; abdominal obesity, WHO 2000), crude prevalence, read from the NHMS 2011 Volume II report text by the pipeline; Sabah+W.P. Labuan reported as one combined unit. 2015: 11 indicators (overall/known/undiagnosed diabetes, hypertension and hypercholesterolaemia, underweight, abdominal obesity, current smoking, physically active), crude prevalence, Sabah+W.P. Labuan reported as one combined unit. 2019: 13 indicators (adds overweight, obesity, current drinking, physical inactivity in place of physically-active), crude prevalence, full 16 states. 2023: 9 indicators (diabetes/hypertension/hypercholesterolaemia trio each split into overall/known/undiagnosed), age-standardised prevalence, full 16 states.",
       "source_org": "Institute for Public Health (IPH), National Institutes of Health, Ministry of Health Malaysia",
       "update_frequency": "Per NHMS NCD cycle (4-yearly)",
-      "date_range": "2015, 2019, 2023",
-      "geographic_resolution": "national (2015 and 2019 only), state",
+      "date_range": "2011, 2015, 2019, 2023",
+      "geographic_resolution": "national (2011, 2015 and 2019 only), state",
       "dimensions": [
         "state",
         "year"
@@ -894,12 +901,12 @@
         "2015-only: physically_active (inverse framing of physical_inactivity, NOT the same field — not algebraically derived from it)"
       ],
       "unit": "% (weighted survey estimate; 2015/2019 have 95% CI, 2023 point estimate only)",
-      "missingness": "2015: no Sabah/W.P. Labuan rows (source reports them as one combined unit — splitting it would be fabrication, so both are null rather than guessed), no current_drinker (not disaggregated by state that cycle), no overweight/obesity (those table pages did not extract as text in this PDF in either pdftotext mode — likely image-rendered — and were not guessed at). 2019: none for the 16 states/FTs + national. 2023: state-level only for 9 indicators, no Malaysia row, no CI/n published in the source table.",
+      "missingness": "2015: no Sabah/W.P. Labuan rows (source reports them as one combined unit — splitting it would be fabrication, so both are null rather than guessed), no current_drinker (not disaggregated by state that cycle), no overweight/obesity (those table pages did not extract as text in this PDF in either pdftotext mode — likely image-rendered — and were not guessed at). 2019: none for the 16 states/FTs + national. 2023: state-level only for 9 indicators, no Malaysia row, no CI/n published in the source table. 2011: no Sabah/W.P. Labuan rows (combined unit in the source, left null for both), 3 indicators only.",
       "joinable_with": [
         "socioeconomic_state.json, healthcare_access_state.json via state (for Determinants Explorer)"
       ],
       "recommended_use": "State-level NCD risk-factor outcomes for the Determinants Explorer (WHY) — the only survey-based (as opposed to administrative-registry) indicators in this dataset, and (for diabetes/hypertension/hypercholesterolaemia) the only indicators in the whole dashboard with three time points available for a before/after read",
-      "limitations": "UNLIKE every other dataset in this dashboard, this one is not available as a downloadable table from data.gov.my or DOSM — NHMS results are not published there. Every figure was manually transcribed from its respective Table X.Y in the relevant year's NHMS Technical Report PDF, each cross-checked against the report's own summary figures (2015 and 2019: Malaysia-level subtotal row in the same table; 2023: the report's own highest/lowest narrative sentences, which matched the extracted table exactly on every figure checked; 2015's physically_active table was additionally checked against its own \"highest was Kelantan/Pahang\" narrative sentence, which also matched exactly). Male/female-split columns were NEVER transcribed for any indicator/year because the source PDFs' two-column table layouts did not extract reliably enough to trust those numbers. Overweight/obesity use the WHO Asian (Malaysian CPG) BMI cutoffs, not the WHO international cutoffs also published alongside them in the source, in the years where they are present. current_drinker (2019 only) has several states flagged `_unreliable: true` (small sample / high relative standard error, as flagged with \"*\" in the source). **2015/2019 figures are crude prevalence; 2023 figures are age-standardised — these are NOT a precise apples-to-apples trend** across all three years, read any change as suggestive, not exact (2015 vs. 2019 IS on the same crude basis and is a fairer comparison). An NHMS 2011 (Vol. II) extraction attempt was abandoned after finding table titles frequently detached from their data by page-break artifacts in that specific PDF, and one spot-checked table's confidence interval did not exactly match the report's own stated CI (12.1–13.6 extracted vs. 12.2–13.5 stated) — a reliability risk this dashboard is not willing to accept without a cleaner source; 2011 is not included. NHMS 1996/2006 predate the comparable NCD survey series (per the 2019 report's own \"11.2% (2011) -> 13.4% (2015) -> 18.3% (2019)\" trend framing) and were not attempted.",
+      "limitations": "UNLIKE every other dataset in this dashboard, this one is not available as a downloadable table from data.gov.my or DOSM — NHMS results are not published there. Every figure was manually transcribed from its respective Table X.Y in the relevant year's NHMS Technical Report PDF, each cross-checked against the report's own summary figures (2015 and 2019: Malaysia-level subtotal row in the same table; 2023: the report's own highest/lowest narrative sentences, which matched the extracted table exactly on every figure checked; 2015's physically_active table was additionally checked against its own \"highest was Kelantan/Pahang\" narrative sentence, which also matched exactly). Male/female-split columns were NEVER transcribed for any indicator/year because the source PDFs' two-column table layouts did not extract reliably enough to trust those numbers. Overweight/obesity use the WHO Asian (Malaysian CPG) BMI cutoffs, not the WHO international cutoffs also published alongside them in the source, in the years where they are present. current_drinker (2019 only) has several states flagged `_unreliable: true` (small sample / high relative standard error, as flagged with \"*\" in the source). **2015/2019 figures are crude prevalence; 2023 figures are age-standardised — these are NOT a precise apples-to-apples trend** across all three years, read any change as suggestive, not exact (2015 vs. 2019 IS on the same crude basis and is a fairer comparison). NHMS 2011 (Vol. II) is included for overall diabetes, underweight and abdominal obesity only (WHO 2000 cut-offs, the same definition as 2015). It is read by the pipeline from the report text with `pdftotext -raw` (the default layout mode scrambles those tables, which is why an earlier attempt was abandoned) and every table must add up to its own totals, and the extracted state values were checked against the highest and lowest states the report names in its own text (Perlis 24.8, Kedah 22.5, Negeri Sembilan 22.0, Sabah and W.P. Labuan combined 9.0, W.P. Putrajaya 8.8, all matching). Overall diabetes is the same concept as raised blood glucose in later cycles (known plus undiagnosed) but is kept as its own indicator because its definition is the 2011 report's. Other 2011 tables (hypertension, hypercholesterolaemia, known and undiagnosed diabetes) have no readable state table in the PDF text (the pages are images) and are not included; overweight and obesity use cut-offs that differ from the later cycles and are not included either. NHMS 1996/2006 predate the comparable NCD survey series (per the 2019 report's own \"11.2% (2011) -> 13.4% (2015) -> 18.3% (2019)\" trend framing) and were not attempted.",
       "status": "ingested"
     },
     {
@@ -1604,19 +1611,73 @@
       "recommended_use": "Longevity outcome by state: the gap between the best and worst state is a direct, easy-to-read equity measure. Shown on the Health Outcomes page; the national series gives the long-run trend and the ethnic-group gap.",
       "limitations": "DOSM publishes this only as an interactive dashboard, not as a downloadable table. The figures are read from that dashboard with strict checks; if DOSM changes how it is laid out, the update stops and the previous figures are kept (guessed values are never published). State values exist for the latest year only (no state history). Life expectancy is a life-table result, so unlike the per-100k rates it cannot be pooled across Selangor / Kuala Lumpur / Putrajaya: the three are always shown separately, as published. The 'noncitizen' group's figure depends on who is counted in that group (DOSM does not say more on the dashboard), so it should be read with care and not as evidence of a health advantage.",
       "status": "ingested"
+    },
+    {
+      "id": "facilities_master",
+      "name": "Public Health Clinics by State and District (MOH facility registry)",
+      "url": "https://github.com/MoH-Malaysia/data-resources-public",
+      "endpoint_csv": "https://raw.githubusercontent.com/MoH-Malaysia/data-resources-public/main/facilities_master.csv",
+      "description": "Ministry of Health Malaysia's registry of public health facilities (hospitals, clinics, dental clinics, health offices, laboratories), one row per facility with state and district. This dashboard counts the clinics: health clinics (klinik kesihatan), rural clinics (klinik desa), community clinics, maternal and child health clinics, and dental clinics.",
+      "source_org": "Ministry of Health Malaysia (MOH)",
+      "update_frequency": "Not stated by the publisher (the registry's README says it is as registered on 31 December 2025)",
+      "date_range": "One snapshot, as registered on 31 December 2025",
+      "geographic_resolution": "state and district",
+      "dimensions": [
+        "state",
+        "district",
+        "facility category",
+        "facility type"
+      ],
+      "variables": [
+        "number of facilities"
+      ],
+      "unit": "count of facilities; per 100,000 residents (DOSM state population estimate for the same year)",
+      "missingness": "none: every facility row has a state and a district",
+      "joinable_with": [
+        "population_state via state and year (the rate), healthcare_staff and hospital_beds via state"
+      ],
+      "recommended_use": "How many public clinics serve each state and district, by type. Shown on the Healthcare Access page.",
+      "limitations": "Public sector only: the registry lists Ministry of Health facilities (5,145 of 5,160 rows in the version used) plus a few belonging to universities and the armed forces. Private clinics, pharmacies and other providers are not in it, so a low count means few PUBLIC clinics, not few clinics. It counts facilities, not capacity or staff: a small rural clinic and a large health clinic count the same. One snapshot, so there is no trend. Dental clinics include school-based clinics (about half of them). The Klang Valley pooling used for staff and beds applies to the per-100,000 rate here too.",
+      "licence": "No licence file in the repository. Its README says use is subject to the terms of the repository and applicable Government of Malaysia open data policies, and asks that the Ministry of Health Malaysia be attributed.",
+      "status": "ingested"
+    },
+    {
+      "id": "nhms_older_persons_2025",
+      "name": "Older Persons Health (NHMS 2025, Volume 2)",
+      "url": "https://iku.nih.gov.my/nhms2025",
+      "endpoint_csv": "https://iku.nih.gov.my/images/nhms-2025/nhms-2025-volume-2.pdf",
+      "description": "Prevalence among people aged 60 and over, from the National Health and Morbidity Survey 2025 technical report (Volume 2, Older Persons Health Findings): ageing well, social support, cognitive impairment, dementia, depression, limitations in daily living, falls, vision and hearing, physical inactivity and sedentary behaviour, sleep, raised blood glucose / pressure / cholesterol (overall, known and undiagnosed), sarcopenia, and frailty. Each is split by location (urban or rural), sex, age group, ethnicity, marital status, education, occupation and household income.",
+      "source_org": "Institute for Public Health (IPH), National Institutes of Health, Ministry of Health Malaysia",
+      "update_frequency": "Per NHMS cycle (this older-persons survey is a new module)",
+      "date_range": "2025 (fieldwork July to September 2025; report posted September 2026)",
+      "geographic_resolution": "national only (no state or district breakdown is published)",
+      "dimensions": [
+        "indicator",
+        "location",
+        "sex",
+        "age group",
+        "ethnicity",
+        "marital status",
+        "education",
+        "occupation",
+        "household income"
+      ],
+      "variables": [
+        "sample count",
+        "estimated population",
+        "prevalence (%)",
+        "95% confidence interval"
+      ],
+      "unit": "% of people aged 60 and over",
+      "missingness": "a cell the report prints as '-' (too few respondents) is kept empty and marked suppressed; nothing is filled in",
+      "joinable_with": [],
+      "recommended_use": "Differences in older people's health by place of residence, sex, age, ethnicity, education and income. National only, so it cannot show which states are worse off.",
+      "limitations": "National level only: the report gives no state or district figures, so these cannot be mapped or ranked by state. One survey year (cross-sectional), so no trend. Estimates are the report's own, with its definitions (for example 'probable dementia' is a screening result, not a diagnosis). Sample sizes for some groups are small and the report suppresses the smallest. The figures are read from the published PDF by the pipeline (not typed in); every table must add up to its own totals or the update stops.",
+      "licence": "No open licence or reuse terms were found. The NIH site states Copyright, National Institutes of Health, Ministry of Health Malaysia. The figures are credited to the report and are not re-licensed here.",
+      "status": "ingested"
     }
   ],
   "identified_but_not_yet_ingested": [
-    {
-      "id": "nhms_older_persons_2025",
-      "name": "Older Persons Health — Diabetes, Hypertension, Hypercholesterolaemia, Dementia, Frailty (NHMS 2025)",
-      "reason": "Confirmed during a 2026-08-13 check of iku.nih.gov.my/nhms2025: a new NHMS 2025 survey of adults aged 60+ exists, covering diabetes/hypertension/hypercholesterolaemia specifically in that age group plus dementia, cognitive impairment, depression, falls, frailty and caregiver burden — a genuinely new population subgroup (older persons) not otherwise represented in this dataset. Only a national-level fact sheet and key-findings infographic are published so far (iku.nih.gov.my/images/nhms-2025/factsheet_eng.pdf, checked directly — 0 state-name mentions across the whole document); no state-disaggregated technical report exists yet. Re-check this source when a full technical report is published — historically (NHMS 2019/2023) that has lagged the fact sheet by roughly a year."
-    },
-    {
-      "id": "nhms_ncd_2011",
-      "name": "NCD Risk Factor Prevalence by State (NHMS 2011, Vol. II)",
-      "reason": "Attempted during the 2026-08-13 NHMS multi-year extraction (see nhms_ncd_2019's limitations field): NHMS 2011 Volume II (iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2011-VolumeII.pdf) does contain state-level NCD tables in principle, but this specific PDF's text extraction repeatedly detached table titles from their data across page breaks, and the one table spot-checked against the report's own stated 95% CI showed a small mismatch (12.1-13.6 extracted vs. 12.2-13.5 stated) — high enough error risk that extraction was abandoned rather than risk publishing wrong figures. Would need a cleaner source (e.g. a non-scanned original, or manual page-by-page verification) to attempt again."
-    },
     {
       "id": "causes_of_death",
       "name": "Causes of Death, ICD-Coded (by state/district)",
@@ -1626,11 +1687,6 @@
       "id": "divorce_state",
       "name": "Divorce Statistics by State",
       "reason": "Confirmed during the 2026-08-14 audit: DOSM publishes annual marriage-and-divorce reports including divorce counts and crude divorce rate, complementing the already included marriages_state dataset. These appear to be PDF-only releases — no divorce-specific data-catalogue entry (analogous to marriages_state's CSV) was found. Re-check OpenDOSM's demography catalogue directly for a 'divorce_state'-style entry before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to include."
-    },
-    {
-      "id": "clinic_counts",
-      "name": "Number of Healthcare Clinics by Type",
-      "reason": "Confirmed during the 2026-08-14 audit: a clinic-count dataset (klinik kesihatan/klinik desa counts) exists but only on the deprecated archive.data.gov.my portal, covering 2000-2019. This project's hospital_beds/healthcare_staff datasets cover beds and staff, not facility counts, and only for hospitals, not clinics — a real resolution gap. Unclear whether a current equivalent exists on the live data.gov.my catalogue; needs a direct search there before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to include."
     },
     {
       "id": "disability_statistics",

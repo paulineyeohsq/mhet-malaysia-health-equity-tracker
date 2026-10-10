@@ -157,7 +157,7 @@ test("Data Gaps: grouped and searchable, with every dataset still reachable", as
   await page.goto("/#/data-gaps");
   const groups = page.locator("#limitations-heading").locator("xpath=ancestor::section").locator(":scope > div > details");
   await expect(groups).toHaveCount(6);
-  await expect(page.getByRole("status")).toContainText(/datasets in 6 groups, and 6 known gaps/);
+  await expect(page.getByRole("status")).toContainText(/datasets in 6 groups, and 3 known gaps/);
   // nothing is lost: opening every group shows every dataset (the number the status line reports)
   await page.getByRole("button", { name: "Open all groups" }).click();
   const total = Number((await page.getByRole("status").innerText()).match(/(\d+) datasets in/)![1]);
@@ -175,8 +175,9 @@ test("Data Gaps: grouped and searchable, with every dataset still reachable", as
 test("Data Gaps lists only what has no machine-readable source", async ({ page }) => {
   await page.goto("/#/data-gaps");
   const list = page.locator("#not-ingested-heading + div li");
-  await expect(list).toHaveCount(6);
+  await expect(list).toHaveCount(3);
   await expect(list.filter({ hasText: "Life Expectancy" })).toHaveCount(0);
+  await expect(list.filter({ hasText: "Number of Healthcare Clinics" })).toHaveCount(0);
   await expect(list.filter({ hasText: "Causes of Death" })).toContainText("Re-checked 2026-10-09");
 });
 
@@ -335,6 +336,30 @@ test.describe("consolidated pages", () => {
     // the Klang Valley control still appears for the access topic (it is looked up by the page's original path)
     await select.selectOption({ label: "Healthcare Access" });
     await expect(page.getByLabel("Each territory on its own")).toBeVisible();
+  });
+
+  test("Healthcare Access: public clinics are shown with the public-sector caveat and follow the Klang Valley choice", async ({ page }) => {
+    await page.goto("/#/topics/access");
+    await expect(page.getByRole("heading", { name: /Public health clinics — registered/ })).toBeVisible();
+    await expect(page.getByText("Public sector only", { exact: false })).toBeVisible();
+    await expect(page.getByText("All public clinics")).toBeVisible();
+    const chart = page.getByRole("heading", { name: /Public clinics per 100,000 population by state/ });
+    await expect(chart).toContainText("Klang Valley pooled");
+    await page.getByLabel("Each territory on its own").check();
+    await expect(chart).not.toContainText("Klang Valley pooled");
+    await page.getByLabel(/Pooled as one Klang Valley unit/).check();
+  });
+
+  test("Health Outcomes: the older persons view is national, with confidence intervals and a breakdown choice", async ({ page }) => {
+    await page.goto("/#/topics/outcomes");
+    await page.getByLabel("Indicator category").selectOption({ label: "Older Persons (NHMS 2025)" });
+    await expect(page.getByText("Prevalence among people aged 60+")).toBeVisible();
+    await expect(page.getByText("95% confidence interval")).toBeVisible();
+    await expect(page.getByText("no state comparison here", { exact: false })).toBeVisible();
+    await page.getByLabel("Compare by").selectOption({ label: "Education level" });
+    await expect(page.getByRole("heading", { name: /By education level/i })).toBeVisible();
+    await page.getByLabel("Indicator", { exact: true }).selectOption({ label: "Probable dementia" });
+    await expect(page.getByRole("heading", { name: /By education level — probable dementia/i })).toBeVisible();
   });
 
   test("Health Outcomes: the life expectancy view ranks every state and keeps Klang Valley separate", async ({ page }) => {

@@ -15,6 +15,8 @@ export type KlangValleyMode = "pooled" | "separate";
 
 export const KLANG_VALLEY_UNITS = ["Selangor", "W.P. Kuala Lumpur", "W.P. Putrajaya"] as const;
 export const HEALTHCARE_ACCESS_FILE = "healthcare_access_state.json";
+/** Files whose `*_per_100k_pooled` fields follow the Klang Valley choice. */
+export const KLANG_VALLEY_FILES: readonly string[] = [HEALTHCARE_ACCESS_FILE, "clinics_state.json"];
 
 const STORAGE_KEY = "myheo:klang-valley-mode";
 
@@ -66,10 +68,11 @@ export function kvLabel(base: string, current: KlangValleyMode = mode): string {
  */
 export function applyKlangValleyMode(rows: Row[], current: KlangValleyMode): Row[] {
   if (current === "pooled") return rows;
-  return rows.map((r) => ({
-    ...r,
-    pool_label: null,
-    staff_per_100k_pooled: r.staff_per_100k ?? null,
-    beds_per_100k_pooled: r.beds_per_100k ?? null,
-  }));
+  return rows.map((r) => {
+    const out: Row = { ...r, pool_label: null };
+    for (const key of Object.keys(r)) {
+      if (key.endsWith("_per_100k_pooled")) out[key] = r[key.replace(/_pooled$/, "")] ?? null;
+    }
+    return out;
+  });
 }
