@@ -87,17 +87,13 @@ function latestYears(rows: Row[], keep: number): { rows: Row[]; trimmed: boolean
   };
 }
 
-function compactInventory(parsed: { datasets?: Row[]; identified_but_not_yet_ingested?: Row[] }): string {
+function compactInventory(parsed: { datasets?: Row[] }): string {
   const datasets = (parsed.datasets ?? []).map((d) => {
     const out: Row = {};
     for (const f of INVENTORY_FIELDS) out[f] = d[f];
     return out;
   });
-  const notIngested = (parsed.identified_but_not_yet_ingested ?? []).map((d) => String(d.name ?? d.id ?? "")).filter(Boolean);
-  return (
-    toCsv(datasets, INVENTORY_FIELDS) +
-    (notIngested.length ? `\nIdentified but not yet ingested (no data available): ${notIngested.join("; ")}` : "")
-  );
+  return toCsv(datasets, INVENTORY_FIELDS);
 }
 
 function compactOne(file: ContextFile, keepYears: number): { text: string; trimmed: boolean } {

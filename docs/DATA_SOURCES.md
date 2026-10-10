@@ -7,12 +7,10 @@ That file documents every dataset examined during the Phase 1/2 audit of
 `status: ingested`** have raw files under `data/raw/` and processed outputs
 under `data/processed/` (produced by `scripts/transform_data.py`), plus
 **<!--count:reference-->1<!--/count--> dataset ingested for cross-validation only** (`hies_2019_snapshot`, not
-loaded into the dashboard), and **<!--count:notingested-->3<!--/count--> datasets identified and schema-verified
-but not yet ingested** into this build. (These counts are rewritten from the
-inventory by `scripts/update_database.py` on every successful run.)
+loaded into the dashboard). (These counts are rewritten from the inventory by `scripts/update_database.py` on every
+successful run.)
 
-`scripts/ingest_data.py` can fetch every ingested dataset (and could be
-extended to fetch the not-yet-ingested ones) directly from its real
+`scripts/ingest_data.py` fetches every ingested dataset directly from its real
 endpoint, listed below, when run in an environment with normal outbound
 internet access.
 
@@ -265,29 +263,12 @@ across every page.
 
 ---
 
-## Identified but not yet ingested
+## Datasets that could not be added
 
-(The clinic counts and the NHMS 2011 and 2025 tables that were here on 2026-10-09 are now in the dashboard; see above and
-`docs/DATA_BACKLOG.md`, which also records why the remaining ones could not be added.)
-
-Re-audited 2026-10-09 against both catalogues (OpenDOSM: 185 datasets; data.gov.my: 297). Everything that earlier
-versions of this page listed here (parliamentary and state-assembly population, income percentiles, marriage and
-fertility, health programmes, COVID-19, national health accounts, the amenities series, nutrition by strata and the
-2020 onward district population) **has since been ingested** and is documented above. What remains is the list below,
-which is also what the app's Data Gaps page shows (it reads the inventory). None of these has a data-catalogue file or
-API entry to ingest from, so closing them is not a pipeline task.
-
-| Dataset | Why it is not in the dashboard |
-|---|---|
-| **Older Persons Health — Diabetes, Hypertension, Hypercholesterolaemia, Dementia, Frailty (NHMS 2025)** (`nhms_older_persons_2025`) | Confirmed during a 2026-08-13 check of iku.nih.gov.my/nhms2025: a new NHMS 2025 survey of adults aged 60+ exists, covering diabetes/hypertension/hypercholesterolaemia specifically in that age group plus dementia, cognitive impairment, depression, falls, frailty and caregiver burden — a genuinely new population subgroup (older persons) not otherwise represented in this dataset. Only a national-level fact sheet and key-findings infographic are published so far (iku.nih.gov.my/images/nhms-2025/factsheet_eng.pdf, checked directly — 0 state-name mentions across the whole document); no state-disaggregated technical report exists yet. Re-check this source when a full technical report is published — historically (NHMS 2019/2023) that has lagged the fact sheet by roughly a year. |
-| **NCD Risk Factor Prevalence by State (NHMS 2011, Vol. II)** (`nhms_ncd_2011`) | Attempted during the 2026-08-13 NHMS multi-year extraction (see nhms_ncd_2019's limitations field): NHMS 2011 Volume II (iku.nih.gov.my/images/IKU/Document/REPORT/NHMS2011-VolumeII.pdf) does contain state-level NCD tables in principle, but this specific PDF's text extraction repeatedly detached table titles from their data across page breaks, and the one table spot-checked against the report's own stated 95% CI showed a small mismatch (12.1-13.6 extracted vs. 12.2-13.5 stated) — high enough error risk that extraction was abandoned rather than risk publishing wrong figures. Would need a cleaner source (e.g. a non-scanned original, or manual page-by-page verification) to attempt again. |
-| **Causes of Death, ICD-Coded (by state/district)** (`causes_of_death`) | Confirmed during the 2026-08-14 audit: DOSM publishes an annual 'Statistics on Causes of Death' report and an interactive 'Cause of Death Calculator' (kalkulator.dosm.gov.my/cod/) built on 2000-2023 medically-certified-death data. No confirmed open CSV/API dataset was found behind either — search results point to PDF releases and the calculator tool itself, not a data-catalogue entry. Would need direct confirmation on open.dosm.gov.my/data.gov.my, or reverse-engineering the calculator's own data source, before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to ingest. |
-| **Divorce Statistics by State** (`divorce_state`) | Confirmed during the 2026-08-14 audit: DOSM publishes annual marriage-and-divorce reports including divorce counts and crude divorce rate, complementing the already-ingested marriages_state dataset. These appear to be PDF-only releases — no divorce-specific data-catalogue entry (analogous to marriages_state's CSV) was found. Re-check OpenDOSM's demography catalogue directly for a 'divorce_state'-style entry before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to ingest. |
-| **Number of Healthcare Clinics by Type** (`clinic_counts`) | Confirmed during the 2026-08-14 audit: a clinic-count dataset (klinik kesihatan/klinik desa counts) exists but only on the deprecated archive.data.gov.my portal, covering 2000-2019. This project's hospital_beds/healthcare_staff datasets cover beds and staff, not facility counts, and only for hospitals, not clinics — a real resolution gap. Unclear whether a current equivalent exists on the live data.gov.my catalogue; needs a direct search there before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to ingest. |
-| **Person with Disability (OKU) Statistics** (`disability_statistics`) | Confirmed during the 2026-08-14 audit: DOSM publishes an annual 'Person with Disability Statistics' report (2023/2024 editions found) using JKM registry figures. Appears to be released as a narrative PDF publication, not a confirmed open dataset table — no data-catalogue entry found. Needs direct confirmation on open.dosm.gov.my before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to ingest. |
-
-Life expectancy by state, sex and ethnicity used to be on this list; it is now ingested from DOSM's dashboard (see
-"Life Expectancy at Birth by State, Sex & Ethnicity" above).
+These are no longer listed on the dashboard (its Data Gaps page covers the limitations of the data it has). They are
+tracked in [`DATA_BACKLOG.md`](DATA_BACKLOG.md) with the source, why each could not be added under the project's rules
+(official source, machine-readable or reliably read by the pipeline, nothing typed in) and how the weekly run watches
+for them.
 
 ---
 

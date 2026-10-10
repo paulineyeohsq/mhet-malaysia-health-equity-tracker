@@ -4,7 +4,6 @@ import DataTable, { type Column } from "../components/DataTable";
 import { toCSV, downloadCSV } from "../lib/csv";
 import InsufficientData from "../components/InsufficientData";
 import ProvenanceCard from "../components/ProvenanceCard";
-import DataGapsList from "../components/DataGapsList";
 import { useData } from "../lib/useData";
 import { INVENTORY_MAP, type InventoryDataset, type InventoryFile } from "../lib/inventoryMap";
 
@@ -653,23 +652,17 @@ export default function DataExplorer() {
           ) : rows && rows.length > 0 ? (
             <DataTable columns={dataset.columns} rows={rows} pageSize={25} />
           ) : (
-            <InsufficientData reason={`No rows found in ${dataset.file}.`} />
+            <InsufficientData reason="Data for this section is currently unavailable." />
           )}
         </section>
 
-        <section aria-labelledby="not-ingested-heading">
-          <h2 id="not-ingested-heading" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-            Additional datasets identified but not yet included
-          </h2>
-          <DataGapsList />
-          <p className="mt-3 text-xs text-ink-secondary">
-            For a complete, dedicated view of every dataset's limitations (not just what's missing), see{" "}
-            <a href="#/data-gaps" className="text-series-1 underline underline-offset-2">
-              Data Gaps
-            </a>
-            .
-          </p>
-        </section>
+        <p className="text-xs text-ink-secondary">
+          For every dataset's limitations in one place, see{" "}
+          <a href="#/data-gaps" className="text-series-1 underline underline-offset-2">
+            Data Gaps
+          </a>
+          .
+        </p>
       </div>
     </div>
   );

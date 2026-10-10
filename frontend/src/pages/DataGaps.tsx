@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import PageHeader from "../components/PageHeader";
-import DataGapsList from "../components/DataGapsList";
 import Disclosure from "../components/Disclosure";
 import ProvenanceCard from "../components/ProvenanceCard";
 import InsufficientData from "../components/InsufficientData";
@@ -13,11 +12,10 @@ function truncate(text: string, max = 160): string {
 }
 
 /**
- * A single page answering "what should I not expect from this dashboard, and where exactly are the real datasets
- * weaker than they look". All content is read from dataset_inventory.json (the same file the Data Explorer uses);
- * nothing is invented here. To be readable on a phone the catalogue is grouped by topic, each group opens on its own,
- * and a search box narrows both the known gaps and the datasets. Every entry is still there: grouping and searching
- * only change what is shown at a time.
+ * The limitations of the datasets this dashboard actually uses, read from dataset_inventory.json (the same file the
+ * Data Explorer uses); nothing is invented here. To be readable on a phone the datasets are grouped by topic, each
+ * group opens on its own, and a search box narrows them. Every dataset is still there: grouping and searching only
+ * change what is shown at a time. Datasets the dashboard does not have are not listed here.
  */
 export default function DataGaps() {
   const { data: inventory } = useData<InventoryFile>("dataset_inventory.json");
@@ -37,12 +35,18 @@ export default function DataGaps() {
     <div>
       <PageHeader
         title="Data Gaps"
-        subtitle="What this dashboard does not have, and where the data it does have is weaker than a headline number suggests — before you spend time rediscovering it yourself."
+        subtitle="The limits of the data behind every chart: how recent each dataset is, how detailed its geography is, who or what it leaves out, and what to be careful of before relying on a figure."
       />
       <div className="space-y-8 p-6 lg:p-10">
         <div>
+          <p className="mb-3 max-w-3xl text-sm text-ink-secondary">
+            Every dataset the dashboard uses is listed here with its main limitation. Open a dataset for its source, unit,
+            years covered, how often it is updated and its full list of limitations. A figure is only as good as its
+            source: where a dataset stops at an earlier year, covers only part of the country or counts only the public
+            sector, it says so here and beside the chart.
+          </p>
           <label htmlFor="gaps-search" className="block text-xs font-medium uppercase tracking-wide text-ink-muted">
-            Search the gaps and datasets
+            Search the datasets and their limitations
           </label>
           <input
             id="gaps-search"
@@ -53,21 +57,14 @@ export default function DataGaps() {
             className="mt-1 w-full max-w-md rounded-md border border-line-axis px-3 py-1.5 text-sm focus:border-series-1"
           />
           <p role="status" className="mt-1 text-xs text-ink-muted">
-            {searching ? `${shownCount} of ${ingested.length} datasets match.` : `${ingested.length} datasets in ${groups.length} groups, and ${inventory?.identified_but_not_yet_ingested.length ?? "…"} known gaps.`}
+            {searching ? `${shownCount} of ${ingested.length} datasets match.` : `${ingested.length} datasets in ${groups.length} groups.`}
           </p>
         </div>
-
-        <section aria-labelledby="not-ingested-heading">
-          <h2 id="not-ingested-heading" className="mb-3 text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-            Confirmed to exist, not yet in this dashboard
-          </h2>
-          <DataGapsList query={query} collapsed />
-        </section>
 
         <section aria-labelledby="limitations-heading">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
             <h2 id="limitations-heading" className="text-sm font-semibold uppercase tracking-wide text-ink-secondary">
-              What's in — and its real limitations
+              Datasets and their limitations
             </h2>
             <div className="flex gap-2 text-xs">
               <button
@@ -86,12 +83,8 @@ export default function DataGaps() {
               </button>
             </div>
           </div>
-          <p className="mb-3 text-xs text-ink-secondary">
-            Every dataset actually powering this dashboard, with its main limitation. Open a dataset for its source, unit,
-            date range, update frequency, missingness and full list of limitations.
-          </p>
           {ingested.length === 0 ? (
-            <InsufficientData reason="Dataset inventory still loading or unavailable." />
+            <InsufficientData reason="Data for this section is currently unavailable." />
           ) : shownCount === 0 ? (
             <p className="text-sm text-ink-secondary">No dataset matches "{query.trim()}".</p>
           ) : (

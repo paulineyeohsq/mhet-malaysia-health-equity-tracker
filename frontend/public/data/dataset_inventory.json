@@ -123,7 +123,7 @@
     "water_production": {"data_as_of": "2022-12-31 23:59", "last_updated": "2024-09-01 12:00", "next_update": "tbc", "update_frequency": "ANNUAL", "api_id": "water_production", "http_url": "https://storage.data.gov.my/water/water_production.csv", "etag": "\"5d7c8b2e1fe24ef6aa892fd898e7ab95\"", "last_modified": "Sun, 22 Sep 2024 22:48:50 GMT"}
   },
   "source_catalogue": "https://data.gov.my/data-catalogue",
-  "note": "Each entry documents a dataset examined during the Phase 1/2 audit of data.gov.my. `status: included` datasets have raw files under data/raw/ and processed outputs under data/processed/, produced by scripts/transform_data.py. `status: identified_not_ingested` datasets were confirmed to exist (URL + schema verified) but were not pulled into this build, usually because of sandbox network/data-volume constraints described in METHODOLOGY.md — scripts/ingest_data.py can fetch them directly once run in an environment with normal internet access.",
+  "note": "Each entry documents a dataset used by the dashboard: its source, what it contains, its geographic resolution, date range, missingness and stated limitations. status: ingested datasets have raw files under data/raw/ and processed outputs under data/processed/, produced by scripts/transform_data.py. Datasets that exist but could not be added are tracked internally in docs/DATA_BACKLOG.md, not here.",
   "datasets": [
     {
       "id": "hh_income",
@@ -1675,23 +1675,6 @@
       "limitations": "National level only: the report gives no state or district figures, so these cannot be mapped or ranked by state. One survey year (cross-sectional), so no trend. Estimates are the report's own, with its definitions (for example 'probable dementia' is a screening result, not a diagnosis). Sample sizes for some groups are small and the report suppresses the smallest. The figures are read from the published PDF by the pipeline (not typed in); every table must add up to its own totals or the update stops.",
       "licence": "No open licence or reuse terms were found. The NIH site states Copyright, National Institutes of Health, Ministry of Health Malaysia. The figures are credited to the report and are not re-licensed here.",
       "status": "ingested"
-    }
-  ],
-  "identified_but_not_yet_ingested": [
-    {
-      "id": "causes_of_death",
-      "name": "Causes of Death, ICD-Coded (by state/district)",
-      "reason": "Confirmed during the 2026-08-14 audit: DOSM publishes an annual 'Statistics on Causes of Death' report and an interactive 'Cause of Death Calculator' (kalkulator.dosm.gov.my/cod/) built on 2000-2023 medically-certified-death data. No confirmed open dataset was found behind either — search results point to PDF releases and the calculator tool itself, not a data-catalogue entry. Would need direct confirmation on open.dosm.gov.my/data.gov.my, or reverse-engineering the calculator's own data source, before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to include."
-    },
-    {
-      "id": "divorce_state",
-      "name": "Divorce Statistics by State",
-      "reason": "Confirmed during the 2026-08-14 audit: DOSM publishes annual marriage-and-divorce reports including divorce counts and crude divorce rate, complementing the already included marriages_state dataset. These appear to be PDF-only releases — no divorce-specific data-catalogue entry (analogous to marriages_state's CSV) was found. Re-check OpenDOSM's demography catalogue directly for a 'divorce_state'-style entry before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to include."
-    },
-    {
-      "id": "disability_statistics",
-      "name": "Person with Disability (OKU) Statistics",
-      "reason": "Confirmed during the 2026-08-14 audit: DOSM publishes an annual 'Person with Disability Statistics' report (2023/2024 editions found) using JKM registry figures. Appears to be released as a narrative PDF publication, not a confirmed open dataset table — no data-catalogue entry found. Needs direct confirmation on open.dosm.gov.my before attempting. Re-checked 2026-10-09: neither the OpenDOSM catalogue (185 datasets) nor the data.gov.my catalogue (297) lists an entry for this, so there is still nothing machine-readable to include."
     }
   ]
 }
